@@ -10,6 +10,7 @@ from app.config import get_settings
 from app.db import session_factory
 from app.models import Company, Membership, User
 from app.security import hasher
+from app.services.clients import import_clients
 
 
 def migrate():
@@ -99,6 +100,9 @@ def main():
     admin = commands.add_parser("create-admin")
     admin.add_argument("--email", required=True)
     commands.add_parser("seed-demo")
+    clients = commands.add_parser("import-clients")
+    clients.add_argument("--directory", type=Path, required=True)
+    clients.add_argument("--report", type=Path, default=Path("../docs/data/import-report.json"))
     args = parser.parse_args()
     if args.command == "migrate":
         migrate()
@@ -113,6 +117,12 @@ def main():
         elif args.command == "seed-demo":
             secret = get_settings().demo_password
             seed_demo(db, secret.get_secret_value() if secret else "")
+        elif args.command == "import-clients":
+            report = import_clients(db, args.directory)
+    if args.command == "import-clients":
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(json.dumps({k: v for k, v in report.items() if k != "conflicts"}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.models import Company, Membership, User
-from app.schemas import CompanyOut
-from app.security import current_user
+from app.schemas import CompanyContext, CompanyOut
+from app.security import company_access, current_user
+from app.services.clients import company_context
 
 router = APIRouter(tags=["companies"])
 
@@ -20,3 +21,9 @@ def companies(user: User = Depends(current_user), db: Session = Depends(get_db))
             .order_by(Company.id)
         )
     )
+
+
+@router.get("/companies/{company_id}/context", response_model=CompanyContext)
+def context(company_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    company_access(db, user, company_id)
+    return company_context(db, company_id)
