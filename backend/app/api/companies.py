@@ -1,0 +1,109 @@
+import hashlib
+import json
+
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.config import get_settings
+from app.db import get_db, utcnow
+from app.models import Company, Event, Membership, News, User
+from app.schemas import CompanyContext, CompanyOut, FeedOut
+from app.security import company_access, current_user
+from app.services.clients import company_context
+from app.services.ranking import rank_event
+
+router = APIRouter(tags=["companies"])
+
+
+def focus_hash(membership):
+    return hashlib.sha256(
+        json.dumps(
+            [
+                membership.position_text,
+                membership.interests,
+                get_settings().ai_module,
+                get_settings().ai_generation_version,
+            ],
+            ensure_ascii=False,
+            sort_keys=True,
+        ).encode()
+    ).hexdigest()
+
+
+@router.get("/companies", response_model=list[CompanyOut])
+def companies(user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")):
+    return list(
+        db.scalars(
+            select(Company)
+            .join(Membership)
+            .where(Membership.user_id == user.id, Membership.status == "active")
+            .order_by(Company.id)
+        )
+    )
+
+
+@router.get("/companies/{company_id}/context", response_model=CompanyContext)
+def context(
+    company_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
+    company_access(db, user, company_id)
+    return company_context(db, company_id)
+
+
+@router.get("/companies/{company_id}/feed", response_model=FeedOut)
+def feed(
+    company_id: str,
+    limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db, scope="function"),
+):
+    membership = company_access(db, user, company_id)
+    ctx = company_context(db, company_id)
+    focus = membership.user_focus if membership.focus_input_hash == focus_hash(membership) else {}
+    if not focus and get_settings().ai_module:
+        from app.services.jobs import enqueue
+
+        enqueue(
+            db,
+            "focus",
+            {"membership_id": membership.id},
+            user.id,
+            company_id,
+            dedup_key=f"focus:{membership.id}",
+        )
+    items = []
+    events = list(
+        db.scalars(
+            select(Event)
+            .where(Event.visible.is_(True))
+            .order_by(Event.published_at.desc().nullslast(), Event.id)
+            .limit(2000)
+        )
+    )
+    publications = list(db.scalars(select(News).where(News.event_id.in_([e.id for e in events]))))
+    sources = {}
+    for publication in publications:
+        sources.setdefault(publication.event_id, []).append(
+            {"id": publication.source_id, "url": publication.url}
+        )
+    now = utcnow()
+    for event in events:
+        score, reasons = rank_event(
+            ctx, focus, {"topics": event.topics, "published_at": event.published_at}, now
+        )
+        items.append(
+            {
+                "event_id": event.id,
+                "title": event.title,
+                "summary": event.summary,
+                "published_at": event.published_at,
+                "rank_score": score,
+                "relevance_reasons": reasons,
+                "status": event.processing_status,
+                "sources": sources.get(event.id, []),
+            }
+        )
+    items.sort(key=lambda item: (-item["rank_score"], item["event_id"]))
+    return {"items": items[offset : offset + limit], "total": len(items), "offset": offset, "limit": limit}
