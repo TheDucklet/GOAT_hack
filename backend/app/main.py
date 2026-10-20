@@ -11,7 +11,7 @@ from app.contracts import install_contracts
 from app.db import get_engine
 from app.errors import install_errors
 from app.schemas import ErrorOut
-from app.security import current_user as guard_contract
+from app.security import guard_contract
 
 
 def create_app():

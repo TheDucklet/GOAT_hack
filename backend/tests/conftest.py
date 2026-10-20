@@ -3,8 +3,9 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 
+from app.cli import seed_demo
 from app.config import get_settings
-from app.db import Base, get_engine
+from app.db import Base, get_engine, session_factory
 from app.main import create_app
 
 PASSWORD = "Synthetic-Test-Password-2026"
@@ -23,6 +24,8 @@ def env(tmp_path, monkeypatch):
     engine = get_engine()
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+    with session_factory()() as db, db.begin():
+        seed_demo(db, PASSWORD)
     yield tmp_path
     engine.dispose()
     get_engine.cache_clear()

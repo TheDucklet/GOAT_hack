@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import Field, model_validator
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     cookie_name: str = "goat_session"
     session_hours: int = Field(default=24, ge=1, le=168)
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    admin_password: SecretStr | None = None
+    demo_password: SecretStr | None = None
 
     @model_validator(mode="after")
     def production_cookies(self):
