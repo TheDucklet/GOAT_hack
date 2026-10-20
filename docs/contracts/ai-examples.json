@@ -1,0 +1,455 @@
+[
+  {
+    "name": "insight_card",
+    "schema": "InsightEnvelope",
+    "data": {
+      "result": {
+        "facts": [
+          {
+            "claim_id": "fact-1",
+            "text": "Совет директоров Банка России 11 сентября 2026 года сохранил ключевую ставку на уровне 14% годовых.",
+            "evidence_refs": [
+              "example-news-evidence"
+            ]
+          }
+        ],
+        "bank_view": [
+          {
+            "claim_id": "bank-1",
+            "text": "Аналитики Альфа-Банка отмечают, что ставка осталась без изменения, а риторика регулятора стала жестче.",
+            "evidence_refs": [
+              "example-bank-evidence"
+            ]
+          }
+        ],
+        "ai_interpretation": [
+          {
+            "claim_id": "interpretation-1",
+            "text": "У компании есть кредитный продукт, поэтому пауза в снижении ставки означает, что стоимость обслуживания долга в ближайшей перспективе не уменьшится.",
+            "evidence_refs": [
+              "example-news-evidence",
+              "example-company-evidence"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "claim_id": "risk-1",
+            "text": "Финансовая нагрузка по кредитному продукту сохраняется на прежнем уровне, пересмотр графика снижения платежей откладывается.",
+            "evidence_refs": [
+              "example-news-evidence",
+              "example-company-evidence"
+            ]
+          }
+        ],
+        "opportunities": [
+          {
+            "claim_id": "opportunity-1",
+            "text": "Рассмотреть фиксацию условий по действующему кредиту, пока регулятор не подал сигнал о дальнейшем снижении.",
+            "evidence_refs": [
+              "example-bank-evidence",
+              "example-company-evidence"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "claim_id": "action-1",
+            "text": "Уточнить сумму долга и тип ставки, чтобы оценить влияние паузы в рублях.",
+            "evidence_refs": [
+              "example-company-evidence"
+            ]
+          }
+        ],
+        "unknowns": [
+          "loan_amount",
+          "loan_rate_type"
+        ],
+        "evidence_refs": [
+          "example-news-evidence",
+          "example-bank-evidence",
+          "example-company-evidence"
+        ],
+        "trace_id": "example-trace-card"
+      },
+      "evidence": [
+        {
+          "id": "example-news-evidence",
+          "kind": "news",
+          "source_id": "example-publication",
+          "version": "example-content-hash",
+          "locator": {
+            "url": "https://example.org/news/key-rate-2026-09-11"
+          },
+          "excerpt": "Совет директоров Банка России 11 сентября 2026 года сохранил ключевую ставку на уровне 14% годовых."
+        },
+        {
+          "id": "example-bank-evidence",
+          "kind": "bank",
+          "source_id": "example-document",
+          "version": "example-version",
+          "locator": {
+            "page": 1,
+            "url": "/sources/example-document/file#page=1"
+          },
+          "excerpt": "Синтетический фрагмент: ставка без изменения на 14,0%, риторика стала жестче."
+        },
+        {
+          "id": "example-company-evidence",
+          "kind": "company",
+          "source_id": "demo_company_a",
+          "version": "demo-v1",
+          "locator": {
+            "feature_path": "features.CL_PRODUCT_LOA_MARK"
+          },
+          "excerpt": "CL_PRODUCT_LOA_MARK = 1.0 (синтетический признак наличия кредитного продукта)"
+        }
+      ],
+      "trace": {
+        "plan": [
+          "read_event",
+          "read_company",
+          "search_bank_analytics",
+          "check_grounding"
+        ],
+        "searches": 1
+      }
+    }
+  },
+  {
+    "name": "insight_without_bank_view",
+    "schema": "InsightEnvelope",
+    "data": {
+      "result": {
+        "facts": [
+          {
+            "claim_id": "fact-1",
+            "text": "Совет директоров Банка России 11 сентября 2026 года сохранил ключевую ставку на уровне 14% годовых.",
+            "evidence_refs": [
+              "example-news-evidence"
+            ]
+          }
+        ],
+        "bank_view": null,
+        "ai_interpretation": [
+          {
+            "claim_id": "interpretation-1",
+            "text": "У компании есть кредитный продукт, поэтому пауза в снижении ставки означает, что стоимость обслуживания долга в ближайшей перспективе не уменьшится.",
+            "evidence_refs": [
+              "example-news-evidence",
+              "example-company-evidence"
+            ]
+          }
+        ],
+        "risks": [
+          {
+            "claim_id": "risk-1",
+            "text": "Финансовая нагрузка по кредитному продукту сохраняется на прежнем уровне, пересмотр графика снижения платежей откладывается.",
+            "evidence_refs": [
+              "example-news-evidence",
+              "example-company-evidence"
+            ]
+          }
+        ],
+        "opportunities": [],
+        "actions": [
+          {
+            "claim_id": "action-1",
+            "text": "Уточнить сумму долга и тип ставки, чтобы оценить влияние паузы в рублях.",
+            "evidence_refs": [
+              "example-company-evidence"
+            ]
+          }
+        ],
+        "unknowns": [
+          "bank_view: в материалах банка нет подтверждения на дату события",
+          "loan_amount"
+        ],
+        "evidence_refs": [
+          "example-news-evidence",
+          "example-company-evidence"
+        ],
+        "trace_id": "example-trace-no-bank"
+      },
+      "evidence": [
+        {
+          "id": "example-news-evidence",
+          "kind": "news",
+          "source_id": "example-publication",
+          "version": "example-content-hash",
+          "locator": {
+            "url": "https://example.org/news/key-rate-2026-09-11"
+          },
+          "excerpt": "Совет директоров Банка России 11 сентября 2026 года сохранил ключевую ставку на уровне 14% годовых."
+        },
+        {
+          "id": "example-company-evidence",
+          "kind": "company",
+          "source_id": "demo_company_a",
+          "version": "demo-v1",
+          "locator": {
+            "feature_path": "features.CL_PRODUCT_LOA_MARK"
+          },
+          "excerpt": "CL_PRODUCT_LOA_MARK = 1.0 (синтетический признак наличия кредитного продукта)"
+        }
+      ],
+      "trace": {
+        "plan": [
+          "read_event",
+          "read_company",
+          "search_bank_analytics"
+        ],
+        "searches": 3,
+        "stop_reason": "retry_limit"
+      }
+    }
+  },
+  {
+    "name": "insight_insufficient_data",
+    "schema": "InsightEnvelope",
+    "data": {
+      "result": {
+        "facts": [],
+        "bank_view": null,
+        "ai_interpretation": [],
+        "risks": [],
+        "opportunities": [],
+        "actions": [],
+        "unknowns": [
+          "Источников недостаточно для вывода о влиянии события на компанию"
+        ],
+        "evidence_refs": [],
+        "trace_id": "example-trace-insufficient"
+      },
+      "evidence": [],
+      "trace": {
+        "plan": [
+          "read_event"
+        ],
+        "stop_reason": "no_evidence"
+      }
+    }
+  },
+  {
+    "name": "event_summary",
+    "schema": "GroundedSummaryResult",
+    "data": {
+      "summary": "Банк России сохранил ключевую ставку на уровне 14% годовых после серии снижений.",
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Совет директоров Банка России 11 сентября 2026 года сохранил ключевую ставку на уровне 14% годовых.",
+          "evidence_refs": [
+            "example-news-evidence"
+          ]
+        }
+      ],
+      "entities": [
+        "Банк России"
+      ],
+      "topics": {
+        "industry": [],
+        "product": [
+          "CL_PRODUCT_LOA_MARK"
+        ],
+        "geo": [
+          "Россия"
+        ]
+      }
+    }
+  },
+  {
+    "name": "user_focus_chief_accountant",
+    "schema": "GroundedUserFocus",
+    "data": {
+      "topics": [
+        "налоги",
+        "учёт",
+        "ключевая ставка"
+      ],
+      "priorities": [
+        "влияние на стоимость заимствований"
+      ],
+      "unknowns": [],
+      "version": "focus-v1"
+    }
+  },
+  {
+    "name": "user_focus_unknown_position",
+    "schema": "GroundedUserFocus",
+    "data": {
+      "topics": [],
+      "priorities": [],
+      "unknowns": [
+        "Должность не определяет дополнительный фокус"
+      ],
+      "version": "focus-v1"
+    }
+  },
+  {
+    "name": "ingest_result",
+    "schema": "GroundedIngestResult",
+    "data": {
+      "document_date": "2026-09-11",
+      "chunks": [
+        {
+          "page": 1,
+          "text": "Синтетический распознанный текст первой страницы.",
+          "quality": {
+            "engine": "example-ocr",
+            "chunk_index": 0,
+            "char_start": 0,
+            "char_end": 49,
+            "confidence": 0.93
+          }
+        },
+        {
+          "page": 2,
+          "text": "Синтетический распознанный текст второй страницы.",
+          "quality": {
+            "engine": "example-ocr",
+            "chunk_index": 0,
+            "char_start": 0,
+            "char_end": 49,
+            "confidence": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "bank_search_result",
+    "schema": "BankSearchResult",
+    "data": {
+      "items": [
+        {
+          "chunk_id": "example-chunk",
+          "document_id": "example-document",
+          "version": "example-version",
+          "index_version": "example-index",
+          "page": 1,
+          "document_date": "2026-09-11",
+          "date_unknown": false,
+          "historical": false,
+          "text": "Синтетический фрагмент: ставка без изменения на 14,0%, риторика стала жестче.",
+          "excerpt": "ставка без изменения на 14,0%, риторика стала жестче",
+          "locator": {
+            "page": 1
+          },
+          "score": 0.42
+        }
+      ],
+      "query": "ключевая ставка",
+      "as_of": "2026-09-12",
+      "empty_reason": null
+    }
+  },
+  {
+    "name": "bank_search_empty",
+    "schema": "BankSearchResult",
+    "data": {
+      "items": [],
+      "query": "добыча лития",
+      "as_of": "2026-09-12",
+      "empty_reason": "В проиндексированных документах нет подходящих фрагментов"
+    }
+  },
+  {
+    "name": "chat_answer",
+    "schema": "ChatEnvelope",
+    "data": {
+      "result": {
+        "answer": "Событие важно компании, так как у неё есть кредитный продукт: пауза в снижении ставки удерживает стоимость обслуживания долга на прежнем уровне.",
+        "evidence_refs": [
+          "example-news-evidence",
+          "example-company-evidence"
+        ],
+        "unknowns": [],
+        "trace_id": "example-trace-chat-1",
+        "usage": {
+          "llm_calls": 1,
+          "input_tokens": 1800,
+          "output_tokens": 260,
+          "cost_rub": 0.9,
+          "models": [
+            "qwen/qwen3.6-35b-a3b"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "id": "example-news-evidence",
+          "kind": "news",
+          "source_id": "example-publication",
+          "version": "example-content-hash",
+          "locator": {
+            "url": "https://example.org/news/key-rate-2026-09-11"
+          },
+          "excerpt": "Совет директоров Банка России 11 сентября 2026 года сохранил ключевую ставку на уровне 14% годовых."
+        },
+        {
+          "id": "example-company-evidence",
+          "kind": "company",
+          "source_id": "demo_company_a",
+          "version": "demo-v1",
+          "locator": {
+            "feature_path": "features.CL_PRODUCT_LOA_MARK"
+          },
+          "excerpt": "CL_PRODUCT_LOA_MARK = 1.0 (синтетический признак наличия кредитного продукта)"
+        }
+      ],
+      "trace": {
+        "steps": [
+          {
+            "tool": "get_event"
+          },
+          {
+            "tool": "get_company_context"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "chat_insufficient_data",
+    "schema": "ChatEnvelope",
+    "data": {
+      "result": {
+        "answer": "Рассчитать эффект в рублях нельзя: не известны сумма долга и тип ставки.",
+        "evidence_refs": [],
+        "unknowns": [
+          "loan_amount",
+          "loan_rate_type"
+        ],
+        "trace_id": "example-trace-chat-2",
+        "usage": {
+          "llm_calls": 1,
+          "input_tokens": 2100,
+          "output_tokens": 120,
+          "cost_rub": 0.7,
+          "models": [
+            "qwen/qwen3.6-35b-a3b"
+          ]
+        }
+      },
+      "evidence": [],
+      "trace": {
+        "steps": [
+          {
+            "tool": "get_company_context"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "ai_failure_budget",
+    "schema": "AIFailure",
+    "data": {
+      "code": "budget_exhausted",
+      "message": "Дневной лимит исчерпан, повторите запрос после сброса бюджета",
+      "retryable": false,
+      "request_id": "example-request"
+    }
+  }
+]
