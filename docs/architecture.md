@@ -112,7 +112,7 @@ Compose использует один backend-образ для api/worker и о
 
 | Задачи | Место расширения и правило |
 | --- | --- |
-| R-04 | `features/analytics`: feed, пагинация и выбранный event; доступная компания из CompanyProvider, запросы из analytics/api |
+| R-04 (реализовано) | `features/analytics`: useFeed управляет страницами/отменой, FeedEvent — отображением; AnalyticsSelectionProvider хранит event/chat отдельно для компании; доступная компания из CompanyProvider, запросы из analytics/api |
 | R-05 | `features/analytics`: insight и EvidenceLink, ссылка на защищённый source; единый тип Evidence из shared/api |
 | R-06 | `features/analytics`: chat и polling; один state для company/event/chat, общий HttpClient и ErrorNotice |
 | R-07 | `features/admin`: users/memberships; новые методы в admin/api, повторное использование FormField |
