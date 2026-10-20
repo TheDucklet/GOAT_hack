@@ -32,7 +32,7 @@ def focus_hash(membership):
 
 
 @router.get("/companies", response_model=list[CompanyOut])
-def companies(user: User = Depends(current_user), db: Session = Depends(get_db)):
+def companies(user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")):
     return list(
         db.scalars(
             select(Company)
@@ -44,7 +44,9 @@ def companies(user: User = Depends(current_user), db: Session = Depends(get_db))
 
 
 @router.get("/companies/{company_id}/context", response_model=CompanyContext)
-def context(company_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def context(
+    company_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     company_access(db, user, company_id)
     return company_context(db, company_id)
 
@@ -55,7 +57,7 @@ def feed(
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
     user: User = Depends(current_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     membership = company_access(db, user, company_id)
     ctx = company_context(db, company_id)

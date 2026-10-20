@@ -11,7 +11,9 @@ router = APIRouter(tags=["analytics"])
 
 
 @router.get("/jobs/{job_id}", response_model=JobOut)
-def job_status(job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def job_status(
+    job_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     job = db.get(Job, job_id)
     if not job:
         raise AppError(404, "not_found", "Задание не найдено")

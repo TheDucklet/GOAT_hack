@@ -2,7 +2,7 @@
 
 Проверено 20 октября 2026 года. Отчёт относится к накопленной реализации этой ветки. Точный коммит доступен в соответствующем запросе на слияние. Объединение веток и совместная приёмка команды ещё не выполнены.
 
-На SQLite прошли 70 проверок. На PostgreSQL прошли 70 проверок. Ruff и проверка форматирования прошли. Сохранённый OpenAPI совпадает с приложением. Проверяется начальная миграция 0001 и повторный upgrade.
+На SQLite прошли 71 проверок. На PostgreSQL прошли 71 проверок. Ruff и проверка форматирования прошли. Сохранённый OpenAPI совпадает с приложением. Проверяется начальная миграция 0001 и повторный upgrade.
 
 Из каталога backend выполняется следующая команда.
 
@@ -73,6 +73,8 @@
 Проверка `test_parallel_worker_claims_are_distinct` прошла на SQLite и PostgreSQL.
 
 Проверка `test_revoked_membership_prevents_pending_ai_job` прошла на SQLite и PostgreSQL.
+
+Проверка `test_registration_is_committed_before_http_response` прошла на SQLite и PostgreSQL.
 
 Проверка `test_aware_time_is_converted_instead_of_relabelled` прошла на SQLite и PostgreSQL.
 

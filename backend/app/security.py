@@ -43,7 +43,9 @@ def make_session(db: Session, user: User) -> tuple[str, LoginSession]:
 
 
 def current_user(
-    request: Request, db: Session = Depends(get_db), cookie: str | None = Security(session_cookie)
+    request: Request,
+    db: Session = Depends(get_db, scope="function"),
+    cookie: str | None = Security(session_cookie),
 ) -> User:
     token = cookie or ""
     session = db.get(LoginSession, digest(token)) if token else None
@@ -89,7 +91,9 @@ def owned(db: Session, model, object_id: str, user: User):
     return obj
 
 
-def guard_contract(request: Request, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def guard_contract(
+    request: Request, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     if request.url.path.startswith("/admin/") and user.system_role != "admin":
         raise AppError(403, "forbidden", "Требуется роль администратора")
     company_id = request.path_params.get("company_id")

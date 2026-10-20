@@ -11,7 +11,7 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 
 
 @router.get("/stats", response_model=StatsOut)
-def stats(admin: User = Depends(admin_user), db: Session = Depends(get_db)):
+def stats(admin: User = Depends(admin_user), db: Session = Depends(get_db, scope="function")):
     return {
         "positive_feedback": db.scalar(
             select(func.count()).select_from(Feedback).where(Feedback.rating == 1)

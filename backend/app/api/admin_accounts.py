@@ -20,14 +20,17 @@ def users(
     limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
     admin: User = Depends(admin_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     return list(db.scalars(select(User).order_by(User.created_at, User.id).offset(offset).limit(limit)))
 
 
 @router.patch("/users/{user_id}", response_model=UserOut)
 def patch_user(
-    user_id: str, body: UserPatch, admin: User = Depends(admin_user), db: Session = Depends(get_db)
+    user_id: str,
+    body: UserPatch,
+    admin: User = Depends(admin_user),
+    db: Session = Depends(get_db, scope="function"),
 ):
     obj = db.get(User, user_id)
     if not obj:
@@ -48,7 +51,7 @@ def memberships(
     limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
     admin: User = Depends(admin_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     return list(db.scalars(select(Membership).order_by(Membership.id).offset(offset).limit(limit)))
 
@@ -58,7 +61,7 @@ def patch_membership(
     membership_id: str,
     body: MembershipPatch,
     admin: User = Depends(admin_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     obj = db.get(Membership, membership_id)
     if not obj:

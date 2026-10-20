@@ -12,7 +12,9 @@ router = APIRouter(tags=["auth"])
 
 
 @router.post("/memberships/requests", response_model=MembershipOut, status_code=201)
-def request_membership(body: MembershipIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def request_membership(
+    body: MembershipIn, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     company = db.get(Company, body.company_id)
     if not company or company.is_placeholder:
         raise AppError(404, "not_found", "Компания не найдена")
@@ -28,7 +30,10 @@ def request_membership(body: MembershipIn, user: User = Depends(current_user), d
 
 @router.patch("/memberships/{membership_id}/profile", response_model=MembershipOut)
 def update_profile(
-    membership_id: str, body: ProfileIn, user: User = Depends(current_user), db: Session = Depends(get_db)
+    membership_id: str,
+    body: ProfileIn,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db, scope="function"),
 ):
     obj = db.get(Membership, membership_id)
     if not obj:

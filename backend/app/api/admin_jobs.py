@@ -20,13 +20,13 @@ def jobs(
     limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
     admin: User = Depends(admin_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     return list(db.scalars(select(Job).order_by(Job.created_at.desc(), Job.id).offset(offset).limit(limit)))
 
 
 @router.post("/jobs/collect-news", response_model=JobOut, status_code=202)
-def start_collection(admin: User = Depends(admin_user), db: Session = Depends(get_db)):
+def start_collection(admin: User = Depends(admin_user), db: Session = Depends(get_db, scope="function")):
     job = enqueue(db, "collect_news", {}, admin.id, dedup_key="collect_news")
     audit(db, admin, "collect_news", job.id)
     return job

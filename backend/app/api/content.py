@@ -35,7 +35,7 @@ def create_insight(
     body: EventIn,
     response: Response,
     user: User = Depends(current_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     company_access(db, user, company_id)
     versions, key = insight_versions(db, user, company_id, body.event_id)
@@ -49,12 +49,16 @@ def create_insight(
 
 
 @router.get("/insights/{insight_id}", response_model=InsightOut)
-def get_insight(insight_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def get_insight(
+    insight_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     return owned(db, Insight, insight_id, user)
 
 
 @router.post("/chats", response_model=ChatOut, status_code=201)
-def create_chat(body: ChatIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def create_chat(
+    body: ChatIn, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     company_access(db, user, body.company_id)
     event_context(db, body.event_id)
     chat = Chat(user_id=user.id, **body.model_dump())
@@ -65,7 +69,10 @@ def create_chat(body: ChatIn, user: User = Depends(current_user), db: Session = 
 
 @router.post("/chats/{chat_id}/messages", response_model=JobOut, status_code=202)
 def send_message(
-    chat_id: str, body: MessageIn, user: User = Depends(current_user), db: Session = Depends(get_db)
+    chat_id: str,
+    body: MessageIn,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db, scope="function"),
 ):
     chat = owned(db, Chat, chat_id, user)
     db.scalar(select(Chat).where(Chat.id == chat.id).with_for_update())
@@ -92,7 +99,7 @@ def messages(
     limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
     user: User = Depends(current_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     owned(db, Chat, chat_id, user)
     return list(
@@ -124,7 +131,9 @@ def accessible_source(db, source_id, user):
 
 
 @router.get("/sources/{source_id}", response_model=EvidenceOut)
-def source(source_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def source(
+    source_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     obj = accessible_source(db, source_id, user)
     result = EvidenceOut.model_validate(obj).model_dump()
     if obj.kind == "bank":
@@ -146,7 +155,9 @@ def source(source_id: str, user: User = Depends(current_user), db: Session = Dep
 
 
 @router.get("/sources/{source_id}/file")
-def source_file(source_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def source_file(
+    source_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     obj = accessible_source(db, source_id, user)
     if obj.kind != "bank":
         raise AppError(422, "not_pdf", "Источник не является PDF")
@@ -167,7 +178,9 @@ def source_file(source_id: str, user: User = Depends(current_user), db: Session 
 
 
 @router.post("/feedback", response_model=FeedbackOut)
-def feedback(body: FeedbackIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def feedback(
+    body: FeedbackIn, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
     owned(db, Insight, body.insight_id, user)
     obj = db.scalar(
         select(Feedback).where(Feedback.user_id == user.id, Feedback.insight_id == body.insight_id)

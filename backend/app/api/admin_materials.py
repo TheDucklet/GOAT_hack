@@ -43,14 +43,16 @@ def documents(
     limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
     admin: User = Depends(admin_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     return list(db.scalars(select(BankDocument).order_by(BankDocument.id).offset(offset).limit(limit)))
 
 
 @router.post("/documents", response_model=UploadOut, status_code=202)
 def upload_document(
-    file: UploadFile = File(...), admin: User = Depends(admin_user), db: Session = Depends(get_db)
+    file: UploadFile = File(...),
+    admin: User = Depends(admin_user),
+    db: Session = Depends(get_db, scope="function"),
 ):
     settings = get_settings()
     data = file.file.read(settings.max_pdf_bytes + 1)
@@ -95,7 +97,9 @@ def upload_document(
 
 
 @router.post("/documents/{document_id}/reindex", response_model=JobOut, status_code=202)
-def reindex(document_id: str, admin: User = Depends(admin_user), db: Session = Depends(get_db)):
+def reindex(
+    document_id: str, admin: User = Depends(admin_user), db: Session = Depends(get_db, scope="function")
+):
     doc = db.get(BankDocument, document_id)
     if not doc:
         raise AppError(404, "not_found", "Документ не найден")
@@ -110,7 +114,7 @@ def news(
     limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
     admin: User = Depends(admin_user),
-    db: Session = Depends(get_db),
+    db: Session = Depends(get_db, scope="function"),
 ):
     events = list(
         db.scalars(
@@ -141,7 +145,12 @@ def news(
 
 
 @router.patch("/news/{event_id}", response_model=VisibilityOut)
-def hide(event_id: str, body: VisibilityIn, admin: User = Depends(admin_user), db: Session = Depends(get_db)):
+def hide(
+    event_id: str,
+    body: VisibilityIn,
+    admin: User = Depends(admin_user),
+    db: Session = Depends(get_db, scope="function"),
+):
     event = db.get(Event, event_id)
     if not event:
         raise AppError(404, "not_found", "Событие не найдено")
@@ -151,7 +160,9 @@ def hide(event_id: str, body: VisibilityIn, admin: User = Depends(admin_user), d
 
 
 @router.post("/news/{event_id}/retry", response_model=JobOut, status_code=202)
-def retry_news(event_id: str, admin: User = Depends(admin_user), db: Session = Depends(get_db)):
+def retry_news(
+    event_id: str, admin: User = Depends(admin_user), db: Session = Depends(get_db, scope="function")
+):
     event = db.get(Event, event_id)
     if not event:
         raise AppError(404, "not_found", "Событие не найдено")

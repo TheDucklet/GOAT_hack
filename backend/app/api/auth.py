@@ -13,7 +13,7 @@ router = APIRouter(tags=["auth"])
 
 
 @router.post("/auth/register", response_model=UserOut, status_code=201)
-def register(body: Credentials, db: Session = Depends(get_db)):
+def register(body: Credentials, db: Session = Depends(get_db, scope="function")):
     email = str(body.email).lower()
     if db.scalar(select(User.id).where(User.email == email)):
         raise AppError(409, "email_exists", "Email уже зарегистрирован")
@@ -24,7 +24,12 @@ def register(body: Credentials, db: Session = Depends(get_db)):
 
 
 @router.post("/auth/login", response_model=MeOut)
-def login(body: LoginCredentials, request: Request, response: Response, db: Session = Depends(get_db)):
+def login(
+    body: LoginCredentials,
+    request: Request,
+    response: Response,
+    db: Session = Depends(get_db, scope="function"),
+):
     origin = request.headers.get("origin")
     if origin and origin not in get_settings().cors_origins:
         raise AppError(403, "origin_forbidden", "Недопустимый источник запроса")
@@ -51,7 +56,10 @@ def login(body: LoginCredentials, request: Request, response: Response, db: Sess
 
 @router.post("/auth/logout", status_code=204)
 def logout(
-    request: Request, response: Response, user: User = Depends(current_user), db: Session = Depends(get_db)
+    request: Request,
+    response: Response,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db, scope="function"),
 ):
     db.delete(request.state.login_session)
     response.delete_cookie(get_settings().cookie_name, path="/")
@@ -66,5 +74,5 @@ def me_result(db, user, csrf):
 
 
 @router.get("/me", response_model=MeOut)
-def me(request: Request, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def me(request: Request, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")):
     return me_result(db, user, request.state.login_session.csrf_token)
