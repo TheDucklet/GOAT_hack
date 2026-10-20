@@ -7,8 +7,7 @@ from app.config import get_settings
 from app.db import as_utc, get_engine, session_factory, utcnow
 from app.models import Chat, LoginSession, Message
 from app.services.jobs import run_one
-from tests.conftest import login
-from tests.test_backend import enable_ai, event_fixture
+from tests.factories import enable_ai, event_fixture, login
 
 
 def test_aware_time_is_converted_instead_of_relabelled():

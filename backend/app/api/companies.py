@@ -1,6 +1,3 @@
-import hashlib
-import json
-
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -9,26 +6,14 @@ from app.config import get_settings
 from app.db import get_db, utcnow
 from app.models import Company, Event, Membership, News, User
 from app.schemas import CompanyContext, CompanyOut, FeedOut
-from app.security import company_access, current_user
+from app.security import current_user
+from app.services.access import company_access
 from app.services.clients import company_context
+from app.services.focus import focus_hash
+from app.services.queue import enqueue
 from app.services.ranking import rank_event
 
 router = APIRouter(tags=["companies"])
-
-
-def focus_hash(membership):
-    return hashlib.sha256(
-        json.dumps(
-            [
-                membership.position_text,
-                membership.interests,
-                get_settings().ai_module,
-                get_settings().ai_generation_version,
-            ],
-            ensure_ascii=False,
-            sort_keys=True,
-        ).encode()
-    ).hexdigest()
 
 
 @router.get("/companies", response_model=list[CompanyOut])
@@ -63,8 +48,6 @@ def feed(
     ctx = company_context(db, company_id)
     focus = membership.user_focus if membership.focus_input_hash == focus_hash(membership) else {}
     if not focus and get_settings().ai_module:
-        from app.services.jobs import enqueue
-
         enqueue(
             db,
             "focus",

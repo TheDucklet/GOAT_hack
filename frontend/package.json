@@ -10,7 +10,9 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
     "test:watch": "vitest",
-    "contracts:generate": "openapi-typescript ../docs/contracts/openapi.json -o src/api/schema.d.ts",
+    "architecture:check": "node scripts/check-architecture.mjs",
+    "architecture:test": "node --test scripts/check-architecture.test.mjs",
+    "contracts:generate": "openapi-typescript ../docs/contracts/openapi.json -o src/shared/api/schema.d.ts",
     "contracts:check": "npm run contracts:generate -- --check"
   },
   "dependencies": {

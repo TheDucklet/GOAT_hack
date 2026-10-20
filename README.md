@@ -4,6 +4,8 @@
 
 Frontend R-03 и опубликованный backend A-13 объединены с Docker/CI из R-02. Работают регистрация, вход, серверная cookie-сессия и экран «Компании и профиль»: заявка, статусы членств, произвольная должность и интересы. Доступ к компании открывается после подтверждения администратором. Лента, карточка и чат подключаются в следующих frontend-задачах; mock не используется в Docker-сборке.
 
+Ветка `R-00-merge` упорядочивает текущую сборку. [Архитектура и правила расширения](docs/architecture.md): структура `app/features/shared` во frontend, границы backend-сервисов и worker, источники общих компонентов, соответствие будущим задачам и проверки импортов в CI.
+
 ## Запуск одной командой
 
 Требуется Docker с Linux containers и Docker Compose **2.24+** (Docker Desktop подходит). Node.js, Python и PostgreSQL на хост устанавливать не нужно. Из корня репозитория:
@@ -101,6 +103,7 @@ python scripts/verify_compose.py --project goat-r02-check --base-url http://127.
 
 - [Результаты приёмки R-02](docs/qa/r-02.md)
 - [Результаты приёмки R-03](docs/qa/r-03.md)
+- [Архитектурная проверка R-00-merge](docs/qa/r-00.md)
 - [Backend и команды эксплуатации](backend/README.md)
 - [Frontend без Docker](frontend/README.md)
 - [OpenAPI](docs/contracts/openapi.json) и [интеграция с AI](docs/contracts/integration.md)

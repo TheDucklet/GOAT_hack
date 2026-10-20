@@ -6,10 +6,10 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from app.api import routers
+from app.api.error_handlers import install_errors
 from app.config import get_settings
 from app.contracts import install_contracts
 from app.db import get_engine
-from app.errors import install_errors
 from app.schemas import ErrorOut
 from app.security import guard_contract
 

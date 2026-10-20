@@ -3,16 +3,13 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import AuditLog, Job, User
+from app.models import Job, User
 from app.schemas import JobOut
 from app.security import admin_user
-from app.services.jobs import enqueue
+from app.services.audit import audit
+from app.services.queue import enqueue
 
 router = APIRouter(prefix="/admin", tags=["admin"])
-
-
-def audit(db, admin, action, object_id, details=None):
-    db.add(AuditLog(admin_id=admin.id, action=action, object_id=object_id, details=details or {}))
 
 
 @router.get("/jobs", response_model=list[JobOut])

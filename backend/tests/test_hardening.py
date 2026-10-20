@@ -7,8 +7,7 @@ from app.config import get_settings
 from app.db import session_factory, utcnow
 from app.models import BankDocument, Company, Event, Insight, Job
 from app.services.jobs import claim_next, enqueue, run_one
-from tests.conftest import login
-from tests.test_backend import enable_ai, event_fixture
+from tests.factories import enable_ai, event_fixture, login
 
 
 @pytest.mark.parametrize("dimension", ["profile", "event", "generation", "corpus"])

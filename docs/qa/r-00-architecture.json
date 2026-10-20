@@ -1,0 +1,27 @@
+{
+  "base_commit": "83da4f725dcfe03c3a267c970cc29ad1d9b82dcb",
+  "before": {
+    "modules": 29,
+    "cycles": [
+      "app.services.jobs -> app.api.companies -> app.services.jobs",
+      "app.services.jobs -> app.services.news -> app.services.jobs",
+      "app.services.jobs -> app.services.tools -> app.services.jobs"
+    ],
+    "layer_violations": [
+      "HTTP producer depends on worker runtime: app.api.admin_jobs -> app.services.jobs",
+      "HTTP producer depends on worker runtime: app.api.admin_materials -> app.services.jobs",
+      "HTTP producer depends on worker runtime: app.api.companies -> app.services.jobs",
+      "HTTP producer depends on worker runtime: app.api.content -> app.services.jobs",
+      "Domain/AI depends on HTTP/runtime: app.services.jobs -> app.security",
+      "Domain/AI depends on HTTP/runtime: app.services.jobs -> app.api.companies",
+      "Domain/AI depends on HTTP/runtime: app.services.jobs -> app.api.companies",
+      "Domain/AI depends on HTTP/runtime: app.services.tools -> app.security"
+    ]
+  },
+  "after": {
+    "modules": 43,
+    "cycles": [],
+    "layer_violations": [],
+    "dependency_violations": []
+  }
+}

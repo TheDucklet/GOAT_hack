@@ -7,7 +7,8 @@ from app.db import get_db
 from app.errors import AppError
 from app.models import LoginSession, Membership, User
 from app.schemas import Credentials, LoginCredentials, MeOut, UserOut
-from app.security import current_user, hasher, make_session, verify_password
+from app.security import current_user
+from app.services.sessions import hasher, make_session, verify_password
 
 router = APIRouter(tags=["auth"])
 
@@ -38,7 +39,7 @@ def login(
         raise AppError(401, "invalid_credentials", "Неверный email или пароль")
     previous = request.cookies.get(get_settings().cookie_name)
     if previous:
-        from app.security import digest
+        from app.services.sessions import digest
 
         db.execute(delete(LoginSession).where(LoginSession.token_hash == digest(previous)))
     token, session = make_session(db, user)

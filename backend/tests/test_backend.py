@@ -1,10 +1,7 @@
-import csv
 from datetime import timedelta
-from io import BytesIO
 
 import httpx
 import pytest
-from pypdf import PdfWriter
 from sqlalchemy import func, select
 
 from app.config import get_settings
@@ -14,38 +11,7 @@ from app.services.clients import company_context, import_clients
 from app.services.jobs import claim_next, run_one, scheduler_tick
 from app.services.news import add_publication, collect_news, ensure_sources, normalize_url
 from app.services.ranking import rank_event
-from tests.conftest import PASSWORD, login
-
-
-def event_fixture():
-    with session_factory()() as db, db.begin():
-        ensure_sources(db)
-        source = db.get(Source, "cbr")
-        news, _ = add_publication(
-            db,
-            source,
-            {
-                "url": "https://www.cbr.ru/press/test/1",
-                "title": "Решение по ключевой ставке",
-                "text": "Подтвержденный текст новости о ставке.",
-                "published_at": utcnow(),
-            },
-        )
-        event_id = news.event_id
-    return event_id
-
-
-def enable_ai(monkeypatch):
-    monkeypatch.setenv("AI_MODULE", "tests.fake_ai")
-    get_settings.cache_clear()
-
-
-def pdf_bytes():
-    writer = PdfWriter()
-    writer.add_blank_page(width=200, height=200)
-    stream = BytesIO()
-    writer.write(stream)
-    return stream.getvalue()
+from tests.factories import PASSWORD, enable_ai, event_fixture, login, make_csvs, pdf_bytes
 
 
 def test_auth_registration_logout_and_csrf(client):
@@ -135,31 +101,6 @@ def test_block_revokes_sessions(client):
     client.cookies.clear()
     client.cookies.set("goat_session", cookie)
     assert client.get("/me").status_code == 401
-
-
-def make_csvs(root):
-    files = {
-        "df_Uid_data_hack.csv": [
-            ["SYNTHETIC_U", "GROUP_ID", "REGION", "MAINOKVED_CODE", "CL_PRODUCT_LOA_MARK"],
-            ["u1", "g1", "Москва", "25.61", "1.0"],
-            ["u1", "g2", "Москва", "25.62", "1.0"],
-            ["u2", "g1", "", "25.61", "0.0"],
-        ],
-        "df_Fid_Uid_link_hack.csv": [
-            ["SYNTHETIC_F", "CITY_NAME", "RC_NAME", "SYNTHETIC_U"],
-            ["f1", "Москва", "Москва", "u1"],
-            ["f1", "Москва", "Москва", "u2"],
-        ],
-        "df_Uid_payment_hack.csv": [
-            ["BENEFICIARY", "PAYER", "PAY_AMT", "PAY_CNT"],
-            ["u2", "u1", "100.01", "5"],
-            ["u2", "u1", "100.01", "5"],
-            ["outside", "u1", "50.00", "2"],
-        ],
-    }
-    for name, data in files.items():
-        with (root / name).open("w", encoding="utf-8", newline="") as stream:
-            csv.writer(stream, delimiter=";").writerows(data)
 
 
 def test_import_idempotency_conflicts_unknown_counterparties_and_aggregates(env):
