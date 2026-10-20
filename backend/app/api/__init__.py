@@ -1,4 +1,4 @@
-from . import admin_accounts, admin_jobs, admin_materials, auth, companies, jobs, memberships
+from . import admin_accounts, admin_jobs, admin_materials, auth, companies, content, jobs, memberships
 
 routers = (
     auth.router,
@@ -8,4 +8,5 @@ routers = (
     jobs.router,
     admin_jobs.router,
     admin_materials.router,
+    content.router,
 )

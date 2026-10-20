@@ -9,7 +9,7 @@ from sqlalchemy import func, select
 
 from app.config import get_settings
 from app.db import session_factory, utcnow
-from app.models import Company, Job, Payment, Source
+from app.models import Company, Insight, Job, Payment, Source
 from app.services.clients import company_context, import_clients
 from app.services.jobs import claim_next, run_one, scheduler_tick
 from app.services.news import add_publication, collect_news, ensure_sources, normalize_url
@@ -240,6 +240,52 @@ def test_job_claim_and_scheduler_dedup(env):
         job_id = claim_next(first)
         assert job_id is not None
         assert claim_next(second) is None
+
+
+def test_ai_unavailable_is_failed_without_fake_answer(client):
+    login(client)
+    event_id = event_fixture()
+    result = client.post("/companies/demo_company_a/insights", json={"event_id": event_id})
+    assert result.status_code == 202
+    assert run_one()
+    status = client.get(f"/jobs/{result.json()['id']}").json()
+    assert status["status"] == "failed" and status["error"]["code"] == "ai_unavailable"
+    with session_factory()() as db:
+        assert db.scalar(select(func.count()).select_from(Insight)) == 0
+
+
+def test_insight_chat_persistence_feedback_and_cache(client, monkeypatch):
+    enable_ai(monkeypatch)
+    login(client)
+    event_id = event_fixture()
+    result = client.post("/companies/demo_company_a/insights", json={"event_id": event_id})
+    assert run_one()
+    job = client.get(f"/jobs/{result.json()['id']}").json()
+    assert job["status"] == "done", job
+    insight_id = job["result"]["insight_id"]
+    assert client.get(f"/insights/{insight_id}").json()["result"]["unknowns"] == ["loan_amount"]
+    cached = client.post("/companies/demo_company_a/insights", json={"event_id": event_id})
+    assert cached.status_code == 200 and cached.json()["id"] == insight_id
+    chat = client.post("/chats", json={"company_id": "demo_company_a", "event_id": event_id}).json()
+    for question in ["Почему это важно нам?", "Каких данных не хватает?"]:
+        response = client.post(f"/chats/{chat['id']}/messages", json={"text": question})
+        assert response.status_code == 202
+        assert client.post(f"/chats/{chat['id']}/messages", json={"text": question}).status_code == 409
+        assert run_one()
+    history = client.get(f"/chats/{chat['id']}/messages").json()
+    assert len(history) == 4
+    assert "Каких данных не хватает?" in history[-1]["text"]
+
+
+def test_cache_invalidates_on_profile_focus_and_event_change(client, monkeypatch):
+    enable_ai(monkeypatch)
+    user = login(client)
+    event_id = event_fixture()
+    client.post("/companies/demo_company_a/insights", json={"event_id": event_id})
+    assert run_one()
+    membership = user["memberships"][0]
+    client.patch(f"/memberships/{membership['id']}/profile", json={"position_text": "Закупки"})
+    assert client.post("/companies/demo_company_a/insights", json={"event_id": event_id}).status_code == 202
 
 
 def test_document_upload_dedup_protected_file_and_reindex(client, monkeypatch):

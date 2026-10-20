@@ -9,9 +9,10 @@ from app.config import get_settings
 from app.db import as_utc, session_factory, utcnow
 from app.errors import AppError
 from app.integrations.ai import AIError, call_ai
-from app.models import BankDocument, Chunk, Event, Evidence, Job, News, User
-from app.schemas import IngestResult, SummaryResult, UserFocus
+from app.models import BankDocument, Chat, Chunk, Event, Evidence, Insight, Job, Message, News, Trace, User
+from app.schemas import AIEnvelope, ChatResult, IngestResult, InsightResult, SummaryResult, UserFocus
 from app.security import company_access
+from app.services.clients import company_context
 
 
 def enqueue(db, kind, payload, user_id=None, company_id=None, dedup_key=None):
@@ -95,6 +96,72 @@ def derive_focus(db, membership):
     ).model_dump(mode="json")
     membership.focus_input_hash, membership.user_focus = (key, focus)
     return focus
+
+
+def insight_versions(db, user, company_id, event_id):
+    membership = company_access(db, user, company_id)
+    event = event_context(db, event_id)
+    documents = list(
+        db.execute(
+            select(
+                BankDocument.sha256, BankDocument.version, BankDocument.index_version, BankDocument.status
+            ).order_by(BankDocument.id)
+        )
+    )
+    from app.api.companies import focus_hash
+
+    versions = {
+        "profile": company_context(db, company_id)["profile_version"],
+        "event": event["version"],
+        "focus": focus_hash(membership),
+        "corpus": hashlib.sha256(repr(documents).encode()).hexdigest(),
+        "generation": f"{get_settings().ai_module}:{get_settings().ai_generation_version}",
+    }
+    key = hashlib.sha256(
+        json.dumps([user.id, company_id, event_id, versions], sort_keys=True).encode()
+    ).hexdigest()
+    return (versions, key)
+
+
+def store_evidence(db, envelope, company_id):
+    for item in envelope.evidence:
+        if item.kind == "bank":
+            doc = db.get(BankDocument, item.source_id)
+            page = item.locator.get("page")
+            if (
+                not doc
+                or item.version != doc.version
+                or (not isinstance(page, int))
+                or (not 1 <= page <= doc.page_count)
+            ):
+                raise AIError("invalid_evidence", "Некорректный источник PDF")
+        elif item.kind == "news":
+            news = db.get(News, item.source_id)
+            if not news or item.version != news.content_hash:
+                raise AIError("invalid_evidence", "Некорректный новостной источник")
+        elif item.kind == "company":
+            context = company_context(db, company_id)
+            path = item.locator.get("feature_path", "")
+            field = path.removeprefix("features.")
+            if (
+                item.source_id != company_id
+                or item.version != context["profile_version"]
+                or field not in context["features"]
+                or (context["features"][field].get("value") is None)
+            ):
+                raise AIError("invalid_evidence", "Некорректный клиентский источник")
+        existing = db.get(Evidence, item.id)
+        values = item.model_dump()
+        if item.kind == "company":
+            values["locator"] = {**values["locator"], "value": context["features"][field]}
+        if existing:
+            if any((getattr(existing, field) != value for field, value in values.items())):
+                raise AIError("invalid_evidence", "Источник с этим ID уже имеет другое содержимое")
+            if existing.company_id and existing.company_id != company_id:
+                raise AIError("invalid_evidence", "Недоступный клиентский источник")
+        else:
+            db.add(Evidence(**values, company_id=company_id if item.kind == "company" else None))
+    db.flush()
 
 
 def check_refs(db, result, company_id):
@@ -187,7 +254,73 @@ def execute_job(db, job):
     focus = derive_focus(db, membership)
     if job.kind == "focus":
         return {"membership_id": membership.id, "focus": focus}
-    raise AIError("unknown_job", "Обработчик задания ещё не подключён")
+    context = company_context(db, job.company_id)
+    event = event_context(db, job.payload["event_id"])
+    from app.services.tools import AnalysisTools
+
+    tools = AnalysisTools(db, user.id, job.company_id, event["id"])
+    if job.kind == "insight":
+        versions, key = insight_versions(db, user, job.company_id, event["id"])
+        envelope = AIEnvelope.model_validate(
+            call_ai("build_insight", company_context=context, user_focus=focus, event=event, tools=tools)
+        )
+        result = InsightResult.model_validate(envelope.result).model_dump(mode="json")
+        store_evidence(db, envelope, job.company_id)
+        check_refs(db, result, job.company_id)
+        insight = db.scalar(select(Insight).where(Insight.cache_key == key))
+        if not insight:
+            insight = Insight(
+                user_id=user.id,
+                company_id=job.company_id,
+                event_id=event["id"],
+                cache_key=key,
+                versions=versions,
+                result=result,
+            )
+            db.add(insight)
+            db.flush()
+        save_trace(db, result["trace_id"], user, job.company_id, envelope.trace)
+        return {"insight_id": insight.id}
+    if job.kind == "chat":
+        chat = db.get(Chat, job.payload["chat_id"])
+        if not chat or chat.user_id != user.id or chat.company_id != job.company_id:
+            raise AppError(403, "forbidden", "Диалог недоступен")
+        history = list(
+            db.scalars(
+                select(Message).where(Message.chat_id == chat.id).order_by(Message.sequence.desc()).limit(30)
+            )
+        )
+        envelope = AIEnvelope.model_validate(
+            call_ai(
+                "answer_chat",
+                company_context=context,
+                user_focus=focus,
+                event=event,
+                tools=tools,
+                history=[{"role": m.role, "text": m.text} for m in reversed(history)],
+            )
+        )
+        result = ChatResult.model_validate(envelope.result).model_dump(mode="json")
+        store_evidence(db, envelope, job.company_id)
+        check_refs(db, result, job.company_id)
+        db.scalar(select(Chat).where(Chat.id == chat.id).with_for_update())
+        from sqlalchemy import func
+
+        sequence = (db.scalar(select(func.max(Message.sequence)).where(Message.chat_id == chat.id)) or 0) + 1
+        message = Message(
+            chat_id=chat.id, role="assistant", text=result["answer"], result=result, sequence=sequence
+        )
+        db.add(message)
+        db.flush()
+        save_trace(db, result["trace_id"], user, job.company_id, envelope.trace)
+        return {"message_id": message.id, "chat_id": chat.id}
+    raise AIError("unknown_job", "Неизвестный тип задания")
+
+
+def save_trace(db, trace_id, user, company_id, trace):
+    if db.get(Trace, trace_id):
+        raise AIError("trace_conflict", "Трасса с этим ID уже существует")
+    db.add(Trace(id=trace_id, user_id=user.id, company_id=company_id, result=trace))
 
 
 def run_one() -> bool:
