@@ -93,6 +93,11 @@ jobs:
           docker compose -p goat-ci up --build -d --wait --wait-timeout 180
       - name: Check HTTP, storage permissions and persistence after recreation
         run: python3 scripts/verify_compose.py --project goat-ci --base-url http://127.0.0.1:8080 --report artifacts/r02-compose.json
+      - name: Open the frontend in a real browser
+        run: |
+          google-chrome --headless --no-sandbox --disable-gpu --disable-background-networking --virtual-time-budget=5000 --dump-dom http://127.0.0.1:8080/login > artifacts/r02-login.html
+          python3 -c "from pathlib import Path; text=Path('artifacts/r02-login.html').read_text(); assert 'С возвращением' in text and 'id=\"email\"' in text and 'Демонстрационный вход' not in text"
+          google-chrome --headless --no-sandbox --disable-gpu --disable-background-networking --virtual-time-budget=5000 --window-size=1440,1000 --screenshot=artifacts/r02-login.png http://127.0.0.1:8080/login
       - name: Diagnostics
         if: always()
         run: |

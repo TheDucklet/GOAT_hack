@@ -122,3 +122,7 @@ Python 3.12 используется на условиях PSF License. PostgreS
 | Playwright Python (необязательные браузерные проверки) | 1.58.0 | Apache-2.0 |
 
 Локальный mock моделирует HTTP API на синтетических JSON-примерах A-01. Его JS-cookie используется только в dev и не заменяет HttpOnly-сессию backend. Моделей LLM или внешних AI-сервисов во frontend нет. Шрифты системные, внешние изображения не используются.
+
+## Инфраструктура R-02
+
+Официальные образы Node.js 24.22.0, Python 3.12.14, PostgreSQL 17.10 и nginx 1.30.2 закреплены digest в Dockerfiles/Compose. Лицензии: nginx — [BSD-2-Clause](https://nginx.org/LICENSE); Docker Compose — [Apache-2.0](https://github.com/docker/compose/blob/main/LICENSE). При распространении сохраняйте лицензионные файлы компонентов и пакетов, входящих в официальные образы. GitHub Actions закреплены commit SHA в workflow. Runtime-сервисы или модели LLM дополнительно не подключены: список переменных/компонентов AI передаёт Фёдор отдельно.

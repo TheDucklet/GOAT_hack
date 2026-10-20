@@ -86,7 +86,7 @@ docker compose up -d --wait
 
 1. Node 24.22.0: установка `npm ci` по package-lock.json, проверка generated types, frontend-тесты и build.
 2. Python 3.12.14: установка по requirements.lock, `pip check`, Ruff и существующие backend-тесты на отдельных PostgreSQL-базах `goat_test` и `goat_a01_test`.
-3. Сборка и запуск всех четырёх контейнеров без секретов; HTTP-проверка и пересоздание контейнеров с проверкой сохранности данных. Отчёт и журналы сохраняются как CI artifact.
+3. Сборка и запуск всех четырёх контейнеров без секретов; HTTP-проверка и пересоздание контейнеров с проверкой сохранности данных; открытие login в Chrome headless. Отчёт, журналы и снимок браузера сохраняются как CI artifact.
 
 Версии базовых Docker-образов и GitHub Actions зафиксированы digest/SHA. Backend и frontend используют переданные lock-файлы.
 
