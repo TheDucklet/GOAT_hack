@@ -1,0 +1,262 @@
+[
+  {
+    "name": "insight_with_bank",
+    "schema": "InsightResult",
+    "data": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Синтетический факт для примера контракта",
+          "evidence_refs": [
+            "example-news-evidence"
+          ]
+        }
+      ],
+      "bank_view": [
+        {
+          "claim_id": "bank-1",
+          "text": "Синтетическая банковская оценка",
+          "evidence_refs": [
+            "example-bank-evidence"
+          ]
+        }
+      ],
+      "ai_interpretation": [
+        {
+          "claim_id": "interpretation-1",
+          "text": "Условный механизм влияния",
+          "evidence_refs": [
+            "example-news-evidence",
+            "example-company-evidence"
+          ]
+        }
+      ],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "loan_amount",
+        "loan_rate"
+      ],
+      "evidence_refs": [
+        "example-news-evidence",
+        "example-company-evidence",
+        "example-bank-evidence"
+      ],
+      "trace_id": "example-trace-bank"
+    }
+  },
+  {
+    "name": "insight_without_bank",
+    "schema": "InsightResult",
+    "data": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Синтетический факт для примера контракта",
+          "evidence_refs": [
+            "example-news-evidence"
+          ]
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [
+        {
+          "claim_id": "interpretation-1",
+          "text": "Условный механизм влияния",
+          "evidence_refs": [
+            "example-news-evidence",
+            "example-company-evidence"
+          ]
+        }
+      ],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "loan_amount",
+        "loan_rate"
+      ],
+      "evidence_refs": [
+        "example-news-evidence",
+        "example-company-evidence"
+      ],
+      "trace_id": "example-trace-no-bank"
+    }
+  },
+  {
+    "name": "insufficient_data",
+    "schema": "InsightResult",
+    "data": {
+      "facts": [],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Нет достаточных источников для вывода"
+      ],
+      "evidence_refs": [],
+      "trace_id": "example-trace-unknown"
+    }
+  },
+  {
+    "name": "pending_job",
+    "schema": "JobOut",
+    "data": {
+      "id": "example-job",
+      "status": "queued",
+      "result": null,
+      "error": null
+    }
+  },
+  {
+    "name": "failed_job",
+    "schema": "JobOut",
+    "data": {
+      "id": "example-job",
+      "status": "failed",
+      "result": null,
+      "error": {
+        "code": "budget_exhausted",
+        "message": "Дневной лимит исчерпан",
+        "request_id": "example-job"
+      }
+    }
+  },
+  {
+    "name": "error",
+    "schema": "ErrorOut",
+    "data": {
+      "code": "forbidden",
+      "message": "Нет доступа к компании",
+      "request_id": "example-request",
+      "field_errors": []
+    }
+  },
+  {
+    "name": "company_context",
+    "schema": "CompanyContext",
+    "data": {
+      "company_id": "demo_company_a",
+      "profile_version": "demo-v1",
+      "group_id": null,
+      "features": {
+        "CL_PRODUCT_LOA_MARK": {
+          "value": "1.0",
+          "source": {
+            "file": "synthetic-demo",
+            "field": "CL_PRODUCT_LOA_MARK"
+          }
+        }
+      },
+      "unknowns": [
+        "loan_amount",
+        "loan_rate"
+      ],
+      "payment_links": {
+        "incoming": [],
+        "outgoing": []
+      },
+      "related_companies": []
+    }
+  },
+  {
+    "name": "new_position",
+    "schema": "UserFocus",
+    "data": {
+      "topics": [],
+      "priorities": [],
+      "unknowns": [
+        "Должность не определяет дополнительный фокус"
+      ],
+      "version": "example-v1"
+    }
+  },
+  {
+    "name": "bank_evidence",
+    "schema": "EvidenceOut",
+    "data": {
+      "id": "example-bank-evidence",
+      "kind": "bank",
+      "source_id": "example-document",
+      "version": "example-version",
+      "locator": {
+        "page": 1
+      },
+      "excerpt": "Синтетический фрагмент"
+    }
+  },
+  {
+    "name": "successful_user",
+    "schema": "UserOut",
+    "data": {
+      "id": "example-user",
+      "email": "demo@example.org",
+      "system_role": "user",
+      "status": "active"
+    }
+  },
+  {
+    "name": "membership",
+    "schema": "MembershipOut",
+    "data": {
+      "id": "example-membership",
+      "user_id": "example-user",
+      "company_id": "demo_company_a",
+      "position_text": "Главный бухгалтер",
+      "interests": [],
+      "status": "active"
+    }
+  },
+  {
+    "name": "me",
+    "schema": "MeOut",
+    "data": {
+      "id": "example-user",
+      "email": "demo@example.org",
+      "system_role": "user",
+      "status": "active",
+      "memberships": [
+        {
+          "id": "example-membership",
+          "user_id": "example-user",
+          "company_id": "demo_company_a",
+          "position_text": "Главный бухгалтер",
+          "interests": [],
+          "status": "active"
+        }
+      ],
+      "csrf_token": "synthetic-example-only"
+    }
+  },
+  {
+    "name": "feed",
+    "schema": "FeedOut",
+    "data": {
+      "items": [],
+      "total": 0,
+      "limit": 20,
+      "offset": 0
+    }
+  },
+  {
+    "name": "chat",
+    "schema": "ChatOut",
+    "data": {
+      "id": "example-chat",
+      "company_id": "demo_company_a",
+      "event_id": "example-event"
+    }
+  },
+  {
+    "name": "stats",
+    "schema": "StatsOut",
+    "data": {
+      "positive_feedback": 0,
+      "negative_feedback": 0,
+      "failed_jobs": 0
+    }
+  }
+]
