@@ -2004,6 +2004,781 @@
         "x-implementation-status": "contract-only"
       }
     },
+    "/admin/documents": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Contract Only",
+        "operationId": "get_admin_documents",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentOut"
+                  },
+                  "title": "Response Get Admin Documents"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "501": {
+            "description": "Contract only; implementation follows in A-02+",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "x-access": {
+          "rule": "admin",
+          "csrf_required": false
+        },
+        "x-implementation-status": "contract-only"
+      },
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Contract Only",
+        "operationId": "post_admin_documents",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_post_admin_documents"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "501": {
+            "description": "Contract only; implementation follows in A-02+",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "x-access": {
+          "rule": "admin; PDF only; maximum 50 MiB; audit",
+          "csrf_required": true
+        },
+        "x-implementation-status": "contract-only"
+      }
+    },
+    "/admin/documents/{document_id}/reindex": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Contract Only",
+        "operationId": "post_admin_documents_document_id_reindex",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "501": {
+            "description": "Contract only; implementation follows in A-02+",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "x-access": {
+          "rule": "admin; audit",
+          "csrf_required": true
+        },
+        "x-implementation-status": "contract-only"
+      }
+    },
+    "/admin/news": {
+      "get": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Contract Only",
+        "operationId": "get_admin_news",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdminEventOut"
+                  },
+                  "title": "Response Get Admin News"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "501": {
+            "description": "Contract only; implementation follows in A-02+",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "x-access": {
+          "rule": "admin",
+          "csrf_required": false
+        },
+        "x-implementation-status": "contract-only"
+      }
+    },
+    "/admin/news/{event_id}": {
+      "patch": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Contract Only",
+        "operationId": "patch_admin_news_event_id",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VisibilityIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VisibilityOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "501": {
+            "description": "Contract only; implementation follows in A-02+",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "x-access": {
+          "rule": "admin; audit",
+          "csrf_required": true
+        },
+        "x-implementation-status": "contract-only"
+      }
+    },
+    "/admin/news/{event_id}/retry": {
+      "post": {
+        "tags": [
+          "admin"
+        ],
+        "summary": "Contract Only",
+        "operationId": "post_admin_news_event_id_retry",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Event Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "501": {
+            "description": "Contract only; implementation follows in A-02+",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        },
+        "x-access": {
+          "rule": "admin; audit",
+          "csrf_required": true
+        },
+        "x-implementation-status": "contract-only"
+      }
+    },
     "/companies/{company_id}/insights": {
       "post": {
         "tags": [
@@ -3034,781 +3809,6 @@
         "x-implementation-status": "contract-only"
       }
     },
-    "/admin/documents": {
-      "get": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "Contract Only",
-        "operationId": "get_admin_documents",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "default": 20,
-              "title": "Limit"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0,
-              "title": "Offset"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DocumentOut"
-                  },
-                  "title": "Response Get Admin Documents"
-                }
-              }
-            }
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Service Unavailable"
-          },
-          "501": {
-            "description": "Contract only; implementation follows in A-02+",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          }
-        },
-        "x-access": {
-          "rule": "admin",
-          "csrf_required": false
-        },
-        "x-implementation-status": "contract-only"
-      },
-      "post": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "Contract Only",
-        "operationId": "post_admin_documents",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_post_admin_documents"
-              }
-            }
-          }
-        },
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UploadOut"
-                }
-              }
-            }
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Service Unavailable"
-          },
-          "501": {
-            "description": "Contract only; implementation follows in A-02+",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          }
-        },
-        "x-access": {
-          "rule": "admin; PDF only; maximum 50 MiB; audit",
-          "csrf_required": true
-        },
-        "x-implementation-status": "contract-only"
-      }
-    },
-    "/admin/documents/{document_id}/reindex": {
-      "post": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "Contract Only",
-        "operationId": "post_admin_documents_document_id_reindex",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "document_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Document Id"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobOut"
-                }
-              }
-            }
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Service Unavailable"
-          },
-          "501": {
-            "description": "Contract only; implementation follows in A-02+",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          }
-        },
-        "x-access": {
-          "rule": "admin; audit",
-          "csrf_required": true
-        },
-        "x-implementation-status": "contract-only"
-      }
-    },
-    "/admin/news": {
-      "get": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "Contract Only",
-        "operationId": "get_admin_news",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "default": 20,
-              "title": "Limit"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0,
-              "title": "Offset"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AdminEventOut"
-                  },
-                  "title": "Response Get Admin News"
-                }
-              }
-            }
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Service Unavailable"
-          },
-          "501": {
-            "description": "Contract only; implementation follows in A-02+",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          }
-        },
-        "x-access": {
-          "rule": "admin",
-          "csrf_required": false
-        },
-        "x-implementation-status": "contract-only"
-      }
-    },
-    "/admin/news/{event_id}": {
-      "patch": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "Contract Only",
-        "operationId": "patch_admin_news_event_id",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "event_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Event Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VisibilityIn"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VisibilityOut"
-                }
-              }
-            }
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Service Unavailable"
-          },
-          "501": {
-            "description": "Contract only; implementation follows in A-02+",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          }
-        },
-        "x-access": {
-          "rule": "admin; audit",
-          "csrf_required": true
-        },
-        "x-implementation-status": "contract-only"
-      }
-    },
-    "/admin/news/{event_id}/retry": {
-      "post": {
-        "tags": [
-          "admin"
-        ],
-        "summary": "Contract Only",
-        "operationId": "post_admin_news_event_id_retry",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "event_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Event Id"
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JobOut"
-                }
-              }
-            }
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unauthorized"
-          },
-          "403": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Forbidden"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Not Found"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Conflict"
-          },
-          "413": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Request Entity Too Large"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Unprocessable Entity"
-          },
-          "503": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            },
-            "description": "Service Unavailable"
-          },
-          "501": {
-            "description": "Contract only; implementation follows in A-02+",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorOut"
-                }
-              }
-            }
-          }
-        },
-        "x-access": {
-          "rule": "admin; audit",
-          "csrf_required": true
-        },
-        "x-implementation-status": "contract-only"
-      }
-    },
     "/admin/stats": {
       "get": {
         "tags": [
@@ -4076,6 +4076,20 @@
           "file"
         ],
         "title": "Body_post_admin_documents"
+      },
+      "Body_upload_document_admin_documents_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_upload_document_admin_documents_post"
       },
       "ChatIn": {
         "properties": {

@@ -1,17 +1,51 @@
 import csv
 from datetime import timedelta
+from io import BytesIO
 
 import httpx
 import pytest
+from pypdf import PdfWriter
 from sqlalchemy import func, select
 
+from app.config import get_settings
 from app.db import session_factory, utcnow
 from app.models import Company, Job, Payment, Source
 from app.services.clients import company_context, import_clients
-from app.services.jobs import claim_next, scheduler_tick
+from app.services.jobs import claim_next, run_one, scheduler_tick
 from app.services.news import add_publication, collect_news, ensure_sources, normalize_url
 from app.services.ranking import rank_event
 from tests.conftest import PASSWORD, login
+
+
+def event_fixture():
+    with session_factory()() as db, db.begin():
+        ensure_sources(db)
+        source = db.get(Source, "cbr")
+        news, _ = add_publication(
+            db,
+            source,
+            {
+                "url": "https://www.cbr.ru/press/test/1",
+                "title": "Решение по ключевой ставке",
+                "text": "Подтвержденный текст новости о ставке.",
+                "published_at": utcnow(),
+            },
+        )
+        event_id = news.event_id
+    return event_id
+
+
+def enable_ai(monkeypatch):
+    monkeypatch.setenv("AI_MODULE", "tests.fake_ai")
+    get_settings.cache_clear()
+
+
+def pdf_bytes():
+    writer = PdfWriter()
+    writer.add_blank_page(width=200, height=200)
+    stream = BytesIO()
+    writer.write(stream)
+    return stream.getvalue()
 
 
 def test_auth_registration_logout_and_csrf(client):
@@ -206,3 +240,37 @@ def test_job_claim_and_scheduler_dedup(env):
         job_id = claim_next(first)
         assert job_id is not None
         assert claim_next(second) is None
+
+
+def test_document_upload_dedup_protected_file_and_reindex(client, monkeypatch):
+    data = pdf_bytes()
+    login(client)
+    assert client.post("/admin/documents", files={"file": ("x.pdf", data)}).status_code == 403
+    login(client, "admin")
+    assert client.post("/admin/documents", files={"file": ("x.pdf", b"not a pdf")}).status_code == 422
+    result = client.post("/admin/documents", files={"file": ("../../x.pdf", data)})
+    assert result.status_code == 202, result.text
+    doc_id = result.json()["document"]["id"]
+    repeat = client.post("/admin/documents", files={"file": ("x.pdf", data)})
+    assert repeat.json()["document"]["id"] == doc_id
+    assert run_one()
+    assert client.get("/admin/documents").json()[0]["status"] == "failed"
+    enable_ai(monkeypatch)
+    retry = client.post(f"/admin/documents/{doc_id}/reindex")
+    assert retry.status_code == 202
+    assert run_one()
+    assert client.get("/admin/documents").json()[0]["status"] == "done"
+
+
+def test_pdf_size_limit(client, monkeypatch):
+    login(client, "admin")
+    monkeypatch.setattr(get_settings(), "max_pdf_bytes", 10)
+    assert client.post("/admin/documents", files={"file": ("x.pdf", pdf_bytes())}).status_code == 413
+
+
+def test_hidden_news_excluded_from_feed(client):
+    event_id = event_fixture()
+    login(client, "admin")
+    assert client.patch(f"/admin/news/{event_id}", json={"visible": False}).status_code == 200
+    login(client)
+    assert client.get("/companies/demo_company_a/feed").json()["items"] == []

@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -12,6 +13,8 @@ class Settings(BaseSettings):
     cookie_name: str = "goat_session"
     session_hours: int = Field(default=24, ge=1, le=168)
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    storage_dir: Path = Path("storage")
+    max_pdf_bytes: int = 50 * 1024 * 1024
     news_poll_minutes: int = Field(default=20, ge=1)
     worker_poll_seconds: float = Field(default=2, gt=0)
     job_timeout_seconds: int = Field(default=900, ge=60)
