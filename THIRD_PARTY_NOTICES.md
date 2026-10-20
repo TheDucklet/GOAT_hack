@@ -45,3 +45,30 @@ Runtime: Python 3.12 (PSF License), PostgreSQL 17 (PostgreSQL License).
 | typing-inspection | 0.4.4 | MIT |
 | tzdata | 2026.5 | Apache-2.0 |
 | uvicorn | 0.54.0 | BSD-3-Clause |
+
+## Frontend R-01
+
+Версии зафиксированы в frontend/package-lock.json. Сохраняйте LICENSE/NOTICE зависимостей при распространении.
+
+| Компонент | Версия | Лицензия |
+| --- | --- | --- |
+| Node.js | 24.22.0 | MIT и лицензии встроенных компонентов |
+| React / react-dom | 19.3.1 | MIT |
+| react-router-dom | 7.18.4 | MIT |
+| TypeScript | 5.9.3 | Apache-2.0 |
+| Vite | 8.3.4 | MIT |
+| @vitejs/plugin-react | 6.1.2 | MIT |
+| Vitest | 5.0.5 | MIT |
+| jsdom | 30.1.3 | MIT |
+| @testing-library/react | 16.3.3 | MIT |
+| @testing-library/user-event | 14.6.8 | MIT |
+| @testing-library/jest-dom | 7.0.1 | MIT |
+| @types/node | 24.12.0 | MIT |
+| @types/react | 19.3.0 | MIT |
+| @types/react-dom | 19.3.0 | MIT |
+| openapi-typescript | 7.13.0 | MIT |
+| ajv | 8.17.1 | MIT |
+| ajv-formats | 3.0.1 | MIT |
+| Playwright Python (необязательные браузерные проверки) | 1.58.0 | Apache-2.0 |
+
+Локальный mock моделирует HTTP API на синтетических JSON-примерах A-01. Его JS-cookie используется только в dev и не заменяет HttpOnly-сессию backend. Моделей LLM или внешних AI-сервисов во frontend нет. Шрифты системные, внешние изображения не используются.
