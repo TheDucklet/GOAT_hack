@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    env:
+      VITE_API_MODE: http
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 24.22.0
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm run contracts:check
+      - run: npm test
+      - run: npm run build
+
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17.10-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193
+        env:
+          POSTGRES_USER: goat
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: goat
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U goat -d goat"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 20
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      AI_MODULE: ''
+      AI_GENERATION_VERSION: ci
+      DATABASE_URL: postgresql+psycopg://goat:ci-only-password@localhost:5432/goat
+      TEST_DATABASE_URL: postgresql+psycopg://goat:ci-only-password@localhost:5432/goat_test
+      A01_TEST_DATABASE_URL: postgresql+psycopg://goat:ci-only-password@localhost:5432/goat_a01_test
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: 3.12.14
+          cache: pip
+          cache-dependency-path: backend/requirements.lock
+      - run: python -m pip install -r requirements.lock
+      - run: python -m pip check
+      - name: Create isolated test databases
+        run: |
+          python - <<'PY'
+          import psycopg
+          with psycopg.connect("postgresql://goat:ci-only-password@localhost:5432/postgres", autocommit=True) as connection:
+              connection.execute("CREATE DATABASE goat_test")
+              connection.execute("CREATE DATABASE goat_a01_test")
+          PY
+      - run: python -m ruff check app tests migrations scripts
+      - run: python -m pytest -q -p no:cacheprovider
+
+  compose:
+    needs: [frontend, backend]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Validate and start all four services without secrets
+        run: |
+          python3 scripts/verify_compose_config.py
+          docker compose -p goat-ci config --quiet
+          docker compose -p goat-ci up --build -d --wait --wait-timeout 180
+      - name: Check HTTP, storage permissions and persistence after recreation
+        run: python3 scripts/verify_compose.py --project goat-ci --base-url http://127.0.0.1:8080 --report artifacts/r02-compose.json
+      - name: Diagnostics
+        if: always()
+        run: |
+          mkdir -p artifacts
+          docker compose -p goat-ci ps --all > artifacts/compose-ps.txt
+          docker compose -p goat-ci logs --no-color --tail 150 > artifacts/compose.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: compose-acceptance
+          path: artifacts/
+      - name: Stop CI containers
+        if: always()
+        run: docker compose -p goat-ci down --remove-orphans

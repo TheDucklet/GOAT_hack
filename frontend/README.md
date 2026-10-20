@@ -1,5 +1,7 @@
 # Frontend · R-01
 
+Общий Docker-запуск web/api/worker/postgres теперь описан в [корневом README](../README.md). Docker-сборка frontend всегда использует HTTP API через nginx; инструкция ниже предназначена для отдельной разработки frontend.
+
 React + TypeScript + React Router; сборка Vite. Node.js 24.22.0 (минимум 24.15 в ветке 24), npm. Зависимости зафиксированы в package-lock.json.
 
 Из корня репозитория:
