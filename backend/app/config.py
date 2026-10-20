@@ -12,6 +12,9 @@ class Settings(BaseSettings):
     cookie_name: str = "goat_session"
     session_hours: int = Field(default=24, ge=1, le=168)
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    news_poll_minutes: int = Field(default=20, ge=1)
+    worker_poll_seconds: float = Field(default=2, gt=0)
+    job_timeout_seconds: int = Field(default=900, ge=60)
     ai_module: str = ""
     ai_generation_version: str = "1"
     admin_password: SecretStr | None = None

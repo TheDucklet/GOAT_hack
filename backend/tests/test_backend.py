@@ -6,8 +6,9 @@ import pytest
 from sqlalchemy import func, select
 
 from app.db import session_factory, utcnow
-from app.models import Company, Payment, Source
+from app.models import Company, Job, Payment, Source
 from app.services.clients import company_context, import_clients
+from app.services.jobs import claim_next, scheduler_tick
 from app.services.news import add_publication, collect_news, ensure_sources, normalize_url
 from app.services.ranking import rank_event
 from tests.conftest import PASSWORD, login
@@ -193,3 +194,15 @@ def test_source_failure_does_not_stop_other_source(env):
             assert result["cbr"]["ok"] is False
             assert result["interfax"]["added"] == 1
             assert collect_news(db, transport)["interfax"]["added"] == 0
+
+
+def test_job_claim_and_scheduler_dedup(env):
+    with session_factory()() as db, db.begin():
+        scheduler_tick(db)
+    with session_factory()() as db, db.begin():
+        scheduler_tick(db)
+        assert db.scalar(select(func.count()).select_from(Job)) == 1
+    with session_factory()() as first, session_factory()() as second:
+        job_id = claim_next(first)
+        assert job_id is not None
+        assert claim_next(second) is None
