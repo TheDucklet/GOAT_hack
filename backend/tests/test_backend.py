@@ -93,6 +93,40 @@ def test_membership_approval_and_profile_do_not_grant_admin(client):
     assert client.get("/admin/users").status_code == 403
 
 
+def test_cross_company_chat_job_source_and_profile_isolation(client):
+    login(client)
+    event_id = event_fixture()
+    chat = client.post("/chats", json={"company_id": "demo_company_a", "event_id": event_id}).json()
+    job = client.post(f"/chats/{chat['id']}/messages", json={"text": "Почему?"}).json()
+    membership_id = client.get("/me").json()["memberships"][0]["id"]
+    with session_factory()() as db, db.begin():
+        evidence = Evidence(
+            kind="company",
+            company_id="demo_company_a",
+            source_id="demo_company_a",
+            version="demo-v1",
+            locator={"feature_path": "features.REGION"},
+            excerpt="Москва",
+        )
+        db.add(evidence)
+        db.flush()
+        evidence_id = evidence.id
+    login(client, "user_b")
+    for url in [
+        "/companies/demo_company_a/context",
+        "/companies/demo_company_a/feed",
+        f"/chats/{chat['id']}/messages",
+        f"/jobs/{job['id']}",
+        f"/sources/{evidence_id}",
+    ]:
+        assert client.get(url).status_code == 403, url
+    assert (
+        client.patch(f"/memberships/{membership_id}/profile", json={"position_text": "admin"}).status_code
+        == 403
+    )
+    assert client.get("/jobs/missing").status_code == 404
+
+
 def test_block_revokes_sessions(client):
     user = login(client)
     cookie = client.cookies.get("goat_session")
@@ -333,3 +367,12 @@ def test_hidden_news_excluded_from_feed(client):
     assert client.patch(f"/admin/news/{event_id}", json={"visible": False}).status_code == 200
     login(client)
     assert client.get("/companies/demo_company_a/feed").json()["items"] == []
+
+
+def test_openapi_covers_required_routes_and_structured_errors(client):
+    schema = client.get("/openapi.json").json()
+    assert len(schema["paths"]) >= 29
+    for path in ["/auth/register", "/companies/{company_id}/feed", "/admin/documents", "/jobs/{job_id}"]:
+        assert path in schema["paths"]
+    error = client.get("/me").json()
+    assert set(error) == {"code", "message", "request_id", "field_errors"}
