@@ -1,14 +1,19 @@
 from fastapi import APIRouter, Depends, Query, Response
+from fastapi.responses import FileResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.config import get_settings
 from app.db import get_db
 from app.errors import AppError
-from app.models import Chat, Insight, Job, Message, User
+from app.models import BankDocument, Chat, Evidence, Feedback, Insight, Job, Message, News, User
 from app.schemas import (
     ChatIn,
     ChatOut,
     EventIn,
+    EvidenceOut,
+    FeedbackIn,
+    FeedbackOut,
     InsightOut,
     JobOut,
     MessageIn,
@@ -99,3 +104,78 @@ def messages(
             .limit(limit)
         )
     )
+
+
+def accessible_source(db, source_id, user):
+    obj = db.get(Evidence, source_id)
+    if not obj:
+        raise AppError(404, "not_found", "Источник не найден")
+    if obj.company_id:
+        company_access(db, user, obj.company_id)
+    if obj.kind == "company" and (not obj.company_id):
+        raise AppError(403, "forbidden", "Клиентский источник без прав доступа")
+    if obj.kind == "news":
+        news = db.get(News, obj.source_id)
+        if not news:
+            raise AppError(404, "not_found", "Публикация не найдена")
+        if user.system_role != "admin":
+            event_context(db, news.event_id)
+    return obj
+
+
+@router.get("/sources/{source_id}", response_model=EvidenceOut)
+def source(source_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    obj = accessible_source(db, source_id, user)
+    result = EvidenceOut.model_validate(obj).model_dump()
+    if obj.kind == "bank":
+        result["locator"] = {**obj.locator, "url": f"/sources/{obj.id}/file#page={obj.locator['page']}"}
+    if obj.kind == "company":
+        from app.services.clients import company_context
+
+        context = company_context(db, obj.company_id)
+        field = obj.locator.get("feature_path", "").removeprefix("features.")
+        result["locator"] = {
+            **obj.locator,
+            "value": obj.locator.get(
+                "value", context["features"].get(field) if obj.version == context["profile_version"] else None
+            ),
+            "current_profile_version": context["profile_version"],
+            "stale": obj.version != context["profile_version"],
+        }
+    return result
+
+
+@router.get("/sources/{source_id}/file")
+def source_file(source_id: str, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    obj = accessible_source(db, source_id, user)
+    if obj.kind != "bank":
+        raise AppError(422, "not_pdf", "Источник не является PDF")
+    document = db.get(BankDocument, obj.source_id)
+    if not document:
+        raise AppError(404, "not_found", "Документ не найден")
+    root = get_settings().storage_dir.resolve()
+    path = (root / document.storage_key).resolve()
+    if not path.is_relative_to(root) or not path.is_file():
+        raise AppError(404, "not_found", "Файл недоступен")
+    return FileResponse(
+        path,
+        media_type="application/pdf",
+        filename=document.filename,
+        content_disposition_type="inline",
+        headers={"Cache-Control": "private, no-store"},
+    )
+
+
+@router.post("/feedback", response_model=FeedbackOut)
+def feedback(body: FeedbackIn, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    owned(db, Insight, body.insight_id, user)
+    obj = db.scalar(
+        select(Feedback).where(Feedback.user_id == user.id, Feedback.insight_id == body.insight_id)
+    )
+    if not obj:
+        obj = Feedback(user_id=user.id, **body.model_dump())
+        db.add(obj)
+    else:
+        obj.rating, obj.comment = (body.rating, body.comment)
+    db.flush()
+    return {"id": obj.id, "rating": obj.rating}

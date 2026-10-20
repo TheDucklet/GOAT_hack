@@ -9,7 +9,7 @@ from sqlalchemy import func, select
 
 from app.config import get_settings
 from app.db import session_factory, utcnow
-from app.models import Company, Insight, Job, Payment, Source
+from app.models import Company, Evidence, Feedback, Insight, Job, Payment, Source
 from app.services.clients import company_context, import_clients
 from app.services.jobs import claim_next, run_one, scheduler_tick
 from app.services.news import add_publication, collect_news, ensure_sources, normalize_url
@@ -266,6 +266,10 @@ def test_insight_chat_persistence_feedback_and_cache(client, monkeypatch):
     assert client.get(f"/insights/{insight_id}").json()["result"]["unknowns"] == ["loan_amount"]
     cached = client.post("/companies/demo_company_a/insights", json={"event_id": event_id})
     assert cached.status_code == 200 and cached.json()["id"] == insight_id
+    for rating in [1, -1]:
+        assert client.post("/feedback", json={"insight_id": insight_id, "rating": rating}).status_code == 200
+    with session_factory()() as db:
+        assert db.scalar(select(func.count()).select_from(Feedback)) == 1
     chat = client.post("/chats", json={"company_id": "demo_company_a", "event_id": event_id}).json()
     for question in ["Почему это важно нам?", "Каких данных не хватает?"]:
         response = client.post(f"/chats/{chat['id']}/messages", json={"text": question})
@@ -275,6 +279,8 @@ def test_insight_chat_persistence_feedback_and_cache(client, monkeypatch):
     history = client.get(f"/chats/{chat['id']}/messages").json()
     assert len(history) == 4
     assert "Каких данных не хватает?" in history[-1]["text"]
+    login(client, "admin")
+    assert client.get("/admin/stats").json()["negative_feedback"] == 1
 
 
 def test_cache_invalidates_on_profile_focus_and_event_change(client, monkeypatch):
@@ -306,6 +312,13 @@ def test_document_upload_dedup_protected_file_and_reindex(client, monkeypatch):
     assert retry.status_code == 202
     assert run_one()
     assert client.get("/admin/documents").json()[0]["status"] == "done"
+    with session_factory()() as db:
+        evidence_id = db.scalar(select(Evidence.id).where(Evidence.kind == "bank"))
+    locator = client.get(f"/sources/{evidence_id}").json()["locator"]
+    assert locator["url"].endswith("#page=1")
+    assert client.get(f"/sources/{evidence_id}/file").content == data
+    client.post("/auth/logout")
+    assert client.get(f"/sources/{evidence_id}/file").status_code == 401
 
 
 def test_pdf_size_limit(client, monkeypatch):
