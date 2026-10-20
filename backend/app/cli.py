@@ -11,6 +11,7 @@ from app.db import session_factory
 from app.models import Company, Membership, User
 from app.security import hasher
 from app.services.clients import import_clients
+from app.services.news import collect_news, ensure_sources
 
 
 def migrate():
@@ -80,6 +81,7 @@ def seed_demo(db, password):
                         interests=[],
                     )
                 )
+    ensure_sources(db)
 
 
 def export_openapi(output: Path):
@@ -103,6 +105,7 @@ def main():
     clients = commands.add_parser("import-clients")
     clients.add_argument("--directory", type=Path, required=True)
     clients.add_argument("--report", type=Path, default=Path("../docs/data/import-report.json"))
+    commands.add_parser("collect-news")
     args = parser.parse_args()
     if args.command == "migrate":
         migrate()
@@ -119,6 +122,8 @@ def main():
             seed_demo(db, secret.get_secret_value() if secret else "")
         elif args.command == "import-clients":
             report = import_clients(db, args.directory)
+        elif args.command == "collect-news":
+            print(json.dumps(collect_news(db), ensure_ascii=False))
     if args.command == "import-clients":
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

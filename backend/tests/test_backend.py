@@ -1,11 +1,13 @@
 import csv
 
+import httpx
 import pytest
 from sqlalchemy import func, select
 
-from app.db import session_factory
-from app.models import Company, Payment
+from app.db import session_factory, utcnow
+from app.models import Company, Payment, Source
 from app.services.clients import company_context, import_clients
+from app.services.news import add_publication, collect_news, ensure_sources, normalize_url
 from tests.conftest import PASSWORD, login
 
 
@@ -125,3 +127,55 @@ def test_import_invalid_numeric_rolls_back(env):
         import_clients(db, env)
     with session_factory()() as db:
         assert db.get(Company, "u1") is None
+
+
+def test_news_deduplication_and_conservative_clustering(env):
+    with session_factory()() as db, db.begin():
+        ensure_sources(db)
+        source = db.get(Source, "cbr")
+        item = {
+            "url": "https://www.cbr.ru/press/1?utm_source=test",
+            "title": "Ставка сохранена 14%",
+            "text": "Подтвержденный текст один",
+            "published_at": utcnow(),
+        }
+        first, added = add_publication(db, source, item)
+        assert added
+        assert add_publication(db, source, item)[1] is False
+        second, _ = add_publication(
+            db,
+            db.get(Source, "interfax"),
+            {**item, "url": "https://www.interfax.ru/business/1", "text": "Текст другого источника"},
+        )
+        third, _ = add_publication(
+            db,
+            source,
+            {
+                **item,
+                "url": "https://www.cbr.ru/press/2",
+                "title": "Ставка сохранена 15%",
+                "text": "Другое событие",
+            },
+        )
+        assert first.event_id == second.event_id
+        assert third.event_id != first.event_id
+    with pytest.raises(ValueError):
+        normalize_url("http://127.0.0.1/secrets", ["www.cbr.ru"])
+
+
+def test_source_failure_does_not_stop_other_source(env):
+
+    def handler(request):
+        if request.url.host == "www.cbr.ru":
+            return httpx.Response(503)
+        return httpx.Response(
+            200,
+            content=b'<rss version="2.0"><channel><title>Test</title><item>\n            <title>Test event</title><link>https://www.interfax.ru/business/test</link>\n            <description>A source fact with enough text to avoid downloading any article. This is the text\n            of a synthetic publication used for the collection test only.</description></item></channel></rss>',
+        )
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as transport:
+        with session_factory()() as db, db.begin():
+            result = collect_news(db, transport)
+            assert result["cbr"]["ok"] is False
+            assert result["interfax"]["added"] == 1
+            assert collect_news(db, transport)["interfax"]["added"] == 0
