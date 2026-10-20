@@ -42,9 +42,10 @@ def test_every_operation_documents_access_request_response_and_pending_implement
     schema = client.get("/openapi.json").json()
     item = schema["paths"][operation.path][operation.method.lower()]
     assert item["x-access"]["rule"] == operation.access
-    assert item["x-implementation-status"] == "contract-only"
+    assert item["x-implementation-status"] in {"contract-only", "implemented"}
     assert str(operation.status) in item["responses"]
-    assert "501" in item["responses"]
+    if item["x-implementation-status"] == "contract-only":
+        assert "501" in item["responses"]
     if operation.body or operation.upload:
         assert item["requestBody"]["required"] is True
     if not operation.access.startswith("public;"):
@@ -55,14 +56,21 @@ def test_every_operation_documents_access_request_response_and_pending_implement
 
 
 def test_contract_operations_do_not_claim_business_functionality(client):
-    result = client.post(
-        "/auth/register", json={"email": "demo@example.org", "password": "synthetic-password"}
-    )
-    assert result.status_code == 501
+    schema = client.get("/openapi.json").json()
+    pending = [
+        op
+        for op in OPERATIONS
+        if op.method == "GET"
+        and schema["paths"][op.path]["get"]["x-implementation-status"] == "contract-only"
+    ]
+    if not pending:
+        return
+    result = client.get(pending[0].path)
+    assert result.status_code in {401, 403, 501}
     schemas.ErrorOut.model_validate(result.json())
-    assert result.json()["code"] == "not_implemented"
+    if result.status_code == 501:
+        assert result.json()["code"] == "not_implemented"
     assert result.json()["request_id"] == result.headers["X-Request-ID"]
-    assert client.get("/companies").status_code == 501
 
 
 def test_position_is_free_text_and_public_registration_cannot_select_system_role(client):

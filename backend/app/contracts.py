@@ -4,7 +4,7 @@ import inspect
 import re
 from dataclasses import dataclass
 
-from fastapi import FastAPI, File, Query, Request, Response, Security, UploadFile
+from fastapi import Depends, FastAPI, File, Query, Request, Response, Security, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyCookie
 
@@ -130,8 +130,26 @@ OPERATIONS = [
 cookie = APIKeyCookie(name="goat_session", auto_error=False)
 
 
-def install_contracts(app: FastAPI):
+def install_contracts(app: FastAPI, access_dependency=None):
+    implemented = {
+        (method, route.path): route for route in app.routes for method in getattr(route, "methods", [])
+    }
     for operation in OPERATIONS:
+        existing = implemented.get((operation.method, operation.path))
+        if existing is not None:
+            existing.openapi_extra = {
+                **(existing.openapi_extra or {}),
+                "x-access": {
+                    "rule": operation.access,
+                    "csrf_required": not operation.access.startswith("public;")
+                    and operation.method in {"POST", "PATCH"},
+                },
+                "x-implementation-status": "implemented",
+            }
+            existing.operation_id = (
+                operation.method.lower() + "_" + re.sub(r"[^\w]+", "_", operation.path).strip("_")
+            )
+            continue
 
         async def contract_only(**kwargs):
             return JSONResponse(
@@ -173,7 +191,10 @@ def install_contracts(app: FastAPI):
         if not public:
             params.append(
                 inspect.Parameter(
-                    "session", inspect.Parameter.KEYWORD_ONLY, annotation=str | None, default=Security(cookie)
+                    "session",
+                    inspect.Parameter.KEYWORD_ONLY,
+                    annotation=object,
+                    default=Depends(access_dependency) if access_dependency else Security(cookie),
                 )
             )
         contract_only.__signature__ = inspect.Signature(params)

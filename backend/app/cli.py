@@ -1,11 +1,11 @@
-"""A-01 schema operations; business commands are implemented in subsequent tasks."""
-
 import argparse
 import json
 from pathlib import Path
 
 from alembic import command
 from alembic.config import Config
+
+from app.db import session_factory
 
 
 def migrate():
@@ -25,14 +25,20 @@ def export_openapi(output: Path):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["migrate", "export-openapi"])
-    parser.add_argument("--output", type=Path, default=Path("../docs/contracts/openapi.json"))
+    parser = argparse.ArgumentParser(description="GOAT backend operations")
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("migrate")
+    export = commands.add_parser("export-openapi")
+    export.add_argument("--output", type=Path, default=Path("../docs/contracts/openapi.json"))
     args = parser.parse_args()
     if args.command == "migrate":
         migrate()
-    else:
+        return
+    if args.command == "export-openapi":
         export_openapi(args.output)
+        return
+    with session_factory()() as db, db.begin():
+        pass
 
 
 if __name__ == "__main__":
