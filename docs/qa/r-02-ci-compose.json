@@ -1,0 +1,99 @@
+{
+  "project": "goat-ci",
+  "kind": "live four-service Compose acceptance",
+  "checks": [
+    {
+      "check": "exactly web/api/worker/postgres are running",
+      "result": "PASS"
+    },
+    {
+      "check": "all four services are healthy",
+      "result": "PASS"
+    },
+    {
+      "check": "GET /health returns 200 through nginx",
+      "result": "PASS"
+    },
+    {
+      "check": "OpenAPI is served through the API proxy",
+      "result": "PASS"
+    },
+    {
+      "check": "Swagger absolute OpenAPI URL is proxied",
+      "result": "PASS"
+    },
+    {
+      "check": "SPA direct URL /login",
+      "result": "PASS"
+    },
+    {
+      "check": "SPA direct URL /register",
+      "result": "PASS"
+    },
+    {
+      "check": "SPA direct URL /app",
+      "result": "PASS"
+    },
+    {
+      "check": "SPA direct URL /app/analytics",
+      "result": "PASS"
+    },
+    {
+      "check": "SPA direct URL /admin",
+      "result": "PASS"
+    },
+    {
+      "check": "migration and repeated seed succeed",
+      "result": "PASS"
+    },
+    {
+      "check": "synthetic record created in PostgreSQL",
+      "result": "PASS"
+    },
+    {
+      "check": "real backend login succeeds through proxy",
+      "result": "PASS"
+    },
+    {
+      "check": "backend session cookie is HttpOnly",
+      "result": "PASS"
+    },
+    {
+      "check": "mutation without CSRF is rejected",
+      "result": "PASS"
+    },
+    {
+      "check": "ordinary account cannot read admin stats",
+      "result": "PASS"
+    },
+    {
+      "check": "non-root API can write shared document volume and worker can read it",
+      "result": "PASS"
+    },
+    {
+      "check": "containers recreated without deleting volumes",
+      "result": "PASS"
+    },
+    {
+      "check": "health restored after recreation",
+      "result": "PASS"
+    },
+    {
+      "check": "user record and server session survive recreation",
+      "result": "PASS"
+    },
+    {
+      "check": "document data survives recreation in both services",
+      "result": "PASS"
+    },
+    {
+      "check": "mutation with restored CSRF succeeds",
+      "result": "PASS"
+    },
+    {
+      "check": "logout revokes the persisted session",
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS"
+}

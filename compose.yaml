@@ -1,0 +1,89 @@
+name: goat
+
+x-backend: &backend
+  image: goat-backend:${IMAGE_TAG:-local}
+  build:
+    context: ./backend
+  init: true
+  restart: unless-stopped
+  env_file:
+    - path: ${AI_ENV_FILE:-.env.ai}
+      required: false
+  environment: &backend-environment
+    DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://${POSTGRES_USER:-goat}:${POSTGRES_PASSWORD:-goat-local-only}@postgres:5432/${POSTGRES_DB:-goat}}
+    ENVIRONMENT: ${ENVIRONMENT:-development}
+    COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    COOKIE_NAME: goat_session
+    SESSION_HOURS: ${SESSION_HOURS:-24}
+    CORS_ORIGINS: '["${PUBLIC_ORIGIN:-http://localhost:8080}","http://localhost:${WEB_PORT:-8080}","http://127.0.0.1:${WEB_PORT:-8080}"]'
+    STORAGE_DIR: /srv/backend/storage
+    MAX_PDF_BYTES: ${MAX_PDF_BYTES:-52428800}
+    NEWS_POLL_MINUTES: ${NEWS_POLL_MINUTES:-20}
+    WORKER_POLL_SECONDS: ${WORKER_POLL_SECONDS:-2}
+    JOB_TIMEOUT_SECONDS: ${JOB_TIMEOUT_SECONDS:-900}
+    DEMO_PASSWORD: ${DEMO_PASSWORD:-Local-demo-password-2026}
+  volumes:
+    - documents:/srv/backend/storage
+
+services:
+  postgres:
+    image: postgres:17.10-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-goat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-goat-local-only}
+      POSTGRES_DB: ${POSTGRES_DB:-goat}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  api:
+    <<: *backend
+    command:
+      - /bin/sh
+      - -c
+      - python -m app.cli migrate && exec python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).close()"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 45s
+
+  worker:
+    <<: *backend
+    command: [python, -m, app.worker]
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, "from sqlalchemy import text; from app.db import get_engine; c=get_engine().connect(); c.execute(text('SELECT 1')); c.close()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    stop_grace_period: 30s
+
+  web:
+    image: goat-web:${IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    restart: unless-stopped
+    ports:
+      - '${WEB_BIND_HOST:-127.0.0.1}:${WEB_PORT:-8080}:80'
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  documents:
