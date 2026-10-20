@@ -1,7 +1,9 @@
 from sqlalchemy import select
 
 from app.errors import AppError
+from app.integrations.ai import call_ai
 from app.models import Event, Evidence, Job, News
+from app.schemas import UserFocus
 
 
 def enqueue(db, kind, payload, user_id=None, company_id=None, dedup_key=None):
@@ -46,3 +48,16 @@ def event_context(db, event_id):
             for e in evidence
         ],
     }
+
+
+def derive_focus(db, membership):
+    from app.api.companies import focus_hash
+
+    key = focus_hash(membership)
+    if membership.focus_input_hash == key and membership.user_focus:
+        return membership.user_focus
+    focus = UserFocus.model_validate(
+        call_ai("derive_user_focus", position_text=membership.position_text, interests=membership.interests)
+    ).model_dump(mode="json")
+    membership.focus_input_hash, membership.user_focus = (key, focus)
+    return focus

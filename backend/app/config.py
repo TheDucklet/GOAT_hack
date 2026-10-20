@@ -12,8 +12,11 @@ class Settings(BaseSettings):
     cookie_name: str = "goat_session"
     session_hours: int = Field(default=24, ge=1, le=168)
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    ai_module: str = ""
+    ai_generation_version: str = "1"
     admin_password: SecretStr | None = None
     demo_password: SecretStr | None = None
+    ranking_weights: dict[str, float] = {"industry": 4, "product": 3, "geo": 2, "relation": 2, "focus": 2}
 
     @model_validator(mode="after")
     def production_cookies(self):

@@ -1,4 +1,5 @@
 import csv
+from datetime import timedelta
 
 import httpx
 import pytest
@@ -8,6 +9,7 @@ from app.db import session_factory, utcnow
 from app.models import Company, Payment, Source
 from app.services.clients import company_context, import_clients
 from app.services.news import add_publication, collect_news, ensure_sources, normalize_url
+from app.services.ranking import rank_event
 from tests.conftest import PASSWORD, login
 
 
@@ -127,6 +129,18 @@ def test_import_invalid_numeric_rolls_back(env):
         import_clients(db, env)
     with session_factory()() as db:
         assert db.get(Company, "u1") is None
+
+
+def test_explainable_ranking_and_freshness(env):
+    with session_factory()() as db:
+        a, b = [company_context(db, f"demo_company_{suffix}") for suffix in ["a", "b"]]
+    now = utcnow()
+    event = {"topics": {"product": ["CL_PRODUCT_LOA_MARK"]}, "published_at": now}
+    score, reasons = rank_event(a, {}, event, now)
+    assert score > rank_event(b, {}, event, now)[0]
+    assert reasons[0]["feature_path"] == "features.CL_PRODUCT_LOA_MARK"
+    assert score > rank_event(a, {}, {**event, "published_at": now - timedelta(days=8)}, now)[0]
+    assert rank_event(b, {}, {**event, "published_at": None}, now)[0] == 0
 
 
 def test_news_deduplication_and_conservative_clustering(env):
