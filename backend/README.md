@@ -3,6 +3,8 @@
 Python 3.12, FastAPI, SQLAlchemy и PostgreSQL 17. Зависимости зафиксированы в
 `requirements.lock`; SQLite используется только для быстрых локальных проверок.
 
+[Архитектура и правила расширения](../docs/architecture.md) описывают границы HTTP, доменных сервисов, очереди, worker и AI. Producers используют `app.services.queue`, а обработчики добавляются в `app.services.job_handlers.HANDLERS`. Общие доступы — `services.access`, сессии — `services.sessions`, аудит — `services.audit`; импорты HTTP-роутеров из сервисов запрещены проверкой `python ../scripts/check_architecture.py`.
+
 ## Установка
 
 Из корня репозитория, PowerShell:

@@ -4,15 +4,12 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.errors import AppError
-from app.models import AuditLog, LoginSession, Membership, User
+from app.models import LoginSession, Membership, User
 from app.schemas import MembershipOut, MembershipPatch, UserOut, UserPatch
 from app.security import admin_user
+from app.services.audit import audit
 
 router = APIRouter(prefix="/admin", tags=["admin"])
-
-
-def audit(db, admin, action, object_id, details=None):
-    db.add(AuditLog(admin_id=admin.id, action=action, object_id=object_id, details=details or {}))
 
 
 @router.get("/users", response_model=list[UserOut])

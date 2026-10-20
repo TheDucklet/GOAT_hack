@@ -5,7 +5,8 @@ from app.db import get_db
 from app.errors import AppError
 from app.models import Job, User
 from app.schemas import JobOut
-from app.security import company_access, current_user
+from app.security import current_user
+from app.services.access import company_access
 
 router = APIRouter(tags=["analytics"])
 

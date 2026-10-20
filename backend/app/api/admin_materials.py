@@ -11,7 +11,6 @@ from app.config import get_settings
 from app.db import get_db
 from app.errors import AppError
 from app.models import (
-    AuditLog,
     BankDocument,
     Event,
     Evidence,
@@ -29,13 +28,10 @@ from app.schemas import (
     VisibilityOut,
 )
 from app.security import admin_user
-from app.services.jobs import enqueue
+from app.services.audit import audit
+from app.services.queue import enqueue
 
 router = APIRouter(prefix="/admin", tags=["admin"])
-
-
-def audit(db, admin, action, object_id, details=None):
-    db.add(AuditLog(admin_id=admin.id, action=action, object_id=object_id, details=details or {}))
 
 
 @router.get("/documents", response_model=list[DocumentOut])

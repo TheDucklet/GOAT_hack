@@ -7,8 +7,7 @@ from app.cli import seed_demo
 from app.config import get_settings
 from app.db import Base, get_engine, session_factory
 from app.main import create_app
-
-PASSWORD = "Synthetic-Test-Password-2026"
+from tests.factories import PASSWORD
 
 
 @pytest.fixture
@@ -36,10 +35,3 @@ def env(tmp_path, monkeypatch):
 def client(env):
     with TestClient(create_app()) as client:
         yield client
-
-
-def login(client, name="user_a"):
-    result = client.post("/auth/login", json={"email": f"{name}@goat.example.org", "password": PASSWORD})
-    assert result.status_code == 200, result.text
-    client.headers["X-CSRF-Token"] = result.json()["csrf_token"]
-    return result.json()

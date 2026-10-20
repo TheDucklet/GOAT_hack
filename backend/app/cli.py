@@ -9,9 +9,9 @@ from sqlalchemy import select
 from app.config import get_settings
 from app.db import session_factory
 from app.models import Company, Membership, User
-from app.security import hasher
 from app.services.clients import import_clients
 from app.services.news import collect_news, ensure_sources
+from app.services.sessions import hasher
 
 
 def migrate():

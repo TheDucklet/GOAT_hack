@@ -8,7 +8,7 @@ from app.errors import AppError
 from app.models import BankDocument, Chunk, Job, User
 from app.services.jobs import scheduler_tick
 from app.services.tools import AnalysisTools, BankRepository
-from tests.test_backend import event_fixture
+from tests.factories import event_fixture
 
 
 def test_agent_tools_cannot_select_another_company(env):

@@ -193,7 +193,7 @@ def collect_news(db: Session, client=None) -> dict:
                                 },
                             )
                             if added:
-                                from app.services.jobs import enqueue
+                                from app.services.queue import enqueue
 
                                 enqueue(
                                     db,

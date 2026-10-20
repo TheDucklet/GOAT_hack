@@ -19,8 +19,11 @@ from app.schemas import (
     MessageIn,
     MessageOut,
 )
-from app.security import company_access, current_user, owned
-from app.services.jobs import enqueue, event_context, insight_versions
+from app.security import current_user
+from app.services.access import company_access, owned
+from app.services.events import event_context
+from app.services.insights import insight_versions
+from app.services.queue import enqueue
 
 router = APIRouter(tags=["analytics"])
 

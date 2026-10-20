@@ -35,7 +35,9 @@ API_PROXY_TARGET=http://127.0.0.1:8000
 
 Vite проксирует `/api/*` в backend без префикса `/api`; браузер работает с одним origin. Для отдельного API можно указать полный `VITE_API_BASE_URL`, например `http://127.0.0.1:8000`; backend должен разрешать конкретный frontend origin и credentials в CORS. Согласовать cookie/SameSite/HTTPS с Алексеем. Секреты и LLM-ключи не помещать в VITE-переменные: они видны браузеру.
 
-Один экземпляр `src/api/index.ts` используется всеми экранами. Cookie отправляются через `credentials: include`; `X-CSRF-Token` берётся из `/me` или login и хранится в памяти. CSRF добавляется к изменяющим защищённым запросам. Auth-данные не записываются в localStorage/sessionStorage. В mock используется отдельная JS-cookie с синтетической идентичностью; она не является настоящей защищённой сессией. Сессию HTTP-режима создаёт только backend.
+Один HTTP-клиент `src/shared/api/index.ts` используется feature API в `src/features/*/api.ts`. Cookie отправляются через `credentials: include`; `X-CSRF-Token` берётся из `/me` или login и хранится в памяти. CSRF добавляется к изменяющим защищённым запросам. Auth-данные не записываются в localStorage/sessionStorage. В mock используется отдельная JS-cookie с синтетической идентичностью; она не является настоящей защищённой сессией. Сессию HTTP-режима создаёт только backend.
+
+Композиция маршрутов — `src/app`, поведение — `src/features`, общие UI/transport/types — `src/shared`. Layout не владеет загрузкой компаний: её выполняет CompanyProvider. Поля и ошибки форм используют FormField/ErrorNotice. [Полная структура и добавление будущих задач](../docs/architecture.md). `npm run architecture:check` проверяет границы и циклы; `npm run architecture:test` проверяет сам guard на контрольных нарушениях. Оба шага выполняются в CI.
 
 ## Проверки и сборка
 

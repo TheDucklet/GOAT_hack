@@ -7,7 +7,7 @@ from sqlalchemy import func, or_, select
 from app.errors import AppError
 from app.integrations.ai import call_ai
 from app.models import BankDocument, Chunk, User
-from app.security import company_access
+from app.services.access import company_access
 from app.services.clients import company_context
 
 
@@ -68,7 +68,7 @@ class AnalysisTools:
 
     def get_event(self):
         self._authorize()
-        from app.services.jobs import event_context
+        from app.services.events import event_context
 
         return event_context(self._db, self._event_id)
 
