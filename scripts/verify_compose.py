@@ -39,7 +39,7 @@ def main():
     cookies = http.cookiejar.CookieJar()
     opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookies))
 
-    def http(method, path, body=None, csrf=None):
+    def request_json(method, path, body=None, csrf=None):
         headers = {'Origin': args.base_url, 'Accept': 'application/json'}
         if body is not None:
             headers['Content-Type'] = 'application/json'
@@ -76,11 +76,11 @@ def main():
         before = services()
         check('exactly web/api/worker/postgres are running', {item['Service'] for item in before} == {'web', 'api', 'worker', 'postgres'} and all(item['State'] == 'running' for item in before))
         check('all four services are healthy', all(item.get('Health') == 'healthy' for item in before))
-        status, health = http('GET', '/health')
+        status, health = request_json('GET', '/health')
         check('GET /health returns 200 through nginx', status == 200 and health == {'status': 'ok'})
-        status, schema = http('GET', '/api/openapi.json')
+        status, schema = request_json('GET', '/api/openapi.json')
         check('OpenAPI is served through the API proxy', status == 200 and '/auth/login' in schema.get('paths', {}))
-        status, schema = http('GET', '/openapi.json')
+        status, schema = request_json('GET', '/openapi.json')
         check('Swagger absolute OpenAPI URL is proxied', status == 200 and '/auth/login' in schema.get('paths', {}))
         for path in ['/login', '/register', '/app', '/app/analytics', '/admin']:
             with opener.open(args.base_url.rstrip('/') + path, timeout=10) as response:
@@ -94,14 +94,14 @@ def main():
         identity = uuid.uuid4().hex
         password = secrets.token_urlsafe(24)
         credentials = {'email': f'r02-{identity}@example.org', 'password': password}
-        status, user = http('POST', '/api/auth/register', credentials)
+        status, user = request_json('POST', '/api/auth/register', credentials)
         check('synthetic record created in PostgreSQL', status == 201 and user['system_role'] == 'user')
-        status, session = http('POST', '/api/auth/login', credentials)
+        status, session = request_json('POST', '/api/auth/login', credentials)
         check('real backend login succeeds through proxy', status == 200 and session['id'] == user['id'])
         check('backend session cookie is HttpOnly', any(cookie.name == 'goat_session' and cookie.has_nonstandard_attr('HttpOnly') for cookie in cookies))
-        status, _ = http('POST', '/api/auth/logout')
+        status, _ = request_json('POST', '/api/auth/logout')
         check('mutation without CSRF is rejected', status == 403)
-        status, _ = http('GET', '/api/admin/stats')
+        status, _ = request_json('GET', '/api/admin/stats')
         check('ordinary account cannot read admin stats', status == 403)
 
         filename = f'r02-persistence-{identity}.txt'
@@ -116,16 +116,16 @@ def main():
         compose('up', '-d', '--wait', '--wait-timeout', '180')
         after = services()
         check('containers recreated without deleting volumes', len(after) == 4 and not ({item['ID'] for item in before} & {item['ID'] for item in after}))
-        status, health = http('GET', '/health')
+        status, health = request_json('GET', '/health')
         check('health restored after recreation', status == 200 and health == {'status': 'ok'})
-        status, restored = http('GET', '/api/me')
+        status, restored = request_json('GET', '/api/me')
         check('user record and server session survive recreation', status == 200 and restored['id'] == user['id'])
         compose('exec', '-T', 'api', 'python', '-c', read)
         compose('exec', '-T', 'worker', 'python', '-c', read)
         check('document data survives recreation in both services', True)
-        status, _ = http('POST', '/api/auth/logout', csrf=restored['csrf_token'])
+        status, _ = request_json('POST', '/api/auth/logout', csrf=restored['csrf_token'])
         check('mutation with restored CSRF succeeds', status == 204)
-        status, _ = http('GET', '/api/me')
+        status, _ = request_json('GET', '/api/me')
         check('logout revokes the persisted session', status == 401)
         report['result'] = 'PASS'
     except Exception as error:
