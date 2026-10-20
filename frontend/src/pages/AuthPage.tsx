@@ -39,19 +39,21 @@ export function AuthPage({ register = false }: { register?: boolean }) {
       }
     } catch (reason) {
       setError(reason);
-      if (reason instanceof ApiError) setFields(reason.fieldErrors);
+      if (reason instanceof ApiError) setFields(register && reason.status === 409 && ['email_exists', 'email_taken'].includes(reason.body.code)
+        ? { email: [reason.message] } : reason.fieldErrors);
     } finally { setPending(false); }
   }
   return <main className="auth-shell">
     <section className="auth-intro"><Link className="brand" to="/login"><span className="brand-mark">А</span>Альфа-Бизнес</Link><div><span className="eyebrow">Для решений, которые имеют значение</span><h1>События рынка.<br />В контексте<br />вашего бизнеса.</h1><p>Новости, аналитика банка и взгляд на возможное влияние событий на вашу компанию.</p></div><span className="intro-footer">Бизнес-аналитика · GOAT_hack</span></section>
     <section className="auth-form-panel"><div className="auth-form-wrap"><span className="eyebrow">Личный кабинет</span><h2>{register ? 'Создать аккаунт' : 'С возвращением'}</h2><p className="muted">{register ? 'После регистрации войдите и запросите доступ к компании.' : 'Войдите, чтобы открыть рабочее пространство.'}</p>
       {(location.state as { registered?: boolean } | null)?.registered && <p className="success-notice" role="status">Аккаунт создан. Войдите с вашим email и паролем.</p>}
-      {error != null && <ErrorNotice error={error} />}
+      {error != null && <ErrorNotice error={error} showFields={false} />}
       {state.status === 'error' && <ErrorNotice error={state.error} />}
       <form onSubmit={submit} noValidate aria-label={register ? 'Регистрация' : 'Вход'}>
         <div className="field"><label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="username" value={email} onChange={(event) => { setEmail(event.target.value); setFields((current) => ({ ...current, email: [] })); }} aria-invalid={!!fields.email?.length} aria-describedby={fields.email?.length ? 'email-error' : undefined} required />
           {!!fields.email?.length && <p id="email-error" className="field-error">{fields.email.join(' ')}</p>}</div>
         <div className="field"><label htmlFor="password">Пароль</label><input id="password" name="password" type="password" autoComplete={register ? 'new-password' : 'current-password'} value={password} onChange={(event) => { setPassword(event.target.value); setFields((current) => ({ ...current, password: [] })); }} aria-invalid={!!fields.password?.length} aria-describedby={fields.password?.length ? 'password-error' : undefined} required />
+          {register && <p className="field-hint">От 10 до 256 символов.</p>}
           {!!fields.password?.length && <p id="password-error" className="field-error">{fields.password.join(' ')}</p>}</div>
         <button className="button primary full" disabled={pending || state.status === 'loading'}>{pending ? 'Подождите…' : register ? 'Зарегистрироваться' : 'Войти'}</button>
       </form>

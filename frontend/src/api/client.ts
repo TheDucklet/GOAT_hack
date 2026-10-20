@@ -1,5 +1,5 @@
 import { normalizeError } from './errors';
-import type { AdminStats, Chat, Company, Credentials, Feed, Insight, Job, Me, Message, Registration, User } from './types';
+import type { AdminStats, Chat, Company, Credentials, Feed, Insight, Job, Me, Membership, MembershipProfile, MembershipRequest, Message, Registration, User } from './types';
 
 export type Transport = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 type RequestOptions = Omit<RequestInit, 'body' | 'credentials'> & {
@@ -80,6 +80,12 @@ export class ApiClient {
   }
 
   companies(signal?: AbortSignal) { return this.request<Company[]>('/companies', { signal }); }
+  requestMembership(body: MembershipRequest) {
+    return this.request<Membership>('/memberships/requests', { method: 'POST', body });
+  }
+  updateProfile(id: string, body: MembershipProfile) {
+    return this.request<Membership>(`/memberships/${encodeURIComponent(id)}/profile`, { method: 'PATCH', body });
+  }
   feed(companyId: string, limit = 20, offset = 0, signal?: AbortSignal) {
     return this.request<Feed>(`/companies/${encodeURIComponent(companyId)}/feed?${new URLSearchParams({ limit: String(limit), offset: String(offset) })}`, { signal });
   }

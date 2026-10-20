@@ -2,7 +2,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; }
 a { color: inherit; }
-button, input, select { font: inherit; }
+button, input, select, textarea { font: inherit; }
 button, a, input, select { -webkit-tap-highlight-color: transparent; }
 button, select { cursor: pointer; }
 button:disabled { cursor: wait; opacity: .6; }
@@ -76,8 +76,26 @@ p { line-height: 1.6; }
 .auth-form-wrap form { margin-top: 28px; }
 .field { margin-bottom: 20px; }
 .field label { display: block; font-size: 13px; font-weight: 550; margin-bottom: 9px; }
-.field input { width: 100%; padding: 13px 14px; border: 1px solid #d9dce2; border-radius: 9px; background: #fcfcfd; }
-.field input[aria-invalid="true"] { border-color: #d52c20; }
+.field input, .field textarea { width: 100%; padding: 13px 14px; border: 1px solid #d9dce2; border-radius: 9px; background: #fcfcfd; }
+.field textarea { resize: vertical; min-height: 74px; }
+.field input[aria-invalid="true"], .field textarea[aria-invalid="true"] { border-color: #d52c20; }
+.field-hint { margin: 7px 0 0; font-size: 12px; color: #737984; line-height: 1.6; }
+fieldset { min-width: 0; padding: 0; border: 0; margin: 0; }
+.page-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.page-heading .button { margin-top: 25px; flex-shrink: 0; }
+.membership-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr); gap: 24px; align-items: start; }
+.membership-list { min-width: 0; }
+.membership-list > h2 { margin-top: 0; }
+.membership-card { margin-bottom: 20px; }
+.membership-heading { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+.membership-heading h3 { margin: 0; overflow-wrap: anywhere; }
+.membership-status { font-size: 11px; padding: 6px 9px; border-radius: 8px; background: #fff1d9; color: #80570a; }
+.membership-status.active { background: #eaf3ed; color: #2e6240; }
+.membership-status.rejected { background: #fff0ee; color: #a5271d; }
+.membership-id { font-size: 12px; color: #737984; overflow-wrap: anywhere; margin-bottom: 24px; }
+.membership-help { font-size: 13px; color: #737984; margin-bottom: 24px; }
+.membership-request h2 { margin-top: 0; }
+@media (max-width: 1100px) { .membership-grid { grid-template-columns: minmax(0, 1fr); } .page-heading { flex-wrap: wrap; margin-bottom: 24px; } .page-heading .button { margin-top: 0; } .page-heading .page-lead { margin-bottom: 0; } }
 .field-error { margin: 7px 0 0; font-size: 12px; color: #bb2e23; }
 .auth-switch { text-align: center; font-size: 13px; margin-top: 25px; color: #777d87; }
 .auth-switch a { color: #bd2e24; text-decoration: none; }

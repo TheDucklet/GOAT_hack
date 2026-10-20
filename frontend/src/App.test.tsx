@@ -24,7 +24,7 @@ async function signIn(email = demoMe.email, password = demoPassword) {
 beforeEach(() => { api.clearSession(); });
 
 describe('R-01 route acceptance', () => {
-  it.each(['/app', '/app/analytics', '/admin'])('redirects an anonymous direct visit to %s to /login', async (path) => {
+  it.each(['/app', '/app/analytics', '/app/companies', '/admin'])('redirects an anonymous direct visit to %s to /login', async (path) => {
     open(path);
     await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent('/login'));
     expect(await screen.findByRole('heading', { name: 'С возвращением' })).toBeVisible();
@@ -79,6 +79,16 @@ describe('R-01 route acceptance', () => {
     await signIn(demoMe.email, 'wrong-password');
     expect(await screen.findByRole('alert')).toHaveTextContent('Неверный email или пароль');
     expect(screen.getByTestId('location')).toHaveTextContent('/login');
+  });
+
+  it('associates an occupied email error with the registration email field', async () => {
+    open('/register');
+    await userEvent.type(await screen.findByLabelText('Email'), demoMe.email);
+    await userEvent.type(screen.getByLabelText('Пароль'), demoPassword);
+    await userEvent.click(screen.getByRole('button', { name: 'Зарегистрироваться' }));
+    await waitFor(() => expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'true'));
+    expect(screen.getByLabelText('Email')).toHaveAccessibleDescription('Email уже зарегистрирован.');
+    expect(screen.getByTestId('location')).toHaveTextContent('/register');
   });
 
   it('logout uses the same client and returns to login', async () => {

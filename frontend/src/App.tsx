@@ -6,6 +6,7 @@ import { AdminPage } from './pages/AdminPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { AuthPage } from './pages/AuthPage';
 import { OverviewPage } from './pages/OverviewPage';
+import { MembershipsPage } from './pages/MembershipsPage';
 
 export function App() {
   return <AuthProvider><Routes>
@@ -14,6 +15,7 @@ export function App() {
     <Route path="/register" element={<AuthPage key="register" register />} />
     <Route element={<RequireAuth />}><Route element={<AppLayout />}>
       <Route path="/app" element={<OverviewPage />} />
+      <Route path="/app/companies" element={<MembershipsPage />} />
       <Route path="/app/analytics" element={<AnalyticsPage />} />
       <Route path="/admin" element={<AdminPage />} />
     </Route></Route>

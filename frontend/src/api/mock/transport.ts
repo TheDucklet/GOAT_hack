@@ -1,6 +1,6 @@
 import type { Transport } from '../client';
 import { demoChat, demoCompanies, demoError, demoFeed, demoInsight, demoJob, demoMe, demoPassword, demoStats, demoUser } from './fixtures';
-import type { ApiErrorBody, Credentials, Me } from '../types';
+import type { ApiErrorBody, Credentials, Me, Membership } from '../types';
 
 export interface MockSessionStore {
   get(): string | null;
@@ -17,8 +17,12 @@ export function createMockTransport(store: MockSessionStore = cookieStore): Tran
   const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
   const error = (status: number, code: string, message: string, field_errors: ApiErrorBody['field_errors'] = []) =>
     json({ ...demoError, code, message, request_id: `mock-${code}`, field_errors } satisfies ApiErrorBody, status);
+  const registrations = new Map<string, { id: string; password: string }>();
+  const memberships = new Map<string, Membership[]>();
   const session = (email: string): Me => ({
     ...structuredClone(demoMe),
+    id: registrations.get(email)?.id || demoMe.id,
+    memberships: structuredClone(memberships.get(email) || (registrations.has(email) ? [] : demoMe.memberships)),
     email, system_role: email === 'admin@example.org' ? 'admin' : 'user',
   });
 
@@ -43,10 +47,13 @@ export function createMockTransport(store: MockSessionStore = cookieStore): Tran
       if (credentials.email === 'unavailable@example.org') return error(503, 'service_unavailable', 'Сервис временно недоступен.');
       if (credentials.email === 'blocked@example.org') return error(403, 'user_blocked', 'Нет доступа');
       if (path === '/auth/register') {
-        if (credentials.email === demoMe.email) return error(409, 'email_taken', 'Email уже занят.');
-        return json({ ...demoUser, id: 'new-user', email: credentials.email }, 201);
+        if ([demoMe.email, 'admin@example.org'].includes(credentials.email) || registrations.has(credentials.email)) return error(409, 'email_exists', 'Email уже зарегистрирован.');
+        const id = `mock-user-${registrations.size + 1}`;
+        registrations.set(credentials.email, { id, password: credentials.password });
+        return json({ ...demoUser, id, email: credentials.email }, 201);
       }
-      if (![demoMe.email, 'admin@example.org'].includes(credentials.email) || credentials.password !== demoPassword) return error(401, 'invalid_credentials', 'Неверный email или пароль.');
+      const password = registrations.get(credentials.email)?.password || ([demoMe.email, 'admin@example.org'].includes(credentials.email) ? demoPassword : null);
+      if (credentials.password !== password) return error(401, 'invalid_credentials', 'Неверный email или пароль.');
       store.set(credentials.email);
       return json(session(credentials.email));
     }
@@ -56,10 +63,33 @@ export function createMockTransport(store: MockSessionStore = cookieStore): Tran
     if (path.startsWith('/admin') && identity !== 'admin@example.org') return error(403, 'forbidden', 'Нет доступа');
     if (path === '/me' && method === 'GET') return json(session(identity));
     if (path === '/auth/logout' && method === 'POST') { store.set(null); return new Response(null, { status: 204 }); }
-    if (path === '/companies' && method === 'GET') return json(demoCompanies);
+    if (path === '/companies' && method === 'GET') return json(demoCompanies.filter((company) => session(identity).memberships.some((membership) => membership.status === 'active' && membership.company_id === company.id)));
+    const profilePath = /^\/memberships\/([^/]+)\/profile$/.exec(path);
+    if ((path === '/memberships/requests' && method === 'POST') || (profilePath && method === 'PATCH')) {
+      const fields: NonNullable<ApiErrorBody['field_errors']> = [];
+      if (typeof body.position_text !== 'string' || body.position_text.length > 1000) fields.push({ loc: ['body', 'position_text'], message: 'Должность должна содержать не более 1000 символов.', type: 'string_length' });
+      if (!Array.isArray(body.interests) || body.interests.length > 30 || body.interests.some((item) => typeof item !== 'string')) fields.push({ loc: ['body', 'interests'], message: 'Укажите не более 30 тем.', type: 'list_length' });
+      if (!profilePath && (typeof body.company_id !== 'string' || !body.company_id.length || body.company_id.length > 100)) fields.push({ loc: ['body', 'company_id'], message: 'Укажите идентификатор компании, до 100 символов.', type: 'string_length' });
+      if (fields.length) return error(422, 'validation_error', 'Проверьте поля.', fields);
+      const current = session(identity);
+      const own = current.memberships;
+      const profile = { position_text: body.position_text as string, interests: body.interests as string[] };
+      let result: Membership;
+      if (profilePath) {
+        const existing = own.find((item) => item.id === decodeURIComponent(profilePath[1]!));
+        if (!existing) return error(403, 'forbidden', 'Нельзя изменить чужое членство');
+        result = { ...existing, ...profile };
+      } else {
+        if (!demoCompanies.some((item) => item.id === body.company_id)) return error(404, 'not_found', 'Компания не найдена');
+        if (own.some((item) => item.company_id === body.company_id)) return error(409, 'membership_exists', 'Членство или заявка уже существует');
+        result = { id: `mock-membership-${current.id}-${own.length}`, user_id: current.id, company_id: body.company_id as string, ...profile, status: 'pending' };
+      }
+      memberships.set(identity, [...own.filter((item) => item.id !== result.id), result]);
+      return json(result, profilePath ? 200 : 201);
+    }
     if (path === '/admin/stats' && method === 'GET') return json(demoStats);
     const companyPath = /^\/companies\/([^/]+)\/(feed|insights)$/.exec(path);
-    if (companyPath && companyPath[1] !== demoChat.company_id) return error(403, 'forbidden', 'Нет доступа');
+    if (companyPath && !session(identity).memberships.some((item) => item.company_id === companyPath[1] && item.status === 'active')) return error(403, 'forbidden', 'Нет доступа');
     if (companyPath?.[2] === 'feed' && method === 'GET') {
       const limit = Math.max(1, Number(url.searchParams.get('limit') || 20));
       const offset = Math.max(0, Number(url.searchParams.get('offset') || 0));
@@ -68,7 +98,7 @@ export function createMockTransport(store: MockSessionStore = cookieStore): Tran
     if (companyPath?.[2] === 'insights' && method === 'POST') return json(demoJob, 202);
     if (path === `/insights/${demoInsight.id}` && method === 'GET') return json(demoInsight);
     if (path === '/chats' && method === 'POST') {
-      if (body.company_id !== demoChat.company_id) return error(403, 'forbidden', 'Нет доступа');
+      if (!session(identity).memberships.some((item) => item.company_id === body.company_id && item.status === 'active')) return error(403, 'forbidden', 'Нет доступа');
       return json(demoChat, 201);
     }
     if (path === `/chats/${demoChat.id}/messages`) return method === 'POST' ? json(demoJob, 202) : json([]);

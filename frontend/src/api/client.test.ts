@@ -7,6 +7,20 @@ import { createMockTransport, type MockSessionStore } from './mock/transport';
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
 
 describe('API session and transport contract', () => {
+  it('uses CSRF and cookie credentials for membership requests and encodes the profile path', async () => {
+    const fetcher = vi.fn<Transport>().mockImplementation(async () => response(demoMe));
+    const client = new ApiClient('/api', fetcher);
+    await client.me();
+    await client.requestMembership({ company_id: 'company-a', position_text: 'Новая должность', interests: ['Новая тема'] });
+    await client.updateProfile('member/1', { position_text: 'Любая должность', interests: [] });
+    expect(fetcher.mock.calls[1]![0]).toBe('/api/memberships/requests');
+    expect(fetcher.mock.calls[2]![0]).toBe('/api/memberships/member%2F1/profile');
+    for (const [, init] of fetcher.mock.calls.slice(1)) {
+      expect(init!.credentials).toBe('include');
+      expect(new Headers(init!.headers).get('X-CSRF-Token')).toBe(demoMe.csrf_token);
+    }
+    expect(JSON.parse(String(fetcher.mock.calls[2]![1]!.body))).toEqual({ position_text: 'Любая должность', interests: [] });
+  });
   it('uses the configured base URL and cookie credentials, including public auth requests', async () => {
     const fetcher = vi.fn<Transport>().mockResolvedValue(response(demoMe));
     const client = new ApiClient('https://api.example.test/v1/', fetcher);

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import { api } from '../api';
 import type { Company } from '../api/types';
 import { useAuth } from '../auth/AuthProvider';
@@ -7,7 +7,9 @@ import { ErrorNotice } from '../components/ErrorNotice';
 import { config } from '../config';
 
 const CompanyContext = createContext<Company | null>(null);
+const CompaniesContext = createContext<Company[]>([]);
 export const useCompany = () => useContext(CompanyContext);
+export const useCompanies = () => useContext(CompaniesContext);
 
 export function AppLayout() {
   const { state, logout } = useAuth();
@@ -17,6 +19,8 @@ export function AppLayout() {
   const [error, setError] = useState<unknown>(null);
   const [attempt, setAttempt] = useState(0);
   const [signingOut, setSigningOut] = useState(false);
+  const activeCompanyIds = state.status === 'authenticated' ? state.session.memberships.filter((item) => item.status === 'active').map((item) => item.company_id) : [];
+  const accessKey = JSON.stringify(activeCompanyIds.sort());
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true);
@@ -28,19 +32,20 @@ export function AppLayout() {
     }).catch((reason: unknown) => { if (!controller.signal.aborted) setError(reason); })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [attempt]);
+  }, [attempt, accessKey]);
   if (state.status !== 'authenticated') return null;
-  const company = companies.find((item) => item.id === companyId) || null;
+  const availableCompanies = companies.filter((item) => activeCompanyIds.includes(item.id));
+  const company = availableCompanies.find((item) => item.id === companyId) || null;
   const userName = state.session.email.split('@')[0];
-  return <CompanyContext.Provider value={company}>
+  return <CompanyContext.Provider value={company}><CompaniesContext.Provider value={availableCompanies}>
     <a className="skip-link" href="#main">К содержанию</a>
     <header className="header">
       <NavLink className="brand" to="/app" aria-label="Альфа-Бизнес, главная"><span className="brand-mark">А</span><span>Альфа-Бизнес</span></NavLink>
       <div className="header-company">
         <label htmlFor="company">Компания</label>
-        <select id="company" value={companyId} disabled={loading || !companies.length} onChange={(event) => setCompanyId(event.target.value)}>
-          {!companies.length && <option value="">{loading ? 'Загрузка…' : 'Нет доступных компаний'}</option>}
-          {companies.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+        <select id="company" value={company?.id || ''} disabled={loading || !availableCompanies.length} onChange={(event) => setCompanyId(event.target.value)}>
+          {!availableCompanies.length && <option value="">{loading ? 'Загрузка…' : 'Нет доступных компаний'}</option>}
+          {availableCompanies.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
         </select>
       </div>
       <div className="user-summary"><span className="avatar" aria-hidden="true">{userName?.slice(0, 1).toUpperCase()}</span><span><strong>{userName}</strong><small>{state.session.email}</small></span></div>
@@ -54,14 +59,15 @@ export function AppLayout() {
     <div className="shell">
       <aside className="sidebar"><div className="sidebar-label">Рабочее пространство</div><nav aria-label="Основная навигация">
         <NavLink to="/app" end>Обзор</NavLink>
+        <NavLink to="/app/companies">Компании и профиль</NavLink>
         <NavLink to="/app/analytics">Бизнес-аналитика <span aria-hidden="true">↗</span></NavLink>
         {state.session.system_role === 'admin' && <NavLink to="/admin">Администрирование</NavLink>}
       </nav><p className="sidebar-note">Внешние события.<br />Контекст вашего бизнеса.</p></aside>
       <main id="main" className="main">
         {error != null && <ErrorNotice error={error} retry={() => setAttempt((value) => value + 1)} />}
-        {!loading && !error && !companies.length && <p className="membership-notice" role="status">Нет доступных компаний. Доступ появится после подтверждения членства администратором.</p>}
+        {!loading && !error && !availableCompanies.length && <p className="membership-notice" role="status">Нет доступных компаний. Доступ появится после подтверждения членства администратором. <Link to="/app/companies">Подать заявку или проверить статус</Link></p>}
         {loading ? <p role="status">Загружаем компании…</p> : <Outlet key={companyId} />}
       </main>
     </div>
-  </CompanyContext.Provider>;
+  </CompaniesContext.Provider></CompanyContext.Provider>;
 }
