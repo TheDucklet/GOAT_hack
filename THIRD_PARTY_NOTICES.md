@@ -1,47 +1,97 @@
-# Сторонние зависимости A-01
+# Сторонние компоненты backend
 
-Runtime: Python 3.12 (PSF License), PostgreSQL 17 (PostgreSQL License).
-Модели LLM, OCR, новостные интеграции и исходные датасеты в эту ветку не включены.
+Python 3.12 используется на условиях PSF License. PostgreSQL 17 используется на условиях PostgreSQL License. Версии библиотек зафиксированы в backend/requirements.lock. Лицензии приведены по метаданным дистрибутивов. При распространении следует сохранять их файлы license и copyright notices.
 
-Версии из requirements.lock; лицензии указаны по метаданным дистрибутивов.
-Сохраняйте при распространении полные license/copyright notices из dist-info/licenses.
+Компонент `alembic` имеет версию `1.20.0`. MIT.
 
-| Компонент | Версия | Лицензия |
-| --- | --- | --- |
-| alembic | 1.20.0 | MIT |
-| annotated-doc | 0.0.5 | MIT |
-| annotated-types | 0.8.0 | MIT |
-| anyio | 4.15.1 | MIT |
-| certifi | 2026.10.19 | MPL-2.0 |
-| click | 8.5.0 | BSD-3-Clause |
-| colorama | 0.4.6 | См. лицензию в dist-info |
-| dnspython | 2.9.0 | ISC |
-| email-validator | 2.3.0 | Unlicense |
-| fastapi | 0.153.0 | MIT |
-| greenlet | 3.5.6 | MIT AND PSF-2.0 |
-| h11 | 0.16.0 | MIT |
-| httpcore | 1.0.9 | BSD-3-Clause |
-| httpx | 0.28.1 | BSD-3-Clause |
-| idna | 3.20 | BSD-3-Clause |
-| iniconfig | 2.3.1 | MIT |
-| Mako | 1.4.3 | MIT |
-| MarkupSafe | 3.0.4 | BSD-3-Clause |
-| opentelemetry-api | 1.45.1 | Apache-2.0 |
-| packaging | 26.3 | Apache-2.0 OR BSD-2-Clause |
-| pluggy | 1.7.0 | MIT |
-| psycopg | 3.3.6 | LGPL-3.0-only |
-| psycopg-binary | 3.3.6 | LGPL-3.0-only |
-| pydantic | 2.14.1 | MIT |
-| pydantic_core | 2.50.1 | MIT |
-| pydantic-settings | 2.16.1 | MIT |
-| Pygments | 2.21.0 | BSD-2-Clause |
-| pytest | 9.1.1 | MIT |
-| python-dotenv | 1.2.4 | BSD-3-Clause |
-| python-multipart | 0.0.32 | Apache-2.0 |
-| ruff | 0.17.1 | MIT |
-| SQLAlchemy | 2.0.55 | MIT |
-| starlette | 1.9.0 | BSD-3-Clause |
-| typing_extensions | 4.16.0 | PSF-2.0 |
-| typing-inspection | 0.4.4 | MIT |
-| tzdata | 2026.5 | Apache-2.0 |
-| uvicorn | 0.54.0 | BSD-3-Clause |
+Компонент `annotated-doc` имеет версию `0.0.5`. MIT.
+
+Компонент `annotated-types` имеет версию `0.8.0`. MIT.
+
+Компонент `anyio` имеет версию `4.15.1`. MIT.
+
+Компонент `argon2-cffi` имеет версию `25.1.0`. MIT.
+
+Компонент `argon2-cffi-bindings` имеет версию `26.1.0`. MIT.
+
+Компонент `beautifulsoup4` имеет версию `4.15.0`. MIT License.
+
+Компонент `certifi` имеет версию `2026.10.19`. MPL-2.0.
+
+Компонент `cffi` имеет версию `2.1.1`. MIT-0.
+
+Компонент `click` имеет версию `8.5.0`. BSD-3-Clause.
+
+Компонент `colorama` имеет версию `0.4.6`. Условия приведены в файлах лицензии установленного дистрибутива.
+
+Компонент `dnspython` имеет версию `2.9.0`. ISC.
+
+Компонент `email-validator` имеет версию `2.3.0`. Unlicense.
+
+Компонент `fastapi` имеет версию `0.153.0`. MIT.
+
+Компонент `feedparser` имеет версию `6.0.14`. BSD-2-Clause.
+
+Компонент `feedparser-sgmllib` имеет версию `2.1.0`. PSF-2.0.
+
+Компонент `greenlet` имеет версию `3.5.6`. MIT AND PSF-2.0.
+
+Компонент `h11` имеет версию `0.16.0`. MIT.
+
+Компонент `httpcore` имеет версию `1.0.9`. BSD-3-Clause.
+
+Компонент `httpx` имеет версию `0.28.1`. BSD-3-Clause.
+
+Компонент `idna` имеет версию `3.20`. BSD-3-Clause.
+
+Компонент `iniconfig` имеет версию `2.3.1`. MIT.
+
+Компонент `Mako` имеет версию `1.4.3`. MIT.
+
+Компонент `MarkupSafe` имеет версию `3.0.4`. BSD-3-Clause.
+
+Компонент `opentelemetry-api` имеет версию `1.45.1`. Apache-2.0.
+
+Компонент `packaging` имеет версию `26.3`. Apache-2.0 OR BSD-2-Clause.
+
+Компонент `pluggy` имеет версию `1.7.0`. MIT.
+
+Компонент `psycopg` имеет версию `3.3.6`. LGPL-3.0-only.
+
+Компонент `psycopg-binary` имеет версию `3.3.6`. LGPL-3.0-only.
+
+Компонент `pycparser` имеет версию `3.11`. BSD-3-Clause.
+
+Компонент `pydantic` имеет версию `2.14.1`. MIT.
+
+Компонент `pydantic_core` имеет версию `2.50.1`. MIT.
+
+Компонент `pydantic-settings` имеет версию `2.16.1`. MIT.
+
+Компонент `Pygments` имеет версию `2.21.0`. BSD-2-Clause.
+
+Компонент `pypdf` имеет версию `6.21.1`. BSD-3-Clause.
+
+Компонент `pytest` имеет версию `9.1.1`. MIT.
+
+Компонент `python-dotenv` имеет версию `1.2.4`. BSD-3-Clause.
+
+Компонент `python-multipart` имеет версию `0.0.32`. Apache-2.0.
+
+Компонент `ruff` имеет версию `0.17.1`. MIT.
+
+Компонент `soupsieve` имеет версию `3.0.3`. MIT.
+
+Компонент `SQLAlchemy` имеет версию `2.0.55`. MIT.
+
+Компонент `starlette` имеет версию `1.9.0`. BSD-3-Clause.
+
+Компонент `typing_extensions` имеет версию `4.16.0`. PSF-2.0.
+
+Компонент `typing-inspection` имеет версию `0.4.4`. MIT.
+
+Компонент `tzdata` имеет версию `2026.5`. Apache-2.0.
+
+Компонент `uvicorn` имеет версию `0.54.0`. BSD-3-Clause.
+
+Источниками новостей служат RSS Банка России и Интерфакса. Приложение сохраняет ссылки и происхождение публикаций. Реальные CSV и PDF организаторов остаются вне Git. Тестовые материалы синтетические. Модели и OCR в этот backend не включены. Их перечень передаёт Фёдор.
