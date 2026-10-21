@@ -319,7 +319,7 @@ def test_bridge_exposes_the_agent_as_build_insight(monkeypatch):
     monkeypatch.setattr(steps_module, "call_llm", patched)
     ctx = company()
     envelope = bridge.build_insight(ctx, FOCUS, event(), Tools(ctx, Search(default=[hit()])))
-    assert envelope["trace"]["agent_version"] == "agent-1"
+    assert envelope["trace"]["agent_version"] == "agent-2"
     assert {
         "build_insight",
         "derive_user_focus",
@@ -327,3 +327,36 @@ def test_bridge_exposes_the_agent_as_build_insight(monkeypatch):
         "search_bank_analytics",
         "ingest_bank_document",
     } <= set(bridge.__all__)
+
+
+def test_verifier_receives_event_title_and_is_told_to_reject_unrelated_claims(monkeypatch):
+    router = Router()
+    run(monkeypatch, router, Search(default=[hit()]))
+    request = next(item for item in router.requests if "проверяешь, подтверждают ли" in item.system)
+    assert json.loads(request.user)["event_title"]
+    assert "не относится к событию" in request.system
+
+
+def test_partly_rejected_bank_claims_do_not_trigger_a_new_search(monkeypatch):
+    claims = [
+        {
+            "text": "Альфа-Банк ожидает сохранения ставки на уровне 14,0% до конца года.",
+            "evidence_ids": ["B1"],
+        },
+        {"text": "Альфа-Банк считает ставку 14,0% нейтральной для рынка.", "evidence_ids": ["B2"]},
+    ]
+    verdicts = [
+        {
+            "verdicts": [
+                {"claim": 1, "verdict": "supported", "reason": "ok"},
+                {"claim": 2, "verdict": "insufficient", "reason": "не относится к событию"},
+            ]
+        }
+    ]
+    second = hit("c2", page=2, text="Мы считаем ставку 14,0% нейтральной для рынка")
+    router = Router(insight=[{**GOOD, "bank_view": claims}], verify=verdicts)
+    envelope, _ = run(monkeypatch, router, Search(default=[hit(), second]))
+    trace = envelope["trace"]
+    assert len(envelope["result"]["bank_view"]) == 1
+    assert trace["extra_searches"] == 0 and trace["stop_reason"] == "supported"
+    assert trace["checks"][0]["rejected_bank_claims"][0]["claim_id"]

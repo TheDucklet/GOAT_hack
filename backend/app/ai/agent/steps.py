@@ -113,6 +113,7 @@ def verify_bank_claims(prepared: Prepared, composed: Composed) -> tuple[Composed
         return composed, [], []
     by_id = {item["id"]: item for item in composed.bank}
     payload = {
+        "event_title": prepared.payload.title,
         "event_facts": [claim["text"] for claim in prepared.facts],
         "claims": [
             {
@@ -141,7 +142,12 @@ def verify_bank_claims(prepared: Prepared, composed: Composed) -> tuple[Composed
         verdict = verdicts.get(number)
         if verdict and verdict.verdict in {"insufficient", "contradiction"}:
             rejected.append(
-                {"claim_id": claim["claim_id"], "verdict": verdict.verdict, "reason": verdict.reason[:200]}
+                {
+                    "claim_id": claim["claim_id"],
+                    "text": claim["text"][:240],
+                    "verdict": verdict.verdict,
+                    "reason": verdict.reason[:200],
+                }
             )
         else:
             kept.append(claim)
@@ -160,7 +166,9 @@ def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> 
         reasons.append(
             {"code": "no_interpretation", "detail": "нет объяснения, подтверждённого признаками компании"}
         )
-    if rejected:
+    kept_bank = composed.sections["bank_view"]
+    contradicted = any(item["verdict"] == "contradiction" for item in rejected)
+    if rejected and (contradicted or not kept_bank):
         kinds = sorted({item["verdict"] for item in rejected})
         reasons.append(
             {
@@ -168,7 +176,7 @@ def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> 
                 "detail": "проверка не подтвердила утверждения банка: " + ", ".join(kinds),
             }
         )
-    elif not composed.sections["bank_view"]:
+    elif not kept_bank:
         if composed.bank:
             reasons.append(
                 {
@@ -182,7 +190,7 @@ def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> 
             )
         else:
             reasons.append({"code": "no_bank_evidence", "detail": "материалы банка по запросам не найдены"})
-    if any(item["verdict"] == "contradiction" for item in rejected):
+    if contradicted:
         return CheckResult("contradiction", reasons)
     return CheckResult("insufficient" if reasons else "supported", reasons)
 

@@ -18,7 +18,7 @@ from app.ai.insights.build import (
 )
 from app.ai.providers import LLMError, LLMInput, call_llm
 from app.ai.schemas import AnswerChatInput, ChatEnvelope
-from app.ai.summarization.grounding import normalize_text, supported_sentences
+from app.ai.summarization.grounding import normalize_text, shorten, supported_sentences
 from app.ai.summarization.summarize import Lenient, StrList
 from app.ai.validation import build_catalog, validate_answer
 from app.integrations.ai import AIError
@@ -307,7 +307,11 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         unknowns.append(REFUSED_UNKNOWN)
     if intent == "missing_data":
         unknowns.extend(missing)
-    unknowns.extend(" ".join(text.split())[:MAX_UNKNOWN_CHARS] for text in raw.unknowns if text.strip())
+    unknowns.extend(
+        shorten(LABEL_MENTION.sub("", text).strip(), MAX_UNKNOWN_CHARS)
+        for text in raw.unknowns
+        if text.strip()
+    )
     unknowns = list(dict.fromkeys(item for item in unknowns if normalize_text(item)))[:MAX_UNKNOWNS]
     if not refs and not unknowns:
         unknowns = [NO_SOURCES_UNKNOWN]

@@ -18,7 +18,8 @@ from app.ai.insights.context import (
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
 from app.ai.providers import LLMInput, call_llm
 from app.ai.schemas import BuildInsightInput, EventPayload, InsightEnvelope
-from app.ai.summarization.grounding import normalize_text, unsupported_numbers
+from app.ai.summarization.conflicts import source_conflicts
+from app.ai.summarization.grounding import normalize_text, shorten, unsupported_numbers
 from app.ai.summarization.summarize import Lenient, StrList
 from app.ai.validation import apply_validation, build_catalog
 from app.integrations.ai import AIError
@@ -443,8 +444,10 @@ def assemble_envelope(
     )
     if not prepared.facts:
         unknowns.insert(0, "Источников недостаточно для вывода о влиянии события на компанию")
+    conflicts = source_conflicts(prepared.facts)
+    unknowns[:0] = conflicts
     for text in [*(extra_unknowns or []), *composed.raw_unknowns]:
-        cleaned = " ".join(text.split())[:MAX_UNKNOWN_CHARS]
+        cleaned = shorten(LABEL_MENTION.sub("", text).strip(), MAX_UNKNOWN_CHARS)
         if cleaned and cleaned not in unknowns:
             unknowns.append(cleaned)
     unknowns = unknowns[:MAX_UNKNOWNS]
@@ -465,6 +468,7 @@ def assemble_envelope(
         "matched_with_event": prepared.matches,
         "bank_fragments_offered": [item["id"] for item in composed.bank],
         "dropped_claims": composed.dropped,
+        "source_conflicts": conflicts,
         "stop_reason": stop_reason,
         **(extra_trace or {}),
     }

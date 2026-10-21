@@ -1,3 +1,4 @@
+from app.ai.summarization.grounding import shorten
 from app.ai.validation.catalog import Catalog
 from app.ai.validation.checks import CONTRADICTION, INSUFFICIENT, SUPPORTED, check_claim
 
@@ -55,7 +56,7 @@ def validate_envelope(envelope: dict, catalog: Catalog) -> dict:
 def removal_unknowns(removed: list[dict]) -> list[str]:
     notes = []
     for item in removed[:MAX_REMOVED_UNKNOWNS]:
-        preview = " ".join(item["claim"]["text"].split())[:MAX_TEXT_PREVIEW]
+        preview = shorten(item["claim"]["text"], MAX_TEXT_PREVIEW)
         codes = ", ".join(sorted({problem.code for problem in item["problems"]}))
         notes.append(f"Утверждение не прошло проверку оснований и убрано из карточки ({codes}): «{preview}»")
     if len(removed) > MAX_REMOVED_UNKNOWNS:
