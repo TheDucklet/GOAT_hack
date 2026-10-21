@@ -55,3 +55,40 @@ def test_empty_sqlite_can_be_migrated_and_upgraded_twice(tmp_path, monkeypatch):
     get_engine().dispose()
     get_engine.cache_clear()
     get_settings.cache_clear()
+
+
+def test_populated_v1_migration_keeps_data_and_requires_provenance_reimport(tmp_path, monkeypatch):
+    from pathlib import Path
+
+    from alembic import command
+    from alembic.config import Config
+    from sqlalchemy import text
+
+    from app.services.clients import company_context
+
+    monkeypatch.setenv("DATABASE_URL", f"sqlite:///{tmp_path / 'populated_v1.db'}")
+    get_settings.cache_clear()
+    get_engine.cache_clear()
+    root = Path(__file__).resolve().parents[1]
+    config = Config(str(root / "alembic.ini"))
+    config.set_main_option("script_location", str(root / "migrations"))
+    try:
+        command.upgrade(config, "0001")
+        with get_engine().begin() as connection:
+            connection.execute(
+                text("""INSERT INTO companies
+                (id,name,profile_version,features,unknowns,is_placeholder)
+                VALUES ('old','old','old-profile','{"REVENUE_COMPANY":{"value":"1000"}}','[]',0)""")
+            )
+        command.upgrade(config, "head")
+        command.check(config)
+        with session_factory()() as db:
+            context = company_context(db, "old")
+            assert context["profile_version"] == "old-profile"
+            assert context["data_semantics_version"] == "legacy-company-1"
+            assert context["features"]["REVENUE_COMPANY"]["value"] is None
+            assert "source_reimport_required" in context["unknowns"]
+    finally:
+        get_engine().dispose()
+        get_engine.cache_clear()
+        get_settings.cache_clear()

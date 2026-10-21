@@ -1393,7 +1393,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyContext"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/CompanyContextV2"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CompanyContext"
+                    }
+                  ],
+                  "title": "Response Get Companies Company Id Context"
                 }
               }
             }
@@ -4255,6 +4263,134 @@
         ],
         "title": "CompanyContext"
       },
+      "CompanyContextV2": {
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "title": "Company Id"
+          },
+          "profile_version": {
+            "type": "string",
+            "title": "Profile Version"
+          },
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Id"
+          },
+          "features": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DataFeature"
+            },
+            "type": "object",
+            "title": "Features"
+          },
+          "unknowns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unknowns"
+          },
+          "payment_links": {
+            "additionalProperties": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Payment Links"
+          },
+          "related_companies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Related Companies"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "v2",
+            "title": "Schema Version"
+          },
+          "data_semantics_version": {
+            "type": "string",
+            "title": "Data Semantics Version"
+          },
+          "identity_quality": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "ambiguous",
+              "placeholder",
+              "legacy"
+            ],
+            "title": "Identity Quality"
+          },
+          "client_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "Client",
+                  "Prospect",
+                  "Closed Client"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Type"
+          },
+          "payment_summary": {
+            "$ref": "#/components/schemas/PaymentSummary"
+          },
+          "relationships": {
+            "items": {
+              "$ref": "#/components/schemas/CompanyRelationship"
+            },
+            "type": "array",
+            "title": "Relationships"
+          },
+          "relationship_coverage": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Relationship Coverage"
+          },
+          "group_summary": {
+            "$ref": "#/components/schemas/GroupSummary"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "company_id",
+          "profile_version",
+          "group_id",
+          "features",
+          "unknowns",
+          "payment_links",
+          "related_companies",
+          "schema_version",
+          "data_semantics_version",
+          "identity_quality",
+          "client_type",
+          "payment_summary",
+          "relationships",
+          "relationship_coverage",
+          "group_summary"
+        ],
+        "title": "CompanyContextV2"
+      },
       "CompanyOut": {
         "properties": {
           "id": {
@@ -4279,6 +4415,51 @@
         ],
         "title": "CompanyOut"
       },
+      "CompanyRelationship": {
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "title": "Company Id"
+          },
+          "relation_type": {
+            "type": "string",
+            "enum": [
+              "same_group",
+              "shared_person",
+              "payment"
+            ],
+            "title": "Relation Type"
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "incoming",
+                  "outgoing"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direction"
+          },
+          "provenance": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provenance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "company_id",
+          "relation_type",
+          "provenance"
+        ],
+        "title": "CompanyRelationship"
+      },
       "Credentials": {
         "properties": {
           "email": {
@@ -4300,6 +4481,99 @@
           "password"
         ],
         "title": "Credentials"
+      },
+      "DataFeature": {
+        "properties": {
+          "raw": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Raw"
+          },
+          "normalized": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "assumed",
+              "conflicting",
+              "missing",
+              "invalid",
+              "quarantined",
+              "legacy"
+            ],
+            "title": "Quality"
+          },
+          "provenance": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provenance"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period"
+          },
+          "issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "raw",
+          "normalized",
+          "value",
+          "quality",
+          "provenance",
+          "unit",
+          "period",
+          "issues"
+        ],
+        "title": "DataFeature"
       },
       "DocumentOut": {
         "properties": {
@@ -4606,6 +4880,85 @@
           "rating"
         ],
         "title": "FeedbackOut"
+      },
+      "GroupSummary": {
+        "properties": {
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Id"
+          },
+          "observed_members": {
+            "type": "integer",
+            "title": "Observed Members"
+          },
+          "revenue_covered_members": {
+            "type": "integer",
+            "title": "Revenue Covered Members"
+          },
+          "revenue_sum": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revenue Sum"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period"
+          },
+          "is_consolidated": {
+            "type": "boolean",
+            "const": false,
+            "title": "Is Consolidated",
+            "default": false
+          },
+          "coverage_scope": {
+            "type": "string",
+            "const": "observed_dataset",
+            "title": "Coverage Scope",
+            "default": "observed_dataset"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "group_id",
+          "observed_members",
+          "revenue_covered_members",
+          "revenue_sum",
+          "unit",
+          "period"
+        ],
+        "title": "GroupSummary"
       },
       "InsightOut": {
         "properties": {
@@ -5293,6 +5646,89 @@
           "label"
         ],
         "title": "NextAction"
+      },
+      "PaymentSummary": {
+        "properties": {
+          "outgoing": {
+            "$ref": "#/components/schemas/PaymentTotals"
+          },
+          "incoming": {
+            "$ref": "#/components/schemas/PaymentTotals"
+          },
+          "self_payments": {
+            "$ref": "#/components/schemas/PaymentTotals"
+          },
+          "quarantined": {
+            "$ref": "#/components/schemas/PaymentTotals"
+          },
+          "unclassified": {
+            "$ref": "#/components/schemas/PaymentTotals"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period"
+          },
+          "provenance": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provenance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "outgoing",
+          "incoming",
+          "self_payments",
+          "quarantined",
+          "unclassified",
+          "unit",
+          "period",
+          "provenance"
+        ],
+        "title": "PaymentSummary"
+      },
+      "PaymentTotals": {
+        "properties": {
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "payment_count": {
+            "type": "integer",
+            "title": "Payment Count"
+          },
+          "row_count": {
+            "type": "integer",
+            "title": "Row Count"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "amount",
+          "payment_count",
+          "row_count"
+        ],
+        "title": "PaymentTotals"
       },
       "ProfileIn": {
         "properties": {

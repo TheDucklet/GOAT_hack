@@ -24,9 +24,10 @@ def insight_versions(db, user, company_id, event_id):
             ).order_by(BankDocument.id)
         )
     )
+    context = company_context(db, company_id)
     versions = {
-        **contract_versions(),
-        "profile": company_context(db, company_id)["profile_version"],
+        **contract_versions(context["data_semantics_version"]),
+        "profile": context["profile_version"],
         "event": event["version"],
         "focus": focus_hash(membership),
         "corpus": hashlib.sha256(repr(documents).encode()).hexdigest(),

@@ -151,7 +151,7 @@ def test_initial_migration_on_empty_database(tmp_path, monkeypatch):
         "feedback",
     } <= set(inspector.get_table_names())
     with get_engine().connect() as connection:
-        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "0001"
+        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "0002"
     command.check(config)
     get_engine().dispose()
     get_engine.cache_clear()

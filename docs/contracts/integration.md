@@ -1,5 +1,11 @@
 # Интеграция backend, frontend и AI
 
+Дополнение A-14: `/companies/{id}/context` возвращает CompanyContext v2 с
+`data_semantics_version=company-data-2`. См. [семантику данных](../data/data-semantics.md)
+и общие `company-context-v2-examples.json`. Wire-типы генерируются из OpenAPI;
+AI input принимает v1/v2. Неподтверждённые признаки имеют value=null, raw/normalized
+сохранены отдельно; source-происхождение признака находится в provenance.
+
 Дополнение F-13: [контракт бизнес-влияния v2](insight-v2.md). HTTP принимает v1/v2,
 worker сохраняет новые поля и проверяет каталог ссылок v2. Текущий AI producer
 пока v1; генерация v2 — F-14. Новые поля UI берёт из generated OpenAPI types,

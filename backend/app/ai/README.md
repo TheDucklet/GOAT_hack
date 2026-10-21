@@ -1,5 +1,11 @@
 # AI-модуль
 
+A-14: backend выдаёт CompanyContext v2; [семантика данных](../../../docs/data/data-semantics.md)
+описывает raw/normalized/quality/provenance, unknowns и типы связей. `value` содержит
+только подтверждённые признаки. Выручка с неизвестными годом/валютой и карантинные
+профили не попадают в company_facts; FTS не объявляет импорт/экспорт, NEGATIVEMARK
+не является отрицательным риском. Новые входы принимаются текущим генератором v1.
+
 Контракт бизнес-влияния v2 опубликован в [insight-v2.md](../../../docs/contracts/insight-v2.md).
 `InsightEnvelopeV2` доступен в `app.ai.schemas`; схемы и общие fixtures проходят
 проверки backend/frontend. Текущий генератор и `FUNCTION_CONTRACTS.build_insight`

@@ -58,6 +58,11 @@ class Company(Base):
     features: Mapped[dict] = mapped_column(JSON, default=dict)
     unknowns: Mapped[list] = mapped_column(JSON, default=list)
     is_placeholder: Mapped[bool] = mapped_column(Boolean, default=False)
+    data_semantics_version: Mapped[str] = mapped_column(
+        String(64), default="legacy-company-1", server_default="legacy-company-1"
+    )
+    identity_quality: Mapped[str] = mapped_column(String(16), default="legacy", server_default="legacy")
+    client_type: Mapped[str | None] = mapped_column(String(32), index=True)
 
 
 class Membership(Base):
@@ -92,6 +97,20 @@ class PersonLink(Base):
     company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"), index=True)
     city: Mapped[str] = mapped_column(String(255), default="")
     region: Mapped[str] = mapped_column(String(255), default="")
+    provenance: Mapped[dict] = mapped_column(JSON, default=dict, server_default="{}")
+
+
+class ClientRawRow(Base):
+    __tablename__ = "client_raw_rows"
+    __table_args__ = (UniqueConstraint("batch_id", "file", "row_number"),)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    batch_id: Mapped[str] = mapped_column(ForeignKey("import_batches.id"), index=True)
+    file: Mapped[str] = mapped_column(String(64))
+    row_number: Mapped[int] = mapped_column(Integer)
+    entity_id: Mapped[str] = mapped_column(String(100), index=True)
+    status: Mapped[str] = mapped_column(String(16))
+    reason: Mapped[str | None] = mapped_column(String(100))
+    raw: Mapped[dict] = mapped_column(JSON)
 
 
 class Payment(Base):
@@ -108,6 +127,10 @@ class Payment(Base):
     beneficiary: Mapped[str] = mapped_column(ForeignKey("companies.id"), index=True)
     amount: Mapped[Decimal] = mapped_column(Numeric(30, 2))
     payment_count: Mapped[int] = mapped_column(Integer)
+    raw: Mapped[dict] = mapped_column(JSON, default=dict, server_default="{}")
+    classification: Mapped[str] = mapped_column(
+        String(16), default="external", server_default="legacy", index=True
+    )
 
 
 class Source(Base):

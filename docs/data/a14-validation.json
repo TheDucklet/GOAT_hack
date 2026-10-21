@@ -1,0 +1,120 @@
+{
+  "version": "fbd9b7b67e7fbb9f234ded582032953c78d0ccd052dd84cfe2f6d704018048f7",
+  "data_semantics_version": "company-data-2",
+  "files": {
+    "df_Uid_data_hack.csv": "cb48983806ce7ca0ae045a40c9627ccbe47cc72bfb54058db04df2386da4a983",
+    "df_Fid_Uid_link_hack.csv": "3d9c718e2a87304f48bbc7447607116bb8e4bd61dded70b0a1d0558f086a1b58",
+    "df_Uid_payment_hack.csv": "30095f75bead1a1dac0d7232b0da09a326b7ef643ee3b77b36ad3b4458a1cab3"
+  },
+  "company_rows": 85525,
+  "unique_companies": 85514,
+  "quarantined_company_ids": [
+    "U_428697"
+  ],
+  "quarantined_company_rows": 12,
+  "normalized_company_rows": 85513,
+  "conflicts": [],
+  "missing_fields": {
+    "AMOUNT_WORKERS_SPARK_GRADATION": 85347,
+    "FTS_COUNTRY_NAME": 77168,
+    "REVENUE_COMPANY": 85514,
+    "ECO_MARK_LABEL": 4152,
+    "ORG_TYPE": 1,
+    "OKFS_NAME": 1,
+    "COMPANY_AGE_YEARS_GRADATION": 1,
+    "MAINOKVED_CODE": 1,
+    "MAINOKVED_NAME": 1,
+    "NEGATIVEMARK": 1,
+    "AMOUNT_WORKERS_FNS_GRADATION": 1,
+    "CL_TYPE": 1,
+    "CL_PRODUCT_RKO_MARK": 1,
+    "CL_PRODUCT_GAR_MARK": 1,
+    "CL_PRODUCT_LOA_MARK": 1,
+    "CL_PRODUCT_LEA_MARK": 1,
+    "CL_PRODUCT_DEP_MARK": 1,
+    "CL_PRODUCT_ZPP_MARK": 1,
+    "FTS_FLAG": 1,
+    "FACTORING_MARK": 1,
+    "GROUP_ID": 1,
+    "CITY": 1,
+    "REGION": 1
+  },
+  "client_types": {
+    "Prospect": 36687,
+    "Closed Client": 6858,
+    "Client": 41968,
+    "unknown": 1
+  },
+  "person_links": 12514,
+  "person_rows": 12514,
+  "quarantined_person_rows": 0,
+  "payment_rows": 1380585,
+  "payment_amount": "55991235586000.0",
+  "payment_count": 24515786,
+  "payment_classification": {
+    "external": {
+      "amount": "10259744195000.0",
+      "payment_count": 21254177,
+      "row_count": 1353026
+    },
+    "self": {
+      "amount": "45721727331000.0",
+      "payment_count": 3258858,
+      "row_count": 27406
+    },
+    "quarantined": {
+      "amount": "9764060000.0",
+      "payment_count": 2751,
+      "row_count": 153
+    }
+  },
+  "payment_unit": null,
+  "payment_period": null,
+  "placeholder_companies": 119194,
+  "already_imported": false,
+  "measured_self_payment_share": {
+    "amount": "0.8165872185616175446548396161",
+    "count": "0.1329289625876159956690762434",
+    "rows": "0.01985100518982894932220761489"
+  },
+  "verification": {
+    "result": "PASS",
+    "database": "PostgreSQL",
+    "semantics": "company-data-2",
+    "checks": [
+      "exact_raw_rows:df_Uid_data_hack.csv",
+      "exact_raw_rows:df_Fid_Uid_link_hack.csv",
+      "company_rows_partition",
+      "stored_payment_totals:external",
+      "stored_payment_totals:self",
+      "stored_payment_totals:quarantined",
+      "every_payment_raw_and_normalized_row",
+      "membership_unchanged",
+      "safe_context:Client",
+      "safe_context:Prospect",
+      "safe_context:Closed Client",
+      "quarantined_context_has_no_company_facts",
+      "demo_clients_only",
+      "idempotent_same_semantics_and_files"
+    ],
+    "sample_contexts": [
+      {
+        "client_type": "Client",
+        "schema_version": "v2",
+        "identity_quality": "confirmed"
+      },
+      {
+        "client_type": "Prospect",
+        "schema_version": "v2",
+        "identity_quality": "confirmed"
+      },
+      {
+        "client_type": "Closed Client",
+        "schema_version": "v2",
+        "identity_quality": "confirmed"
+      }
+    ],
+    "import_seconds": 304.17,
+    "verification_seconds": 25.88
+  }
+}

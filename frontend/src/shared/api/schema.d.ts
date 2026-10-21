@@ -605,6 +605,51 @@ export interface components {
             /** Related Companies */
             related_companies: string[];
         };
+        /** CompanyContextV2 */
+        CompanyContextV2: {
+            /** Company Id */
+            company_id: string;
+            /** Profile Version */
+            profile_version: string;
+            /** Group Id */
+            group_id: string | null;
+            /** Features */
+            features: {
+                [key: string]: components["schemas"]["DataFeature"];
+            };
+            /** Unknowns */
+            unknowns: string[];
+            /** Payment Links */
+            payment_links: {
+                [key: string]: {
+                    [key: string]: unknown;
+                }[];
+            };
+            /** Related Companies */
+            related_companies: string[];
+            /**
+             * Schema Version
+             * @constant
+             */
+            schema_version: "v2";
+            /** Data Semantics Version */
+            data_semantics_version: string;
+            /**
+             * Identity Quality
+             * @enum {string}
+             */
+            identity_quality: "confirmed" | "ambiguous" | "placeholder" | "legacy";
+            /** Client Type */
+            client_type: ("Client" | "Prospect" | "Closed Client") | null;
+            payment_summary: components["schemas"]["PaymentSummary"];
+            /** Relationships */
+            relationships: components["schemas"]["CompanyRelationship"][];
+            /** Relationship Coverage */
+            relationship_coverage: {
+                [key: string]: unknown;
+            };
+            group_summary: components["schemas"]["GroupSummary"];
+        };
         /** CompanyOut */
         CompanyOut: {
             /** Id */
@@ -613,6 +658,22 @@ export interface components {
             name: string;
             /** Profile Version */
             profile_version: string;
+        };
+        /** CompanyRelationship */
+        CompanyRelationship: {
+            /** Company Id */
+            company_id: string;
+            /**
+             * Relation Type
+             * @enum {string}
+             */
+            relation_type: "same_group" | "shared_person" | "payment";
+            /** Direction */
+            direction?: ("incoming" | "outgoing") | null;
+            /** Provenance */
+            provenance: {
+                [key: string]: unknown;
+            };
         };
         /** Credentials */
         Credentials: {
@@ -623,6 +684,30 @@ export interface components {
             email: string;
             /** Password */
             password: string;
+        };
+        /** DataFeature */
+        DataFeature: {
+            /** Raw */
+            raw: string[];
+            /** Normalized */
+            normalized: string | null;
+            /** Value */
+            value: string | null;
+            /**
+             * Quality
+             * @enum {string}
+             */
+            quality: "confirmed" | "assumed" | "conflicting" | "missing" | "invalid" | "quarantined" | "legacy";
+            /** Provenance */
+            provenance: {
+                [key: string]: unknown;
+            };
+            /** Unit */
+            unit: string | null;
+            /** Period */
+            period: string | null;
+            /** Issues */
+            issues: string[];
         };
         /** DocumentOut */
         DocumentOut: {
@@ -740,6 +825,33 @@ export interface components {
              * @enum {integer}
              */
             rating: -1 | 1;
+        };
+        /** GroupSummary */
+        GroupSummary: {
+            /** Group Id */
+            group_id: string | null;
+            /** Observed Members */
+            observed_members: number;
+            /** Revenue Covered Members */
+            revenue_covered_members: number;
+            /** Revenue Sum */
+            revenue_sum: string | null;
+            /** Unit */
+            unit: string | null;
+            /** Period */
+            period: string | null;
+            /**
+             * Is Consolidated
+             * @default false
+             * @constant
+             */
+            is_consolidated: false;
+            /**
+             * Coverage Scope
+             * @default observed_dataset
+             * @constant
+             */
+            coverage_scope: "observed_dataset";
         };
         /** InsightOut */
         InsightOut: {
@@ -973,6 +1085,31 @@ export interface components {
             label: string;
             /** Question */
             question?: string | null;
+        };
+        /** PaymentSummary */
+        PaymentSummary: {
+            outgoing: components["schemas"]["PaymentTotals"];
+            incoming: components["schemas"]["PaymentTotals"];
+            self_payments: components["schemas"]["PaymentTotals"];
+            quarantined: components["schemas"]["PaymentTotals"];
+            unclassified: components["schemas"]["PaymentTotals"];
+            /** Unit */
+            unit: string | null;
+            /** Period */
+            period: string | null;
+            /** Provenance */
+            provenance: {
+                [key: string]: unknown;
+            };
+        };
+        /** PaymentTotals */
+        PaymentTotals: {
+            /** Amount */
+            amount: string;
+            /** Payment Count */
+            payment_count: number;
+            /** Row Count */
+            row_count: number;
         };
         /** ProfileIn */
         ProfileIn: {
@@ -2166,7 +2303,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CompanyContext"];
+                    "application/json": components["schemas"]["CompanyContextV2"] | components["schemas"]["CompanyContext"];
                 };
             };
             /** @description Unauthorized */
