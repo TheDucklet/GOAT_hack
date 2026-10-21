@@ -197,3 +197,14 @@ def test_missing_data_words_recognize_debt_and_unknown_wording():
     assert c.MISSING_DATA_WORDS.search("Долг компании в других банках, его сумма и тип ставки неизвестны")
     assert c.MISSING_DATA_WORDS.search("Структура затрат компании на материалы.")
     assert not c.MISSING_DATA_WORDS.search("Следующее заседание Банка России в октябре.")
+
+
+def test_records_are_written_with_plain_characters(tmp_path):
+    from app.ai.evaluation.__main__ import write
+
+    nbsp, narrow, hyphen, dash = (chr(code) for code in (0xA0, 0x202F, 0x2011, 0x2014))
+    target = tmp_path / "record.json"
+    write(target, {"text": f"1{nbsp}200 {dash} рост{narrow}и{hyphen}спад"})
+    saved = target.read_text(encoding="utf-8")
+    assert not any(char in saved for char in (nbsp, narrow, hyphen, dash))
+    assert "1 200" in saved
