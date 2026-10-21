@@ -8,7 +8,9 @@ CLAIM_SECTIONS = ("facts", "ai_interpretation", "risks", "opportunities", "actio
 CONFLICT_WORDS = re.compile(
     r"расходя|расхожд|различ|противореч|по-разному|разные|не совпада|не согласу", re.IGNORECASE
 )
-MISSING_DATA_WORDS = re.compile(r"выручк|кредит|депозит|продукт|профил|сведен|данн", re.IGNORECASE)
+MISSING_DATA_WORDS = re.compile(
+    r"выручк|кредит|депозит|продукт|профил|сведен|данн|долг|задолж|неизвестн|структур", re.IGNORECASE
+)
 BANK_UNKNOWN_WORDS = re.compile(r"банк", re.IGNORECASE)
 
 

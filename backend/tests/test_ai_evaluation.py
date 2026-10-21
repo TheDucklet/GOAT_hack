@@ -191,3 +191,9 @@ def test_contradiction_caught_by_validation_does_not_fail_the_published_card():
     assert c.validation_clean(card)["ok"]
     card["trace"]["validation"]["claims"] = [{"claim_id": "ai-1", "verdict": "contradiction"}]
     assert not c.validation_clean(card)["ok"]
+
+
+def test_missing_data_words_recognize_debt_and_unknown_wording():
+    assert c.MISSING_DATA_WORDS.search("Долг компании в других банках, его сумма и тип ставки неизвестны")
+    assert c.MISSING_DATA_WORDS.search("Структура затрат компании на материалы.")
+    assert not c.MISSING_DATA_WORDS.search("Следующее заседание Банка России в октябре.")
