@@ -30,6 +30,8 @@ def build_payload(request: LLMRequest) -> dict:
         "max_tokens": request.max_tokens,
         "temperature": request.temperature,
     }
+    if request.frequency_penalty is not None:
+        payload["frequency_penalty"] = request.frequency_penalty
     if request.reasoning_effort is not None:
         payload["reasoning_effort"] = request.reasoning_effort
     if request.json_mode:
@@ -51,6 +53,7 @@ class HttpxTransport:
                 "/chat/completions",
                 json=build_payload(request),
                 headers={"X-Request-ID": request.request_id},
+                timeout=request.timeout_seconds if request.timeout_seconds else httpx.USE_CLIENT_DEFAULT,
             )
         except httpx.TimeoutException as error:
             raise TransportFailure("timeout") from error
