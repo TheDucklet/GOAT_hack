@@ -1,3 +1,4 @@
+import json
 from datetime import date
 
 import pytest
@@ -164,3 +165,35 @@ def test_result_is_valid_for_the_backend_tool_contract():
     from app.ai.schemas import BankSearchResult
 
     BankSearchResult.model_validate(search("ключевая ставка", [RATE]))
+
+
+def test_file_repository_finds_chunks_by_all_words_and_filters_by_date(tmp_path):
+    from app.ai.rag.file_repository import FileRepository
+
+    chunks = [
+        {**chunk("c1", "Ключевая ставка сохранена на уровне 14,0%"), "filename": "a.pdf"},
+        {**chunk("c2", "Ключевая ставка будет снижена", document_date="2026-10-23"), "filename": "b.pdf"},
+        {**chunk("c3", "Цена золота выросла"), "filename": "c.pdf"},
+    ]
+    path = tmp_path / "chunks.json"
+    path.write_text(json.dumps(chunks, ensure_ascii=False), encoding="utf-8")
+    repository = FileRepository(path)
+    assert [item["chunk_id"] for item in repository.search_chunks("ключевая ставка", "2026-09-30")] == ["c1"]
+    assert [item["chunk_id"] for item in repository.search_chunks("ключевая ставка", "2026-11-01")] == [
+        "c1",
+        "c2",
+    ]
+    assert repository.search_chunks("ключевая золота", "2026-09-30") == []
+    assert repository.search_chunks("", "2026-09-30") == []
+
+
+def test_search_works_on_top_of_the_file_repository(tmp_path):
+    from app.ai.rag.file_repository import FileRepository
+
+    path = tmp_path / "chunks.json"
+    path.write_text(
+        json.dumps([chunk("c1", "Ключевая ставка сохранена на уровне 14,0%")], ensure_ascii=False),
+        encoding="utf-8",
+    )
+    result = search_bank_analytics("Какое решение по ключевой ставке", "2026-09-30", 5, FileRepository(path))
+    assert [item["chunk_id"] for item in result["items"]] == ["c1"]
