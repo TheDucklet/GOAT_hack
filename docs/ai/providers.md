@@ -19,7 +19,7 @@ result = call_llm("summarize_event", LLMInput(system="...", user="..."), max_tok
 5. Ответ очищается от блока `<think>` и обёртки из тройных кавычек, затем разбирается как JSON-объект. Нарушение формата даёт `invalid_json` без повтора, так как повторный запрос с теми же данными тратит бюджет и обычно даёт тот же результат.
 6. После исчерпания повторов поднимается `LLMError`, наследник `app.integrations.ai.AIError`, с полями `code`, `message`, `request_id`, `retryable`. Заменяющий текст ответа не подставляется.
 
-Ошибка `Budget has been exceeded` от шлюза превращается в `budget_exhausted` и не повторяется. Сброс дневного бюджета происходит в 3:00 МСК.
+Ошибка `Budget has been exceeded` от шлюза превращается в `budget_exhausted` и не повторяется. Сброс дневного бюджета происходит в 3:00 МСК. Перед обращением к шлюзу `call_llm` резервирует оценку стоимости в локальном учёте и при исчерпании лимита возвращает ту же ошибку, не обращаясь к модели (`docs/ai/budget-cache.md`).
 
 ## Журнал usage
 
@@ -58,6 +58,9 @@ Kimi-K2.6 дороже остальных моделей в 4-8 раз, поэт
 | `AI_LLM_TASK_MODELS` | см. `DEFAULT_TASK_MODELS` | JSON-словарь задача → ID модели |
 | `AI_LLM_TARIFFS_PATH` | `backend/app/ai/providers/tariffs.json` | файл тарифов |
 | `AI_LLM_USAGE_LOG_PATH` | пусто | файл журнала usage |
+| `AI_LLM_DAILY_LIMIT_RUB` | из `limits.json` (500) | дневной лимит расходов, см. `docs/ai/budget-cache.md` |
+| `AI_LLM_BUDGET_LIMITS_PATH` | `backend/app/ai/budget/limits.json` | файл лимитов и параметров оценки стоимости |
+| `AI_LLM_BUDGET_LEDGER_PATH` | пусто | файл журнала расходов, без него учёт ведётся в памяти процесса |
 
 ## Проверка шлюза
 

@@ -4,7 +4,7 @@ from pathlib import Path
 
 from app.ai.ocr.render import png_data_url, render_page_png, render_page_tiles
 from app.ai.ocr.settings import OCR_PROMPT_VERSION, OCR_TASK, OcrSettings
-from app.ai.providers import LLMError, LLMInput, call_llm
+from app.ai.providers import LLMError, LLMInput, call_llm, get_llm_settings
 
 SYSTEM_PROMPT = (
     "Ты распознаёшь текст страницы аналитического отчёта банка по изображению. "
@@ -56,11 +56,13 @@ def _cache_file(cache_dir: Path, sha256: str, page: int) -> Path:
     return cache_dir / sha256 / f"{OCR_PROMPT_VERSION}-p{page:03d}.json"
 
 
-def _load_cached(cache_dir: Path, sha256: str, page: int) -> PageResult | None:
+def _load_cached(cache_dir: Path, sha256: str, page: int, model_id: str) -> PageResult | None:
     path = _cache_file(cache_dir, sha256, page)
     if not path.exists():
         return None
     data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("engine") != model_id:
+        return None
     return PageResult(
         page,
         "ok",
@@ -142,7 +144,9 @@ def recognize_page(
     pdf_path: Path, sha256: str, page: int, settings: OcrSettings, use_cache: bool = True
 ) -> PageResult:
     if use_cache:
-        cached = _load_cached(settings.cache_dir, sha256, page)
+        cached = _load_cached(
+            settings.cache_dir, sha256, page, get_llm_settings().llm_task_models.get(OCR_TASK, "")
+        )
         if cached:
             return cached
     spent = Spent()
