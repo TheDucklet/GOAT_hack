@@ -4,10 +4,11 @@ import argparse
 import json
 from pathlib import Path
 
+from pydantic import TypeAdapter
+
 from app.ai.schemas import InsightEnvelopeV2
 from app.notice_policy import notice_policy
 from app.schemas import InsightResult, InsightResultV2
-from pydantic import TypeAdapter
 
 ROOT = Path(__file__).resolve().parents[1]
 
