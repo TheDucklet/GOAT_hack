@@ -80,6 +80,38 @@ def run_reindex(args: argparse.Namespace) -> int:
     return 1 if failures else 0
 
 
+def run_export(args: argparse.Namespace) -> int:
+    prepare_environment()
+    from app.db import session_factory
+    from app.models import BankDocument, Chunk
+
+    with session_factory()() as db:
+        statement = (
+            select(Chunk, BankDocument)
+            .join(BankDocument)
+            .where(BankDocument.status == "done")
+            .order_by(BankDocument.filename, Chunk.page, Chunk.id)
+        )
+        chunks = [
+            {
+                "chunk_id": chunk.id,
+                "document_id": document.id,
+                "filename": document.filename,
+                "version": document.version,
+                "index_version": document.index_version,
+                "page": chunk.page,
+                "document_date": document.document_date,
+                "text": chunk.text,
+            }
+            for chunk, document in db.execute(statement)
+        ]
+    output = Path(args.output)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(chunks, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"фрагментов записано: {len(chunks)}")
+    return 0
+
+
 def run_check(args: argparse.Namespace) -> int:
     prepare_environment()
     from app.db import session_factory
@@ -149,6 +181,9 @@ def main(argv: list[str] | None = None) -> int:
     reindex.add_argument("--document-id")
     reindex.add_argument("--migrate", action="store_true")
     reindex.set_defaults(run=run_reindex)
+    export = commands.add_parser("export")
+    export.add_argument("--output", default="../docs/ai/fixtures/bank-chunks.json")
+    export.set_defaults(run=run_export)
     check = commands.add_parser("check")
     check.add_argument("--queries", default="../docs/ai/retrieval-queries.json")
     check.add_argument("--output", default="../docs/ai/retrieval-checks.json")

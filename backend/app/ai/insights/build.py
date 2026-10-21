@@ -2,6 +2,7 @@ import hashlib
 import json
 import re
 import uuid
+from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Annotated
 
@@ -16,7 +17,7 @@ from app.ai.insights.context import (
 )
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
 from app.ai.providers import LLMInput, call_llm
-from app.ai.schemas import BuildInsightInput, InsightEnvelope
+from app.ai.schemas import BuildInsightInput, EventPayload, InsightEnvelope
 from app.ai.summarization.grounding import normalize_text, unsupported_numbers
 from app.ai.summarization.summarize import Lenient, StrList
 from app.integrations.ai import AIError
@@ -284,7 +285,29 @@ def domain_unknowns(
     return unknowns
 
 
-def build_insight(company_context: dict, user_focus: dict, event: dict, tools) -> dict:
+@dataclass
+class Prepared:
+    context: dict
+    payload: EventPayload
+    focus: dict
+    facts: list[dict]
+    company: list[CompanyFact]
+    matches: list[dict]
+    company_ids: dict[str, dict]
+    news_ids: set[str]
+
+
+@dataclass
+class Composed:
+    sections: dict[str, list[dict]]
+    raw_unknowns: list[str]
+    dropped: list[dict]
+    usage_steps: list[dict]
+    bank: list[dict]
+    hits: list[dict]
+
+
+def prepare_insight(company_context: dict, user_focus: dict, event: dict, tools) -> Prepared:
     request = BuildInsightInput.model_validate(
         {"company_context": company_context, "user_focus": user_focus, "event": event}
     )
@@ -293,29 +316,46 @@ def build_insight(company_context: dict, user_focus: dict, event: dict, tools) -
         raise AIError("forbidden", "Инструмент ограничен выбранной компанией")
     facts = event_facts(payload)
     company = company_facts(context)
-    matches = matched_features(context, payload.topics if isinstance(payload.topics, dict) else {})
-    hits, steps = find_bank_fragments(tools, payload)
+    topics = payload.topics if isinstance(payload.topics, dict) else {}
+    return Prepared(
+        context=context,
+        payload=payload,
+        focus=user_focus,
+        facts=facts,
+        company=company,
+        matches=matched_features(context, topics),
+        company_ids={fact.evidence_id: company_evidence(fact, context) for fact in company},
+        news_ids={ref for claim in facts for ref in claim["evidence_refs"]},
+    )
+
+
+def select_bank(hits: list[dict]) -> list[dict]:
     usable = [hit for hit in hits if not hit["historical"]][:MAX_BANK_FRAGMENTS]
-    bank = [{**hit, **bank_evidence(hit)} for hit in usable]
+    return [{**hit, **bank_evidence(hit)} for hit in usable]
+
+
+def compose_card(prepared: Prepared, hits: list[dict]) -> Composed:
+    bank = select_bank(hits)
     bank_ids = {item["id"]: item for item in bank}
-    company_ids = {fact.evidence_id: company_evidence(fact, context) for fact in company}
-    news_ids = {ref for claim in facts for ref in claim["evidence_refs"]}
-    aliases = aliases_for(facts, company, bank)
+    aliases = aliases_for(prepared.facts, prepared.company, bank)
     candidates = {
-        **{ref: {"kind": "news"} for ref in news_ids},
-        **{ref: {"kind": "company"} for ref in company_ids},
+        **{ref: {"kind": "news"} for ref in prepared.news_ids},
+        **{ref: {"kind": "company"} for ref in prepared.company_ids},
         **{ref: {"kind": "bank"} for ref in bank_ids},
     }
+    payload = prepared.payload
     number_source = " ".join(
         [payload.title, payload.summary or ""]
-        + [claim["text"] for claim in facts]
-        + [fact.excerpt + " " + fact.value for fact in company]
+        + [claim["text"] for claim in prepared.facts]
+        + [fact.excerpt + " " + fact.value for fact in prepared.company]
         + [item["excerpt"] for item in bank]
     )
     raw, dropped, usage_steps = RawInsight(), [], []
-    sections: dict[str, list[dict]] = {}
-    if facts:
-        prompt = build_prompt(payload, user_focus, facts, company, bank, matches, aliases)
+    sections: dict[str, list[dict]] = {section: [] for section in SECTIONS}
+    if prepared.facts:
+        prompt = build_prompt(
+            payload, prepared.focus, prepared.facts, prepared.company, bank, prepared.matches, aliases
+        )
         for attempt in range(ATTEMPTS):
             dropped.clear()
             result = call_llm(
@@ -351,72 +391,80 @@ def build_insight(company_context: dict, user_focus: dict, event: dict, tools) -
                     getattr(raw, section),
                     candidates,
                     aliases,
-                    news_ids | set(bank_ids),
+                    prepared.news_ids | set(bank_ids),
                     number_source,
                     dropped,
                     inherited,
                 )
             if sections["ai_interpretation"]:
                 break
-    else:
-        sections = {section: [] for section in SECTIONS}
+    return Composed(sections, raw.unknowns, dropped, usage_steps, bank, hits)
+
+
+def base_steps(prepared: Prepared) -> list[dict]:
+    return [
+        {
+            "tool": "get_company_context",
+            "company_id": prepared.context["company_id"],
+            "profile_version": prepared.context["profile_version"],
+        },
+        {
+            "tool": "get_event",
+            "event_id": prepared.payload.id,
+            "event_version": prepared.payload.version,
+            "facts": len(prepared.facts),
+        },
+    ]
+
+
+def assemble_envelope(
+    prepared: Prepared,
+    composed: Composed,
+    steps: list[dict],
+    plan: list[str],
+    stop_reason: str,
+    extra_unknowns: list[str] | None = None,
+    extra_trace: dict | None = None,
+    drop_bank_view: bool = False,
+) -> dict:
+    sections = dict(composed.sections)
+    if drop_bank_view:
+        sections["bank_view"] = []
+    bank_ids = {item["id"]: item for item in composed.bank}
     bank_view = sections["bank_view"] or None
+    used_bank = [bank_ids[ref] for claim in sections["bank_view"] for ref in claim["evidence_refs"]]
     unknowns = domain_unknowns(
-        payload,
-        context,
-        [bank_ids[ref] for claim in sections["bank_view"] for ref in claim["evidence_refs"]],
-        hits,
-        bank_view is not None,
+        prepared.payload, prepared.context, used_bank, composed.hits, bank_view is not None
     )
-    if not facts:
+    if not prepared.facts:
         unknowns.insert(0, "Источников недостаточно для вывода о влиянии события на компанию")
-    for text in raw.unknowns:
+    for text in [*(extra_unknowns or []), *composed.raw_unknowns]:
         cleaned = " ".join(text.split())[:MAX_UNKNOWN_CHARS]
         if cleaned and cleaned not in unknowns:
             unknowns.append(cleaned)
     unknowns = unknowns[:MAX_UNKNOWNS]
-    claims = facts + [claim for section in SECTIONS for claim in sections[section]]
+    claims = prepared.facts + [claim for section in SECTIONS for claim in sections[section]]
     refs = list(dict.fromkeys(ref for claim in claims for ref in claim["evidence_refs"]))
     evidence = [bank_ids[ref] for ref in refs if ref in bank_ids] + [
-        company_ids[ref] for ref in refs if ref in company_ids
+        prepared.company_ids[ref] for ref in refs if ref in prepared.company_ids
     ]
     evidence = [
         {key: item[key] for key in ("id", "kind", "source_id", "version", "locator", "excerpt")}
         for item in evidence
     ]
-    trace_id = str(uuid.uuid4())
     trace = {
         "prompt_version": INSIGHT_PROMPT_VERSION,
-        "plan": [
-            "read_event_facts",
-            "read_company_features",
-            "search_bank_analytics",
-            "compose_insight",
-            "check_grounding",
-        ],
-        "steps": [
-            {
-                "tool": "get_company_context",
-                "company_id": context["company_id"],
-                "profile_version": context["profile_version"],
-            },
-            {
-                "tool": "get_event",
-                "event_id": payload.id,
-                "event_version": payload.version,
-                "facts": len(facts),
-            },
-            *steps,
-            *usage_steps,
-        ],
-        "company_features_offered": [fact.feature for fact in company],
-        "matched_with_event": matches,
-        "bank_fragments_offered": [item["id"] for item in bank],
-        "dropped_claims": dropped,
-        "stop_reason": "completed" if facts else "no_event_facts",
+        "plan": plan,
+        "steps": steps,
+        "company_features_offered": [fact.feature for fact in prepared.company],
+        "matched_with_event": prepared.matches,
+        "bank_fragments_offered": [item["id"] for item in composed.bank],
+        "dropped_claims": composed.dropped,
+        "stop_reason": stop_reason,
+        **(extra_trace or {}),
     }
     result = {
-        "facts": facts,
+        "facts": prepared.facts,
         "bank_view": bank_view,
         "ai_interpretation": sections["ai_interpretation"],
         "risks": sections["risks"],
@@ -424,8 +472,27 @@ def build_insight(company_context: dict, user_focus: dict, event: dict, tools) -
         "actions": sections["actions"],
         "unknowns": unknowns,
         "evidence_refs": refs,
-        "trace_id": trace_id,
+        "trace_id": str(uuid.uuid4()),
     }
     return InsightEnvelope.model_validate(
         {"result": result, "evidence": evidence, "trace": trace}
     ).model_dump(mode="json")
+
+
+FIXED_PLAN = [
+    "read_event_facts",
+    "read_company_features",
+    "search_bank_analytics",
+    "compose_insight",
+    "check_grounding",
+]
+
+
+def build_insight(company_context: dict, user_focus: dict, event: dict, tools) -> dict:
+    prepared = prepare_insight(company_context, user_focus, event, tools)
+    hits, search_steps = find_bank_fragments(tools, prepared.payload)
+    composed = compose_card(prepared, hits)
+    steps = [*base_steps(prepared), *search_steps, *composed.usage_steps]
+    return assemble_envelope(
+        prepared, composed, steps, FIXED_PLAN, "completed" if prepared.facts else "no_event_facts"
+    )
