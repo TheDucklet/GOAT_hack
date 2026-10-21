@@ -3,9 +3,10 @@
 from sqlalchemy import select
 
 from app.errors import AppError
-from app.integrations.ai import call_ai
+from app.insight_provenance import validate_v2_provenance
+from app.integrations.ai import AIError, call_ai
 from app.models import Chat, Insight, Message, User
-from app.schemas import AIEnvelope, ChatResult, InsightResult
+from app.schemas import AIEnvelope, ChatResult, InsightResultV2, parse_insight_result
 from app.services.access import company_access
 from app.services.clients import company_context
 from app.services.events import event_context
@@ -44,7 +45,13 @@ def insight_job(db, job):
     envelope = AIEnvelope.model_validate(
         call_ai("build_insight", company_context=context, user_focus=focus, event=event, tools=tools)
     )
-    result = InsightResult.model_validate(envelope.result).model_dump(mode="json")
+    parsed = parse_insight_result(envelope.result)
+    if isinstance(parsed, InsightResultV2):
+        try:
+            validate_v2_provenance(parsed, envelope.evidence)
+        except ValueError as exc:
+            raise AIError("invalid_evidence", "Некорректные основания карточки v2") from exc
+    result = parsed.model_dump(mode="json")
     store_evidence(db, envelope, job.company_id)
     check_refs(db, result, job.company_id)
     insight = db.scalar(select(Insight).where(Insight.cache_key == key))

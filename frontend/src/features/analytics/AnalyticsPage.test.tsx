@@ -6,6 +6,7 @@ import { HttpClient } from '../../shared/api/http';
 import { createMockTransport } from '../../shared/api/mock/transport';
 import { demoMe, demoMembership } from '../../shared/api/mock/fixtures';
 import { normalizeError } from '../../shared/api/errors';
+import { insightNotice } from '../../shared/api/insight-contract';
 import type { Feed, FeedItem } from '../../shared/api/types';
 
 vi.mock('../../shared/api/index', () => ({ http: new HttpClient('/api', createMockTransport()) }));
@@ -42,6 +43,7 @@ describe('R-04 personalized feed', () => {
     open('/app');
     await userEvent.click(await screen.findByRole('link', { name: /Открыть бизнес-аналитику/ }));
     expect(await screen.findByRole('button', { name: 'Событие event-1' })).toBeVisible();
+    expect(screen.getByRole('note')).toHaveTextContent(insightNotice.disclaimer);
     expect(analyticsApi.feed).toHaveBeenCalledWith('company-a', 20, 0, expect.any(AbortSignal));
     expect(screen.getByText('Изменились условия расчётов.')).toBeVisible();
     expect(screen.getByText('Отрасль: 25.61')).toBeVisible();

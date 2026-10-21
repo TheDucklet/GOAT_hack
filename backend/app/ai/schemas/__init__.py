@@ -24,6 +24,7 @@ from app.ai.schemas.outputs import (
     GroundedSummaryResult,
     GroundedUserFocus,
     InsightEnvelope,
+    InsightEnvelopeV2,
     OcrChunk,
     OcrQuality,
 )
@@ -54,6 +55,7 @@ __all__ = [
     "GroundedUserFocus",
     "IngestBankDocumentInput",
     "InsightEnvelope",
+    "InsightEnvelopeV2",
     "OcrChunk",
     "OcrQuality",
     "Publication",

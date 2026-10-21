@@ -537,6 +537,16 @@ export interface components {
                 [key: string]: unknown;
             }[];
         };
+        /** BankViewContext */
+        BankViewContext: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "current" | "historical" | "missing" | "undated";
+            /** Document Dates */
+            document_dates: string[];
+        };
         /** Body_post_admin_documents */
         Body_post_admin_documents: {
             /** File */
@@ -743,7 +753,8 @@ export interface components {
             versions: {
                 [key: string]: unknown;
             };
-            result: components["schemas"]["InsightResult"];
+            /** Result */
+            result: components["schemas"]["InsightResultV2"] | components["schemas"]["InsightResult"];
         };
         /** InsightResult */
         InsightResult: {
@@ -765,6 +776,74 @@ export interface components {
             evidence_refs: string[];
             /** Trace Id */
             trace_id: string;
+        };
+        /**
+         * InsightResultV2
+         * @description Canonical v2 wire contract shared by AI, API and generated UI types.
+         */
+        InsightResultV2: {
+            /** Facts */
+            facts: components["schemas"]["StatementV2"][];
+            /** Bank View */
+            bank_view: components["schemas"]["StatementV2"][] | null;
+            /** Ai Interpretation */
+            ai_interpretation: components["schemas"]["StatementV2"][];
+            /** Risks */
+            risks: components["schemas"]["StatementV2"][];
+            /** Opportunities */
+            opportunities: components["schemas"]["StatementV2"][];
+            /** Actions */
+            actions: components["schemas"]["StatementV2"][];
+            /** Unknowns */
+            unknowns: string[];
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /** Trace Id */
+            trace_id: string;
+            /**
+             * Schema Version
+             * @constant
+             */
+            schema_version: "v2";
+            personalized_summary: components["schemas"]["StatementV2"] | null;
+            /** Mechanism */
+            mechanism: components["schemas"]["StatementV2"][];
+            /**
+             * Impact Level
+             * @enum {string}
+             */
+            impact_level: "low" | "medium" | "high" | "undetermined";
+            impact_reason: components["schemas"]["StatementV2"] | null;
+            time_horizon: components["schemas"]["TimeHorizon"];
+            /** Assumptions */
+            assumptions: components["schemas"]["StatementV2"][];
+            /**
+             * Relevance Status
+             * @enum {string}
+             */
+            relevance_status: "active" | "review_required" | "expired" | "undetermined";
+            /** Valid From */
+            valid_from: string | null;
+            /** Valid Until */
+            valid_until: string | null;
+            /** Review After */
+            review_after: string | null;
+            relevance_reason: components["schemas"]["StatementV2"] | null;
+            bank_view_context: components["schemas"]["BankViewContext"];
+            /** Next Actions */
+            next_actions: components["schemas"]["NextAction"][];
+            /**
+             * Policy Version
+             * @default notice_v1
+             * @constant
+             */
+            policy_version: "notice_v1";
+            /**
+             * Disclaimer
+             * @default Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка.
+             * @constant
+             */
+            disclaimer: "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка.";
         };
         /** JobOut */
         JobOut: {
@@ -883,6 +962,18 @@ export interface components {
              */
             created_at: string;
         };
+        /** NextAction */
+        NextAction: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "ask_question" | "contact_manager_demo" | "hide_insight";
+            /** Label */
+            label: string;
+            /** Question */
+            question?: string | null;
+        };
         /** ProfileIn */
         ProfileIn: {
             /**
@@ -893,6 +984,55 @@ export interface components {
             /** Interests */
             interests?: string[];
         };
+        /** QuantitativeScenario */
+        QuantitativeScenario: {
+            /** Inputs */
+            inputs: components["schemas"]["ScenarioInput"][];
+            /** Formula */
+            formula: string;
+            /** Unit */
+            unit: string;
+            /** Period */
+            period: string;
+            /** Assumptions */
+            assumptions: string[];
+            result_range: components["schemas"]["ScenarioRange"];
+        };
+        /** ScenarioInput */
+        ScenarioInput: {
+            /** Name */
+            name: string;
+            /** Value */
+            value: number;
+            /** Unit */
+            unit: string;
+            /** Period */
+            period: string;
+            /** Input Refs */
+            input_refs: string[];
+        };
+        /** ScenarioRange */
+        ScenarioRange: {
+            /** Lower */
+            lower: number;
+            /** Upper */
+            upper: number;
+        };
+        /** StatementV2 */
+        StatementV2: {
+            /** Claim Id */
+            claim_id: string;
+            /** Text */
+            text: string;
+            /** Evidence Refs */
+            evidence_refs: string[];
+            /**
+             * Statement Type
+             * @enum {string}
+             */
+            statement_type: "fact" | "hypothesis" | "scenario";
+            quantitative_scenario?: components["schemas"]["QuantitativeScenario"] | null;
+        };
         /** StatsOut */
         StatsOut: {
             /** Positive Feedback */
@@ -901,6 +1041,15 @@ export interface components {
             negative_feedback: number;
             /** Failed Jobs */
             failed_jobs: number;
+        };
+        /** TimeHorizon */
+        TimeHorizon: {
+            /** Label */
+            label: string;
+            /** Starts On */
+            starts_on: string | null;
+            /** Ends On */
+            ends_on: string | null;
         };
         /** UploadOut */
         UploadOut: {
