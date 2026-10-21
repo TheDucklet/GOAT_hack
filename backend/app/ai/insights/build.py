@@ -20,6 +20,7 @@ from app.ai.providers import LLMInput, call_llm
 from app.ai.schemas import BuildInsightInput, EventPayload, InsightEnvelope
 from app.ai.summarization.grounding import normalize_text, unsupported_numbers
 from app.ai.summarization.summarize import Lenient, StrList
+from app.ai.validation import apply_validation, build_catalog
 from app.integrations.ai import AIError
 
 SECTIONS = ("bank_view", "ai_interpretation", "risks", "opportunities", "actions")
@@ -417,6 +418,10 @@ def base_steps(prepared: Prepared) -> list[dict]:
     ]
 
 
+def profile_excerpts(context: dict) -> dict[str, str]:
+    return {fact.feature: fact.excerpt for fact in company_facts(context)}
+
+
 def assemble_envelope(
     prepared: Prepared,
     composed: Composed,
@@ -474,9 +479,16 @@ def assemble_envelope(
         "evidence_refs": refs,
         "trace_id": str(uuid.uuid4()),
     }
-    return InsightEnvelope.model_validate(
-        {"result": result, "evidence": evidence, "trace": trace}
-    ).model_dump(mode="json")
+    catalog = build_catalog(
+        prepared.context,
+        prepared.payload,
+        prepared.facts,
+        composed.hits,
+        profile_excerpts(prepared.context),
+    )
+    checked, report = apply_validation({"result": result, "evidence": evidence}, catalog)
+    trace["validation"] = report
+    return InsightEnvelope.model_validate({**checked, "trace": trace}).model_dump(mode="json")
 
 
 FIXED_PLAN = [

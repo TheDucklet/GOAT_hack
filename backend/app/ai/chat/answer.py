@@ -13,12 +13,14 @@ from app.ai.insights.build import (
     aliases_for,
     event_date,
     prepare_insight,
+    profile_excerpts,
     select_bank,
 )
 from app.ai.providers import LLMError, LLMInput, call_llm
 from app.ai.schemas import AnswerChatInput, ChatEnvelope
 from app.ai.summarization.grounding import normalize_text, supported_sentences
 from app.ai.summarization.summarize import Lenient, StrList
+from app.ai.validation import build_catalog, validate_answer
 from app.integrations.ai import AIError
 
 FATAL_CODES = frozenset({"budget_exhausted", "model_not_allowed", "ai_unavailable"})
@@ -199,6 +201,16 @@ def usage_total(steps: list[dict]) -> dict:
     }
 
 
+def evidence_for(refs: list[str], bank_ids: dict[str, dict], prepared: Prepared) -> list[dict]:
+    items = [bank_ids[ref] for ref in refs if ref in bank_ids] + [
+        prepared.company_ids[ref] for ref in refs if ref in prepared.company_ids
+    ]
+    return [
+        {key: item[key] for key in ("id", "kind", "source_id", "version", "locator", "excerpt")}
+        for item in items
+    ]
+
+
 def answer_chat(company_context: dict, user_focus: dict, event: dict, history: list[dict], tools) -> dict:
     request = AnswerChatInput.model_validate(
         {"company_context": company_context, "user_focus": user_focus, "event": event, "history": history}
@@ -256,8 +268,16 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         + [item["excerpt"] for item in bank]
         + [turn["text"] for turn in turns]
     )
+    catalog = build_catalog(
+        prepared.context,
+        prepared.payload,
+        prepared.facts,
+        hits,
+        profile_excerpts(prepared.context),
+    )
     prompt = build_prompt(prepared, question, turns, bank, aliases, missing)
     answer, refs, reason, raw = "", [], "not_started", RawAnswer()
+    validation: dict = {}
     for attempt in range(2):
         result = call_llm(
             "answer_chat",
@@ -270,6 +290,13 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         raw = RawAnswer.model_validate(result.data)
         answer, refs, reason = clean_answer(raw, candidates, aliases, number_source)
         if reason is None:
+            checked = validate_answer(
+                answer, refs, evidence_for(refs, bank_ids, prepared), catalog, number_source
+            )
+            validation = checked["record"]
+            if checked["verdict"] != "supported":
+                reason = "validation_failed"
+                continue
             break
     unknowns: list[str] = []
     if reason is not None:
@@ -284,13 +311,7 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
     unknowns = list(dict.fromkeys(item for item in unknowns if normalize_text(item)))[:MAX_UNKNOWNS]
     if not refs and not unknowns:
         unknowns = [NO_SOURCES_UNKNOWN]
-    evidence = [bank_ids[ref] for ref in refs if ref in bank_ids] + [
-        prepared.company_ids[ref] for ref in refs if ref in prepared.company_ids
-    ]
-    evidence = [
-        {key: item[key] for key in ("id", "kind", "source_id", "version", "locator", "excerpt")}
-        for item in evidence
-    ]
+    evidence = evidence_for(refs, bank_ids, prepared)
     steps.append(
         {"stop": "answered" if reason is None else "no_sources", "intent": intent, "evidence_ids": refs}
     )
@@ -304,6 +325,7 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         "bank_fragments_offered": [item["id"] for item in bank],
         "company_features_offered": [fact.feature for fact in prepared.company],
         "stop_reason": "answered" if reason is None else "no_sources",
+        "validation": validation or None,
     }
     result_body = {
         "answer": answer,
