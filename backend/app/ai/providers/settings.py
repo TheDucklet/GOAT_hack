@@ -33,6 +33,9 @@ class LLMSettings(BaseSettings):
     llm_task_models: dict[str, str] = Field(default_factory=lambda: dict(DEFAULT_TASK_MODELS))
     llm_tariffs_path: Path = Path(__file__).with_name("tariffs.json")
     llm_usage_log_path: Path | None = None
+    llm_budget_limits_path: Path = Path(__file__).parents[1] / "budget" / "limits.json"
+    llm_budget_ledger_path: Path | None = None
+    llm_daily_limit_rub: float | None = Field(default=None, gt=0)
 
 
 @lru_cache

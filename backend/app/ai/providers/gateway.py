@@ -7,6 +7,8 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ValidationError
 
+from app.ai.budget import BudgetExhausted, BudgetLedger, Reservation
+from app.ai.providers.budgeting import default_ledger, estimate_cost_rub
 from app.ai.providers.models import (
     ALLOWED_MODEL_IDS,
     CallStatus,
@@ -135,11 +137,14 @@ def call_llm(
     transport: Transport | None = None,
     usage_sink: UsageSink | None = None,
     tariffs: TariffTable | None = None,
+    budget: BudgetLedger | None = None,
     sleep: Callable[[float], None] = time.sleep,
 ) -> LLMResult:
     settings = settings or get_llm_settings()
     tariffs = tariffs or TariffTable.load(settings.llm_tariffs_path)
     usage_sink = usage_sink or LoggingUsageSink(settings.llm_usage_log_path)
+    budget = budget or default_ledger(settings)
+    reservation: Reservation | None = None
     request_id = uuid4().hex
     started = time.monotonic()
     model_id = settings.llm_task_models.get(task, "")
@@ -164,6 +169,8 @@ def call_llm(
             cost_source="tariff" if tokens.gateway_cost is None else "gateway",
         )
         usage_sink.record(record)
+        if reservation is not None:
+            budget.settle(reservation, record.cost_rub, task, model_id, status)
         return record
 
     def fail(code: AIErrorCode, tokens: TokenUsage | None = None) -> LLMError:
@@ -192,6 +199,10 @@ def call_llm(
         timeout_seconds=timeout_seconds or settings.llm_timeout_seconds,
         frequency_penalty=frequency_penalty,
     )
+    try:
+        reservation = budget.reserve(request_id, estimate_cost_rub(tariffs, budget.config, request))
+    except BudgetExhausted:
+        raise fail("budget_exhausted") from None
     last_failure: AIErrorCode = "provider_unavailable"
     for attempt in range(settings.llm_max_retries + 1):
         if attempt:
@@ -207,6 +218,8 @@ def call_llm(
             last_failure = failure_code
             continue
         if failure_code:
+            if failure_code == "budget_exhausted":
+                budget.mark_exhausted()
             raise fail(failure_code)
         try:
             content = extract_content(response)

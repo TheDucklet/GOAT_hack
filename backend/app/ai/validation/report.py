@@ -1,6 +1,7 @@
 from app.ai.validation.catalog import Catalog
 from app.ai.validation.checks import CONTRADICTION, INSUFFICIENT, SUPPORTED, check_claim
 
+VALIDATION_VERSION = "validation-1"
 CLAIM_SECTIONS = ("facts", "bank_view", "ai_interpretation", "risks", "opportunities", "actions")
 MAX_REMOVED_UNKNOWNS = 4
 MAX_TEXT_PREVIEW = 90

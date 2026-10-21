@@ -3,11 +3,19 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 
+from app.ai.providers.budgeting import shared_ledger
 from app.cli import seed_demo
 from app.config import get_settings
 from app.db import Base, get_engine, session_factory
 from app.main import create_app
 from tests.factories import PASSWORD
+
+
+@pytest.fixture(autouse=True)
+def fresh_budget_ledger():
+    shared_ledger.cache_clear()
+    yield
+    shared_ledger.cache_clear()
 
 
 @pytest.fixture
