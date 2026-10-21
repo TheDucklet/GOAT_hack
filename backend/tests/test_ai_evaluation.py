@@ -183,3 +183,11 @@ def test_llm_failure_scenario_returns_explicit_errors_and_no_card(monkeypatch):
     result = llm_failure(session)
     assert result["verdict"] == "PASS"
     assert [item["code"] for item in result["outcomes"]] == ["provider_unavailable", "budget_exhausted"]
+
+
+def test_contradiction_caught_by_validation_does_not_fail_the_published_card():
+    card = sample_card()
+    card["trace"]["validation"]["claims"] = [{"claim_id": "ai-gone", "verdict": "contradiction"}]
+    assert c.validation_clean(card)["ok"]
+    card["trace"]["validation"]["claims"] = [{"claim_id": "ai-1", "verdict": "contradiction"}]
+    assert not c.validation_clean(card)["ok"]

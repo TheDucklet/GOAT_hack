@@ -72,8 +72,16 @@ def bank_view_rule(envelope: dict) -> dict:
 
 def validation_clean(envelope: dict) -> dict:
     report = envelope["trace"].get("validation") or {}
-    bad = [item["claim_id"] for item in report.get("claims", []) if item["verdict"] == "contradiction"]
-    return check("no_contradiction_with_sources", not bad, f"утверждения с противоречием: {bad}")
+    contradicted = {
+        item["claim_id"] for item in report.get("claims", []) if item["verdict"] == "contradiction"
+    }
+    published = {claim["claim_id"] for claim in claims_of(envelope["result"])}
+    remaining = sorted(contradicted & published)
+    return check(
+        "no_contradiction_in_published_card",
+        not remaining,
+        f"противоречия в карточке: {remaining}, перехвачено проверкой и убрано: {len(contradicted) - len(remaining)}",
+    )
 
 
 def card_not_empty(envelope: dict) -> dict:
