@@ -12,6 +12,7 @@ DEFAULT_TASK_MODELS: dict[str, str] = {
     "build_insight": "qwen/qwen3.6-35b-a3b",
     "answer_chat": "qwen/qwen3.6-35b-a3b",
     "select_industries": "google/gemma-4-26b-a4b-it",
+    "chat_router": "google/gemma-4-26b-a4b-it",
     "agent_plan": "qwen/qwen3.6-35b-a3b",
     "agent_query": "google/gemma-4-26b-a4b-it",
     "agent_check": "qwen/qwen3.6-35b-a3b",
