@@ -5,6 +5,7 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from app.ai.evaluation.demo import write_demo
 from app.ai.evaluation.pipeline import DEFAULT_FIXTURES, DEFAULT_INPUTS, SearchLog, Workspace
 from app.ai.evaluation.scenarios import SCENARIOS, Session
 from app.ai.ocr.settings import OCR_PROMPT_VERSION, get_ocr_settings
@@ -177,9 +178,15 @@ def check_ocr(args: argparse.Namespace) -> int:
     return 0 if report["passed"] == report["total"] else 2
 
 
+def build_demo_trace(args: argparse.Namespace) -> int:
+    demo = write_demo(Path(args.output), Path(args.fixtures) / "bank-chunks.json", Path(args.demo_output))
+    print(f"шагов: {len(demo['steps'])}, утверждений банка: {len(demo['bank_view'])}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m app.ai.evaluation")
-    parser.add_argument("command", choices=["run", "search", "retrieval", "ocr"])
+    parser.add_argument("command", choices=["run", "search", "retrieval", "ocr", "demo"])
     parser.add_argument("--only", nargs="*", choices=list(SCENARIOS))
     parser.add_argument("--scenario", default="S7")
     parser.add_argument("--fixtures", default=str(DEFAULT_FIXTURES))
@@ -187,8 +194,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--queries", default="../docs/ai/retrieval-queries.json")
     parser.add_argument("--ocr-report", default="../docs/ai/ocr-report.json")
     parser.add_argument("--output", default="../docs/quality/acceptance")
+    parser.add_argument("--demo-output", default="../docs/demo/agent-trace.json")
     args = parser.parse_args(argv)
-    handlers = {"run": run_scenarios, "search": replay_search, "retrieval": check_retrieval, "ocr": check_ocr}
+    handlers = {
+        "run": run_scenarios,
+        "search": replay_search,
+        "retrieval": check_retrieval,
+        "ocr": check_ocr,
+        "demo": build_demo_trace,
+    }
     return handlers[args.command](args)
 
 
