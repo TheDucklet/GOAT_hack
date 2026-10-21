@@ -4,11 +4,15 @@ from app.ai.providers.models import LLMRequest, TransportResponse
 from app.ai.providers.transport import TransportFailure
 
 
-def completion(content: str, input_tokens: int = 100, output_tokens: int = 50) -> TransportResponse:
+def completion(
+    content: str, input_tokens: int = 100, output_tokens: int = 50, cost: float | None = None
+) -> TransportResponse:
     body = {
         "choices": [{"message": {"role": "assistant", "content": content}}],
         "usage": {"prompt_tokens": input_tokens, "completion_tokens": output_tokens},
     }
+    if cost is not None:
+        body["usage"]["cost"] = cost
     return TransportResponse(status_code=200, body=body, text=json.dumps(body, ensure_ascii=False))
 
 

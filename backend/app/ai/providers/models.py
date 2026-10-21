@@ -14,6 +14,8 @@ ALLOWED_MODEL_IDS: frozenset[str] = frozenset(
     }
 )
 
+ReasoningEffort = Literal["none", "low", "medium", "high"]
+
 CallStatus = Literal[
     "ok",
     "timeout",
@@ -43,6 +45,7 @@ class LLMRequest(BaseModel):
     max_tokens: int
     temperature: float
     json_mode: bool
+    reasoning_effort: ReasoningEffort | None = None
 
 
 class TransportResponse(BaseModel):
@@ -55,6 +58,7 @@ class TokenUsage(BaseModel):
     input_tokens: int = Field(default=0, ge=0)
     output_tokens: int = Field(default=0, ge=0)
     estimated: bool = False
+    gateway_cost: float | None = None
 
 
 class UsageRecord(BaseModel):
@@ -68,6 +72,7 @@ class UsageRecord(BaseModel):
     cost_rub: float
     attempts: int
     estimated_tokens: bool
+    cost_source: Literal["gateway", "tariff"]
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 

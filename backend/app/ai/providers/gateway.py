@@ -13,6 +13,7 @@ from app.ai.providers.models import (
     LLMInput,
     LLMRequest,
     LLMResult,
+    ReasoningEffort,
     TokenUsage,
     TransportResponse,
     UsageRecord,
@@ -79,7 +80,7 @@ def classify_failure(response: TransportResponse) -> AIErrorCode | None:
     return None
 
 
-def extract_content(response: TransportResponse) -> tuple[str, TokenUsage]:
+def extract_content(response: TransportResponse) -> str:
     body = response.body or {}
     try:
         content = body["choices"][0]["message"]["content"]
@@ -89,12 +90,21 @@ def extract_content(response: TransportResponse) -> tuple[str, TokenUsage]:
         content = "".join(part.get("text", "") for part in content if isinstance(part, dict))
     if not isinstance(content, str) or not content.strip():
         raise ValueError("response content is empty")
-    raw_usage = body.get("usage") or {}
-    if "prompt_tokens" in raw_usage and "completion_tokens" in raw_usage:
-        return content, TokenUsage(
-            input_tokens=int(raw_usage["prompt_tokens"]), output_tokens=int(raw_usage["completion_tokens"])
+    return content
+
+
+def read_usage(response: TransportResponse, content: str = "") -> TokenUsage:
+    raw = (response.body or {}).get("usage") or {}
+    cost = raw.get("cost")
+    gateway_cost = float(cost) if isinstance(cost, int | float) and not isinstance(cost, bool) else None
+    if "prompt_tokens" in raw and "completion_tokens" in raw:
+        return TokenUsage(
+            input_tokens=int(raw["prompt_tokens"]),
+            output_tokens=int(raw["completion_tokens"]),
+            gateway_cost=gateway_cost,
         )
-    return content, TokenUsage(output_tokens=max(1, len(content) // 3), estimated=True)
+    output = max(1, len(content) // 3) if content else 0
+    return TokenUsage(output_tokens=output, estimated=True, gateway_cost=gateway_cost)
 
 
 @lru_cache(maxsize=4)
@@ -117,6 +127,7 @@ def call_llm(
     *,
     response_model: type[BaseModel] | None = None,
     json_mode: bool = True,
+    reasoning_effort: ReasoningEffort | None = None,
     settings: LLMSettings | None = None,
     transport: Transport | None = None,
     usage_sink: UsageSink | None = None,
@@ -140,9 +151,14 @@ def call_llm(
             output_tokens=tokens.output_tokens,
             latency_ms=int((time.monotonic() - started) * 1000),
             status=status,
-            cost_rub=tariffs.cost_rub(model_id, tokens.input_tokens, tokens.output_tokens),
+            cost_rub=(
+                tokens.gateway_cost
+                if tokens.gateway_cost is not None
+                else tariffs.cost_rub(model_id, tokens.input_tokens, tokens.output_tokens)
+            ),
             attempts=attempts,
             estimated_tokens=tokens.estimated,
+            cost_source="tariff" if tokens.gateway_cost is None else "gateway",
         )
         usage_sink.record(record)
         return record
@@ -169,6 +185,7 @@ def call_llm(
         max_tokens=max_tokens,
         temperature=settings.llm_temperature,
         json_mode=json_mode,
+        reasoning_effort=reasoning_effort or settings.llm_reasoning_effort,
     )
     last_failure: AIErrorCode = "provider_unavailable"
     for attempt in range(settings.llm_max_retries + 1):
@@ -187,12 +204,13 @@ def call_llm(
         if failure_code:
             raise fail(failure_code)
         try:
-            content, tokens = extract_content(response)
+            content = extract_content(response)
+            tokens = read_usage(response, content)
             data = parse_json_object(content)
             if response_model is not None:
                 data = response_model.model_validate(data).model_dump(mode="json")
         except (ValueError, ValidationError):
-            raise fail("invalid_json", _tokens_or_none(response)) from None
+            raise fail("invalid_json", read_usage(response)) from None
         return LLMResult(
             request_id=request_id,
             task=task,
@@ -201,15 +219,3 @@ def call_llm(
             usage=finish("ok", tokens),
         )
     raise fail(last_failure)
-
-
-def _tokens_or_none(response: TransportResponse) -> TokenUsage | None:
-    try:
-        return extract_content(response)[1]
-    except ValueError:
-        raw = (response.body or {}).get("usage") or {}
-        if "prompt_tokens" in raw and "completion_tokens" in raw:
-            return TokenUsage(
-                input_tokens=int(raw["prompt_tokens"]), output_tokens=int(raw["completion_tokens"])
-            )
-        return None

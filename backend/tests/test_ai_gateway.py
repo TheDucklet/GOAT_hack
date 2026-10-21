@@ -222,3 +222,48 @@ def test_usage_is_estimated_when_provider_omits_it():
     result, _ = run(ScriptedTransport(TransportResponse(status_code=200, body=body)))
     assert result.usage.estimated_tokens
     assert result.usage.output_tokens >= 1
+
+
+def test_gateway_reported_cost_takes_precedence_over_tariffs():
+    transport = ScriptedTransport(completion('{"a": 1}', 1000, 200, cost=0.5))
+    result, _ = run(transport)
+    assert result.usage.cost_rub == 0.5
+    assert result.usage.cost_source == "gateway"
+
+
+def test_tariff_cost_is_used_when_gateway_reports_none():
+    result, _ = run(ScriptedTransport(json_completion({"a": 1}, 1000, 200)))
+    assert result.usage.cost_source == "tariff"
+
+
+def test_reasoning_is_disabled_by_default():
+    transport = ScriptedTransport(json_completion({"a": 1}))
+    run(transport)
+    assert transport.requests[0].reasoning_effort == "none"
+    assert build_payload(transport.requests[0])["reasoning_effort"] == "none"
+
+
+def test_reasoning_effort_can_be_raised_per_call():
+    transport = ScriptedTransport(json_completion({"a": 1}))
+    run(transport, reasoning_effort="low")
+    assert transport.requests[0].reasoning_effort == "low"
+
+
+def test_reasoning_parameter_is_omitted_when_disabled_in_settings():
+    transport = ScriptedTransport(json_completion({"a": 1}))
+    run(transport, settings=settings(llm_reasoning_effort=None))
+    assert "reasoning_effort" not in build_payload(transport.requests[0])
+
+
+def test_truncated_reasoning_response_is_reported_as_invalid_json():
+    body = {
+        "choices": [{"finish_reason": "length", "message": {"content": "", "reasoning_content": "..."}}],
+        "usage": {"prompt_tokens": 32, "completion_tokens": 400},
+    }
+    from app.ai.providers.models import TransportResponse
+
+    sink = MemoryUsageSink()
+    with pytest.raises(LLMError) as raised:
+        run(ScriptedTransport(TransportResponse(status_code=200, body=body)), sink)
+    assert raised.value.code == "invalid_json"
+    assert sink.records[0].output_tokens == 400

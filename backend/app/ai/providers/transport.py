@@ -30,6 +30,8 @@ def build_payload(request: LLMRequest) -> dict:
         "max_tokens": request.max_tokens,
         "temperature": request.temperature,
     }
+    if request.reasoning_effort is not None:
+        payload["reasoning_effort"] = request.reasoning_effort
     if request.json_mode:
         payload["response_format"] = {"type": "json_object"}
     return payload
