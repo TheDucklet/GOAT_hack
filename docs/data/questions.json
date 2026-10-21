@@ -1,0 +1,70 @@
+{
+  "version": "company-data-2",
+  "updated_at": "2026-10-22",
+  "questions": [
+    {
+      "id": "DQ-01", "status": "assumed",
+      "source": "Кейс.pdf стр. 15; анализ вебинара от 21.10.2026; реальный REVENUE_COMPANY",
+      "date": "2026-10-22", "confirmed_by": "Первичный кейс подтверждает только годовую выручку; подтверждения года/валюты/заглушки организатором нет",
+      "question": "Является ли 1000 заглушкой? Подтверждены ли 2025, RUB и масштаб единиц?",
+      "decision": "Сохранить raw/normalized, quality=assumed, value=null, unit=null, annual_year_unknown; 1000 отметить лишь возможной заглушкой",
+      "version_impact": "Подтверждение меняет data-semantics и profile_version, инвалидирует обе ступени кеша"
+    },
+    {
+      "id": "DQ-02", "status": "unknown",
+      "source": "Кейс.pdf стр. 16; анализ от 21.10.2026 предлагает конец 31.10.2026",
+      "date": "2026-10-22", "confirmed_by": null,
+      "question": "Каковы начало/конец периода платежей и дата формирования выгрузки?",
+      "decision": "period=null; будущая дата из анализа не считается метаданными",
+      "version_impact": "Новые подтверждённые метаданные требуют смены semantics/profile и пересчёта агрегатов"
+    },
+    {
+      "id": "DQ-03", "status": "quarantined",
+      "source": "Исходные строки df_Uid_data_hack.csv; измерения в a14-validation.json",
+      "date": "2026-10-22", "confirmed_by": "Автоматическое измерение исходных строк, не подтверждение организатора о природе ID",
+      "question": "Как трактовать неоднозначный общий ID и группы? Подтверждены ли природа связей и порог 15 млрд?",
+      "decision": "Карантин по версионированной эвристике CITY+MAINOKVED_CODE или техническому ID, без зашитого числа строк/ID. Группы не являются подтверждённым владением/консолидацией; порог не используется",
+      "version_impact": "Изменение правила идентичности или GROUP_ID требует новой semantics и переимпорта"
+    },
+    {
+      "id": "DQ-04", "status": "confirmed_primary_source",
+      "source": "Кейс.pdf стр. 15–16 против трактовки города обслуживания во вторичном анализе",
+      "date": "2026-10-22", "confirmed_by": "Определения в первичном кейсе",
+      "question": "Регистрация компании, проживание физлица или обслуживание?",
+      "decision": "CITY/REGION — регистрация юрлица; CITY_NAME/RC_NAME — проживание физлица. Альтернативная трактовка обслуживания конфликтует с кейсом и не применяется",
+      "version_impact": "Исправлено в company-data-2; прежняя география требует переимпорта"
+    },
+    {
+      "id": "DQ-05", "status": "confirmed_primary_source",
+      "source": "Кейс.pdf стр. 15 и реальный заголовок NEGATIVEMARK",
+      "date": "2026-10-22", "confirmed_by": "Кейс и заголовки CSV",
+      "question": "Что означает NEGATIVEMARK и существует ли NEGATIVE_MARK_1?",
+      "decision": "Использовать только реальный NEGATIVEMARK как бинарный признак ключевого собственника; не отрицательный риск, не долю и не назначение собственника по shared_person",
+      "version_impact": "Трактовка company-data-2, AI labels и безопасные факты"
+    },
+    {
+      "id": "DQ-06", "status": "measured_by_reproducible_audit",
+      "source": "Сырые платежи и a14-validation.json: measured_self_payment_share",
+      "date": "2026-10-22", "confirmed_by": "verify_data_semantics.py и PostgreSQL NUMERIC; проверяется полный набор",
+      "question": "Каковы реальные доли self-payments по сумме и по количеству?",
+      "decision": "Измерять отдельно по PAY_AMT и PAY_CNT; 82%/3% не являются константами приложения или готовым результатом без сверки",
+      "version_impact": "Правила классификации входят в semantics; смена входных файлов меняет profile_version"
+    },
+    {
+      "id": "DQ-07", "status": "confirmed_headers",
+      "source": "Кейс.pdf стр. 16 и заголовки трёх реальных CSV",
+      "date": "2026-10-22", "confirmed_by": "Локальная проверка имён и заголовков",
+      "question": "В кейсе повторено имя файла физлиц в разделе платежей",
+      "decision": "Платежи читать из df_Uid_payment_hack.csv с PAYER/BENEFICIARY/PAY_AMT/PAY_CNT; не читать person-links как платежи",
+      "version_impact": "Закреплено в импортере и fixtures company-data-2"
+    },
+    {
+      "id": "DQ-08", "status": "unknown",
+      "source": "Кейс.pdf стр. 16: PAY_AMT — объём платежей без валюты",
+      "date": "2026-10-22", "confirmed_by": null,
+      "question": "Какова валюта/масштаб PAY_AMT?",
+      "decision": "Хранить точные наблюдаемые числа с unit=null; не называть их рублёвым или годовым оборотом",
+      "version_impact": "Подтверждение единиц меняет semantics и профиль"
+    }
+  ]
+}

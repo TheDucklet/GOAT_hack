@@ -1,5 +1,9 @@
 # Контракт API
 
+Компания теперь выдаётся как CompanyContext v2: [семантика данных](../data/data-semantics.md),
+`company-context-v2.schema.json` и общие `company-context-v2-examples.json`.
+Tagless CompanyContext v1 сохранён для совместимости входов AI и старых fixtures.
+
 Контракт бизнес-влияния v2, правила совместимости v1, владельцы полей и общие
 fixtures опубликованы в [insight-v2.md](insight-v2.md). Генератор пока выдаёт v1;
 v2-схемы доступны для параллельной реализации F-14/A-15/R-05.

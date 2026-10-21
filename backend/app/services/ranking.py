@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from app.config import get_settings
+from app.data_semantics import confirmed_value
 from app.db import as_utc
 
 
@@ -19,7 +20,7 @@ def rank_event(context: dict, focus: dict, event: dict, now: datetime) -> tuple[
     for category, fields in categories.items():
         values = {normalized(t) for t in topics.get(category, [])}
         for field in fields:
-            value = features.get(field, {}).get("value")
+            value = confirmed_value(features.get(field))
             if value and normalized(value) in values:
                 matches[category] = 1
                 reasons.append(
@@ -28,7 +29,7 @@ def rank_event(context: dict, focus: dict, event: dict, now: datetime) -> tuple[
                 break
     for field in topics.get("product", []):
         if field.startswith("CL_PRODUCT_") or field == "FACTORING_MARK":
-            if features.get(field, {}).get("value") in {"1", "1.0", 1, True}:
+            if confirmed_value(features.get(field)) in {"1", "1.0", 1, True}:
                 matches["product"] = 1
                 reasons.append(
                     {"factor": "product", "feature_path": f"features.{field}", "event_topic": field}

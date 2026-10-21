@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 
 from app.ai.schemas import EventPayload
+from app.data_semantics import confirmed_value
 
 
 @dataclass(frozen=True)
@@ -39,9 +40,9 @@ def build_catalog(
             "text": publication.text if publication else item.excerpt,
         }
     features = {
-        name: str(entry.get("value", ""))
+        name: str(value)
         for name, entry in context["features"].items()
-        if str(entry.get("value", "")).strip()
+        if (value := confirmed_value(entry)) is not None and str(value).strip()
     }
     return Catalog(
         company_id=context["company_id"],

@@ -46,7 +46,7 @@ OPERATIONS = [
         s.ProfileIn,
     ),
     Operation("GET", "/companies", list[s.CompanyOut], "authenticated; active memberships only"),
-    Operation("GET", "/companies/{company_id}/context", s.CompanyContext, "active membership in company"),
+    Operation("GET", "/companies/{company_id}/context", s.CompanyContextV2 | s.CompanyContext, "active membership in company"),
     Operation(
         "GET", "/companies/{company_id}/feed", s.FeedOut, "active membership in company", paginate=True
     ),

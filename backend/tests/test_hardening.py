@@ -37,7 +37,7 @@ def test_insight_cache_versions(client, monkeypatch, dimension):
     else:
         with session_factory()() as db, db.begin():
             if dimension == "profile":
-                db.get(Company, "demo_company_a").profile_version = "demo-v2"
+                db.get(Company, "demo_company_a").profile_version = "demo-v3"
             elif dimension == "event":
                 db.get(Event, event_id).version = "event-v2"
             else:

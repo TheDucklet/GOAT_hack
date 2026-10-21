@@ -1,5 +1,6 @@
 """Shared evidence validation and trace persistence for all AI results."""
 
+from app.data_semantics import confirmed_value
 from app.integrations.ai import AIError
 from app.models import BankDocument, Evidence, News, Trace
 from app.services.clients import company_context
@@ -29,7 +30,7 @@ def store_evidence(db, envelope, company_id):
                 item.source_id != company_id
                 or item.version != context["profile_version"]
                 or field not in context["features"]
-                or (context["features"][field].get("value") is None)
+                or confirmed_value(context["features"][field]) is None
             ):
                 raise AIError("invalid_evidence", "Некорректный клиентский источник")
         existing = db.get(Evidence, item.id)

@@ -6,6 +6,8 @@ import examples from '../../../../docs/contracts/examples.json';
 import insightFixtures from '../../../../docs/contracts/insight-v2-examples.json';
 import insightSchema from '../../../../docs/contracts/insight.schema.json';
 import envelopeSchema from '../../../../docs/contracts/insight-envelope-v2.schema.json';
+import companySchema from '../../../../docs/contracts/company-context-v2.schema.json';
+import companyFixtures from '../../../../docs/contracts/company-context-v2-examples.json';
 import { insightNotice, isInsightV2 } from './insight-contract';
 import { demoCompanies, demoInsight } from './mock/fixtures';
 
@@ -62,5 +64,20 @@ describe('F-13 shared insight fixtures', () => {
   it('identifies legacy results for the unassessed v1 presentation', () => {
     expect(isInsightV2(demoInsight.result)).toBe(false);
     expect(() => isInsightV2(Object.assign({}, demoInsight.result, { schema_version: 'v99' }))).toThrow('Unsupported insight schema version');
+  });
+});
+
+describe('A-14 shared company context', () => {
+  const validate = validator.compile(companySchema);
+  const validateHttp = validator.compile({ $ref: 'backend#/components/schemas/CompanyContextV2' });
+
+  it.each(companyFixtures)('validates $name against the canonical schema and HTTP contract', ({ data }) => {
+    expect(validate(data), JSON.stringify(validate.errors)).toBe(true);
+    expect(validateHttp(data), JSON.stringify(validateHttp.errors)).toBe(true);
+    expect(data.payment_summary.period).toBeNull();
+    expect(data.group_summary.is_consolidated).toBe(false);
+    for (const feature of Object.values(data.features)) {
+      if (feature.quality !== 'confirmed') expect(feature.value).toBeNull();
+    }
   });
 });

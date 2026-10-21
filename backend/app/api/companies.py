@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.db import get_db, utcnow
 from app.models import Company, Event, Membership, News, User
-from app.schemas import CompanyContext, CompanyOut, FeedOut
+from app.schemas import CompanyContext, CompanyContextV2, CompanyOut, FeedOut
 from app.security import current_user
 from app.services.access import company_access
 from app.services.clients import company_context
@@ -28,7 +28,7 @@ def companies(user: User = Depends(current_user), db: Session = Depends(get_db, 
     )
 
 
-@router.get("/companies/{company_id}/context", response_model=CompanyContext)
+@router.get("/companies/{company_id}/context", response_model=CompanyContextV2 | CompanyContext)
 def context(
     company_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
 ):

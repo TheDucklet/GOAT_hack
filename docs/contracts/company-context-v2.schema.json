@@ -1,0 +1,431 @@
+{
+  "$defs": {
+    "CompanyRelationship": {
+      "additionalProperties": false,
+      "properties": {
+        "company_id": {
+          "title": "Company Id",
+          "type": "string"
+        },
+        "relation_type": {
+          "enum": [
+            "same_group",
+            "shared_person",
+            "payment"
+          ],
+          "title": "Relation Type",
+          "type": "string"
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "enum": [
+                "incoming",
+                "outgoing"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Direction"
+        },
+        "provenance": {
+          "additionalProperties": true,
+          "title": "Provenance",
+          "type": "object"
+        }
+      },
+      "required": [
+        "company_id",
+        "relation_type",
+        "provenance"
+      ],
+      "title": "CompanyRelationship",
+      "type": "object"
+    },
+    "DataFeature": {
+      "additionalProperties": false,
+      "properties": {
+        "raw": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Raw",
+          "type": "array"
+        },
+        "normalized": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Normalized"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "quality": {
+          "enum": [
+            "confirmed",
+            "assumed",
+            "conflicting",
+            "missing",
+            "invalid",
+            "quarantined",
+            "legacy"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "provenance": {
+          "additionalProperties": true,
+          "title": "Provenance",
+          "type": "object"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period"
+        },
+        "issues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        }
+      },
+      "required": [
+        "raw",
+        "normalized",
+        "value",
+        "quality",
+        "provenance",
+        "unit",
+        "period",
+        "issues"
+      ],
+      "title": "DataFeature",
+      "type": "object"
+    },
+    "GroupSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "group_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Group Id"
+        },
+        "observed_members": {
+          "title": "Observed Members",
+          "type": "integer"
+        },
+        "revenue_covered_members": {
+          "title": "Revenue Covered Members",
+          "type": "integer"
+        },
+        "revenue_sum": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Revenue Sum"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period"
+        },
+        "is_consolidated": {
+          "const": false,
+          "default": false,
+          "title": "Is Consolidated",
+          "type": "boolean"
+        },
+        "coverage_scope": {
+          "const": "observed_dataset",
+          "default": "observed_dataset",
+          "title": "Coverage Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "group_id",
+        "observed_members",
+        "revenue_covered_members",
+        "revenue_sum",
+        "unit",
+        "period"
+      ],
+      "title": "GroupSummary",
+      "type": "object"
+    },
+    "PaymentSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "outgoing": {
+          "$ref": "#/$defs/PaymentTotals"
+        },
+        "incoming": {
+          "$ref": "#/$defs/PaymentTotals"
+        },
+        "self_payments": {
+          "$ref": "#/$defs/PaymentTotals"
+        },
+        "quarantined": {
+          "$ref": "#/$defs/PaymentTotals"
+        },
+        "unclassified": {
+          "$ref": "#/$defs/PaymentTotals"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Unit"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Period"
+        },
+        "provenance": {
+          "additionalProperties": true,
+          "title": "Provenance",
+          "type": "object"
+        }
+      },
+      "required": [
+        "outgoing",
+        "incoming",
+        "self_payments",
+        "quarantined",
+        "unclassified",
+        "unit",
+        "period",
+        "provenance"
+      ],
+      "title": "PaymentSummary",
+      "type": "object"
+    },
+    "PaymentTotals": {
+      "additionalProperties": false,
+      "properties": {
+        "amount": {
+          "title": "Amount",
+          "type": "string"
+        },
+        "payment_count": {
+          "title": "Payment Count",
+          "type": "integer"
+        },
+        "row_count": {
+          "title": "Row Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "amount",
+        "payment_count",
+        "row_count"
+      ],
+      "title": "PaymentTotals",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "company_id": {
+      "title": "Company Id",
+      "type": "string"
+    },
+    "profile_version": {
+      "title": "Profile Version",
+      "type": "string"
+    },
+    "group_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Group Id"
+    },
+    "features": {
+      "additionalProperties": {
+        "$ref": "#/$defs/DataFeature"
+      },
+      "title": "Features",
+      "type": "object"
+    },
+    "unknowns": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unknowns",
+      "type": "array"
+    },
+    "payment_links": {
+      "additionalProperties": {
+        "items": {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "title": "Payment Links",
+      "type": "object"
+    },
+    "related_companies": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Related Companies",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "v2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "data_semantics_version": {
+      "title": "Data Semantics Version",
+      "type": "string"
+    },
+    "identity_quality": {
+      "enum": [
+        "confirmed",
+        "ambiguous",
+        "placeholder",
+        "legacy"
+      ],
+      "title": "Identity Quality",
+      "type": "string"
+    },
+    "client_type": {
+      "anyOf": [
+        {
+          "enum": [
+            "Client",
+            "Prospect",
+            "Closed Client"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Client Type"
+    },
+    "payment_summary": {
+      "$ref": "#/$defs/PaymentSummary"
+    },
+    "relationships": {
+      "items": {
+        "$ref": "#/$defs/CompanyRelationship"
+      },
+      "title": "Relationships",
+      "type": "array"
+    },
+    "relationship_coverage": {
+      "additionalProperties": true,
+      "title": "Relationship Coverage",
+      "type": "object"
+    },
+    "group_summary": {
+      "$ref": "#/$defs/GroupSummary"
+    }
+  },
+  "required": [
+    "company_id",
+    "profile_version",
+    "group_id",
+    "features",
+    "unknowns",
+    "payment_links",
+    "related_companies",
+    "schema_version",
+    "data_semantics_version",
+    "identity_quality",
+    "client_type",
+    "payment_summary",
+    "relationships",
+    "relationship_coverage",
+    "group_summary"
+  ],
+  "title": "CompanyContextV2",
+  "type": "object"
+}

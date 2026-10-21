@@ -2,6 +2,7 @@ import uuid
 from dataclasses import dataclass
 
 from app.ai.summarization.vocabulary import PRODUCT_DESCRIPTIONS, TRUE_VALUES
+from app.data_semantics import confirmed_value
 
 EVIDENCE_NAMESPACE = uuid.UUID("5a1f0c8e-6c2b-4f6e-9a57-2d5f6a7b9c10")
 MAX_FEATURE_CHARS = 120
@@ -15,7 +16,8 @@ FEATURE_LABELS: dict[str, str] = {
     "AMOUNT_WORKERS_FNS_GRADATION": "Численность работников по данным ФНС",
     "COMPANY_AGE_YEARS_GRADATION": "Возраст компании, лет",
     "ECO_MARK_LABEL": "Стадия развития бизнеса",
-    "FTS_COUNTRY_NAME": "Страны внешнеторговых операций по данным ФТС",
+    "FTS_COUNTRY_NAME": "Страна в записи ФТС; направление торговли неизвестно",
+    "NEGATIVEMARK": "Признак ключевого собственника; доля и структура владения неизвестны",
     "OKFS_NAME": "Форма собственности",
     "CL_TYPE": "Тип клиента банка",
 }
@@ -61,9 +63,9 @@ def readable_value(feature: str, raw: str) -> str:
         return f"нет, продукта банка «{meaning}» у компании нет"
     if feature == "FTS_FLAG":
         return (
-            "есть сведения о внешнеторговых операциях"
+            "есть запись о компании в базе ФТС; импорт/экспорт не установлен"
             if raw in TRUE_VALUES
-            else "сведений о внешнеторговых операциях нет"
+            else "запись о компании в базе ФТС не отмечена"
         )
     if feature == "REVENUE_COMPANY":
         return readable_money(raw) or raw
@@ -75,15 +77,18 @@ def company_facts(context: dict) -> list[CompanyFact]:
     facts = []
     for feature in FEATURE_ORDER:
         entry = features.get(feature)
-        raw = None if entry is None else str(entry.get("value", ""))
+        value = confirmed_value(entry)
+        raw = None if value is None else str(value)
         if raw is None or raw in MISSING or (feature == "FTS_COUNTRY_NAME" and not raw.strip()):
             continue
         label = FEATURE_LABELS.get(feature) or ("Банковский продукт" if feature in FLAG_FEATURES else feature)
         if feature == "GROUP_ID":
             label = "Группа компаний"
         if feature == "FTS_FLAG":
-            label = "Внешнеторговые операции"
+            label = "Наличие записи ФТС"
         excerpt = f"{label}: {readable_value(feature, raw)}"[: MAX_FEATURE_CHARS * 2]
+        if feature == "REVENUE_COMPANY" and "quality" in entry:
+            excerpt = f"{label}: {raw}; единица: {entry.get('unit') or 'неизвестна'}; период: {entry.get('period') or 'неизвестен'}"
         facts.append(
             CompanyFact(
                 evidence_id(context["company_id"], context["profile_version"], feature),
@@ -103,7 +108,8 @@ def matched_features(context: dict, topics: dict | None) -> list[dict]:
 
     def value_of(feature: str) -> str | None:
         entry = features.get(feature)
-        return None if entry is None else str(entry.get("value", ""))
+        value = confirmed_value(entry)
+        return None if value is None else str(value)
 
     def folded(items) -> set[str]:
         return {str(item).strip().casefold() for item in items or []}

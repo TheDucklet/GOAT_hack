@@ -82,6 +82,72 @@ class CompanyContext(Schema):
     related_companies: list[str]
 
 
+class DataFeature(Schema):
+    raw: list[str]
+    normalized: str | None
+    value: str | None
+    quality: Literal["confirmed", "assumed", "conflicting", "missing", "invalid", "quarantined", "legacy"]
+    provenance: dict
+    unit: str | None
+    period: str | None
+    issues: list[str]
+
+    @model_validator(mode="after")
+    def safe_projection(self):
+        if self.quality != "confirmed" and self.value is not None:
+            raise ValueError("uncertain features cannot expose a confirmed value")
+        if self.quality == "confirmed" and (self.value is None or self.value != self.normalized):
+            raise ValueError("confirmed value must equal its normalized value")
+        return self
+
+
+class PaymentTotals(Schema):
+    amount: str
+    payment_count: int
+    row_count: int
+
+
+class PaymentSummary(Schema):
+    outgoing: PaymentTotals
+    incoming: PaymentTotals
+    self_payments: PaymentTotals
+    quarantined: PaymentTotals
+    unclassified: PaymentTotals
+    unit: str | None
+    period: str | None
+    provenance: dict
+
+
+class CompanyRelationship(Schema):
+    company_id: str
+    relation_type: Literal["same_group", "shared_person", "payment"]
+    direction: Literal["incoming", "outgoing"] | None = None
+    provenance: dict
+
+
+class GroupSummary(Schema):
+    group_id: str | None
+    observed_members: int
+    revenue_covered_members: int
+    revenue_sum: str | None
+    unit: str | None
+    period: str | None
+    is_consolidated: Literal[False] = False
+    coverage_scope: Literal["observed_dataset"] = "observed_dataset"
+
+
+class CompanyContextV2(CompanyContext):
+    schema_version: Literal["v2"]
+    data_semantics_version: str
+    identity_quality: Literal["confirmed", "ambiguous", "placeholder", "legacy"]
+    client_type: Literal["Client", "Prospect", "Closed Client"] | None
+    features: dict[str, DataFeature]
+    payment_summary: PaymentSummary
+    relationships: list[CompanyRelationship]
+    relationship_coverage: dict
+    group_summary: GroupSummary
+
+
 class JobOut(Schema):
     id: str
     status: Literal["queued", "running", "done", "failed"]

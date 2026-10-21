@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from app.schemas import CompanyContext, EvidenceOut, UserFocus
+from app.schemas import CompanyContext, CompanyContextV2, EvidenceOut, UserFocus
 
 MAX_QUERY_CHARS = 1000
 
@@ -63,7 +63,7 @@ class SearchBankAnalyticsInput(AIInput):
 
 
 class BuildInsightInput(AIInput):
-    company_context: CompanyContext
+    company_context: CompanyContextV2 | CompanyContext
     user_focus: UserFocus
     event: EventPayload
 

@@ -7,9 +7,10 @@ from alembic.config import Config
 from sqlalchemy import select
 
 from app.config import get_settings
+from app.data_semantics import DATA_SEMANTICS_VERSION, normalize_feature
 from app.db import session_factory
 from app.models import Company, Membership, User
-from app.services.clients import import_clients
+from app.services.clients import demo_candidates, import_clients
 from app.services.news import collect_news, ensure_sources
 from app.services.sessions import hasher
 
@@ -34,25 +35,44 @@ def seed_demo(db, password):
         raise ValueError("Set DEMO_PASSWORD to at least 10 characters")
     for suffix, loan in [("a", "1.0"), ("b", "0.0")]:
         company_id = f"demo_company_{suffix}"
-        if not db.get(Company, company_id):
+        company = db.get(Company, company_id)
+        if company is None or company.profile_version == "demo-v1":
             values = {
+                "CL_TYPE": "CLIENT",
                 "MAINOKVED_CODE": "25.61",
                 "MAINOKVED_NAME": "Обработка металлов",
                 "REGION": "Москва" if suffix == "a" else "Татарстан",
                 "CL_PRODUCT_LOA_MARK": loan,
             }
-            db.add(
-                Company(
-                    id=company_id,
-                    name=f"Демо компания {suffix.upper()}",
-                    profile_version="demo-v1",
-                    features={
-                        field: {"value": value, "source": {"file": "synthetic-demo", "field": field}}
-                        for field, value in values.items()
-                    },
-                    unknowns=["loan_amount", "loan_rate"],
-                )
+            updated = Company(
+                id=company_id,
+                name=f"Демо компания {suffix.upper()}",
+                profile_version="demo-v2",
+                data_semantics_version=DATA_SEMANTICS_VERSION,
+                identity_quality="confirmed",
+                client_type="Client",
+                features={
+                    field: {
+                        **normalize_feature(field, [(1, values)], "synthetic-demo"),
+                        "provenance": {"file": "synthetic-demo", "field": field, "synthetic": True},
+                    }
+                    for field, value in values.items()
+                },
+                unknowns=["loan_amount", "loan_rate"],
             )
+            if company is None:
+                db.add(updated)
+            else:
+                for field in [
+                    "name",
+                    "profile_version",
+                    "data_semantics_version",
+                    "identity_quality",
+                    "client_type",
+                    "features",
+                    "unknowns",
+                ]:
+                    setattr(company, field, getattr(updated, field))
     db.flush()
     for name in ["user_a", "user_b", "admin"]:
         email = f"{name}@goat.example.org"
@@ -102,6 +122,8 @@ def main():
     admin = commands.add_parser("create-admin")
     admin.add_argument("--email", required=True)
     commands.add_parser("seed-demo")
+    demo = commands.add_parser("demo-companies")
+    demo.add_argument("--limit", type=int, default=10)
     clients = commands.add_parser("import-clients")
     clients.add_argument("--directory", type=Path, required=True)
     clients.add_argument("--report", type=Path, default=Path("../docs/data/import-report.json"))
@@ -122,6 +144,16 @@ def main():
             seed_demo(db, secret.get_secret_value() if secret else "")
         elif args.command == "import-clients":
             report = import_clients(db, args.directory)
+        elif args.command == "demo-companies":
+            print(
+                json.dumps(
+                    [
+                        {"id": company.id, "client_type": company.client_type}
+                        for company in demo_candidates(db, args.limit)
+                    ],
+                    ensure_ascii=False,
+                )
+            )
         elif args.command == "collect-news":
             print(json.dumps(collect_news(db), ensure_ascii=False))
     if args.command == "import-clients":
