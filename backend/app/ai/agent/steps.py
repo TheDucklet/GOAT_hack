@@ -166,7 +166,9 @@ def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> 
         reasons.append(
             {"code": "no_interpretation", "detail": "нет объяснения, подтверждённого признаками компании"}
         )
-    if rejected:
+    kept_bank = composed.sections["bank_view"]
+    contradicted = any(item["verdict"] == "contradiction" for item in rejected)
+    if rejected and (contradicted or not kept_bank):
         kinds = sorted({item["verdict"] for item in rejected})
         reasons.append(
             {
@@ -174,7 +176,7 @@ def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> 
                 "detail": "проверка не подтвердила утверждения банка: " + ", ".join(kinds),
             }
         )
-    elif not composed.sections["bank_view"]:
+    elif not kept_bank:
         if composed.bank:
             reasons.append(
                 {
@@ -188,7 +190,7 @@ def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> 
             )
         else:
             reasons.append({"code": "no_bank_evidence", "detail": "материалы банка по запросам не найдены"})
-    if any(item["verdict"] == "contradiction" for item in rejected):
+    if contradicted:
         return CheckResult("contradiction", reasons)
     return CheckResult("insufficient" if reasons else "supported", reasons)
 
