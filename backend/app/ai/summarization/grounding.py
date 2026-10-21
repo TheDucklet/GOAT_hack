@@ -46,3 +46,11 @@ INSTRUCTION_PATTERN = re.compile(
 def strip_instructions(text: str) -> str:
     sentences = SENTENCE_END.split(text)
     return " ".join(sentence for sentence in sentences if not INSTRUCTION_PATTERN.search(sentence)).strip()
+
+
+def shorten(text: str, limit: int) -> str:
+    flat = " ".join(text.split())
+    if len(flat) <= limit:
+        return flat
+    cut = flat[: limit - 3].rsplit(" ", 1)[0].rstrip(" ,;:")
+    return cut + "..."

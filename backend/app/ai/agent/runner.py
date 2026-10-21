@@ -93,13 +93,11 @@ class AgentRun:
         return composed, check
 
 
-def stop_unknowns(stop_reason: str, check: CheckResult, queries: list[str], extra: int) -> list[str]:
+def stop_unknowns(stop_reason: str, extra: int) -> list[str]:
     if stop_reason != "retry_limit_reached":
         return []
-    asked = "; ".join(f"«{query}»" for query in queries)
-    verdicts = ", ".join(item["detail"] for item in check.reasons)
     return [
-        f"Позиция банка по событию не подтверждена: после {extra} уточняющих поисков подходящих материалов нет ({verdicts}), запросы: {asked}"
+        f"Позиция банка по событию не подтверждена: после {extra} уточняющих поисков подходящих материалов нет"
     ]
 
 
@@ -167,7 +165,7 @@ def run_agent(
         run.steps,
         [*plan, "check_grounding", "retry_search_if_needed"],
         stop_reason,
-        extra_unknowns=stop_unknowns(stop_reason, check, run.queries, run.extra_searches),
+        extra_unknowns=stop_unknowns(stop_reason, run.extra_searches),
         extra_trace=trace_fields(run, stop_reason),
         drop_bank_view=False,
     )
