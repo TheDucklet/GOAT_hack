@@ -4,7 +4,16 @@ from pydantic import Field, field_validator, model_validator
 
 from app.ai.schemas.claims import GroundedClaim
 from app.ai.schemas.evidence import GroundedEvidence
-from app.schemas import ChatResult, IngestResult, InsightResult, Schema, SummaryResult, UserFocus
+from app.insight_provenance import validate_v2_provenance
+from app.schemas import (
+    ChatResult,
+    IngestResult,
+    InsightResult,
+    InsightResultV2,
+    Schema,
+    SummaryResult,
+    UserFocus,
+)
 
 MAX_SEARCH_ITEMS = 5
 
@@ -205,3 +214,12 @@ class InsightEnvelope(AIEnvelopeBase):
 
 class ChatEnvelope(AIEnvelopeBase):
     result: GroundedChatResult
+
+
+class InsightEnvelopeV2(AIEnvelopeBase):
+    result: InsightResultV2
+
+    @model_validator(mode="after")
+    def complete_provenance(self):
+        validate_v2_provenance(self.result, self.evidence)
+        return self

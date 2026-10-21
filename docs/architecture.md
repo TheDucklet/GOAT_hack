@@ -110,6 +110,16 @@ Compose использует один backend-образ для api/worker и о
 
 ## Как добавляются задачи из PDF
 
+Актуальные статусы и сроки — в [плане после анализа вебинара](planning/README.md). R-00–R-04, A-01–A-13 и F-01–F-12 уже включены в main в исходной постановке. Таблица ниже указывает места расширения; исторические описания задач не заменяют новый каталог. Новые продолжения сохраняют существующие границы:
+
+| Задачи после пересмотра | Владелец компонента |
+| --- | --- |
+| R-13 / R-05 / R-06 / R-09 | `features/analytics`: единое состояние company/event/insight/chat, feed preview, карточка, chat, notice и действия; один shared HTTP и wire-контракт |
+| A-14 / A-15 | `services.clients/ranking/insights`, существующие schemas/миграции/queue: семантика v2, snapshot и ограниченная подготовка top-K |
+| A-16 / A-17 / A-18 | Отдельные interactions/телеметрия поверх существующих доступов и БД; runtime worker/AI, persistent budget/cache, общие regression/coverage проверки |
+| F-13 / F-14 / F-15 | Существующие `app.ai.schemas`, insights/agent/validation/RAG: влияние и актуальность v2, совместимость и semantic grounding |
+| R-14 / F-16 / F-17 | `docs/product`, `docs/quality`, существующий AI evaluation и эксплуатационная документация; измерения не дублируют бизнес-реализацию |
+
 | Задачи | Место расширения и правило |
 | --- | --- |
 | R-04 (реализовано) | `features/analytics`: useFeed управляет страницами/отменой, FeedEvent — отображением; AnalyticsSelectionProvider хранит event/chat отдельно для компании; доступная компания из CompanyProvider, запросы из analytics/api |

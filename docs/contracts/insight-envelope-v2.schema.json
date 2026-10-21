@@ -1,0 +1,591 @@
+{
+  "$defs": {
+    "BankViewContext": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "current",
+            "historical",
+            "missing",
+            "undated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "document_dates": {
+          "items": {
+            "format": "date",
+            "type": "string"
+          },
+          "title": "Document Dates",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "document_dates"
+      ],
+      "title": "BankViewContext",
+      "type": "object"
+    },
+    "GroundedEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "news",
+            "bank",
+            "company"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "locator": {
+          "additionalProperties": true,
+          "title": "Locator",
+          "type": "object"
+        },
+        "excerpt": {
+          "title": "Excerpt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "source_id",
+        "version",
+        "locator",
+        "excerpt"
+      ],
+      "title": "GroundedEvidence",
+      "type": "object"
+    },
+    "InsightResultV2": {
+      "additionalProperties": false,
+      "description": "Canonical v2 wire contract shared by AI, API and generated UI types.",
+      "properties": {
+        "facts": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Facts",
+          "type": "array"
+        },
+        "bank_view": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StatementV2"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bank View"
+        },
+        "ai_interpretation": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Ai Interpretation",
+          "type": "array"
+        },
+        "risks": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Risks",
+          "type": "array"
+        },
+        "opportunities": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Opportunities",
+          "type": "array"
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Actions",
+          "type": "array"
+        },
+        "unknowns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unknowns",
+          "type": "array"
+        },
+        "evidence_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Trace Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "personalized_summary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatementV2"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mechanism": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Mechanism",
+          "type": "array"
+        },
+        "impact_level": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "undetermined"
+          ],
+          "title": "Impact Level",
+          "type": "string"
+        },
+        "impact_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatementV2"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "time_horizon": {
+          "$ref": "#/$defs/TimeHorizon"
+        },
+        "assumptions": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "relevance_status": {
+          "enum": [
+            "active",
+            "review_required",
+            "expired",
+            "undetermined"
+          ],
+          "title": "Relevance Status",
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Valid From"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Valid Until"
+        },
+        "review_after": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Review After"
+        },
+        "relevance_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatementV2"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bank_view_context": {
+          "$ref": "#/$defs/BankViewContext"
+        },
+        "next_actions": {
+          "items": {
+            "$ref": "#/$defs/NextAction"
+          },
+          "title": "Next Actions",
+          "type": "array"
+        },
+        "policy_version": {
+          "const": "notice_v1",
+          "default": "notice_v1",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "disclaimer": {
+          "const": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка.",
+          "default": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка.",
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "facts",
+        "bank_view",
+        "ai_interpretation",
+        "risks",
+        "opportunities",
+        "actions",
+        "unknowns",
+        "evidence_refs",
+        "trace_id",
+        "schema_version",
+        "personalized_summary",
+        "mechanism",
+        "impact_level",
+        "impact_reason",
+        "time_horizon",
+        "assumptions",
+        "relevance_status",
+        "valid_from",
+        "valid_until",
+        "review_after",
+        "relevance_reason",
+        "bank_view_context",
+        "next_actions"
+      ],
+      "title": "InsightResultV2",
+      "type": "object"
+    },
+    "NextAction": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "enum": [
+            "ask_question",
+            "contact_manager_demo",
+            "hide_insight"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "question": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Question"
+        }
+      },
+      "required": [
+        "action",
+        "label"
+      ],
+      "title": "NextAction",
+      "type": "object"
+    },
+    "QuantitativeScenario": {
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/ScenarioInput"
+          },
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "formula": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Formula",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Unit",
+          "type": "string"
+        },
+        "period": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Period",
+          "type": "string"
+        },
+        "assumptions": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "result_range": {
+          "$ref": "#/$defs/ScenarioRange"
+        }
+      },
+      "required": [
+        "inputs",
+        "formula",
+        "unit",
+        "period",
+        "assumptions",
+        "result_range"
+      ],
+      "title": "QuantitativeScenario",
+      "type": "object"
+    },
+    "ScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "unit": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Unit",
+          "type": "string"
+        },
+        "period": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Period",
+          "type": "string"
+        },
+        "input_refs": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "unit",
+        "period",
+        "input_refs"
+      ],
+      "title": "ScenarioInput",
+      "type": "object"
+    },
+    "ScenarioRange": {
+      "additionalProperties": false,
+      "properties": {
+        "lower": {
+          "title": "Lower",
+          "type": "number"
+        },
+        "upper": {
+          "title": "Upper",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lower",
+        "upper"
+      ],
+      "title": "ScenarioRange",
+      "type": "object"
+    },
+    "StatementV2": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Text",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "statement_type": {
+          "enum": [
+            "fact",
+            "hypothesis",
+            "scenario"
+          ],
+          "title": "Statement Type",
+          "type": "string"
+        },
+        "quantitative_scenario": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QuantitativeScenario"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "claim_id",
+        "text",
+        "evidence_refs",
+        "statement_type"
+      ],
+      "title": "StatementV2",
+      "type": "object"
+    },
+    "TimeHorizon": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "starts_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Starts On"
+        },
+        "ends_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ends On"
+        }
+      },
+      "required": [
+        "label",
+        "starts_on",
+        "ends_on"
+      ],
+      "title": "TimeHorizon",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "evidence": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/GroundedEvidence"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "trace": {
+      "additionalProperties": true,
+      "default": {},
+      "title": "Trace",
+      "type": "object"
+    },
+    "result": {
+      "$ref": "#/$defs/InsightResultV2"
+    }
+  },
+  "required": [
+    "result"
+  ],
+  "title": "InsightEnvelopeV2",
+  "type": "object"
+}

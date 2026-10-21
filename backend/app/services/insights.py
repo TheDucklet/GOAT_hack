@@ -6,6 +6,7 @@ import json
 from sqlalchemy import select
 
 from app.config import get_settings
+from app.insight_versions import contract_versions
 from app.models import BankDocument
 from app.services.access import company_access
 from app.services.clients import company_context
@@ -24,6 +25,7 @@ def insight_versions(db, user, company_id, event_id):
         )
     )
     versions = {
+        **contract_versions(),
         "profile": company_context(db, company_id)["profile_version"],
         "event": event["version"],
         "focus": focus_hash(membership),

@@ -1,7 +1,9 @@
-from datetime import datetime
-from typing import Any, Literal
+from datetime import date, datetime
+from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+
+from app.notice_policy import DISCLAIMER, POLICY_VERSION
 
 
 class Schema(BaseModel):
@@ -121,12 +123,199 @@ class InsightResult(Schema):
     trace_id: str
 
 
+NonBlank = Annotated[str, Field(min_length=1, pattern=r"\S")]
+References = Annotated[list[NonBlank], Field(min_length=1)]
+
+
+class ScenarioInput(Schema):
+    name: NonBlank
+    value: float = Field(allow_inf_nan=False, strict=True)
+    unit: NonBlank
+    period: NonBlank
+    input_refs: References
+
+
+class ScenarioRange(Schema):
+    lower: float = Field(allow_inf_nan=False, strict=True)
+    upper: float = Field(allow_inf_nan=False, strict=True)
+
+    @model_validator(mode="after")
+    def ordered(self):
+        if self.lower > self.upper:
+            raise ValueError("scenario range must be ordered")
+        return self
+
+
+class QuantitativeScenario(Schema):
+    inputs: list[ScenarioInput] = Field(min_length=1)
+    formula: NonBlank
+    unit: NonBlank
+    period: NonBlank
+    assumptions: list[NonBlank] = Field(min_length=1)
+    result_range: ScenarioRange
+
+    @model_validator(mode="after")
+    def unique_inputs(self):
+        names = [item.name for item in self.inputs]
+        if len(names) != len(set(names)):
+            raise ValueError("scenario input names must be unique")
+        return self
+
+
+class StatementV2(Claim):
+    claim_id: NonBlank
+    text: NonBlank
+    evidence_refs: References
+    statement_type: Literal["fact", "hypothesis", "scenario"]
+    quantitative_scenario: QuantitativeScenario | None = None
+
+    @model_validator(mode="after")
+    def scenario_has_provenance(self):
+        if len(set(self.evidence_refs)) != len(self.evidence_refs):
+            raise ValueError("statement evidence_refs must be unique")
+        if self.quantitative_scenario:
+            if self.statement_type != "scenario":
+                raise ValueError("quantitative calculation must be labelled scenario")
+            refs = {ref for item in self.quantitative_scenario.inputs for ref in item.input_refs}
+            if not refs.issubset(self.evidence_refs):
+                raise ValueError("scenario input_refs must be included in statement evidence_refs")
+        return self
+
+
+class TimeHorizon(Schema):
+    label: NonBlank
+    starts_on: date | None
+    ends_on: date | None
+
+    @model_validator(mode="after")
+    def ordered(self):
+        if self.starts_on and self.ends_on and self.ends_on < self.starts_on:
+            raise ValueError("time horizon must be ordered")
+        return self
+
+
+class NextAction(Schema):
+    action: Literal["ask_question", "contact_manager_demo", "hide_insight"]
+    label: NonBlank
+    question: NonBlank | None = None
+
+    @model_validator(mode="after")
+    def question_only_for_chat(self):
+        if (self.action == "ask_question") != (self.question is not None):
+            raise ValueError("only ask_question requires question text")
+        return self
+
+
+class BankViewContext(Schema):
+    status: Literal["current", "historical", "missing", "undated"]
+    document_dates: list[date]
+
+    @model_validator(mode="after")
+    def dated_status(self):
+        if bool(self.document_dates) != (self.status in {"current", "historical"}):
+            raise ValueError("current/historical bank view requires document dates")
+        return self
+
+
+class InsightResultV2(InsightResult):
+    """Canonical v2 wire contract shared by AI, API and generated UI types."""
+
+    schema_version: Literal["v2"]
+    facts: list[StatementV2]
+    bank_view: list[StatementV2] | None
+    ai_interpretation: list[StatementV2]
+    risks: list[StatementV2]
+    opportunities: list[StatementV2]
+    actions: list[StatementV2]
+    personalized_summary: StatementV2 | None
+    mechanism: list[StatementV2]
+    impact_level: Literal["low", "medium", "high", "undetermined"]
+    impact_reason: StatementV2 | None
+    time_horizon: TimeHorizon
+    assumptions: list[StatementV2]
+    relevance_status: Literal["active", "review_required", "expired", "undetermined"]
+    valid_from: date | None
+    valid_until: date | None
+    review_after: date | None
+    relevance_reason: StatementV2 | None
+    bank_view_context: BankViewContext
+    next_actions: list[NextAction]
+    policy_version: Literal[POLICY_VERSION] = POLICY_VERSION
+    disclaimer: Literal[DISCLAIMER] = DISCLAIMER
+    trace_id: NonBlank
+
+    def claims(self) -> list[StatementV2]:
+        sections = [
+            self.facts,
+            self.bank_view or [],
+            self.ai_interpretation,
+            self.risks,
+            self.opportunities,
+            self.actions,
+            self.mechanism,
+            self.assumptions,
+        ]
+        claims = [claim for section in sections for claim in section]
+        return claims + [
+            claim
+            for claim in (self.personalized_summary, self.impact_reason, self.relevance_reason)
+            if claim is not None
+        ]
+
+    @model_validator(mode="after")
+    def consistent_v2(self):
+        claims = self.claims()
+        ids = [claim.claim_id for claim in claims]
+        if len(set(ids)) != len(ids):
+            raise ValueError("claim_id must be unique across all v2 fields")
+        used = {ref for claim in claims for ref in claim.evidence_refs}
+        if set(self.evidence_refs) != used or len(self.evidence_refs) != len(used):
+            raise ValueError("evidence_refs must equal the unique union across all v2 fields")
+        if any(claim.statement_type != "fact" for claim in self.facts + (self.bank_view or [])):
+            raise ValueError("facts and bank_view must contain facts only")
+        if any(claim.statement_type == "fact" for claim in self.assumptions):
+            raise ValueError("assumptions cannot be presented as facts")
+        if self.impact_level != "undetermined" and not (
+            self.impact_reason and self.personalized_summary and self.mechanism
+        ):
+            raise ValueError("determined impact needs a grounded summary, mechanism and reason")
+        if self.impact_level == "undetermined" and not self.unknowns:
+            raise ValueError("undetermined impact requires unknowns")
+        if self.bank_view == []:
+            raise ValueError("missing bank_view must be null")
+        if (self.bank_view is None) != (self.bank_view_context.status == "missing"):
+            raise ValueError("bank_view and its status must agree")
+        if (self.bank_view is None or not self.facts) and not self.unknowns:
+            raise ValueError("missing facts/bank view require unknowns")
+        if self.relevance_status == "undetermined" and not self.unknowns:
+            raise ValueError("undetermined relevance requires unknowns")
+        if self.relevance_status != "undetermined" and self.relevance_reason is None:
+            raise ValueError("determined relevance requires a grounded reason")
+        if self.relevance_status == "active" and self.valid_from is None:
+            raise ValueError("active insight requires valid_from")
+        if self.relevance_status == "expired" and self.valid_until is None:
+            raise ValueError("expired insight requires valid_until")
+        if self.valid_from and self.valid_until and self.valid_until < self.valid_from:
+            raise ValueError("validity interval must be ordered")
+        if self.review_after and self.valid_from and self.review_after < self.valid_from:
+            raise ValueError("review_after cannot precede valid_from")
+        if self.review_after and self.valid_until and self.review_after > self.valid_until:
+            raise ValueError("review_after cannot follow valid_until")
+        return self
+
+
+def parse_insight_result(value: dict) -> InsightResult | InsightResultV2:
+    """Tagless v1 stays v1. Unknown explicit versions must fail, never downgrade."""
+    model = InsightResultV2 if "schema_version" in value else InsightResult
+    return model.model_validate(value)
+
+
 class InsightOut(Schema):
     id: str
     company_id: str
     event_id: str
     versions: dict
-    result: InsightResult
+    result: InsightResultV2 | InsightResult
 
 
 class EventIn(Schema):

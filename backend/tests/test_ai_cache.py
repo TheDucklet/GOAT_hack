@@ -78,6 +78,7 @@ def test_repeated_insight_request_does_not_run_the_agent_again(agent):
     [
         {"company": {**COMPANY, "company_id": "U_2"}},
         {"company": {**COMPANY, "profile_version": "csv-2"}},
+        {"company": {**COMPANY, "data_semantics_version": "normalized-company-2"}},
         {"event_payload": {**EVENT, "version": "v2"}},
         {"event_payload": {**EVENT, "id": "event-2"}},
         {"focus": {**FOCUS, "topics": ["налоги"]}},
@@ -98,6 +99,17 @@ def test_changed_prompt_version_excludes_the_old_card(agent, monkeypatch):
     cache = ResultCache()
     insight(cache)
     monkeypatch.setattr(calls_module, "INSIGHT_PROMPT_VERSION", "insight-99")
+    insight(cache)
+    assert agent["runs"] == 2
+
+
+@pytest.mark.parametrize("name", ["INSIGHT_CONTRACT_VERSION", "INSIGHT_SCHEMA_VERSION", "DATA_SEMANTICS_VERSION", "POLICY_VERSION"])
+def test_changed_contract_version_excludes_the_old_card(agent, monkeypatch, name):
+    from app import insight_versions
+
+    cache = ResultCache()
+    insight(cache)
+    monkeypatch.setattr(insight_versions, name, "new-version")
     insight(cache)
     assert agent["runs"] == 2
 

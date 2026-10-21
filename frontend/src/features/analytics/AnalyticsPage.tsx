@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useCompany } from '../companies/CompanyProvider';
 import { ErrorNotice } from '../../shared/ui/ErrorNotice';
+import { InsightNotice } from '../../shared/ui/InsightNotice';
 import { ApiError } from '../../shared/api/errors';
 import { AnalyticsSelectionProvider, useAnalyticsSelection } from './AnalyticsSelection';
 import { FeedEvent } from './FeedEvent';
@@ -39,5 +40,6 @@ export function AnalyticsPage() {
   if (!company) return <><span className="eyebrow">Персональный контекст</span><h1>Бизнес-аналитика</h1><section className="panel empty-state"><h2>Нужен доступ к компании</h2><p>Лента станет доступна после подтверждения заявки администратором.</p><Link className="button primary" to="/app/companies">Компании и профиль</Link></section></>;
   return <><span className="eyebrow">Персональный контекст</span><h1>Бизнес-аналитика</h1><p className="page-lead">{company.name}</p>
     <AnalyticsSelectionProvider companyId={company.id}><AnalyticsWorkspace /></AnalyticsSelectionProvider>
+    <InsightNotice />
   </>;
 }

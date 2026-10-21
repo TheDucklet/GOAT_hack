@@ -14,6 +14,7 @@ from app.ai.providers import LLMSettings, get_llm_settings
 from app.ai.summarization.prompts import SUMMARY_PROMPT_VERSION
 from app.ai.summarization.summarize import summarize_event
 from app.ai.validation import VALIDATION_VERSION
+from app.insight_versions import contract_versions
 
 SUMMARY_TASKS = ("summarize_event", "select_industries")
 FOCUS_TASKS = ("derive_user_focus",)
@@ -95,6 +96,7 @@ def cached_build_insight(
         return cache.bypass("insight", compute)
     key = make_key(
         "insight",
+        contract_versions=contract_versions(company_context.get("data_semantics_version")),
         company_id=company_context.get("company_id"),
         profile_version=company_context.get("profile_version"),
         event_id=event.get("id"),

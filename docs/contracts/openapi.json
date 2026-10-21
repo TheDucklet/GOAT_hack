@@ -4063,6 +4063,35 @@
         ],
         "title": "AdminEventOut"
       },
+      "BankViewContext": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "current",
+              "historical",
+              "missing",
+              "undated"
+            ],
+            "title": "Status"
+          },
+          "document_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Document Dates"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "document_dates"
+        ],
+        "title": "BankViewContext"
+      },
       "Body_post_admin_documents": {
         "properties": {
           "file": {
@@ -4598,7 +4627,15 @@
             "title": "Versions"
           },
           "result": {
-            "$ref": "#/components/schemas/InsightResult"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InsightResultV2"
+              },
+              {
+                "$ref": "#/components/schemas/InsightResult"
+              }
+            ],
+            "title": "Result"
           }
         },
         "additionalProperties": false,
@@ -4696,6 +4733,238 @@
           "trace_id"
         ],
         "title": "InsightResult"
+      },
+      "InsightResultV2": {
+        "properties": {
+          "facts": {
+            "items": {
+              "$ref": "#/components/schemas/StatementV2"
+            },
+            "type": "array",
+            "title": "Facts"
+          },
+          "bank_view": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/StatementV2"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank View"
+          },
+          "ai_interpretation": {
+            "items": {
+              "$ref": "#/components/schemas/StatementV2"
+            },
+            "type": "array",
+            "title": "Ai Interpretation"
+          },
+          "risks": {
+            "items": {
+              "$ref": "#/components/schemas/StatementV2"
+            },
+            "type": "array",
+            "title": "Risks"
+          },
+          "opportunities": {
+            "items": {
+              "$ref": "#/components/schemas/StatementV2"
+            },
+            "type": "array",
+            "title": "Opportunities"
+          },
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/StatementV2"
+            },
+            "type": "array",
+            "title": "Actions"
+          },
+          "unknowns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unknowns"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence Refs"
+          },
+          "trace_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Trace Id"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "v2",
+            "title": "Schema Version"
+          },
+          "personalized_summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatementV2"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mechanism": {
+            "items": {
+              "$ref": "#/components/schemas/StatementV2"
+            },
+            "type": "array",
+            "title": "Mechanism"
+          },
+          "impact_level": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "undetermined"
+            ],
+            "title": "Impact Level"
+          },
+          "impact_reason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatementV2"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "time_horizon": {
+            "$ref": "#/components/schemas/TimeHorizon"
+          },
+          "assumptions": {
+            "items": {
+              "$ref": "#/components/schemas/StatementV2"
+            },
+            "type": "array",
+            "title": "Assumptions"
+          },
+          "relevance_status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "review_required",
+              "expired",
+              "undetermined"
+            ],
+            "title": "Relevance Status"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "review_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review After"
+          },
+          "relevance_reason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatementV2"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bank_view_context": {
+            "$ref": "#/components/schemas/BankViewContext"
+          },
+          "next_actions": {
+            "items": {
+              "$ref": "#/components/schemas/NextAction"
+            },
+            "type": "array",
+            "title": "Next Actions"
+          },
+          "policy_version": {
+            "type": "string",
+            "const": "notice_v1",
+            "title": "Policy Version",
+            "default": "notice_v1"
+          },
+          "disclaimer": {
+            "type": "string",
+            "const": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка.",
+            "title": "Disclaimer",
+            "default": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "facts",
+          "bank_view",
+          "ai_interpretation",
+          "risks",
+          "opportunities",
+          "actions",
+          "unknowns",
+          "evidence_refs",
+          "trace_id",
+          "schema_version",
+          "personalized_summary",
+          "mechanism",
+          "impact_level",
+          "impact_reason",
+          "time_horizon",
+          "assumptions",
+          "relevance_status",
+          "valid_from",
+          "valid_until",
+          "review_after",
+          "relevance_reason",
+          "bank_view_context",
+          "next_actions"
+        ],
+        "title": "InsightResultV2",
+        "description": "Canonical v2 wire contract shared by AI, API and generated UI types."
       },
       "JobOut": {
         "properties": {
@@ -4986,6 +5255,45 @@
         ],
         "title": "MessageOut"
       },
+      "NextAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "ask_question",
+              "contact_manager_demo",
+              "hide_insight"
+            ],
+            "title": "Action"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Label"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Question"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "label"
+        ],
+        "title": "NextAction"
+      },
       "ProfileIn": {
         "properties": {
           "position_text": {
@@ -5006,6 +5314,179 @@
         "additionalProperties": false,
         "type": "object",
         "title": "ProfileIn"
+      },
+      "QuantitativeScenario": {
+        "properties": {
+          "inputs": {
+            "items": {
+              "$ref": "#/components/schemas/ScenarioInput"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Inputs"
+          },
+          "formula": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Formula"
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Unit"
+          },
+          "period": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Period"
+          },
+          "assumptions": {
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Assumptions"
+          },
+          "result_range": {
+            "$ref": "#/components/schemas/ScenarioRange"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "inputs",
+          "formula",
+          "unit",
+          "period",
+          "assumptions",
+          "result_range"
+        ],
+        "title": "QuantitativeScenario"
+      },
+      "ScenarioInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Name"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Unit"
+          },
+          "period": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Period"
+          },
+          "input_refs": {
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Input Refs"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "unit",
+          "period",
+          "input_refs"
+        ],
+        "title": "ScenarioInput"
+      },
+      "ScenarioRange": {
+        "properties": {
+          "lower": {
+            "type": "number",
+            "title": "Lower"
+          },
+          "upper": {
+            "type": "number",
+            "title": "Upper"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "lower",
+          "upper"
+        ],
+        "title": "ScenarioRange"
+      },
+      "StatementV2": {
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Claim Id"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Text"
+          },
+          "evidence_refs": {
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Evidence Refs"
+          },
+          "statement_type": {
+            "type": "string",
+            "enum": [
+              "fact",
+              "hypothesis",
+              "scenario"
+            ],
+            "title": "Statement Type"
+          },
+          "quantitative_scenario": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuantitativeScenario"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "claim_id",
+          "text",
+          "evidence_refs",
+          "statement_type"
+        ],
+        "title": "StatementV2"
       },
       "StatsOut": {
         "properties": {
@@ -5030,6 +5511,48 @@
           "failed_jobs"
         ],
         "title": "StatsOut"
+      },
+      "TimeHorizon": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Label"
+          },
+          "starts_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starts On"
+          },
+          "ends_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends On"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "label",
+          "starts_on",
+          "ends_on"
+        ],
+        "title": "TimeHorizon"
       },
       "UploadOut": {
         "properties": {

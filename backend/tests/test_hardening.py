@@ -10,7 +10,9 @@ from app.services.jobs import claim_next, enqueue, run_one
 from tests.factories import enable_ai, event_fixture, login
 
 
-@pytest.mark.parametrize("dimension", ["profile", "event", "generation", "corpus"])
+@pytest.mark.parametrize(
+    "dimension", ["profile", "event", "generation", "corpus", "contract", "schema", "semantics", "policy"]
+)
 def test_insight_cache_versions(client, monkeypatch, dimension):
     enable_ai(monkeypatch)
     login(client)
@@ -22,6 +24,16 @@ def test_insight_cache_versions(client, monkeypatch, dimension):
     if dimension == "generation":
         monkeypatch.setenv("AI_GENERATION_VERSION", "2")
         get_settings.cache_clear()
+    elif dimension in {"contract", "schema", "semantics", "policy"}:
+        from app import insight_versions
+
+        name = {
+            "contract": "INSIGHT_CONTRACT_VERSION",
+            "schema": "INSIGHT_SCHEMA_VERSION",
+            "semantics": "DATA_SEMANTICS_VERSION",
+            "policy": "POLICY_VERSION",
+        }[dimension]
+        monkeypatch.setattr(insight_versions, name, "changed-version")
     else:
         with session_factory()() as db, db.begin():
             if dimension == "profile":

@@ -1,0 +1,902 @@
+[
+  {
+    "name": "strong_grounded_impact",
+    "envelope": {
+      "result": {
+        "schema_version": "v2",
+        "facts": [
+          {
+            "claim_id": "event",
+            "text": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта.",
+            "evidence_refs": [
+              "news-rate"
+            ],
+            "statement_type": "fact"
+          }
+        ],
+        "bank_view": null,
+        "bank_view_context": {
+          "status": "missing",
+          "document_dates": []
+        },
+        "ai_interpretation": [],
+        "risks": [],
+        "opportunities": [],
+        "actions": [],
+        "personalized_summary": {
+          "claim_id": "summary",
+          "text": "При пересмотре плавающей ставки расходы компании могут вырасти.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "mechanism": [
+          {
+            "claim_id": "mechanism",
+            "text": "Изменение ставки → подтверждённый плавающий долг → рост процентных расходов при пересмотре.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "impact_level": "high",
+        "impact_reason": {
+          "claim_id": "impact",
+          "text": "Экспозиция подтверждена; пересмотр близок. Высокая сила качественная, не вероятность.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "time_horizon": {
+          "label": "После пересмотра ставки в ноябре 2026",
+          "starts_on": "2026-11-01",
+          "ends_on": null
+        },
+        "assumptions": [
+          {
+            "claim_id": "assumption",
+            "text": "Сценарий предполагает сохранение долга и применение нового уровня ставки.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "relevance_status": "active",
+        "valid_from": "2026-10-20",
+        "valid_until": null,
+        "review_after": "2026-11-01",
+        "relevance_reason": {
+          "claim_id": "relevance",
+          "text": "Инсайт актуален до уточнения условий пересмотра; дата новости не задаёт срок действия.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "unknowns": [
+          "Позиция банка по этому событию не найдена."
+        ],
+        "evidence_refs": [
+          "news-rate",
+          "company-rate"
+        ],
+        "trace_id": "demo-trace",
+        "next_actions": [
+          {
+            "action": "ask_question",
+            "label": "Уточнить условия пересмотра",
+            "question": "Какие условия договора нужно проверить?"
+          },
+          {
+            "action": "contact_manager_demo",
+            "label": "Связаться с менеджером (демо)"
+          },
+          {
+            "action": "hide_insight",
+            "label": "Скрыть"
+          }
+        ],
+        "policy_version": "notice_v1",
+        "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+      },
+      "evidence": [
+        {
+          "id": "news-rate",
+          "kind": "news",
+          "source_id": "event-rate",
+          "version": "news-1",
+          "locator": {
+            "url": "https://example.org/synthetic/rate",
+            "published_at": "2026-10-20T09:00:00Z"
+          },
+          "excerpt": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта."
+        },
+        {
+          "id": "company-rate",
+          "kind": "company",
+          "source_id": "DEMO_ONLY",
+          "version": "profile-demo-1",
+          "locator": {
+            "feature_path": "features.confirmed_floating_debt"
+          },
+          "excerpt": "Синтетические подтверждённые данные: долг 10000000 RUB, плавающая ставка, пересмотр 01.11.2026."
+        }
+      ],
+      "trace": {
+        "fixture": true,
+        "synthetic": true
+      }
+    }
+  },
+  {
+    "name": "unknown_strength",
+    "envelope": {
+      "result": {
+        "schema_version": "v2",
+        "facts": [
+          {
+            "claim_id": "event",
+            "text": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта.",
+            "evidence_refs": [
+              "news-rate"
+            ],
+            "statement_type": "fact"
+          }
+        ],
+        "bank_view": null,
+        "bank_view_context": {
+          "status": "missing",
+          "document_dates": []
+        },
+        "ai_interpretation": [],
+        "risks": [],
+        "opportunities": [],
+        "actions": [],
+        "personalized_summary": null,
+        "mechanism": [],
+        "impact_level": "undetermined",
+        "impact_reason": null,
+        "time_horizon": {
+          "label": "Неизвестен",
+          "starts_on": null,
+          "ends_on": null
+        },
+        "assumptions": [],
+        "relevance_status": "undetermined",
+        "valid_from": null,
+        "valid_until": null,
+        "review_after": null,
+        "relevance_reason": null,
+        "unknowns": [
+          "Кредитные условия компании неизвестны.",
+          "Позиция банка не найдена."
+        ],
+        "evidence_refs": [
+          "news-rate"
+        ],
+        "trace_id": "demo-trace",
+        "next_actions": [
+          {
+            "action": "ask_question",
+            "label": "Уточнить условия пересмотра",
+            "question": "Какие условия договора нужно проверить?"
+          },
+          {
+            "action": "contact_manager_demo",
+            "label": "Связаться с менеджером (демо)"
+          },
+          {
+            "action": "hide_insight",
+            "label": "Скрыть"
+          }
+        ],
+        "policy_version": "notice_v1",
+        "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+      },
+      "evidence": [
+        {
+          "id": "news-rate",
+          "kind": "news",
+          "source_id": "event-rate",
+          "version": "news-1",
+          "locator": {
+            "url": "https://example.org/synthetic/rate",
+            "published_at": "2026-10-20T09:00:00Z"
+          },
+          "excerpt": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта."
+        }
+      ],
+      "trace": {
+        "fixture": true,
+        "synthetic": true
+      }
+    }
+  },
+  {
+    "name": "historical_bank_position",
+    "envelope": {
+      "result": {
+        "schema_version": "v2",
+        "facts": [
+          {
+            "claim_id": "event",
+            "text": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта.",
+            "evidence_refs": [
+              "news-rate"
+            ],
+            "statement_type": "fact"
+          }
+        ],
+        "bank_view": [
+          {
+            "claim_id": "bank",
+            "text": "В документе от 01.06.2024 описан риск роста стоимости финансирования. Это историческая позиция.",
+            "evidence_refs": [
+              "bank-2024"
+            ],
+            "statement_type": "fact"
+          }
+        ],
+        "bank_view_context": {
+          "status": "historical",
+          "document_dates": [
+            "2024-06-01"
+          ]
+        },
+        "ai_interpretation": [],
+        "risks": [],
+        "opportunities": [],
+        "actions": [],
+        "personalized_summary": {
+          "claim_id": "summary",
+          "text": "При пересмотре плавающей ставки расходы компании могут вырасти.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "mechanism": [
+          {
+            "claim_id": "mechanism",
+            "text": "Изменение ставки → подтверждённый плавающий долг → рост процентных расходов при пересмотре.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "impact_level": "high",
+        "impact_reason": {
+          "claim_id": "impact",
+          "text": "Экспозиция подтверждена; пересмотр близок. Высокая сила качественная, не вероятность.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "time_horizon": {
+          "label": "После пересмотра ставки в ноябре 2026",
+          "starts_on": "2026-11-01",
+          "ends_on": null
+        },
+        "assumptions": [
+          {
+            "claim_id": "assumption",
+            "text": "Сценарий предполагает сохранение долга и применение нового уровня ставки.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "relevance_status": "active",
+        "valid_from": "2026-10-20",
+        "valid_until": null,
+        "review_after": "2026-11-01",
+        "relevance_reason": {
+          "claim_id": "relevance",
+          "text": "Инсайт актуален до уточнения условий пересмотра; дата новости не задаёт срок действия.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "unknowns": [
+          "Актуальность исторической позиции банка для события 2026 года не подтверждена."
+        ],
+        "evidence_refs": [
+          "news-rate",
+          "company-rate",
+          "bank-2024"
+        ],
+        "trace_id": "demo-trace",
+        "next_actions": [
+          {
+            "action": "ask_question",
+            "label": "Уточнить условия пересмотра",
+            "question": "Какие условия договора нужно проверить?"
+          },
+          {
+            "action": "contact_manager_demo",
+            "label": "Связаться с менеджером (демо)"
+          },
+          {
+            "action": "hide_insight",
+            "label": "Скрыть"
+          }
+        ],
+        "policy_version": "notice_v1",
+        "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+      },
+      "evidence": [
+        {
+          "id": "news-rate",
+          "kind": "news",
+          "source_id": "event-rate",
+          "version": "news-1",
+          "locator": {
+            "url": "https://example.org/synthetic/rate",
+            "published_at": "2026-10-20T09:00:00Z"
+          },
+          "excerpt": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта."
+        },
+        {
+          "id": "company-rate",
+          "kind": "company",
+          "source_id": "DEMO_ONLY",
+          "version": "profile-demo-1",
+          "locator": {
+            "feature_path": "features.confirmed_floating_debt"
+          },
+          "excerpt": "Синтетические подтверждённые данные: долг 10000000 RUB, плавающая ставка, пересмотр 01.11.2026."
+        },
+        {
+          "id": "bank-2024",
+          "kind": "bank",
+          "source_id": "synthetic-bank-report",
+          "version": "pdf-demo-1",
+          "locator": {
+            "page": 3,
+            "document_date": "2024-06-01"
+          },
+          "excerpt": "Учебная цитата из исторического документа: рост ставки может увеличивать стоимость финансирования."
+        }
+      ],
+      "trace": {
+        "fixture": true,
+        "synthetic": true
+      }
+    }
+  },
+  {
+    "name": "missing_bank_position",
+    "envelope": {
+      "result": {
+        "schema_version": "v2",
+        "facts": [
+          {
+            "claim_id": "event",
+            "text": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта.",
+            "evidence_refs": [
+              "news-rate"
+            ],
+            "statement_type": "fact"
+          }
+        ],
+        "bank_view": null,
+        "bank_view_context": {
+          "status": "missing",
+          "document_dates": []
+        },
+        "ai_interpretation": [],
+        "risks": [],
+        "opportunities": [],
+        "actions": [],
+        "personalized_summary": {
+          "claim_id": "summary",
+          "text": "При пересмотре плавающей ставки расходы компании могут вырасти.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "mechanism": [
+          {
+            "claim_id": "mechanism",
+            "text": "Изменение ставки → подтверждённый плавающий долг → рост процентных расходов при пересмотре.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "impact_level": "high",
+        "impact_reason": {
+          "claim_id": "impact",
+          "text": "Экспозиция подтверждена; пересмотр близок. Высокая сила качественная, не вероятность.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "time_horizon": {
+          "label": "После пересмотра ставки в ноябре 2026",
+          "starts_on": "2026-11-01",
+          "ends_on": null
+        },
+        "assumptions": [
+          {
+            "claim_id": "assumption",
+            "text": "Сценарий предполагает сохранение долга и применение нового уровня ставки.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "relevance_status": "active",
+        "valid_from": "2026-10-20",
+        "valid_until": null,
+        "review_after": "2026-11-01",
+        "relevance_reason": {
+          "claim_id": "relevance",
+          "text": "Инсайт актуален до уточнения условий пересмотра; дата новости не задаёт срок действия.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "unknowns": [
+          "Позиция банка по этому событию не найдена."
+        ],
+        "evidence_refs": [
+          "news-rate",
+          "company-rate"
+        ],
+        "trace_id": "demo-trace",
+        "next_actions": [
+          {
+            "action": "ask_question",
+            "label": "Уточнить условия пересмотра",
+            "question": "Какие условия договора нужно проверить?"
+          },
+          {
+            "action": "contact_manager_demo",
+            "label": "Связаться с менеджером (демо)"
+          },
+          {
+            "action": "hide_insight",
+            "label": "Скрыть"
+          }
+        ],
+        "policy_version": "notice_v1",
+        "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+      },
+      "evidence": [
+        {
+          "id": "news-rate",
+          "kind": "news",
+          "source_id": "event-rate",
+          "version": "news-1",
+          "locator": {
+            "url": "https://example.org/synthetic/rate",
+            "published_at": "2026-10-20T09:00:00Z"
+          },
+          "excerpt": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта."
+        },
+        {
+          "id": "company-rate",
+          "kind": "company",
+          "source_id": "DEMO_ONLY",
+          "version": "profile-demo-1",
+          "locator": {
+            "feature_path": "features.confirmed_floating_debt"
+          },
+          "excerpt": "Синтетические подтверждённые данные: долг 10000000 RUB, плавающая ставка, пересмотр 01.11.2026."
+        }
+      ],
+      "trace": {
+        "fixture": true,
+        "synthetic": true
+      }
+    }
+  },
+  {
+    "name": "incomplete_profile",
+    "envelope": {
+      "result": {
+        "schema_version": "v2",
+        "facts": [],
+        "bank_view": null,
+        "bank_view_context": {
+          "status": "missing",
+          "document_dates": []
+        },
+        "ai_interpretation": [],
+        "risks": [],
+        "opportunities": [],
+        "actions": [],
+        "personalized_summary": null,
+        "mechanism": [],
+        "impact_level": "undetermined",
+        "impact_reason": null,
+        "time_horizon": {
+          "label": "Неизвестен",
+          "starts_on": null,
+          "ends_on": null
+        },
+        "assumptions": [],
+        "relevance_status": "undetermined",
+        "valid_from": null,
+        "valid_until": null,
+        "review_after": null,
+        "relevance_reason": null,
+        "unknowns": [
+          "Профиль компании и факты события недостаточны.",
+          "Позиция банка не найдена."
+        ],
+        "evidence_refs": [],
+        "trace_id": "demo-trace",
+        "next_actions": [
+          {
+            "action": "ask_question",
+            "label": "Уточнить условия пересмотра",
+            "question": "Какие условия договора нужно проверить?"
+          },
+          {
+            "action": "contact_manager_demo",
+            "label": "Связаться с менеджером (демо)"
+          },
+          {
+            "action": "hide_insight",
+            "label": "Скрыть"
+          }
+        ],
+        "policy_version": "notice_v1",
+        "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+      },
+      "evidence": [],
+      "trace": {
+        "fixture": true,
+        "synthetic": true
+      }
+    }
+  },
+  {
+    "name": "long_lived_active_insight",
+    "envelope": {
+      "result": {
+        "schema_version": "v2",
+        "facts": [
+          {
+            "claim_id": "event",
+            "text": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта.",
+            "evidence_refs": [
+              "news-rate"
+            ],
+            "statement_type": "fact"
+          }
+        ],
+        "bank_view": null,
+        "bank_view_context": {
+          "status": "missing",
+          "document_dates": []
+        },
+        "ai_interpretation": [],
+        "risks": [],
+        "opportunities": [],
+        "actions": [],
+        "personalized_summary": {
+          "claim_id": "summary",
+          "text": "При пересмотре плавающей ставки расходы компании могут вырасти.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "mechanism": [
+          {
+            "claim_id": "mechanism",
+            "text": "Изменение ставки → подтверждённый плавающий долг → рост процентных расходов при пересмотре.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "impact_level": "high",
+        "impact_reason": {
+          "claim_id": "impact",
+          "text": "Экспозиция подтверждена; пересмотр близок. Высокая сила качественная, не вероятность.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "time_horizon": {
+          "label": "Длительный эффект до конца 2027 при сохранении условий",
+          "starts_on": "2026-11-01",
+          "ends_on": "2027-12-31"
+        },
+        "assumptions": [
+          {
+            "claim_id": "assumption",
+            "text": "Сценарий предполагает сохранение долга и применение нового уровня ставки.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "relevance_status": "active",
+        "valid_from": "2026-10-20",
+        "valid_until": "2027-12-31",
+        "review_after": "2027-01-01",
+        "relevance_reason": {
+          "claim_id": "relevance",
+          "text": "Сохраняется условная экспозиция к ставке; требуется пересмотр после обновления условий. Старость новости сама по себе не означает истечение.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "unknowns": [
+          "Позиция банка по этому событию не найдена."
+        ],
+        "evidence_refs": [
+          "news-rate",
+          "company-rate"
+        ],
+        "trace_id": "demo-trace",
+        "next_actions": [
+          {
+            "action": "ask_question",
+            "label": "Уточнить условия пересмотра",
+            "question": "Какие условия договора нужно проверить?"
+          },
+          {
+            "action": "contact_manager_demo",
+            "label": "Связаться с менеджером (демо)"
+          },
+          {
+            "action": "hide_insight",
+            "label": "Скрыть"
+          }
+        ],
+        "policy_version": "notice_v1",
+        "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+      },
+      "evidence": [
+        {
+          "id": "news-rate",
+          "kind": "news",
+          "source_id": "event-rate",
+          "version": "news-1",
+          "locator": {
+            "url": "https://example.org/synthetic/rate",
+            "published_at": "2026-10-20T09:00:00Z"
+          },
+          "excerpt": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта."
+        },
+        {
+          "id": "company-rate",
+          "kind": "company",
+          "source_id": "DEMO_ONLY",
+          "version": "profile-demo-1",
+          "locator": {
+            "feature_path": "features.confirmed_floating_debt"
+          },
+          "excerpt": "Синтетические подтверждённые данные: долг 10000000 RUB, плавающая ставка, пересмотр 01.11.2026."
+        }
+      ],
+      "trace": {
+        "fixture": true,
+        "synthetic": true
+      }
+    }
+  },
+  {
+    "name": "quantitative_scenario_synthetic",
+    "envelope": {
+      "result": {
+        "schema_version": "v2",
+        "facts": [
+          {
+            "claim_id": "event",
+            "text": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта.",
+            "evidence_refs": [
+              "news-rate"
+            ],
+            "statement_type": "fact"
+          }
+        ],
+        "bank_view": null,
+        "bank_view_context": {
+          "status": "missing",
+          "document_dates": []
+        },
+        "ai_interpretation": [],
+        "risks": [
+          {
+            "claim_id": "calculation",
+            "text": "Учебный сценарий: при полном переносе 2 п.п. и неизменном долге дополнительные расходы до 200000 RUB в год.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "scenario",
+            "quantitative_scenario": {
+              "inputs": [
+                {
+                  "name": "principal",
+                  "value": 10000000,
+                  "unit": "RUB",
+                  "period": "2026-11-01",
+                  "input_refs": [
+                    "company-rate"
+                  ]
+                },
+                {
+                  "name": "rate_change_pp",
+                  "value": 2,
+                  "unit": "percentage_point",
+                  "period": "2026-11-01",
+                  "input_refs": [
+                    "news-rate"
+                  ]
+                }
+              ],
+              "formula": "principal * rate_change_pp / 100",
+              "unit": "RUB",
+              "period": "one_year_after_repricing",
+              "assumptions": [
+                "Перенос ставки от 0 до 100%; долг остаётся неизменным; простые проценты без комиссий."
+              ],
+              "result_range": {
+                "lower": 0,
+                "upper": 200000
+              }
+            }
+          }
+        ],
+        "opportunities": [],
+        "actions": [],
+        "personalized_summary": {
+          "claim_id": "summary",
+          "text": "При пересмотре плавающей ставки расходы компании могут вырасти.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "mechanism": [
+          {
+            "claim_id": "mechanism",
+            "text": "Изменение ставки → подтверждённый плавающий долг → рост процентных расходов при пересмотре.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "impact_level": "high",
+        "impact_reason": {
+          "claim_id": "impact",
+          "text": "Экспозиция подтверждена; пересмотр близок. Высокая сила качественная, не вероятность.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "time_horizon": {
+          "label": "После пересмотра ставки в ноябре 2026",
+          "starts_on": "2026-11-01",
+          "ends_on": null
+        },
+        "assumptions": [
+          {
+            "claim_id": "assumption",
+            "text": "Сценарий предполагает сохранение долга и применение нового уровня ставки.",
+            "evidence_refs": [
+              "news-rate",
+              "company-rate"
+            ],
+            "statement_type": "hypothesis"
+          }
+        ],
+        "relevance_status": "active",
+        "valid_from": "2026-10-20",
+        "valid_until": null,
+        "review_after": "2026-11-01",
+        "relevance_reason": {
+          "claim_id": "relevance",
+          "text": "Инсайт актуален до уточнения условий пересмотра; дата новости не задаёт срок действия.",
+          "evidence_refs": [
+            "news-rate",
+            "company-rate"
+          ],
+          "statement_type": "hypothesis"
+        },
+        "unknowns": [
+          "Позиция банка по этому событию не найдена."
+        ],
+        "evidence_refs": [
+          "news-rate",
+          "company-rate"
+        ],
+        "trace_id": "demo-trace",
+        "next_actions": [
+          {
+            "action": "ask_question",
+            "label": "Уточнить условия пересмотра",
+            "question": "Какие условия договора нужно проверить?"
+          },
+          {
+            "action": "contact_manager_demo",
+            "label": "Связаться с менеджером (демо)"
+          },
+          {
+            "action": "hide_insight",
+            "label": "Скрыть"
+          }
+        ],
+        "policy_version": "notice_v1",
+        "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+      },
+      "evidence": [
+        {
+          "id": "news-rate",
+          "kind": "news",
+          "source_id": "event-rate",
+          "version": "news-1",
+          "locator": {
+            "url": "https://example.org/synthetic/rate",
+            "published_at": "2026-10-20T09:00:00Z"
+          },
+          "excerpt": "Учебный пример: ставка с 01.11.2026 повышается на 2 процентных пункта."
+        },
+        {
+          "id": "company-rate",
+          "kind": "company",
+          "source_id": "DEMO_ONLY",
+          "version": "profile-demo-1",
+          "locator": {
+            "feature_path": "features.confirmed_floating_debt"
+          },
+          "excerpt": "Синтетические подтверждённые данные: долг 10000000 RUB, плавающая ставка, пересмотр 01.11.2026."
+        }
+      ],
+      "trace": {
+        "fixture": true,
+        "synthetic": true
+      }
+    }
+  }
+]

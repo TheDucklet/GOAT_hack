@@ -1,5 +1,10 @@
 # AI-модуль
 
+Контракт бизнес-влияния v2 опубликован в [insight-v2.md](../../../docs/contracts/insight-v2.md).
+`InsightEnvelopeV2` доступен в `app.ai.schemas`; схемы и общие fixtures проходят
+проверки backend/frontend. Текущий генератор и `FUNCTION_CONTRACTS.build_insight`
+сохраняют v1 до F-14. При переключении producer нужно обновить schema namespace.
+
 Пакет `app.ai` превращает новости, профили компаний и материалы Альфа-Банка в персональную аналитику с проверяемыми источниками. Backend подключает его одной переменной `AI_MODULE=app.ai.bridge` и вызывает через `app.integrations.ai.call_ai`. Все обращения к языковым моделям идут через одну функцию `call_llm` (`providers/gateway.py`), поэтому лимит расходов, учёт токенов и список разрешённых моделей действуют на каждый вызов.
 
 ## Подключение
