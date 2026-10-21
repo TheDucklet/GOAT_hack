@@ -1,0 +1,431 @@
+import hashlib
+import json
+import re
+import uuid
+from datetime import date, datetime
+from typing import Annotated
+
+from pydantic import BeforeValidator, Field
+
+from app.ai.insights.context import (
+    TRUE_VALUES,
+    CompanyFact,
+    company_facts,
+    evidence_id,
+    matched_features,
+)
+from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
+from app.ai.providers import LLMInput, call_llm
+from app.ai.schemas import BuildInsightInput, InsightEnvelope
+from app.ai.summarization.grounding import normalize_text, unsupported_numbers
+from app.ai.summarization.summarize import Lenient, StrList
+from app.integrations.ai import AIError
+
+SECTIONS = ("bank_view", "ai_interpretation", "risks", "opportunities", "actions")
+SECTION_PREFIX = {
+    "bank_view": "bank",
+    "ai_interpretation": "interpretation",
+    "risks": "risk",
+    "opportunities": "opportunity",
+    "actions": "action",
+}
+MAX_FACTS = 6
+MAX_CLAIMS = 3
+MAX_BANK_FRAGMENTS = 4
+MAX_CLAIM_CHARS = 600
+MAX_UNKNOWN_CHARS = 220
+MAX_UNKNOWNS = 8
+MAX_TOKENS = 2800
+RETRY_TEMPERATURE = 0.3
+ATTEMPTS = 2
+SEARCH_LIMIT = 5
+LOAN_THEMES = {"ключевая ставка", "кредитование"}
+LOAN_FLAG = "CL_PRODUCT_LOA_MARK"
+DERIVED_SECTIONS = frozenset({"risks", "opportunities", "actions"})
+LABEL_MENTION = re.compile(r"\s*[(\[]?\b[NCB]\d{1,2}\b(?:\s*[,;]\s*\b[NCB]\d{1,2}\b)*[)\]]?")
+
+
+def to_claims(value):
+    if value is None:
+        return []
+    if isinstance(value, dict | str):
+        value = [value]
+    return [item if isinstance(item, dict) else {"text": str(item)} for item in value if item is not None]
+
+
+Claims = Annotated[list["RawClaim"], BeforeValidator(to_claims)]
+
+
+class RawClaim(Lenient):
+    text: str = ""
+    evidence_ids: StrList = Field(default_factory=list)
+
+
+class RawInsight(Lenient):
+    bank_view: Claims = Field(default_factory=list)
+    ai_interpretation: Claims = Field(default_factory=list)
+    risks: Claims = Field(default_factory=list)
+    opportunities: Claims = Field(default_factory=list)
+    actions: Claims = Field(default_factory=list)
+    unknowns: StrList = Field(default_factory=list)
+
+
+def event_date(event) -> date:
+    if event.published_at:
+        try:
+            return datetime.fromisoformat(event.published_at).date()
+        except ValueError:
+            pass
+    return date.today()
+
+
+def event_facts(event) -> list[dict]:
+    known = {item.id for item in event.evidence if item.kind == "news"}
+    facts = []
+    for item in event.facts or []:
+        refs = [ref for ref in item.get("evidence_refs", []) if ref in known]
+        if item.get("text") and refs:
+            facts.append(
+                {"claim_id": f"fact-{len(facts) + 1}", "text": item["text"], "evidence_refs": refs[:2]}
+            )
+    if not facts:
+        for item in event.evidence:
+            if item.kind == "news" and item.excerpt.strip():
+                facts.append(
+                    {
+                        "claim_id": f"fact-{len(facts) + 1}",
+                        "text": item.excerpt.strip()[:300],
+                        "evidence_refs": [item.id],
+                    }
+                )
+    return facts[:MAX_FACTS]
+
+
+def search_queries(event) -> list[str]:
+    queries = [event.title]
+    topics = event.topics if isinstance(event.topics, dict) else {}
+    themes = " ".join(topics.get("theme", [])[:3])
+    if themes:
+        queries.append(themes)
+    return list(dict.fromkeys(query for query in queries if query.strip()))
+
+
+def find_bank_fragments(tools, event) -> tuple[list[dict], list[dict]]:
+    as_of = event_date(event).isoformat()
+    seen: dict[str, dict] = {}
+    steps = []
+    for query in search_queries(event):
+        found = tools.search_bank_analytics(query, as_of, SEARCH_LIMIT)
+        items = found.get("items", [])
+        steps.append(
+            {
+                "tool": "search_bank_analytics",
+                "query": query,
+                "as_of": as_of,
+                "returned": [
+                    {"chunk_id": item["chunk_id"], "page": item["page"], "score": item["score"]}
+                    for item in items
+                ],
+                "empty_reason": found.get("empty_reason"),
+            }
+        )
+        for item in items:
+            seen.setdefault(item["chunk_id"], item)
+    ranked = sorted(
+        seen.values(), key=lambda item: (item["historical"], item["date_unknown"], -item["score"])
+    )
+    return ranked, steps
+
+
+def bank_evidence(hit: dict) -> dict:
+    digest = hashlib.sha1(hit["excerpt"].encode("utf-8")).hexdigest()[:12]
+    return {
+        "id": evidence_id("bank", hit["document_id"], hit["version"], str(hit["page"]), digest),
+        "kind": "bank",
+        "source_id": hit["document_id"],
+        "version": hit["version"],
+        "locator": {"page": hit["page"]},
+        "excerpt": hit["excerpt"],
+    }
+
+
+def company_evidence(fact: CompanyFact, context: dict) -> dict:
+    return {
+        "id": fact.evidence_id,
+        "kind": "company",
+        "source_id": context["company_id"],
+        "version": context["profile_version"],
+        "locator": {"feature_path": f"features.{fact.feature}"},
+        "excerpt": fact.excerpt,
+    }
+
+
+def aliases_for(facts: list[dict], company: list[CompanyFact], bank: list[dict]) -> dict[str, str]:
+    aliases: dict[str, str] = {}
+    for ref in dict.fromkeys(ref for claim in facts for ref in claim["evidence_refs"]):
+        aliases[f"N{len(aliases) + 1}"] = ref
+    for index, fact in enumerate(company, start=1):
+        aliases[f"C{index}"] = fact.evidence_id
+    for index, item in enumerate(bank, start=1):
+        aliases[f"B{index}"] = item["id"]
+    return aliases
+
+
+def build_prompt(
+    event,
+    focus: dict,
+    facts: list[dict],
+    company: list[CompanyFact],
+    bank: list[dict],
+    matches,
+    aliases: dict[str, str],
+) -> str:
+    by_id = {value: key for key, value in aliases.items()}
+    news: dict[str, list[str]] = {}
+    for claim in facts:
+        news.setdefault(by_id[claim["evidence_refs"][0]], []).append(claim["text"])
+    payload = {
+        "event": {
+            "title": event.title,
+            "published_at": event.published_at,
+            "topics": event.topics if isinstance(event.topics, dict) else {},
+        },
+        "news": [{"id": alias, "facts": texts} for alias, texts in news.items()],
+        "user_focus": {"topics": focus.get("topics", []), "priorities": focus.get("priorities", [])},
+        "company_features": [{"id": by_id[fact.evidence_id], "text": fact.excerpt} for fact in company],
+        "matched_with_event": matches,
+        "bank_fragments": [
+            {
+                "id": by_id[item["id"]],
+                "document_date": item["document_date"],
+                "date_unknown": item["date_unknown"],
+                "text": item["excerpt"],
+            }
+            for item in bank
+        ],
+    }
+    return json.dumps(payload, ensure_ascii=False)
+
+
+def validated_claims(
+    section: str,
+    items: list[RawClaim],
+    candidates: dict[str, dict],
+    aliases: dict[str, str],
+    premise_ids: set[str],
+    number_source: str,
+    dropped: list[dict],
+    inherited: list[str] | None = None,
+) -> list[dict]:
+    claims, seen = [], set()
+    for item in items:
+        text = LABEL_MENTION.sub("", " ".join(item.text.split())).replace("  ", " ").strip()
+        refs = [
+            ref
+            for ref in dict.fromkeys(aliases.get(raw, raw) for raw in item.evidence_ids)
+            if ref in candidates
+        ]
+        if not item.evidence_ids and inherited and section in DERIVED_SECTIONS:
+            refs = list(inherited)
+        reason = None
+        if section == "bank_view":
+            refs = [ref for ref in refs if candidates[ref]["kind"] == "bank"]
+        if not text or len(text) > MAX_CLAIM_CHARS:
+            reason = "empty_or_too_long"
+        elif not refs:
+            reason = "no_valid_evidence"
+        elif section == "ai_interpretation" and not (
+            any(candidates[ref]["kind"] == "company" for ref in refs)
+            and any(ref in premise_ids for ref in refs)
+        ):
+            reason = "missing_company_feature_or_premise"
+        elif unsupported_numbers(text, number_source):
+            reason = "number_not_in_sources"
+        elif normalize_text(text) in seen:
+            reason = "duplicate"
+        if reason:
+            dropped.append({"section": section, "reason": reason, "text": text[:200]})
+            continue
+        seen.add(normalize_text(text))
+        claims.append(
+            {
+                "claim_id": f"{SECTION_PREFIX[section]}-{len(claims) + 1}",
+                "text": text,
+                "evidence_refs": refs,
+            }
+        )
+        if len(claims) == MAX_CLAIMS:
+            break
+    return claims
+
+
+def domain_unknowns(
+    event, context: dict, bank_used: list[dict], bank_all: list[dict], has_bank_view: bool
+) -> list[str]:
+    unknowns = []
+    topics = event.topics if isinstance(event.topics, dict) else {}
+    if not has_bank_view:
+        unknowns.append("Нет подтверждающих материалов банка на дату события")
+    if bank_all and not bank_used:
+        unknowns.append("Найдены только исторические материалы банка, текущая позиция банка не подтверждена")
+    if any(item["date_unknown"] for item in bank_used):
+        unknowns.append("Дата использованного материала банка неизвестна")
+    concerns_loans = LOAN_FLAG in (topics.get("product") or []) or LOAN_THEMES & set(
+        topics.get("theme") or []
+    )
+    if concerns_loans:
+        flag = str(context["features"].get(LOAN_FLAG, {}).get("value", ""))
+        if flag in TRUE_VALUES:
+            unknowns.append(
+                "Сумма задолженности, тип ставки и условия кредитов неизвестны, в данных есть только наличие кредитного продукта"
+            )
+        else:
+            unknowns.append("Долг компании в других банках, его сумма и тип ставки неизвестны")
+    return unknowns
+
+
+def build_insight(company_context: dict, user_focus: dict, event: dict, tools) -> dict:
+    request = BuildInsightInput.model_validate(
+        {"company_context": company_context, "user_focus": user_focus, "event": event}
+    )
+    context, payload = request.company_context.model_dump(mode="json"), request.event
+    if tools.get_company_context()["company_id"] != context["company_id"]:
+        raise AIError("forbidden", "Инструмент ограничен выбранной компанией")
+    facts = event_facts(payload)
+    company = company_facts(context)
+    matches = matched_features(context, payload.topics if isinstance(payload.topics, dict) else {})
+    hits, steps = find_bank_fragments(tools, payload)
+    usable = [hit for hit in hits if not hit["historical"]][:MAX_BANK_FRAGMENTS]
+    bank = [{**hit, **bank_evidence(hit)} for hit in usable]
+    bank_ids = {item["id"]: item for item in bank}
+    company_ids = {fact.evidence_id: company_evidence(fact, context) for fact in company}
+    news_ids = {ref for claim in facts for ref in claim["evidence_refs"]}
+    aliases = aliases_for(facts, company, bank)
+    candidates = {
+        **{ref: {"kind": "news"} for ref in news_ids},
+        **{ref: {"kind": "company"} for ref in company_ids},
+        **{ref: {"kind": "bank"} for ref in bank_ids},
+    }
+    number_source = " ".join(
+        [payload.title, payload.summary or ""]
+        + [claim["text"] for claim in facts]
+        + [fact.excerpt + " " + fact.value for fact in company]
+        + [item["excerpt"] for item in bank]
+    )
+    raw, dropped, usage_steps = RawInsight(), [], []
+    sections: dict[str, list[dict]] = {}
+    if facts:
+        prompt = build_prompt(payload, user_focus, facts, company, bank, matches, aliases)
+        for attempt in range(ATTEMPTS):
+            dropped.clear()
+            result = call_llm(
+                "build_insight",
+                LLMInput(system=INSIGHT_SYSTEM_PROMPT, user=prompt),
+                MAX_TOKENS,
+                response_model=RawInsight,
+                temperature=RETRY_TEMPERATURE if attempt else 0.0,
+            )
+            usage_steps.append(
+                {
+                    "llm": "build_insight",
+                    "attempt": attempt + 1,
+                    "request_id": result.request_id,
+                    "model": result.model_id,
+                    "input_tokens": result.usage.input_tokens,
+                    "output_tokens": result.usage.output_tokens,
+                    "cost_rub": result.usage.cost_rub,
+                }
+            )
+            raw = RawInsight.model_validate(result.data)
+            sections = {}
+            for section in SECTIONS:
+                inherited = list(
+                    dict.fromkeys(
+                        ref
+                        for claim in sections.get("ai_interpretation", [])
+                        for ref in claim["evidence_refs"]
+                    )
+                )
+                sections[section] = validated_claims(
+                    section,
+                    getattr(raw, section),
+                    candidates,
+                    aliases,
+                    news_ids | set(bank_ids),
+                    number_source,
+                    dropped,
+                    inherited,
+                )
+            if sections["ai_interpretation"]:
+                break
+    else:
+        sections = {section: [] for section in SECTIONS}
+    bank_view = sections["bank_view"] or None
+    unknowns = domain_unknowns(
+        payload,
+        context,
+        [bank_ids[ref] for claim in sections["bank_view"] for ref in claim["evidence_refs"]],
+        hits,
+        bank_view is not None,
+    )
+    if not facts:
+        unknowns.insert(0, "Источников недостаточно для вывода о влиянии события на компанию")
+    for text in raw.unknowns:
+        cleaned = " ".join(text.split())[:MAX_UNKNOWN_CHARS]
+        if cleaned and cleaned not in unknowns:
+            unknowns.append(cleaned)
+    unknowns = unknowns[:MAX_UNKNOWNS]
+    claims = facts + [claim for section in SECTIONS for claim in sections[section]]
+    refs = list(dict.fromkeys(ref for claim in claims for ref in claim["evidence_refs"]))
+    evidence = [bank_ids[ref] for ref in refs if ref in bank_ids] + [
+        company_ids[ref] for ref in refs if ref in company_ids
+    ]
+    evidence = [
+        {key: item[key] for key in ("id", "kind", "source_id", "version", "locator", "excerpt")}
+        for item in evidence
+    ]
+    trace_id = str(uuid.uuid4())
+    trace = {
+        "prompt_version": INSIGHT_PROMPT_VERSION,
+        "plan": [
+            "read_event_facts",
+            "read_company_features",
+            "search_bank_analytics",
+            "compose_insight",
+            "check_grounding",
+        ],
+        "steps": [
+            {
+                "tool": "get_company_context",
+                "company_id": context["company_id"],
+                "profile_version": context["profile_version"],
+            },
+            {
+                "tool": "get_event",
+                "event_id": payload.id,
+                "event_version": payload.version,
+                "facts": len(facts),
+            },
+            *steps,
+            *usage_steps,
+        ],
+        "company_features_offered": [fact.feature for fact in company],
+        "matched_with_event": matches,
+        "bank_fragments_offered": [item["id"] for item in bank],
+        "dropped_claims": dropped,
+        "stop_reason": "completed" if facts else "no_event_facts",
+    }
+    result = {
+        "facts": facts,
+        "bank_view": bank_view,
+        "ai_interpretation": sections["ai_interpretation"],
+        "risks": sections["risks"],
+        "opportunities": sections["opportunities"],
+        "actions": sections["actions"],
+        "unknowns": unknowns,
+        "evidence_refs": refs,
+        "trace_id": trace_id,
+    }
+    return InsightEnvelope.model_validate(
+        {"result": result, "evidence": evidence, "trace": trace}
+    ).model_dump(mode="json")
