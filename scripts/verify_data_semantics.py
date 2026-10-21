@@ -8,6 +8,8 @@ from decimal import Decimal
 from itertools import zip_longest
 from pathlib import Path
 
+from sqlalchemy import func, select
+
 from app.ai.insights.context import company_facts
 from app.cli import migrate
 from app.data_semantics import (
@@ -20,7 +22,6 @@ from app.db import get_engine, session_factory
 from app.models import ClientRawRow, Company, Membership, Payment
 from app.schemas import CompanyContextV2
 from app.services.clients import company_context, demo_candidates, import_clients
-from sqlalchemy import func, select
 
 
 def verify(directory: Path) -> dict:
