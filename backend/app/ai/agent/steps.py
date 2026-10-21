@@ -113,6 +113,7 @@ def verify_bank_claims(prepared: Prepared, composed: Composed) -> tuple[Composed
         return composed, [], []
     by_id = {item["id"]: item for item in composed.bank}
     payload = {
+        "event_title": prepared.payload.title,
         "event_facts": [claim["text"] for claim in prepared.facts],
         "claims": [
             {

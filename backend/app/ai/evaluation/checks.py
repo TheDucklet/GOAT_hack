@@ -6,7 +6,7 @@ from app.ai.summarization.vocabulary import THEMES
 
 CLAIM_SECTIONS = ("facts", "ai_interpretation", "risks", "opportunities", "actions")
 CONFLICT_WORDS = re.compile(
-    r"расхожд|различ|противореч|по-разному|разные|не совпада|не согласу", re.IGNORECASE
+    r"расходя|расхожд|различ|противореч|по-разному|разные|не совпада|не согласу", re.IGNORECASE
 )
 MISSING_DATA_WORDS = re.compile(r"выручк|кредит|депозит|продукт|профил|сведен|данн", re.IGNORECASE)
 BANK_UNKNOWN_WORDS = re.compile(r"банк", re.IGNORECASE)

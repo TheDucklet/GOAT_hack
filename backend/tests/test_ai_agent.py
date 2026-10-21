@@ -319,7 +319,7 @@ def test_bridge_exposes_the_agent_as_build_insight(monkeypatch):
     monkeypatch.setattr(steps_module, "call_llm", patched)
     ctx = company()
     envelope = bridge.build_insight(ctx, FOCUS, event(), Tools(ctx, Search(default=[hit()])))
-    assert envelope["trace"]["agent_version"] == "agent-1"
+    assert envelope["trace"]["agent_version"] == "agent-2"
     assert {
         "build_insight",
         "derive_user_focus",
@@ -327,3 +327,11 @@ def test_bridge_exposes_the_agent_as_build_insight(monkeypatch):
         "search_bank_analytics",
         "ingest_bank_document",
     } <= set(bridge.__all__)
+
+
+def test_verifier_receives_event_title_and_is_told_to_reject_unrelated_claims(monkeypatch):
+    router = Router()
+    run(monkeypatch, router, Search(default=[hit()]))
+    request = next(item for item in router.requests if "проверяешь, подтверждают ли" in item.system)
+    assert json.loads(request.user)["event_title"]
+    assert "не относится к событию" in request.system
