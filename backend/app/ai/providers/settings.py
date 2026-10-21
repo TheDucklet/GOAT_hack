@@ -11,6 +11,7 @@ DEFAULT_TASK_MODELS: dict[str, str] = {
     "summarize_event": "qwen/qwen3.6-35b-a3b",
     "build_insight": "qwen/qwen3.6-35b-a3b",
     "answer_chat": "qwen/qwen3.6-35b-a3b",
+    "select_industries": "google/gemma-4-26b-a4b-it",
     "agent_check": "qwen/qwen3.6-35b-a3b",
     "ocr_vision": "qwen/qwen3-vl-30b-a3b-instruct",
 }
