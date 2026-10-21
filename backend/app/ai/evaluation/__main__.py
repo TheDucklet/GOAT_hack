@@ -44,9 +44,13 @@ def tree_is_dirty() -> bool:
         return True
 
 
+PLAIN_CHARACTERS = {0xA0: " ", 0x202F: " ", 0x2011: "-", 0x2014: "–"}
+
+
 def write(path: Path, value) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    text = json.dumps(value, ensure_ascii=False, indent=2) + "\n"
+    path.write_text(text.translate(PLAIN_CHARACTERS), encoding="utf-8")
 
 
 def run_scenarios(args: argparse.Namespace) -> int:
