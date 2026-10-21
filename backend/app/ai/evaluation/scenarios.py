@@ -230,7 +230,11 @@ def source_conflict(session: Session) -> dict:
 
 def additional_search(session: Session) -> dict:
     card = session.card(
-        "U_243", "chief_accountant", "ruble_yuan", "первые два запроса не вернули материалов", suppressed=2
+        "U_9085",
+        "chief_accountant",
+        "inflation_weekly",
+        "первые два запроса не вернули материалов",
+        suppressed=2,
     )
     trace = card["envelope"]["trace"]
     retries = [step for step in trace["steps"] if step.get("purpose") == "retry"]
