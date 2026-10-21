@@ -1,0 +1,269 @@
+{
+  "company_id": "U_243",
+  "event": {
+    "title": "Банк России сохранил ключевую ставку",
+    "summary": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых."
+  },
+  "news": [
+    {
+      "id": "ev-news-1",
+      "source_id": "pub-1",
+      "version": "v1",
+      "url": "https://example.org/key-rate",
+      "excerpt": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых.",
+      "text": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых. Следующее заседание совета директоров запланировано на октябрь."
+    }
+  ],
+  "bank_chunks": [
+    "25f7831c-caab-4e5b-812a-00fd87ac9630"
+  ],
+  "cases": [
+    {
+      "name": "valid_news_fact",
+      "section": "facts",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых.",
+        "evidence_refs": [
+          "ev-news-1"
+        ]
+      },
+      "evidence": [],
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    },
+    {
+      "name": "valid_bank_view",
+      "section": "bank_view",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Аналитики банка отмечают, что динамика предложения отстаёт от динамики спроса.",
+        "evidence_refs": [
+          "ev-bank-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "ev-bank-1",
+          "kind": "bank",
+          "source_id": "e9075243-e38d-4bbd-8475-0f4af4f5841e",
+          "version": "3c64c1e43f3b46a795f9581967f2dbc8efb0994cb77ab82e95da180830e9ff8c",
+          "locator": {
+            "page": 2
+          },
+          "excerpt": "динамика предложения отстает от динамики спроса, что находит отражение в росте импорта и ослаблении курса рубля"
+        }
+      ],
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    },
+    {
+      "name": "valid_interpretation",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Сохранение ставки касается компании, зарегистрированной в Санкт-Петербурге.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    },
+    {
+      "name": "nonexistent_evidence_id",
+      "section": "facts",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых.",
+        "evidence_refs": [
+          "ev-news-404"
+        ]
+      },
+      "evidence": [],
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "unknown_evidence",
+          "no_valid_evidence"
+        ]
+      }
+    },
+    {
+      "name": "wrong_page",
+      "section": "bank_view",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Аналитики банка отмечают, что динамика предложения отстаёт от динамики спроса.",
+        "evidence_refs": [
+          "ev-bank-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "ev-bank-1",
+          "kind": "bank",
+          "source_id": "e9075243-e38d-4bbd-8475-0f4af4f5841e",
+          "version": "3c64c1e43f3b46a795f9581967f2dbc8efb0994cb77ab82e95da180830e9ff8c",
+          "locator": {
+            "page": 7
+          },
+          "excerpt": "динамика предложения отстает от динамики спроса, что находит отражение в росте импорта и ослаблении курса рубля"
+        }
+      ],
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "wrong_page",
+          "no_valid_evidence"
+        ]
+      }
+    },
+    {
+      "name": "excerpt_not_on_page",
+      "section": "bank_view",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Аналитики банка ожидают снижения ключевой ставки.",
+        "evidence_refs": [
+          "ev-bank-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "ev-bank-1",
+          "kind": "bank",
+          "source_id": "e9075243-e38d-4bbd-8475-0f4af4f5841e",
+          "version": "3c64c1e43f3b46a795f9581967f2dbc8efb0994cb77ab82e95da180830e9ff8c",
+          "locator": {
+            "page": 2
+          },
+          "excerpt": "ожидается снижение ключевой ставки в ближайшие месяцы"
+        }
+      ],
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "excerpt_not_on_page",
+          "no_valid_evidence"
+        ]
+      }
+    },
+    {
+      "name": "number_without_source",
+      "section": "facts",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Совет директоров Банка России сохранил ключевую ставку на уровне 17% годовых.",
+        "evidence_refs": [
+          "ev-news-1"
+        ]
+      },
+      "evidence": [],
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "number_without_source"
+        ]
+      }
+    },
+    {
+      "name": "ai_opinion_in_bank_view",
+      "section": "bank_view",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Банк считает, что сохранение ставки выгодно компании.",
+        "evidence_refs": [
+          "ev-news-1"
+        ]
+      },
+      "evidence": [],
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "bank_view_requires_bank_evidence"
+        ]
+      }
+    },
+    {
+      "name": "missing_profile_parameter",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Оборот компании в следующем году вырастет.",
+        "evidence_refs": [
+          "0193eb1e-cbcf-5c61-9889-8b9ece104dd3",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "0193eb1e-cbcf-5c61-9889-8b9ece104dd3",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.TURNOVER_NEXT_YEAR"
+          },
+          "excerpt": "Показатель: нет данных"
+        }
+      ],
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "missing_profile_parameter",
+          "missing_premise"
+        ]
+      }
+    },
+    {
+      "name": "profile_contradiction",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "У компании есть кредитный продукт, поэтому сохранение ставки удорожит обслуживание кредита.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "expected": {
+        "verdict": "contradiction",
+        "codes": [
+          "profile_contradiction"
+        ]
+      }
+    }
+  ]
+}

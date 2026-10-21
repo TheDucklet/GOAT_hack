@@ -1,7 +1,7 @@
 import uuid
 from dataclasses import dataclass
 
-from app.ai.summarization.vocabulary import PRODUCT_DESCRIPTIONS
+from app.ai.summarization.vocabulary import PRODUCT_DESCRIPTIONS, TRUE_VALUES
 
 EVIDENCE_NAMESPACE = uuid.UUID("5a1f0c8e-6c2b-4f6e-9a57-2d5f6a7b9c10")
 MAX_FEATURE_CHARS = 120
@@ -21,7 +21,6 @@ FEATURE_LABELS: dict[str, str] = {
 }
 FLAG_FEATURES: tuple[str, ...] = tuple(PRODUCT_DESCRIPTIONS)
 FEATURE_ORDER: tuple[str, ...] = (*FEATURE_LABELS, *FLAG_FEATURES, "GROUP_ID", "FTS_FLAG")
-TRUE_VALUES = {"1", "1.0", "true", "True"}
 FALSE_VALUES = {"0", "0.0", "false", "False"}
 MISSING = {"", "nan", "None", "null", "NULL"}
 

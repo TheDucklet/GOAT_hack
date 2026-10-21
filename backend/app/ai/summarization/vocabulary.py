@@ -43,6 +43,8 @@ THEMES: tuple[str, ...] = (
     "депозиты и ликвидность",
 )
 
+TRUE_VALUES = {"1", "1.0", "true", "True"}
+
 PRODUCT_FLAGS: tuple[str, ...] = (
     "CL_PRODUCT_RKO_MARK",
     "CL_PRODUCT_GAR_MARK",
