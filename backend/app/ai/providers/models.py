@@ -46,6 +46,8 @@ class LLMRequest(BaseModel):
     temperature: float
     json_mode: bool
     reasoning_effort: ReasoningEffort | None = None
+    timeout_seconds: float | None = None
+    frequency_penalty: float | None = None
 
 
 class TransportResponse(BaseModel):

@@ -267,3 +267,18 @@ def test_truncated_reasoning_response_is_reported_as_invalid_json():
         run(ScriptedTransport(TransportResponse(status_code=200, body=body)), sink)
     assert raised.value.code == "invalid_json"
     assert sink.records[0].output_tokens == 400
+
+
+def test_request_timeout_defaults_to_settings_and_can_be_raised_per_call():
+    transport = ScriptedTransport(json_completion({"a": 1}), json_completion({"a": 1}))
+    run(transport)
+    run(transport, timeout_seconds=240)
+    assert [request.timeout_seconds for request in transport.requests] == [60, 240]
+
+
+def test_temperature_and_frequency_penalty_can_be_set_per_call():
+    transport = ScriptedTransport(json_completion({"a": 1}))
+    run(transport, temperature=0.5, frequency_penalty=0.6)
+    request = transport.requests[0]
+    assert (request.temperature, request.frequency_penalty) == (0.5, 0.6)
+    assert build_payload(request)["frequency_penalty"] == 0.6

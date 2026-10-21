@@ -128,6 +128,9 @@ def call_llm(
     response_model: type[BaseModel] | None = None,
     json_mode: bool = True,
     reasoning_effort: ReasoningEffort | None = None,
+    timeout_seconds: float | None = None,
+    temperature: float | None = None,
+    frequency_penalty: float | None = None,
     settings: LLMSettings | None = None,
     transport: Transport | None = None,
     usage_sink: UsageSink | None = None,
@@ -183,9 +186,11 @@ def call_llm(
         user=input.user,
         image_data_urls=input.image_data_urls,
         max_tokens=max_tokens,
-        temperature=settings.llm_temperature,
+        temperature=settings.llm_temperature if temperature is None else temperature,
         json_mode=json_mode,
         reasoning_effort=reasoning_effort or settings.llm_reasoning_effort,
+        timeout_seconds=timeout_seconds or settings.llm_timeout_seconds,
+        frequency_penalty=frequency_penalty,
     )
     last_failure: AIErrorCode = "provider_unavailable"
     for attempt in range(settings.llm_max_retries + 1):
