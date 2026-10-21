@@ -142,7 +142,12 @@ def verify_bank_claims(prepared: Prepared, composed: Composed) -> tuple[Composed
         verdict = verdicts.get(number)
         if verdict and verdict.verdict in {"insufficient", "contradiction"}:
             rejected.append(
-                {"claim_id": claim["claim_id"], "verdict": verdict.verdict, "reason": verdict.reason[:200]}
+                {
+                    "claim_id": claim["claim_id"],
+                    "text": claim["text"][:240],
+                    "verdict": verdict.verdict,
+                    "reason": verdict.reason[:200],
+                }
             )
         else:
             kept.append(claim)

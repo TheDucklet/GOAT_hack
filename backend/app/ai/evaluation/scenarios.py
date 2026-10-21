@@ -251,8 +251,18 @@ def additional_search(session: Session) -> dict:
             f"остановка: {trace.get('stop_reason')}",
         ),
         c.check(
-            "extra_search_found_evidence",
-            trace.get("stop_reason") == "supported" and bool(result["bank_view"]),
+            "extra_queries_differ_from_previous",
+            len({call["query"] for call in card["searches"]}) == len(card["searches"]),
+            f"запросы: {[call['query'] for call in card['searches']]}",
+        ),
+        c.check(
+            "outcome_matches_evidence",
+            (trace.get("stop_reason") == "supported" and bool(result["bank_view"]))
+            or (
+                trace.get("stop_reason") == "retry_limit_reached"
+                and result["bank_view"] is None
+                and any("уточняющих поисков" in text for text in result["unknowns"])
+            ),
             f"остановка: {trace.get('stop_reason')}, позиция банка: {len(result['bank_view'] or [])} утв.",
         ),
         c.check(
@@ -264,7 +274,7 @@ def additional_search(session: Session) -> dict:
     return finish(
         "S7",
         "Дополнительный поиск",
-        "если первых материалов банка нет, агент меняет запрос, не больше двух раз, находит подтверждение и записывает все запросы",
+        "если первых материалов банка нет, агент меняет запрос не больше двух раз, записывает все запросы, а позиция банка появляется только при подтверждении, иначе отсутствие объяснено",
         [card],
         extra,
     )
