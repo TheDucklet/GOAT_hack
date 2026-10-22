@@ -43,7 +43,7 @@ describe('R-04 personalized feed', () => {
     open('/app');
     await userEvent.click(await screen.findByRole('link', { name: /Открыть бизнес-аналитику/ }));
     expect(await screen.findByRole('button', { name: 'Событие event-1' })).toBeVisible();
-    expect(screen.getByRole('note')).toHaveTextContent(insightNotice.disclaimer);
+    for (const note of screen.getAllByRole('note')) expect(note).toHaveTextContent(insightNotice.disclaimer);
     expect(analyticsApi.feed).toHaveBeenCalledWith('company-a', 20, 0, expect.any(AbortSignal));
     expect(screen.getByText('Изменились условия расчётов.')).toBeVisible();
     expect(screen.getByText('Отрасль: 25.61')).toBeVisible();

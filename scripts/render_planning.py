@@ -93,8 +93,11 @@ def table_md(headings, rows):
 
 
 def task_md(task):
+    status = 'Реализована; подтверждение ниже' if task.get('implementation') else LABELS[task['status']]
     result = [f'### {task["code"]}. {task["title"]}', '',
-              f'**Статус:** {LABELS[task["status"]]}. **Приоритет:** {task["priority"]}. **Срок:** {task["due"]} МСК.', '']
+              f'**Статус:** {status}. **Приоритет:** {task["priority"]}. **Срок:** {task["due"]} МСК.', '']
+    if task.get('implementation'):
+        result += ['**Реализация:** ' + task['implementation'], '']
     if task.get('original_due'):
         result += [f'Прежний срок: {task["original_due"]}. Новая дата — внутренний срок команды.', '']
     if task.get('extends'):
@@ -115,6 +118,10 @@ def person_md(plan, person):
     result = [f'# {info["name"]} — задачи после вебинара', '', f'Редакция 21.10.2026 · МСК · baseline `{plan["baseline_sha"]}`.', '', info['scope'] + '.', '', info['reviewer'], '',
               f'Закрыто: {len(closed)}. В работе по новому плану: {len(pending)}. Оценка чистого времени: {sum(t["estimate_hours"] for t in pending)} ч; это ориентир, без гарантии отсутствия интеграционных дефектов.', '',
               table_md(['ID', 'Срок МСК', 'Приоритет', 'Результат'], [(t['code'], t['due'], t['priority'], t['title']) for t in pending]), '', '## Подробные задачи', '']
+    implemented = [task for task in pending if task.get('implementation')]
+    if implemented:
+        result += ['Реализации после baseline: ' + ', '.join(task['code'] for task in implemented) +
+                   f'. Без отметки реализации: {len(pending) - len(implemented)}. Классификация new/revised выше сохраняет исходный план; фактическая приёмка указана в задачах.', '']
     result += [task_md(task) for task in pending]
     result += ['## Уже сделано — повторно не назначается', '', plan['closure_note'], '',
                table_md(['ID', 'Исходный результат', 'Историческое подтверждение'], [(t['code'], t['title'], ', '.join(t['evidence'])) for t in closed]), '']
@@ -165,7 +172,7 @@ def write_markdown(plan):
              '## Контрольные точки', '', table_md(['Срок МСК', 'Кто', 'Результат'], [[m['due'], m['owner'], m['result']] for m in plan['milestones']]), '']
     for person in plan['people']:
         # The exact same records form the role PDFs and full task descriptions.
-        lines += [person_md(plan, person).replace('# ', '## ', 1), '']
+        lines += [person_md(plan, person).replace('# ', '## ', 1).replace('](../qa/', '](docs/qa/'), '']
     lines += ['## Правила завершения и сдачи', '', 'Задача закрывается после коммита, PR, указанной приёмки и интеграции в общую ветку. Новые договорённости о schema/data/policy фиксируются версиями, не устными сообщениями. Повторная проверка релиза ссылается на фактический SHA, а не исторический PASS другого состояния.', '',
               'S01–S14, определения метрик, спорные поля CSV и покрытие 12 официальных критериев находятся в [обосновании пересмотра](docs/planning/webinar-review.md). Полная детализация исходных закрытых задач сохранена в plan.json и архиве от 19.10.2026.', '']
     content = '\n'.join(lines)
