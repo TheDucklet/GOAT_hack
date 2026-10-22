@@ -1,13 +1,6 @@
 import { useAnalyticsSelection } from './AnalyticsSelection';
 
-export function InsightPanel() {
-  const { event } = useAnalyticsSelection();
-  return <section className="panel context-panel" aria-labelledby="insight-heading" data-event-id={event?.event_id}>
-    <h2 id="insight-heading">Анализ события</h2>
-    {event ? <><h3>{event.title}</h3><p>Подробная аналитическая карточка пока недоступна.</p></>
-      : <p>Выберите событие в ленте, чтобы перейти к его аналитике.</p>}
-  </section>;
-}
+export { InsightPanel } from './insights/InsightPanel';
 
 export function ChatPanel() {
   const { event, chat } = useAnalyticsSelection();
