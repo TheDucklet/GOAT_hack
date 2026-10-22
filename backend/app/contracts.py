@@ -46,9 +46,18 @@ OPERATIONS = [
         s.ProfileIn,
     ),
     Operation("GET", "/companies", list[s.CompanyOut], "authenticated; active memberships only"),
-    Operation("GET", "/companies/{company_id}/context", s.CompanyContextV2 | s.CompanyContext, "active membership in company"),
     Operation(
-        "GET", "/companies/{company_id}/feed", s.FeedOut, "active membership in company", paginate=True
+        "GET",
+        "/companies/{company_id}/context",
+        s.CompanyContextV2 | s.CompanyContext,
+        "active membership in company",
+    ),
+    Operation(
+        "GET",
+        "/companies/{company_id}/feed",
+        s.FeedOut | s.FeedSnapshotOut,
+        "active membership in company; v2 snapshot belongs to this user and company",
+        paginate=True,
     ),
     Operation(
         "POST",

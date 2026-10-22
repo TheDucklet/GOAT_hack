@@ -1,5 +1,11 @@
 # Backend GOAT
 
+Персональная лента v2 и фиксированная пагинация описаны в ../docs/contracts/feed-v2.md.
+Текущий frontend сохраняет прежний FeedOut без параметра contract_version.
+Для нового формата передаётся contract_version=v2. До завершения worker возвращается queued.
+FEED_CANDIDATE_LIMIT ограничивает shortlist. FEED_PREPARE_TOP_K ограничивает подготовку карточек.
+Миграция 0003 добавляет снимки и персональные исключения с сохранением прежних таблиц.
+
 Python 3.12, FastAPI, SQLAlchemy и PostgreSQL 17. Зависимости зафиксированы в
 `requirements.lock`; SQLite используется только для быстрых локальных проверок.
 

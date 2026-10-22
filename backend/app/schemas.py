@@ -382,6 +382,9 @@ class InsightOut(Schema):
     event_id: str
     versions: dict
     result: InsightResultV2 | InsightResult
+    stale: bool = False
+    stale_reasons: list[str] = []
+    evaluated_at: datetime | None = None
 
 
 class EventIn(Schema):
@@ -446,6 +449,43 @@ class FeedOut(Schema):
     total: int
     limit: int
     offset: int
+
+
+class FeedSnapshotItem(FeedItem):
+    generation_status: Literal["ready", "not_requested", "failed", "deferred", "stale"]
+    insight_id: str | None = None
+    personalized_summary: StatementV2 | None = None
+    impact_level: Literal["low", "medium", "high", "undetermined"] = "undetermined"
+    relevance_status: Literal["active", "review_required", "expired", "undetermined"] = "undetermined"
+    versions: dict
+    error: dict | None = None
+
+    @model_validator(mode="after")
+    def ready_is_saved(self):
+        if self.generation_status == "ready" and not self.insight_id:
+            raise ValueError("ready preview requires a saved insight")
+        if self.generation_status != "ready" and (self.insight_id or self.personalized_summary):
+            raise ValueError("unready preview cannot expose a saved insight or summary")
+        return self
+
+
+class FeedSnapshotOut(Schema):
+    schema_version: Literal["v2"] = "v2"
+    snapshot_id: str
+    generation_status: Literal["queued", "running", "ready", "partial", "failed", "deferred", "stale"]
+    versions: dict
+    stale: bool
+    stale_reasons: list[str]
+    ranking_version: str
+    ranking_as_of: datetime
+    ready_at: datetime | None
+    job_id: str | None
+    error: dict | None
+    items: list[FeedSnapshotItem]
+    total: int
+    limit: int
+    offset: int
+    next_offset: int | None
 
 
 class DocumentOut(Schema):

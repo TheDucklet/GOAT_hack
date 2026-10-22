@@ -6,6 +6,7 @@ import json
 from app.config import get_settings
 from app.integrations.ai import call_ai
 from app.schemas import UserFocus
+from app.services.generation_metadata import generation_versions
 
 
 def focus_hash(membership):
@@ -16,6 +17,7 @@ def focus_hash(membership):
                 membership.interests,
                 get_settings().ai_module,
                 get_settings().ai_generation_version,
+                generation_versions(),
             ],
             ensure_ascii=False,
             sort_keys=True,

@@ -22,6 +22,7 @@ from app.schemas import (
 from app.security import current_user
 from app.services.access import company_access, owned
 from app.services.events import event_context
+from app.services.feed_snapshots import present_insight
 from app.services.insights import insight_versions
 from app.services.queue import enqueue
 
@@ -44,7 +45,7 @@ def create_insight(
     versions, key = insight_versions(db, user, company_id, body.event_id)
     previous = db.scalar(select(Insight).where(Insight.cache_key == key))
     if previous:
-        return previous
+        return present_insight(db, user, previous)
     from fastapi.responses import JSONResponse
 
     job = enqueue(db, "insight", {"event_id": body.event_id}, user.id, company_id, f"insight:{key}")
@@ -55,7 +56,7 @@ def create_insight(
 def get_insight(
     insight_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
 ):
-    return owned(db, Insight, insight_id, user)
+    return present_insight(db, user, owned(db, Insight, insight_id, user))
 
 
 @router.post("/chats", response_model=ChatOut, status_code=201)

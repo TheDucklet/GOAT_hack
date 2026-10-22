@@ -1,3 +1,5 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -5,10 +7,11 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.db import get_db, utcnow
 from app.models import Company, Event, Membership, News, User
-from app.schemas import CompanyContext, CompanyContextV2, CompanyOut, FeedOut
+from app.schemas import CompanyContext, CompanyContextV2, CompanyOut, FeedOut, FeedSnapshotOut
 from app.security import current_user
 from app.services.access import company_access
 from app.services.clients import company_context
+from app.services.feed_snapshots import owned_snapshot, read_snapshot, request_snapshot
 from app.services.focus import focus_hash
 from app.services.queue import enqueue
 from app.services.ranking import rank_event
@@ -36,14 +39,23 @@ def context(
     return company_context(db, company_id)
 
 
-@router.get("/companies/{company_id}/feed", response_model=FeedOut)
+@router.get("/companies/{company_id}/feed", response_model=FeedOut | FeedSnapshotOut)
 def feed(
     company_id: str,
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
+    contract_version: Literal["v1", "v2"] = "v1",
+    snapshot_id: str | None = Query(None, min_length=1, max_length=36),
     user: User = Depends(current_user),
     db: Session = Depends(get_db, scope="function"),
 ):
+    if contract_version == "v2":
+        snapshot = (
+            owned_snapshot(db, user, company_id, snapshot_id)
+            if snapshot_id
+            else request_snapshot(db, user, company_id)
+        )
+        return read_snapshot(db, user, snapshot, limit, offset)
     membership = company_access(db, user, company_id)
     ctx = company_context(db, company_id)
     focus = membership.user_focus if membership.focus_input_hash == focus_hash(membership) else {}

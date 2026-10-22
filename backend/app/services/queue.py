@@ -4,7 +4,7 @@ from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from app.db import utcnow
-from app.models import BankDocument, Event, Job
+from app.models import BankDocument, Event, FeedSnapshot, Job
 
 
 def enqueue(db, kind, payload, user_id=None, company_id=None, dedup_key=None):
@@ -45,7 +45,12 @@ def claim_next(db: Session):
 
 
 def mark_related_failure(db, job, code):
-    if job.kind == "ingest_document":
+    if job.kind == "feed_prepare":
+        snapshot = db.get(FeedSnapshot, job.payload.get("snapshot_id"))
+        if snapshot:
+            snapshot.status = "failed"
+            snapshot.error = {"code": code}
+    elif job.kind == "ingest_document":
         document = db.get(BankDocument, job.payload.get("document_id"))
         if document:
             document.status, document.error = ("failed", code)

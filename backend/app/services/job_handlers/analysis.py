@@ -5,7 +5,7 @@ from sqlalchemy import select
 from app.errors import AppError
 from app.insight_provenance import validate_v2_provenance
 from app.integrations.ai import AIError, call_ai
-from app.models import Chat, Insight, Message, User
+from app.models import Chat, Insight, Membership, Message, User
 from app.schemas import AIEnvelope, ChatResult, InsightResultV2, parse_insight_result
 from app.services.access import company_access
 from app.services.clients import company_context
@@ -16,10 +16,16 @@ from app.services.insights import insight_versions
 
 
 def user_context(db, job):
-    user = db.get(User, job.user_id)
+    user = db.get(User, job.user_id, with_for_update=True, populate_existing=True)
     if not user or user.status != "active":
         raise AppError(403, "forbidden", "Доступ отозван")
     membership = company_access(db, user, job.company_id)
+    db.scalar(
+        select(Membership)
+        .where(Membership.id == membership.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
     focus = derive_focus(db, membership)
     return user, membership, focus
 
@@ -42,10 +48,19 @@ def focus_job(db, job):
 def insight_job(db, job):
     user, focus, context, event, tools = analysis_context(db, job)
     versions, key = insight_versions(db, user, job.company_id, event["id"])
+    expected = job.payload.get("expected_cache_key")
+    if expected and key != expected:
+        raise AIError("stale_inputs", "Входные данные карточки изменились")
+    previous = db.scalar(select(Insight).where(Insight.cache_key == key))
+    if previous:
+        return {"insight_id": previous.id}
     envelope = AIEnvelope.model_validate(
         call_ai("build_insight", company_context=context, user_focus=focus, event=event, tools=tools)
     )
     parsed = parse_insight_result(envelope.result)
+    current, current_key = insight_versions(db, user, job.company_id, event["id"])
+    if current_key != key or current != versions:
+        raise AIError("stale_inputs", "Входные данные изменились во время генерации")
     if isinstance(parsed, InsightResultV2):
         try:
             validate_v2_provenance(parsed, envelope.evidence)

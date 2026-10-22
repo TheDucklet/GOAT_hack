@@ -1,9 +1,25 @@
 """Authorized callers share one event snapshot for HTTP, jobs and agent tools."""
 
+import hashlib
+import json
+
 from sqlalchemy import select
 
+from app.db import as_utc
 from app.errors import AppError
 from app.models import Event, Evidence, News
+
+
+def event_version(event):
+    content = [
+        event.version,
+        event.title,
+        event.summary,
+        event.topics,
+        event.facts,
+        as_utc(event.published_at).isoformat() if event.published_at else None,
+    ]
+    return hashlib.sha256(json.dumps(content, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
 def event_context(db, event_id):
@@ -21,7 +37,7 @@ def event_context(db, event_id):
         "title": event.title,
         "summary": event.summary,
         "published_at": event.published_at.isoformat() if event.published_at else None,
-        "version": event.version,
+        "version": event_version(event),
         "topics": event.topics,
         "facts": event.facts,
         "publications": [{"id": n.id, "url": n.url, "text": n.text} for n in news],

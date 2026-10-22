@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     job_timeout_seconds: int = Field(default=900, ge=60)
     ai_module: str = ""
     ai_generation_version: str = "1"
+    feed_candidate_limit: int = Field(default=30, ge=1, le=200)
+    feed_prepare_top_k: int = Field(default=3, ge=1, le=10)
     admin_password: SecretStr | None = None
     demo_password: SecretStr | None = None
     ranking_weights: dict[str, float] = {"industry": 4, "product": 3, "geo": 2, "relation": 2, "focus": 2}
@@ -28,6 +30,8 @@ class Settings(BaseSettings):
     def production_cookies(self):
         if self.environment == "production" and (not self.cookie_secure):
             raise ValueError("COOKIE_SECURE must be true in production")
+        if self.feed_prepare_top_k > self.feed_candidate_limit:
+            raise ValueError("FEED_PREPARE_TOP_K cannot exceed FEED_CANDIDATE_LIMIT")
         return self
 
 

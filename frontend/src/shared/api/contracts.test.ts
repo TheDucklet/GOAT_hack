@@ -8,12 +8,21 @@ import insightSchema from '../../../../docs/contracts/insight.schema.json';
 import envelopeSchema from '../../../../docs/contracts/insight-envelope-v2.schema.json';
 import companySchema from '../../../../docs/contracts/company-context-v2.schema.json';
 import companyFixtures from '../../../../docs/contracts/company-context-v2-examples.json';
+import feedFixtures from '../../../../docs/contracts/feed-snapshot-v2-examples.json';
+import feedSchema from '../../../../docs/contracts/feed-snapshot-v2.schema.json';
 import { insightNotice, isInsightV2 } from './insight-contract';
 import { demoCompanies, demoInsight } from './mock/fixtures';
 
 const validator = new Ajv2020({ strict: false, allErrors: true });
 addFormats(validator);
 validator.addSchema({ $id: 'backend', components: openapi.components });
+
+describe('A15 shared feed snapshots', () => {
+  const validate = validator.compile(feedSchema);
+  it.each(feedFixtures)('validates the $name response', ({ data }) => {
+    expect(validate(data), JSON.stringify(validate.errors)).toBe(true);
+  });
+});
 
 describe('A-01 contract handoff', () => {
   it.each(examples.filter((example) => example.schema in openapi.components.schemas))('validates the original $name fixture against $schema', ({ schema, data }) => {

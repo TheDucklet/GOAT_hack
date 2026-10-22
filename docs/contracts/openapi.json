@@ -1546,7 +1546,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FeedOut"
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/FeedOut"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FeedSnapshotOut"
+                    }
+                  ],
+                  "title": "Response Get Companies Company Id Feed"
                 }
               }
             }
@@ -1633,7 +1641,7 @@
           }
         },
         "x-access": {
-          "rule": "active membership in company",
+          "rule": "active membership in company; v2 snapshot belongs to this user and company",
           "csrf_required": false
         },
         "x-implementation-status": "contract-only"
@@ -4829,6 +4837,288 @@
         ],
         "title": "FeedOut"
       },
+      "FeedSnapshotItem": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "title": "Event Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Summary"
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At"
+          },
+          "rank_score": {
+            "type": "number",
+            "title": "Rank Score"
+          },
+          "relevance_reasons": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Relevance Reasons"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "sources": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "generation_status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "not_requested",
+              "failed",
+              "deferred",
+              "stale"
+            ],
+            "title": "Generation Status"
+          },
+          "insight_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Insight Id"
+          },
+          "personalized_summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StatementV2"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "impact_level": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "undetermined"
+            ],
+            "title": "Impact Level",
+            "default": "undetermined"
+          },
+          "relevance_status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "review_required",
+              "expired",
+              "undetermined"
+            ],
+            "title": "Relevance Status",
+            "default": "undetermined"
+          },
+          "versions": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versions"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "title",
+          "summary",
+          "published_at",
+          "rank_score",
+          "relevance_reasons",
+          "status",
+          "sources",
+          "generation_status",
+          "versions"
+        ],
+        "title": "FeedSnapshotItem"
+      },
+      "FeedSnapshotOut": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "v2",
+            "title": "Schema Version",
+            "default": "v2"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "title": "Snapshot Id"
+          },
+          "generation_status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "ready",
+              "partial",
+              "failed",
+              "deferred",
+              "stale"
+            ],
+            "title": "Generation Status"
+          },
+          "versions": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versions"
+          },
+          "stale": {
+            "type": "boolean",
+            "title": "Stale"
+          },
+          "stale_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Stale Reasons"
+          },
+          "ranking_version": {
+            "type": "string",
+            "title": "Ranking Version"
+          },
+          "ranking_as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Ranking As Of"
+          },
+          "ready_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ready At"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Id"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FeedSnapshotItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Offset"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "snapshot_id",
+          "generation_status",
+          "versions",
+          "stale",
+          "stale_reasons",
+          "ranking_version",
+          "ranking_as_of",
+          "ready_at",
+          "job_id",
+          "error",
+          "items",
+          "total",
+          "limit",
+          "offset",
+          "next_offset"
+        ],
+        "title": "FeedSnapshotOut"
+      },
       "FeedbackIn": {
         "properties": {
           "insight_id": {
@@ -4989,6 +5279,31 @@
               }
             ],
             "title": "Result"
+          },
+          "stale": {
+            "type": "boolean",
+            "title": "Stale",
+            "default": false
+          },
+          "stale_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Stale Reasons",
+            "default": []
+          },
+          "evaluated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evaluated At"
           }
         },
         "additionalProperties": false,

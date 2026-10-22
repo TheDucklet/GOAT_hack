@@ -1,0 +1,461 @@
+{
+  "$defs": {
+    "FeedSnapshotItem": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "title": "Event Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Summary"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Published At"
+        },
+        "rank_score": {
+          "title": "Rank Score",
+          "type": "number"
+        },
+        "relevance_reasons": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Relevance Reasons",
+          "type": "array"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "generation_status": {
+          "enum": [
+            "ready",
+            "not_requested",
+            "failed",
+            "deferred",
+            "stale"
+          ],
+          "title": "Generation Status",
+          "type": "string"
+        },
+        "insight_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Insight Id"
+        },
+        "personalized_summary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatementV2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "impact_level": {
+          "default": "undetermined",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "undetermined"
+          ],
+          "title": "Impact Level",
+          "type": "string"
+        },
+        "relevance_status": {
+          "default": "undetermined",
+          "enum": [
+            "active",
+            "review_required",
+            "expired",
+            "undetermined"
+          ],
+          "title": "Relevance Status",
+          "type": "string"
+        },
+        "versions": {
+          "additionalProperties": true,
+          "title": "Versions",
+          "type": "object"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        }
+      },
+      "required": [
+        "event_id",
+        "title",
+        "summary",
+        "published_at",
+        "rank_score",
+        "relevance_reasons",
+        "status",
+        "sources",
+        "generation_status",
+        "versions"
+      ],
+      "title": "FeedSnapshotItem",
+      "type": "object"
+    },
+    "QuantitativeScenario": {
+      "additionalProperties": false,
+      "properties": {
+        "inputs": {
+          "items": {
+            "$ref": "#/$defs/ScenarioInput"
+          },
+          "minItems": 1,
+          "title": "Inputs",
+          "type": "array"
+        },
+        "formula": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Formula",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Unit",
+          "type": "string"
+        },
+        "period": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Period",
+          "type": "string"
+        },
+        "assumptions": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "result_range": {
+          "$ref": "#/$defs/ScenarioRange"
+        }
+      },
+      "required": [
+        "inputs",
+        "formula",
+        "unit",
+        "period",
+        "assumptions",
+        "result_range"
+      ],
+      "title": "QuantitativeScenario",
+      "type": "object"
+    },
+    "ScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Name",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "unit": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Unit",
+          "type": "string"
+        },
+        "period": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Period",
+          "type": "string"
+        },
+        "input_refs": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Input Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "unit",
+        "period",
+        "input_refs"
+      ],
+      "title": "ScenarioInput",
+      "type": "object"
+    },
+    "ScenarioRange": {
+      "additionalProperties": false,
+      "properties": {
+        "lower": {
+          "title": "Lower",
+          "type": "number"
+        },
+        "upper": {
+          "title": "Upper",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lower",
+        "upper"
+      ],
+      "title": "ScenarioRange",
+      "type": "object"
+    },
+    "StatementV2": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Text",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "statement_type": {
+          "enum": [
+            "fact",
+            "hypothesis",
+            "scenario"
+          ],
+          "title": "Statement Type",
+          "type": "string"
+        },
+        "quantitative_scenario": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/QuantitativeScenario"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "claim_id",
+        "text",
+        "evidence_refs",
+        "statement_type"
+      ],
+      "title": "StatementV2",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "v2",
+      "default": "v2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "generation_status": {
+      "enum": [
+        "queued",
+        "running",
+        "ready",
+        "partial",
+        "failed",
+        "deferred",
+        "stale"
+      ],
+      "title": "Generation Status",
+      "type": "string"
+    },
+    "versions": {
+      "additionalProperties": true,
+      "title": "Versions",
+      "type": "object"
+    },
+    "stale": {
+      "title": "Stale",
+      "type": "boolean"
+    },
+    "stale_reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Stale Reasons",
+      "type": "array"
+    },
+    "ranking_version": {
+      "title": "Ranking Version",
+      "type": "string"
+    },
+    "ranking_as_of": {
+      "format": "date-time",
+      "title": "Ranking As Of",
+      "type": "string"
+    },
+    "ready_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Ready At"
+    },
+    "job_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Job Id"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Error"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/FeedSnapshotItem"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "total": {
+      "title": "Total",
+      "type": "integer"
+    },
+    "limit": {
+      "title": "Limit",
+      "type": "integer"
+    },
+    "offset": {
+      "title": "Offset",
+      "type": "integer"
+    },
+    "next_offset": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Next Offset"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "generation_status",
+    "versions",
+    "stale",
+    "stale_reasons",
+    "ranking_version",
+    "ranking_as_of",
+    "ready_at",
+    "job_id",
+    "error",
+    "items",
+    "total",
+    "limit",
+    "offset",
+    "next_offset"
+  ],
+  "title": "FeedSnapshotOut",
+  "type": "object"
+}

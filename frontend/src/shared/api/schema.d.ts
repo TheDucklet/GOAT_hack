@@ -801,6 +801,106 @@ export interface components {
             /** Offset */
             offset: number;
         };
+        /** FeedSnapshotItem */
+        FeedSnapshotItem: {
+            /** Event Id */
+            event_id: string;
+            /** Title */
+            title: string;
+            /** Summary */
+            summary: string | null;
+            /** Published At */
+            published_at: string | null;
+            /** Rank Score */
+            rank_score: number;
+            /** Relevance Reasons */
+            relevance_reasons: {
+                [key: string]: unknown;
+            }[];
+            /** Status */
+            status: string;
+            /** Sources */
+            sources: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Generation Status
+             * @enum {string}
+             */
+            generation_status: "ready" | "not_requested" | "failed" | "deferred" | "stale";
+            /** Insight Id */
+            insight_id?: string | null;
+            personalized_summary?: components["schemas"]["StatementV2"] | null;
+            /**
+             * Impact Level
+             * @default undetermined
+             * @enum {string}
+             */
+            impact_level: "low" | "medium" | "high" | "undetermined";
+            /**
+             * Relevance Status
+             * @default undetermined
+             * @enum {string}
+             */
+            relevance_status: "active" | "review_required" | "expired" | "undetermined";
+            /** Versions */
+            versions: {
+                [key: string]: unknown;
+            };
+            /** Error */
+            error?: {
+                [key: string]: unknown;
+            } | null;
+        };
+        /** FeedSnapshotOut */
+        FeedSnapshotOut: {
+            /**
+             * Schema Version
+             * @default v2
+             * @constant
+             */
+            schema_version: "v2";
+            /** Snapshot Id */
+            snapshot_id: string;
+            /**
+             * Generation Status
+             * @enum {string}
+             */
+            generation_status: "queued" | "running" | "ready" | "partial" | "failed" | "deferred" | "stale";
+            /** Versions */
+            versions: {
+                [key: string]: unknown;
+            };
+            /** Stale */
+            stale: boolean;
+            /** Stale Reasons */
+            stale_reasons: string[];
+            /** Ranking Version */
+            ranking_version: string;
+            /**
+             * Ranking As Of
+             * Format: date-time
+             */
+            ranking_as_of: string;
+            /** Ready At */
+            ready_at: string | null;
+            /** Job Id */
+            job_id: string | null;
+            /** Error */
+            error: {
+                [key: string]: unknown;
+            } | null;
+            /** Items */
+            items: components["schemas"]["FeedSnapshotItem"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+            /** Next Offset */
+            next_offset: number | null;
+        };
         /** FeedbackIn */
         FeedbackIn: {
             /** Insight Id */
@@ -867,6 +967,18 @@ export interface components {
             };
             /** Result */
             result: components["schemas"]["InsightResultV2"] | components["schemas"]["InsightResult"];
+            /**
+             * Stale
+             * @default false
+             */
+            stale: boolean;
+            /**
+             * Stale Reasons
+             * @default []
+             */
+            stale_reasons: string[];
+            /** Evaluated At */
+            evaluated_at?: string | null;
         };
         /** InsightResult */
         InsightResult: {
@@ -2400,7 +2512,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FeedOut"];
+                    "application/json": components["schemas"]["FeedOut"] | components["schemas"]["FeedSnapshotOut"];
                 };
             };
             /** @description Unauthorized */
