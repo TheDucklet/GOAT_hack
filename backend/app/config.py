@@ -1,7 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field, SecretStr, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     max_pdf_bytes: int = 50 * 1024 * 1024
     news_poll_minutes: int = Field(default=20, ge=1)
     news_collection_enabled: bool = True
+    news_sources_config: Path | None = None
     news_max_new_publications: int = Field(default=100, ge=1, le=1000)
     worker_poll_seconds: float = Field(default=2, gt=0)
     job_timeout_seconds: int = Field(default=900, ge=60)
@@ -29,6 +30,11 @@ class Settings(BaseSettings):
     admin_password: SecretStr | None = None
     demo_password: SecretStr | None = None
     ranking_weights: dict[str, float] = {"industry": 4, "product": 3, "geo": 2, "relation": 2, "focus": 2}
+
+    @field_validator("news_sources_config", mode="before")
+    @classmethod
+    def optional_source_path(cls, value):
+        return None if value == "" else value
 
     @model_validator(mode="after")
     def production_cookies(self):

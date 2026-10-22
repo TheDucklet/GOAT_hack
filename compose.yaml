@@ -31,8 +31,10 @@ x-backend: &backend
     PRODUCT_TEST_EMAILS: ${PRODUCT_TEST_EMAILS:-[]}
     NEWS_COLLECTION_ENABLED: ${NEWS_COLLECTION_ENABLED:-true}
     NEWS_MAX_NEW_PUBLICATIONS: ${NEWS_MAX_NEW_PUBLICATIONS:-100}
+    NEWS_SOURCES_CONFIG: ${NEWS_SOURCES_CONFIG:-}
   volumes:
     - documents:/srv/backend/storage
+    - ./config:/srv/config:ro
 
 services:
   postgres:

@@ -26,9 +26,9 @@ from app.services.clients import company_context, demo_candidates, import_client
 
 def verify(directory: Path) -> dict:
     engine = get_engine()
-    if engine.dialect.name != "postgresql" or engine.url.database != "goat_a14":
+    if engine.dialect.name != "postgresql" or engine.url.database not in {"goat_a14", "goat_a18"}:
         raise SystemExit(
-            "Full reconciliation requires the isolated PostgreSQL database named goat_a14"
+            "Full reconciliation requires the isolated PostgreSQL database named goat_a14 or goat_a18"
         )
     migrate()
     started = time.perf_counter()
