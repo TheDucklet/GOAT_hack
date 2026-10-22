@@ -125,7 +125,7 @@ Compose использует один backend-образ для api/worker и о
 | R-04 (реализовано) | `features/analytics`: useFeed управляет страницами/отменой, FeedEvent — отображением; AnalyticsSelectionProvider хранит event/chat отдельно для компании; доступная компания из CompanyProvider, запросы из analytics/api |
 | R-05 | `features/analytics/insights`: панель, загрузка и утверждения v1/v2; общий `shared/ui/EvidenceLink`, `shared/api/evidence` и защищённый PDF; единый wire-тип Evidence |
 | R-06 | `features/analytics`: chat; общий `shared/api/jobs.waitForJob`, EvidenceLink, InsightNotice и единый state company/event/insight/chat |
-| R-07 | `features/admin`: users/memberships; новые методы в admin/api, повторное использование FormField |
+| R-07 (реализовано) | `features/admin/access`: users/memberships, общий useAdminList/useAccessAction; единый admin/api и shared/ui/ConfirmDialog |
 | R-08 | `features/admin`: documents/news/jobs; upload и polling расширяют тот же транспорт, второй API-клиент не создаётся |
 | R-09 | Стили/состояние analytics и feedback-метод; мобильное представление не дублирует бизнес-состояние desktop |
 | R-10–R-12 | `frontend/tests`, `scripts`, `docs/qa`, затем `docs/release` и `docs/demo`; реальные проверки, manifest и SHA |
@@ -148,6 +148,12 @@ Compose использует один backend-образ для api/worker и о
 Один HttpClient обслуживает chat, history, sources и jobs; ограничение запроса 15 с использует тот же AbortSignal. Карточка и чат разделяют `waitForJob`, EvidenceReferences/EvidenceLink и InsightNotice. Текст черновика не хранится в URL или browser storage; память ограничена 30 контекстами user/company/event. Серверная история остаётся единственным источником принятых сообщений.
 
 Backend `services/chats` владеет проверкой контекста и идемпотентностью. Роутер делегирует ему работу; существующий Job.payload хранит client_message_id. Блокировка Chat сериализует параллельную отправку, обработка остаётся в существующем chat handler/worker. `services/evidence.bank_locator` переиспользует политику F-15, добавляет дату проверки и не разрешает открывать изменённую версию PDF по старому evidence. Второй транспорт, отдельная очередь, новые runtime-зависимости и миграции не добавлены.
+
+## Управление доступом R-07
+
+`AdminLayout` компонует сводку и списки `/admin/users`, `/admin/memberships`; `/admin/users/memberships` — alias второго списка. `features/admin/access` содержит только операторское поведение: `useAdminList` управляет страницами/отменой, `useAccessAction` — подтверждением, одним PATCH за попытку, проверкой результата и ошибками. Общий нативный `ConfirmDialog` владеет модальным отображением и отменой; `ErrorNotice` и HTTP-клиент не копируются. ID текущего пользователя приходит из `app`, импорт auth из admin не требуется.
+
+Wire-типы — алиасы существующего OpenAPI. Пользователи и членства читаются страницами по 50. Для email в MembershipOut используется `useUserDirectory`: один последовательный проход GET /admin/users страницами по 200, без запроса на каждую строку. Это ограничение существующего A-03: на большом каталоге потребуется серверное обогащение списка или поиск (P2). Компания показывается точным company_id, не выдуманным названием. Сервер остаётся единственным источником статусов; изменение не применяется оптимистически, 401/403 очищают показанные записи. Регистрация, аудит, отзыв сессий, роли и проверки доступа остаются в существующем backend. Миграций и новых runtime-зависимостей нет.
 
 ## Проверка границ
 
