@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { ErrorNotice } from '../../../shared/ui/ErrorNotice';
 
-export function AccessList({ loading, error, empty, hasMore, retry, more, children }: {
+export function AdminListStatus({ loading, error, empty, hasMore, retry, more, children }: {
   loading: boolean; error: unknown; empty: boolean; hasMore: boolean; retry(): void; more(): void; children: ReactNode;
 }) {
   return <>

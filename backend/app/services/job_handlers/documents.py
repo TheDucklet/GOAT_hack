@@ -2,11 +2,13 @@
 
 import hashlib
 import json
+from uuid import NAMESPACE_URL, uuid5
 
 from app.config import get_settings
 from app.integrations.ai import AIError, call_ai
 from app.models import BankDocument, Chunk
-from app.schemas import IngestResult
+from app.schemas import AIEnvelope, EvidenceOut, IngestResult
+from app.services.evidence import store_evidence
 
 
 def ingest_document_job(db, job):
@@ -53,4 +55,23 @@ def ingest_document_job(db, job):
     db.add_all(checked)
     doc.index_version = hashlib.sha256(json.dumps(result.model_dump(), sort_keys=True).encode()).hexdigest()
     doc.document_date, doc.status, doc.error = (result.document_date, "done", None)
-    return {"document_id": doc.id, "chunks": len(checked)}
+    first = next(chunk for chunk in checked if chunk.page == 1)
+    source_id = str(uuid5(NAMESPACE_URL, f"bank:{doc.id}:{doc.version}:{doc.index_version}:1"))
+    store_evidence(
+        db,
+        AIEnvelope(
+            result={},
+            evidence=[
+                EvidenceOut(
+                    id=source_id,
+                    kind="bank",
+                    source_id=doc.id,
+                    version=doc.version,
+                    locator={"page": 1, "document_date": doc.document_date},
+                    excerpt=first.text[:2000],
+                )
+            ],
+        ),
+        None,
+    )
+    return {"document_id": doc.id, "chunks": len(checked), "source_id": source_id}

@@ -1,0 +1,21 @@
+# Real OCR via ignored .env.ai, isolated DB/storage. News scheduling is disabled.
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: goat_r08
+      POSTGRES_PASSWORD: r08-local-only
+  api:
+    environment: &r08-environment
+      DATABASE_URL: postgresql+psycopg://goat:r08-local-only@postgres:5432/goat_r08
+      AI_MODULE: app.ai.bridge
+      AI_LLM_DAILY_LIMIT_RUB: "5"
+      AI_OCR_CACHE_DIR: /srv/backend/storage/ai/ocr
+      NEWS_COLLECTION_ENABLED: "false"
+      CORS_ORIGINS: '["http://127.0.0.1:8089","http://localhost:8089"]'
+    volumes:
+      - ./frontend/tests:/srv/r08:ro
+  worker:
+    environment: *r08-environment
+  web:
+    ports: !override
+      - "127.0.0.1:8089:80"

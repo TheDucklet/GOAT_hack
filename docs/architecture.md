@@ -125,8 +125,8 @@ Compose использует один backend-образ для api/worker и о
 | R-04 (реализовано) | `features/analytics`: useFeed управляет страницами/отменой, FeedEvent — отображением; AnalyticsSelectionProvider хранит event/chat отдельно для компании; доступная компания из CompanyProvider, запросы из analytics/api |
 | R-05 | `features/analytics/insights`: панель, загрузка и утверждения v1/v2; общий `shared/ui/EvidenceLink`, `shared/api/evidence` и защищённый PDF; единый wire-тип Evidence |
 | R-06 | `features/analytics`: chat; общий `shared/api/jobs.waitForJob`, EvidenceLink, InsightNotice и единый state company/event/insight/chat |
-| R-07 (реализовано) | `features/admin/access`: users/memberships, общий useAdminList/useAccessAction; единый admin/api и shared/ui/ConfirmDialog |
-| R-08 | `features/admin`: documents/news/jobs; upload и polling расширяют тот же транспорт, второй API-клиент не создаётся |
+| R-07 (реализовано) | `features/admin/access`: users/memberships; общие admin/shared.useAdminList/useAdminAction, admin/api и shared/ui/ConfirmDialog |
+| R-08 (реализовано) | `features/admin/materials`: documents/news/jobs; общий transport, waitForJob, EvidenceLink и механизмы admin/shared |
 | R-09 | Стили/состояние analytics и feedback-метод; мобильное представление не дублирует бизнес-состояние desktop |
 | R-10–R-12 | `frontend/tests`, `scripts`, `docs/qa`, затем `docs/release` и `docs/demo`; реальные проверки, manifest и SHA |
 | A-04–A-06 | Существующие clients/news/ranking/focus/events; изменения доступа в services/access |
@@ -151,9 +151,15 @@ Backend `services/chats` владеет проверкой контекста и
 
 ## Управление доступом R-07
 
-`AdminLayout` компонует сводку и списки `/admin/users`, `/admin/memberships`; `/admin/users/memberships` — alias второго списка. `features/admin/access` содержит только операторское поведение: `useAdminList` управляет страницами/отменой, `useAccessAction` — подтверждением, одним PATCH за попытку, проверкой результата и ошибками. Общий нативный `ConfirmDialog` владеет модальным отображением и отменой; `ErrorNotice` и HTTP-клиент не копируются. ID текущего пользователя приходит из `app`, импорт auth из admin не требуется.
+`AdminLayout` компонует сводку и списки `/admin/users`, `/admin/memberships`; `/admin/users/memberships` — alias второго списка. `features/admin/access` содержит только операторское поведение: `useAdminList` управляет страницами/отменой, `useAdminAction` из admin/shared — подтверждением, одним PATCH за попытку, проверкой результата и ошибками. Общий нативный `ConfirmDialog` владеет модальным отображением и отменой; `ErrorNotice` и HTTP-клиент не копируются. ID текущего пользователя приходит из `app`, импорт auth из admin не требуется.
 
 Wire-типы — алиасы существующего OpenAPI. Пользователи и членства читаются страницами по 50. Для email в MembershipOut используется `useUserDirectory`: один последовательный проход GET /admin/users страницами по 200, без запроса на каждую строку. Это ограничение существующего A-03: на большом каталоге потребуется серверное обогащение списка или поиск (P2). Компания показывается точным company_id, не выдуманным названием. Сервер остаётся единственным источником статусов; изменение не применяется оптимистически, 401/403 очищают показанные записи. Регистрация, аудит, отзыв сессий, роли и проверки доступа остаются в существующем backend. Миграций и новых runtime-зависимостей нет.
+
+## Операции с материалами R-08
+
+Общие механизмы R-07 перенесены в `admin/shared`: useAdminList, AdminListStatus, useAdminAction. Подтверждение проверяет ожидаемый ответ и используется также для глобальной видимости новости. `features/admin/materials` содержит DocumentsPage/NewsPage/JobsPage и единый useMaterialJob: явная постановка, readonly-возобновление, общий waitForJob, отмена и исходные ID. Загрузка — FormData через тот же HttpClient/CSRF, источники — общий EvidenceLink. Отдельного upload-транспорта, очереди или OCR-клиента в браузере нет.
+
+Backend ingest остаётся в существующем job handler и вызывает app.ai.bridge. После полной проверки страниц он создаёт immutable evidence через services.evidence.store_evidence и возвращает source_id; ID зависит от документа/версии индекса/страницы. Administrative JobOut расширен безопасными kind/target_id, не полным payload. Общий enqueue обрабатывает PostgreSQL-гонку уникального dedup_key в savepoint, сохраняя внешнюю транзакцию; SQLite использует прежний последовательный путь из-за legacy SAVEPOINT-семантики драйвера. Новая проверка rollback подтверждает, что enqueue сам не коммитит работу. Миграций и новых runtime-зависимостей нет.
 
 ## Проверка границ
 

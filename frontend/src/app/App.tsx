@@ -7,6 +7,9 @@ import { AdminPage } from '../features/admin/AdminPage';
 import { AdminLayout } from '../features/admin/AdminLayout';
 import { UsersPage } from '../features/admin/access/UsersPage';
 import { AdminMembershipsPage } from '../features/admin/access/MembershipsPage';
+import { DocumentsPage } from '../features/admin/materials/DocumentsPage';
+import { NewsPage } from '../features/admin/materials/NewsPage';
+import { JobsPage } from '../features/admin/materials/JobsPage';
 import { AnalyticsPage } from '../features/analytics/AnalyticsPage';
 import { AuthPage } from '../features/auth/AuthPage';
 import { OverviewPage } from '../features/overview/OverviewPage';
@@ -35,6 +38,9 @@ export function App() {
         <Route index element={<AdminPage />} />
         <Route path="users" element={<AdminUsersRoute />} />
         <Route path="memberships" element={<AdminMembershipsPage />} />
+        <Route path="documents" element={<DocumentsPage />} />
+        <Route path="news" element={<NewsPage />} />
+        <Route path="jobs" element={<JobsPage />} />
         <Route path="users/memberships" element={<Navigate to="/admin/memberships" replace />} />
       </Route>
     </Route></Route>

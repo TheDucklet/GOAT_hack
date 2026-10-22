@@ -1,6 +1,7 @@
 """Queue persistence and atomic claiming; importing this never loads handlers."""
 
 from sqlalchemy import select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.db import utcnow
@@ -21,8 +22,22 @@ def enqueue(db, kind, payload, user_id=None, company_id=None, dedup_key=None):
         dedup_key=dedup_key,
         received_at=received_at.get() or utcnow(),
     )
-    db.add(job)
-    db.flush()
+    if db.bind.dialect.name == "sqlite":
+        # Legacy sqlite3 SAVEPOINT mode may commit a transaction opened by the savepoint.
+        # Keep the existing single-process test path under its caller's transaction.
+        db.add(job)
+        db.flush()
+        return job
+    try:
+        with db.begin_nested():
+            db.add(job)
+            db.flush()
+    except IntegrityError:
+        if dedup_key:
+            previous = db.scalar(select(Job).where(Job.dedup_key == dedup_key))
+            if previous:
+                return previous
+        raise
     return job
 
 

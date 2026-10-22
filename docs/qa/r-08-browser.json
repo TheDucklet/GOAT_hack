@@ -1,0 +1,45 @@
+{
+  "kind": "R08 real browser/API/PG/worker and authorized OCR gateway",
+  "result": "PASS",
+  "frontend_source_sha256": "2d94f3388995933c657a9a050b97cd5b7f4188d3b74b3fb04ede16aaf1ebdd32",
+  "input_pdf_sha256": "09d5537f6a52f5f8f2d9518ed9171e794382972ce38cbdc4bd3099b2db129d0c",
+  "checks": [
+    {
+      "check": "invalid PDF header is rejected locally without upload or fake success",
+      "result": "PASS"
+    },
+    {
+      "check": "provided PDF passes real upload → worker → OCR → index → persisted page evidence and authorized original file",
+      "result": "PASS"
+    },
+    {
+      "check": "re-upload of identical bytes reuses the document and indexed evidence without a new job",
+      "result": "PASS"
+    },
+    {
+      "check": "operator visibility excludes/restores the event in another user feed globally",
+      "result": "PASS"
+    },
+    {
+      "check": "a real missing-file worker failure is visible and repeated active reindex returns one job",
+      "result": "PASS"
+    },
+    {
+      "check": "collect command deduplicates queued work; jobs identify operation/target and monitoring performs no POST",
+      "result": "PASS"
+    },
+    {
+      "check": "explicit news retry uses the existing summarize queue and reuses its active job",
+      "result": "PASS"
+    },
+    {
+      "check": "390px layout fits; ordinary user direct material/job routes and APIs remain forbidden; no browser storage secrets",
+      "result": "PASS"
+    }
+  ],
+  "document_id": "929442a5-f777-4abd-9039-07395b729dd2",
+  "job_id": "28c27b48-732c-4252-b90a-2f3b4971d40a",
+  "chunks": 8,
+  "source_id": "10148294-9824-5501-9887-72b2ec95a9b2",
+  "document_date": "2026-09-02"
+}

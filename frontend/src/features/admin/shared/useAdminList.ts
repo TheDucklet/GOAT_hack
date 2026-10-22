@@ -4,7 +4,7 @@ import { ApiError } from '../../../shared/api/errors';
 type Load<T> = (signal: AbortSignal, limit: number, offset: number) => Promise<T[]>;
 const PAGE_SIZE = 50;
 
-// Shared by both operator lists; refresh cancels old pages, errors never imply an empty result.
+// Shared by operator lists; refresh cancels old pages, errors never imply an empty result.
 export function useAdminList<T extends { id: string }>(load: Load<T>) {
   const [items, setItems] = useState<T[]>([]);
   const [loading, setLoading] = useState(true);

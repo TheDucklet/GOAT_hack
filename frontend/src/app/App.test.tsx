@@ -25,7 +25,7 @@ async function signIn(email = demoMe.email, password = demoPassword) {
 beforeEach(() => { http.clearSession(); });
 
 describe('R-01 route acceptance', () => {
-  it.each(['/app', '/app/analytics', '/app/companies', '/admin', '/admin/users', '/admin/memberships', '/admin/users/memberships'])('redirects an anonymous direct visit to %s to /login', async (path) => {
+  it.each(['/app', '/app/analytics', '/app/companies', '/admin', '/admin/users', '/admin/memberships', '/admin/users/memberships', '/admin/documents', '/admin/news', '/admin/jobs'])('redirects an anonymous direct visit to %s to /login', async (path) => {
     open(path);
     await waitFor(() => expect(screen.getByTestId('location')).toHaveTextContent('/login'));
     expect(await screen.findByRole('heading', { name: 'С возвращением' })).toBeVisible();
@@ -44,7 +44,7 @@ describe('R-01 route acceptance', () => {
     expect(screen.getByText('admin@example.org')).toBeVisible();
   });
 
-  it.each(['/admin', '/admin/users', '/admin/memberships', '/admin/users/memberships'])('renders the server 403 on %s for an ordinary user', async (path) => {
+  it.each(['/admin', '/admin/users', '/admin/memberships', '/admin/users/memberships', '/admin/documents', '/admin/news', '/admin/jobs'])('renders the server 403 on %s for an ordinary user', async (path) => {
     open(path, demoMe.email);
     expect(await screen.findByRole('alert')).toHaveTextContent('Нет доступа');
     expect(screen.queryByText('Оценок полезности')).not.toBeInTheDocument();

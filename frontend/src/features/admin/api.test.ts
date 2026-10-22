@@ -15,3 +15,16 @@ it('uses the existing transport, cookie/CSRF and encoded identifiers for admin r
   for (const [, init] of transport.mock.calls.filter(([, init]) => init?.method === 'PATCH')) expect(new Headers(init?.headers).get('X-CSRF-Token')).toBe(demoMe.csrf_token);
   expect(JSON.parse(String(transport.mock.calls[3]![1]!.body))).toEqual({ status: 'blocked' });
 });
+
+it('uploads native multipart without a Content-Type boundary override and reuses CSRF for material commands', async () => {
+  const transport = vi.fn<Transport>().mockImplementation(async (input) => new Response(JSON.stringify(String(input).endsWith('/me') ? demoMe : {})));
+  const api = createAdminApi(new HttpClient('/api', transport));
+  const file = new File(['%PDF-test'], 'bank.pdf', { type: 'application/pdf' });
+  await api.upload(file);
+  await api.reindex('doc/1'); await api.retryNews('event/1'); await api.collectNews();
+  const [, upload] = transport.mock.calls[1]!;
+  expect(upload?.body).toBeInstanceOf(FormData);
+  expect(new Headers(upload?.headers).has('Content-Type')).toBe(false);
+  expect(new Headers(upload?.headers).get('X-CSRF-Token')).toBe(demoMe.csrf_token);
+  expect(transport.mock.calls.slice(2).map(([input]) => input)).toEqual(['/api/admin/documents/doc%2F1/reindex', '/api/admin/news/event%2F1/retry', '/api/admin/jobs/collect-news']);
+});
