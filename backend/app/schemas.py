@@ -161,6 +161,11 @@ class JobOut(Schema):
     trace_id: str | None = None
 
 
+class AdminJobOut(JobOut):
+    kind: str
+    target_id: str | None = None
+
+
 class DismissalIn(Schema):
     event_id: str = Field(min_length=1, max_length=36)
     insight_id: str | None = Field(default=None, min_length=1, max_length=36)

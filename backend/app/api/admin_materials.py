@@ -72,7 +72,10 @@ def upload_document(
     if previous:
         pending = db.scalar(select(Job).where(Job.dedup_key == f"document:{previous.id}"))
         source_id = db.scalar(
-            select(Evidence.id).where(Evidence.kind == "bank", Evidence.source_id == previous.id)
+            select(Evidence.id)
+            .where(Evidence.kind == "bank", Evidence.source_id == previous.id)
+            .order_by((Evidence.excerpt == "").asc(), Evidence.id)
+            .limit(1)
         )
         return {"document": previous, "job": pending, "source_id": source_id}
     settings.storage_dir.mkdir(parents=True, exist_ok=True)
@@ -163,6 +166,6 @@ def retry_news(
     if not event:
         raise AppError(404, "not_found", "Событие не найдено")
     job = enqueue(db, "summarize", {"event_id": event_id}, admin.id, dedup_key=f"summarize:{event_id}")
-    event.processing_status = "queued"
+    event.processing_status = job.status
     audit(db, admin, "retry_news", event.id)
     return job

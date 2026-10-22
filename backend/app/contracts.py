@@ -164,7 +164,7 @@ OPERATIONS = [
     Operation("GET", "/admin/news", list[s.AdminEventOut], "admin", paginate=True),
     Operation("PATCH", "/admin/news/{event_id}", s.VisibilityOut, "admin; audit", s.VisibilityIn),
     Operation("POST", "/admin/news/{event_id}/retry", s.JobOut, "admin; audit", status=202),
-    Operation("GET", "/admin/jobs", list[s.JobOut], "admin", paginate=True),
+    Operation("GET", "/admin/jobs", list[s.AdminJobOut], "admin", paginate=True),
     Operation("POST", "/admin/jobs/collect-news", s.JobOut, "admin; audit", status=202),
     Operation("GET", "/admin/stats", s.StatsOut, "admin"),
 ]

@@ -172,7 +172,7 @@ def write_markdown(plan):
              '## Контрольные точки', '', table_md(['Срок МСК', 'Кто', 'Результат'], [[m['due'], m['owner'], m['result']] for m in plan['milestones']]), '']
     for person in plan['people']:
         # The exact same records form the role PDFs and full task descriptions.
-        lines += [person_md(plan, person).replace('# ', '## ', 1).replace('](../qa/', '](docs/qa/'), '']
+        lines += [person_md(plan, person).replace('# ', '## ', 1).replace('](../qa/', '](docs/qa/').replace('](../demo/', '](docs/demo/'), '']
     lines += ['## Правила завершения и сдачи', '', 'Задача закрывается после коммита, PR, указанной приёмки и интеграции в общую ветку. Новые договорённости о schema/data/policy фиксируются версиями, не устными сообщениями. Повторная проверка релиза ссылается на фактический SHA, а не исторический PASS другого состояния.', '',
               'S01–S14, определения метрик, спорные поля CSV и покрытие 12 официальных критериев находятся в [обосновании пересмотра](docs/planning/webinar-review.md). Полная детализация исходных закрытых задач сохранена в plan.json и архиве от 19.10.2026.', '']
     content = '\n'.join(lines)

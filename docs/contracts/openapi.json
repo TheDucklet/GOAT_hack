@@ -1814,7 +1814,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/JobOut"
+                    "$ref": "#/components/schemas/AdminJobOut"
                   },
                   "title": "Response Get Admin Jobs"
                 }
@@ -4969,6 +4969,135 @@
           "sources"
         ],
         "title": "AdminEventOut"
+      },
+      "AdminJobOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "done",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "received_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Received At"
+          },
+          "enqueued_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enqueued At"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "ready_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ready At"
+          },
+          "attempts": {
+            "type": "integer",
+            "title": "Attempts",
+            "default": 0
+          },
+          "trace_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trace Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "target_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "kind"
+        ],
+        "title": "AdminJobOut"
       },
       "BankViewContext": {
         "properties": {

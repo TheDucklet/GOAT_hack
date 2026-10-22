@@ -640,6 +640,43 @@ export interface components {
                 [key: string]: unknown;
             }[];
         };
+        /** AdminJobOut */
+        AdminJobOut: {
+            /** Id */
+            id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "queued" | "running" | "done" | "failed";
+            /** Result */
+            result?: {
+                [key: string]: unknown;
+            } | null;
+            /** Error */
+            error?: {
+                [key: string]: unknown;
+            } | null;
+            /** Received At */
+            received_at?: string | null;
+            /** Enqueued At */
+            enqueued_at?: string | null;
+            /** Started At */
+            started_at?: string | null;
+            /** Ready At */
+            ready_at?: string | null;
+            /**
+             * Attempts
+             * @default 0
+             */
+            attempts: number;
+            /** Trace Id */
+            trace_id?: string | null;
+            /** Kind */
+            kind: string;
+            /** Target Id */
+            target_id?: string | null;
+        };
         /** BankViewContext */
         BankViewContext: {
             /**
@@ -2928,7 +2965,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["JobOut"][];
+                    "application/json": components["schemas"]["AdminJobOut"][];
                 };
             };
             /** @description Unauthorized */

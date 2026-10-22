@@ -2,6 +2,8 @@ import type { components } from './schema';
 
 // Wire types come from Alexey's A-01 OpenAPI, without a second manual schema.
 export type User = components['schemas']['UserOut'];
+export type UserPatch = components['schemas']['UserPatch'];
+export type MembershipPatch = components['schemas']['MembershipPatch'];
 export type Membership = components['schemas']['MembershipOut'];
 export type MembershipRequest = components['schemas']['MembershipIn'];
 export type MembershipProfile = components['schemas']['ProfileIn'];
@@ -28,6 +30,11 @@ export type ChatState = components['schemas']['ChatStateOut'];
 export type Message = components['schemas']['MessageOut'];
 export type Job = components['schemas']['JobOut'];
 export type AdminStats = components['schemas']['StatsOut'];
+export type BankDocument = components['schemas']['DocumentOut'];
+export type DocumentUpload = components['schemas']['UploadOut'];
+export type AdminNews = components['schemas']['AdminEventOut'];
+export type AdminJob = components['schemas']['AdminJobOut'];
+export type Visibility = components['schemas']['VisibilityOut'];
 export type Dismissal = components['schemas']['DismissalOut'];
 export type DismissalRequest = components['schemas']['DismissalIn'];
 export type DemoAction = components['schemas']['DemoActionOut'];
