@@ -40,6 +40,7 @@ class BankRepository:
                 "document_id": document.id,
                 "version": document.version,
                 "index_version": document.index_version,
+                "filename": document.filename,
                 "page": chunk.page,
                 "document_date": document.document_date,
                 "date_unknown": document.document_date is None,

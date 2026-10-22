@@ -107,6 +107,26 @@ def make_plan(prepared: Prepared) -> tuple[list[str], list[str], list[dict]]:
     )
 
 
+SUPPORTED_VERDICT = "supported"
+UNVERIFIED = "unverified"
+
+
+def rejection(claim: dict, verdict: str, reason: str) -> dict:
+    return {
+        "claim_id": claim["claim_id"],
+        "text": claim["text"][:240],
+        "verdict": verdict,
+        "reason": reason[:200],
+    }
+
+
+def without_bank_claims(composed: Composed, kept: list[dict]) -> Composed:
+    sections = {**composed.sections, "bank_view": kept}
+    return Composed(
+        sections, composed.raw_unknowns, composed.dropped, composed.usage_steps, composed.bank, composed.hits
+    )
+
+
 def verify_bank_claims(prepared: Prepared, composed: Composed) -> tuple[Composed, list[dict], list[dict]]:
     claims = composed.sections["bank_view"]
     if not claims:
@@ -135,27 +155,24 @@ def verify_bank_claims(prepared: Prepared, composed: Composed) -> tuple[Composed
     except LLMError as error:
         if error.code in FATAL_CODES:
             raise
-        return composed, [], []
+        reason = f"проверка не выполнена: {error.code}"
+        rejected = [rejection(claim, UNVERIFIED, reason) for claim in claims]
+        return without_bank_claims(composed, []), rejected, []
     verdicts = {item.claim: item for item in RawVerdicts.model_validate(result.data).verdicts}
     kept, rejected = [], []
     for number, claim in enumerate(claims, start=1):
         verdict = verdicts.get(number)
-        if verdict and verdict.verdict in {"insufficient", "contradiction"}:
-            rejected.append(
-                {
-                    "claim_id": claim["claim_id"],
-                    "text": claim["text"][:240],
-                    "verdict": verdict.verdict,
-                    "reason": verdict.reason[:200],
-                }
-            )
-        else:
+        if verdict is not None and verdict.verdict == SUPPORTED_VERDICT:
             kept.append(claim)
-    sections = {**composed.sections, "bank_view": kept}
-    updated = Composed(
-        sections, composed.raw_unknowns, composed.dropped, composed.usage_steps, composed.bank, composed.hits
-    )
-    return updated, rejected, [usage_step("agent_check", result)]
+        elif verdict is not None and verdict.verdict in {"insufficient", "contradiction"}:
+            rejected.append(rejection(claim, verdict.verdict, verdict.reason))
+        elif verdict is None:
+            rejected.append(rejection(claim, UNVERIFIED, "проверка не вернула вердикт по этому утверждению"))
+        else:
+            rejected.append(
+                rejection(claim, UNVERIFIED, f"неизвестный вердикт проверки: {verdict.verdict[:40]}")
+            )
+    return without_bank_claims(composed, kept), rejected, [usage_step("agent_check", result)]
 
 
 def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> CheckResult:
@@ -167,16 +184,25 @@ def check_card(prepared: Prepared, composed: Composed, rejected: list[dict]) -> 
             {"code": "no_interpretation", "detail": "нет объяснения, подтверждённого признаками компании"}
         )
     kept_bank = composed.sections["bank_view"]
-    contradicted = any(item["verdict"] == "contradiction" for item in rejected)
-    if rejected and (contradicted or not kept_bank):
-        kinds = sorted({item["verdict"] for item in rejected})
+    unverified = [item for item in rejected if item["verdict"] == UNVERIFIED]
+    judged = [item for item in rejected if item["verdict"] != UNVERIFIED]
+    contradicted = any(item["verdict"] == "contradiction" for item in judged)
+    if unverified:
+        reasons.append(
+            {
+                "code": "bank_verification_failed",
+                "detail": "смысловая проверка утверждений банка не выполнена, позиция банка не показана",
+            }
+        )
+    if judged and (contradicted or not kept_bank):
+        kinds = sorted({item["verdict"] for item in judged})
         reasons.append(
             {
                 "code": "bank_claims_rejected",
                 "detail": "проверка не подтвердила утверждения банка: " + ", ".join(kinds),
             }
         )
-    elif not kept_bank:
+    elif not kept_bank and not unverified:
         if composed.bank:
             reasons.append(
                 {

@@ -1,4 +1,5 @@
 import json
+import re
 import uuid
 
 from pydantic import Field
@@ -15,9 +16,11 @@ from app.ai.insights.build import (
     prepare_insight,
     profile_excerpts,
     select_bank,
+    temporal_unknowns,
 )
 from app.ai.providers import LLMError, LLMInput, call_llm
 from app.ai.schemas import AnswerChatInput, ChatEnvelope
+from app.ai.summarization.conflicts import source_conflicts
 from app.ai.summarization.grounding import normalize_text, shorten, supported_sentences
 from app.ai.summarization.summarize import Lenient, StrList
 from app.ai.validation import build_catalog, validate_answer
@@ -37,6 +40,8 @@ NO_SOURCES_TEXT = (
     "По имеющимся источникам на этот вопрос ответить нельзя: нет фактов события, признаков компании "
     "или материалов банка, которые его подтверждают."
 )
+CONFLICT_MENTION = re.compile(r"расходя|расхожд|различ|противореч|по-разному|не совпада", re.IGNORECASE)
+CONFLICT_SENTENCE = "Источники события расходятся в данных, поэтому итоговая цифра не установлена."
 NO_SOURCES_UNKNOWN = "Нет источников, подтверждающих ответ на этот вопрос"
 REFUSED_UNKNOWN = "Запрос выходит за пределы выбранной компании и инструментов, он не выполнен"
 MISSING_KEYWORDS = (
@@ -299,9 +304,17 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
                 continue
             break
     unknowns: list[str] = []
+    conflicts = source_conflicts(prepared.facts)
     if reason is not None:
         answer, refs = NO_SOURCES_TEXT, []
         unknowns.append(NO_SOURCES_UNKNOWN)
+        codes = sorted({item["code"] for item in validation.get("reasons", [])}) if validation else []
+        if codes:
+            unknowns.append(f"Ответ не прошёл проверку оснований ({', '.join(codes)})")
+    elif conflicts and not CONFLICT_MENTION.search(answer):
+        answer = f"{answer} {CONFLICT_SENTENCE}"
+    unknowns.extend(conflicts)
+    unknowns.extend(temporal_unknowns(hits))
     if removed:
         answer = f"{answer} {REFUSAL_TEXT}"
         unknowns.append(REFUSED_UNKNOWN)
@@ -329,6 +342,7 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         "bank_fragments_offered": [item["id"] for item in bank],
         "company_features_offered": [fact.feature for fact in prepared.company],
         "stop_reason": "answered" if reason is None else "no_sources",
+        "source_conflicts": conflicts,
         "validation": validation or None,
     }
     result_body = {

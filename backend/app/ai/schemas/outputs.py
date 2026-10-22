@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
 
@@ -92,6 +93,11 @@ class BankSearchHit(Schema):
     document_date: str | None
     date_unknown: bool
     historical: bool = False
+    title: str | None = None
+    temporal_status: (
+        Literal["current", "historical", "undated", "period_expired", "applicability_unknown"] | None
+    ) = None
+    temporal_reason: str | None = None
     text: str
     excerpt: str
     locator: dict

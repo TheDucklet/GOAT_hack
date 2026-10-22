@@ -1,6 +1,9 @@
 from dataclasses import dataclass, field
+from datetime import date, datetime
 
 from app.ai.schemas import EventPayload
+from app.ai.summarization.conflicts import source_conflicts
+from app.ai.summarization.vocabulary import PRODUCT_FLAGS, flag_state
 from app.data_semantics import confirmed_value
 
 
@@ -14,6 +17,26 @@ class Catalog:
     bank_hits: list[dict]
     event_texts: list[str]
     known_features: frozenset[str] = field(default_factory=frozenset)
+    flag_states: dict[str, str] = field(default_factory=dict)
+    revenue_confirmed: bool = False
+    event_day: date | None = None
+    conflicts: list[str] = field(default_factory=list)
+
+
+def event_day_of(payload: EventPayload) -> date | None:
+    if not payload.published_at:
+        return None
+    try:
+        return datetime.fromisoformat(payload.published_at).date()
+    except ValueError:
+        return None
+
+
+def revenue_is_confirmed(context: dict) -> bool:
+    entry = context["features"].get("REVENUE_COMPANY")
+    if confirmed_value(entry) is None:
+        return False
+    return "quality" not in entry or bool(entry.get("unit") and entry.get("period"))
 
 
 def build_catalog(
@@ -53,4 +76,8 @@ def build_catalog(
         bank_hits=bank_hits,
         event_texts=[payload.title, payload.summary or "", *[claim["text"] for claim in facts]],
         known_features=frozenset(features),
+        flag_states={flag: flag_state(context["features"], flag) for flag in PRODUCT_FLAGS},
+        revenue_confirmed=revenue_is_confirmed(context),
+        event_day=event_day_of(payload),
+        conflicts=source_conflicts(facts),
     )

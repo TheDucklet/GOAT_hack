@@ -1,12 +1,9 @@
 import re
-from dataclasses import dataclass
 
 from app.ai.summarization.grounding import INSTRUCTION_PATTERN, normalize_text, unsupported_numbers
 from app.ai.summarization.vocabulary import PRODUCT_FLAGS, TRUE_VALUES
-
-SUPPORTED = "supported"
-INSUFFICIENT = "insufficient"
-CONTRADICTION = "contradiction"
+from app.ai.validation.problems import CONTRADICTION, INSUFFICIENT, SUPPORTED, Problem
+from app.ai.validation.semantics import CONDITIONAL, semantic_problems, sentences
 
 PRODUCT_WORDS: dict[str, tuple[str, ...]] = {
     "CL_PRODUCT_LOA_MARK": ("кредитн\\w+ продукт", "кредит\\w*"),
@@ -24,13 +21,6 @@ LACKS_PATTERN = (
 GAP = "(?:\\W+\\w+){0,3}?\\W+"
 SECTION_BANK = "bank_view"
 SECTION_INTERPRETATION = "ai_interpretation"
-
-
-@dataclass(frozen=True)
-class Problem:
-    code: str
-    detail: str
-    verdict: str = INSUFFICIENT
 
 
 def contains(excerpt: str, text: str) -> bool:
@@ -104,18 +94,33 @@ def check_evidence(item: dict, catalog) -> list[Problem]:
 
 def profile_problems(text: str, catalog) -> list[Problem]:
     problems = []
-    for flag in PRODUCT_FLAGS:
-        words = PRODUCT_WORDS.get(flag, ())
-        has = catalog.features.get(flag, "") in TRUE_VALUES
-        claimed = HAS_PATTERN if not has else LACKS_PATTERN
-        if any(re.search(claimed + GAP + word, text, re.IGNORECASE) for word in words):
-            detail = (
-                f"в профиле нет продукта {flag}, а в утверждении он есть"
-                if not has
-                else f"в профиле есть продукт {flag}, а в утверждении его нет"
+    for sentence in sentences(text):
+        if CONDITIONAL.search(sentence):
+            continue
+        for flag in PRODUCT_FLAGS:
+            state = catalog.flag_states.get(flag) or (
+                "true" if catalog.features.get(flag, "") in TRUE_VALUES else "unknown"
             )
-            problems.append(Problem("profile_contradiction", detail, CONTRADICTION))
-    return problems
+            for word in PRODUCT_WORDS.get(flag, ()):
+                if state != "true" and re.search(HAS_PATTERN + GAP + word, sentence, re.IGNORECASE):
+                    verdict = CONTRADICTION if state == "false" else INSUFFICIENT
+                    detail = (
+                        f"в профиле нет продукта {flag}, а в утверждении он есть"
+                        if state == "false"
+                        else f"наличие продукта {flag} в профиле не подтверждено, а в утверждении он есть"
+                    )
+                    problems.append(Problem("profile_contradiction", detail, verdict))
+                    break
+                if state == "true" and re.search(LACKS_PATTERN + GAP + word, sentence, re.IGNORECASE):
+                    problems.append(
+                        Problem(
+                            "profile_contradiction",
+                            f"в профиле есть продукт {flag}, а в утверждении его нет",
+                            CONTRADICTION,
+                        )
+                    )
+                    break
+    return list({(item.code, item.detail): item for item in problems}.values())
 
 
 def check_claim(
@@ -168,6 +173,8 @@ def check_claim(
     if INSTRUCTION_PATTERN.search(claim["text"]):
         problems.append(Problem("instruction_in_text", "текст утверждения похож на инструкцию, а не на факт"))
     problems.extend(profile_problems(claim["text"], catalog))
+    cited = [evidence_by_id[ref] for ref in valid_refs]
+    problems.extend(semantic_problems(claim["text"], section, cited, catalog, support))
     if any(problem.verdict == CONTRADICTION for problem in problems):
         verdict = CONTRADICTION
     elif problems:

@@ -125,6 +125,7 @@ Backend: `AI_MODULE`, `AI_GENERATION_VERSION`. Остальные читает �
 | проверка пяти запросов к индексу | `python -m app.ai.rag check` |
 | выгрузка фрагментов в снимок | `python -m app.ai.rag export` |
 | проверка оснований на фикстурах | `python -m app.ai.validation check` |
+| смысловые и временные регрессии | `python -m app.ai.validation semantic` |
 | остаток дневного бюджета | `python -m app.ai.budget status --ledger storage/ai-budget.jsonl` |
 | приёмочные сценарии на новых входах | `python -m app.ai.evaluation run` |
 | запросы, страницы OCR и повтор поиска без сети | `python -m app.ai.evaluation retrieval`, `ocr`, `search --scenario S7` |

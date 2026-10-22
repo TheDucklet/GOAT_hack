@@ -1,9 +1,10 @@
 from datetime import date
 
 from app.ai.impact.dates import parse_iso
+from app.ai.rag.temporal import CURRENT_DAYS
 from app.notice_policy import DISCLAIMER, POLICY_VERSION
 
-BANK_CURRENT_DAYS = 120
+BANK_CURRENT_DAYS = CURRENT_DAYS
 HYPOTHESIS_SECTIONS = ("ai_interpretation", "risks", "opportunities", "actions")
 RELEVANCE_STATUSES = ("active", "review_required", "expired", "undetermined")
 

@@ -150,6 +150,7 @@ def bank_evidence(hit: dict) -> dict:
         "locator": {
             "page": hit["page"],
             **({"document_date": hit["document_date"]} if hit.get("document_date") else {}),
+            **({"title": hit["title"]} if hit.get("title") else {}),
         },
         "excerpt": hit["excerpt"],
     }
@@ -265,6 +266,24 @@ def validated_claims(
     return claims
 
 
+def temporal_unknowns(hits: list[dict], limit: int = 2) -> list[str]:
+    notes = []
+    seen = set()
+    for hit in hits:
+        status = hit.get("temporal_status")
+        key = (hit.get("document_id"), hit.get("version"))
+        if not status or status == "current" or key in seen:
+            continue
+        seen.add(key)
+        title = hit.get("title") or "без названия"
+        stamp = f" от {hit['document_date']}" if hit.get("document_date") else " без даты"
+        reason = hit.get("temporal_reason") or status
+        notes.append(f"Материал банка «{title}»{stamp}: {reason}, позиция не показана как текущая")
+        if len(notes) == limit:
+            break
+    return notes
+
+
 def domain_unknowns(
     event, context: dict, bank_used: list[dict], bank_all: list[dict], has_bank_view: bool
 ) -> list[str]:
@@ -274,6 +293,7 @@ def domain_unknowns(
         unknowns.append("Нет подтверждающих материалов банка на дату события")
     if bank_all and not bank_used:
         unknowns.append("Найдены только исторические материалы банка, текущая позиция банка не подтверждена")
+    unknowns.extend(temporal_unknowns(bank_all))
     if any(item["date_unknown"] for item in bank_used):
         unknowns.append("Дата использованного материала банка неизвестна")
     concerns_loans = LOAN_FLAG in (topics.get("product") or []) or LOAN_THEMES & set(
