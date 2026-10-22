@@ -24,6 +24,7 @@ class Operation:
 
 
 OPERATIONS = [
+    Operation("GET", "/admin/runtime-metrics", dict, "admin"),
     Operation(
         "POST", "/auth/register", s.UserOut, "public; registration always creates user", s.Credentials, 201
     ),

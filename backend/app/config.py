@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     storage_dir: Path = Path("storage")
     max_pdf_bytes: int = 50 * 1024 * 1024
     news_poll_minutes: int = Field(default=20, ge=1)
+    news_collection_enabled: bool = True
+    news_max_new_publications: int = Field(default=100, ge=1, le=1000)
     worker_poll_seconds: float = Field(default=2, gt=0)
     job_timeout_seconds: int = Field(default=900, ge=60)
     ai_module: str = ""

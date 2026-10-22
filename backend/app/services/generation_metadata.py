@@ -10,6 +10,7 @@ def generation_versions() -> dict[str, str]:
     prompts, models = {}, {}
     if settings.ai_module == "app.ai.bridge":
         from app.ai.agent.prompts import AGENT_PROMPT_VERSION
+        from app.ai.cache.identity import producer_identity
         from app.ai.impact.prompts import IMPACT_PROMPT_VERSION
         from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION
         from app.ai.personalization.focus import FOCUS_PROMPT_VERSION
@@ -18,6 +19,7 @@ def generation_versions() -> dict[str, str]:
 
         runtime = get_llm_settings()
         prompts = dict(
+            installed=producer_identity(),
             agent=AGENT_PROMPT_VERSION,
             impact=IMPACT_PROMPT_VERSION,
             insight=INSIGHT_PROMPT_VERSION,

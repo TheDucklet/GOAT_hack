@@ -81,7 +81,9 @@ def insight_job(db, job):
         )
         db.add(insight)
         db.flush()
-    save_trace(db, result["trace_id"], user, job.company_id, envelope.trace)
+    save_trace(
+        db, result["trace_id"], user, job.company_id, {**envelope.trace, "job_id": getattr(job, "id", None)}
+    )
     return {"insight_id": insight.id}
 
 
@@ -117,5 +119,10 @@ def chat_job(db, job):
     )
     db.add(message)
     db.flush()
-    save_trace(db, result["trace_id"], user, job.company_id, envelope.trace)
+    db.refresh(user)
+    if user.status != "active":
+        raise AppError(403, "forbidden", "Доступ отозван")
+    company_access(db, user, job.company_id)
+    event_context(db, event["id"])
+    save_trace(db, result["trace_id"], user, job.company_id, {**envelope.trace, "job_id": job.id})
     return {"message_id": message.id, "chat_id": chat.id}

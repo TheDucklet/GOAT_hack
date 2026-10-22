@@ -10,7 +10,7 @@ DEFAULT_LIMITS_PATH = Path(__file__).with_name("limits.json")
 class BudgetConfig(BaseModel):
     model_config = ConfigDict(frozen=True, extra="ignore")
 
-    daily_limit_rub: float = Field(default=500, gt=0)
+    daily_limit_rub: float = Field(default=500, gt=0, le=500)
     utc_offset_hours: int = 3
     day_starts_at_hour: int = Field(default=3, ge=0, le=23)
     chars_per_token: float = Field(default=2.0, gt=0)

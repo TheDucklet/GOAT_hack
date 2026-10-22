@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.db import utcnow
 from app.models import BankDocument, Event, FeedSnapshot, Job
+from app.request_context import received_at
 
 
 def enqueue(db, kind, payload, user_id=None, company_id=None, dedup_key=None):
@@ -12,7 +13,14 @@ def enqueue(db, kind, payload, user_id=None, company_id=None, dedup_key=None):
         previous = db.scalar(select(Job).where(Job.dedup_key == dedup_key))
         if previous:
             return previous
-    job = Job(kind=kind, payload=payload, user_id=user_id, company_id=company_id, dedup_key=dedup_key)
+    job = Job(
+        kind=kind,
+        payload=payload,
+        user_id=user_id,
+        company_id=company_id,
+        dedup_key=dedup_key,
+        received_at=received_at.get() or utcnow(),
+    )
     db.add(job)
     db.flush()
     return job

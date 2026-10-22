@@ -20,7 +20,9 @@ def scheduler_tick(db):
     last = db.scalar(
         select(Job.created_at).where(Job.kind == "collect_news").order_by(Job.created_at.desc()).limit(1)
     )
-    if not last or now - as_utc(last) >= timedelta(minutes=get_settings().news_poll_minutes):
+    if get_settings().news_collection_enabled and (
+        not last or now - as_utc(last) >= timedelta(minutes=get_settings().news_poll_minutes)
+    ):
         enqueue(db, "collect_news", {}, dedup_key="collect_news")
     stale = db.scalars(
         select(Job)

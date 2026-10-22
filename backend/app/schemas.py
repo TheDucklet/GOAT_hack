@@ -153,6 +153,12 @@ class JobOut(Schema):
     status: Literal["queued", "running", "done", "failed"]
     result: dict | None = None
     error: dict | None = None
+    received_at: datetime | None = None
+    enqueued_at: datetime | None = None
+    started_at: datetime | None = None
+    ready_at: datetime | None = None
+    attempts: int = 0
+    trace_id: str | None = None
 
 
 class Claim(Schema):

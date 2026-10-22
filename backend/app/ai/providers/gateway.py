@@ -149,8 +149,14 @@ def call_llm(
     started = time.monotonic()
     model_id = settings.llm_task_models.get(task, "")
     attempts = 0
+    prior_cost = 0.0
 
     def finish(status: CallStatus, tokens: TokenUsage) -> UsageRecord:
+        current_cost = (
+            tokens.gateway_cost
+            if tokens.gateway_cost is not None
+            else tariffs.cost_rub(model_id, tokens.input_tokens, tokens.output_tokens)
+        )
         record = UsageRecord(
             request_id=request_id,
             task=task,
@@ -159,18 +165,14 @@ def call_llm(
             output_tokens=tokens.output_tokens,
             latency_ms=int((time.monotonic() - started) * 1000),
             status=status,
-            cost_rub=(
-                tokens.gateway_cost
-                if tokens.gateway_cost is not None
-                else tariffs.cost_rub(model_id, tokens.input_tokens, tokens.output_tokens)
-            ),
+            cost_rub=current_cost + prior_cost,
             attempts=attempts,
-            estimated_tokens=tokens.estimated,
+            estimated_tokens=tokens.estimated or prior_cost > 0,
             cost_source="tariff" if tokens.gateway_cost is None else "gateway",
         )
         usage_sink.record(record)
         if reservation is not None:
-            budget.settle(reservation, record.cost_rub, task, model_id, status)
+            budget.settle(reservation, current_cost, task, model_id, status)
         return record
 
     def fail(code: AIErrorCode, tokens: TokenUsage | None = None) -> LLMError:
@@ -207,15 +209,36 @@ def call_llm(
     for attempt in range(settings.llm_max_retries + 1):
         if attempt:
             sleep(settings.llm_retry_backoff_seconds * 2 ** (attempt - 1))
+            try:
+                reservation = budget.reserve(
+                    f"{request_id}.{attempt}", estimate_cost_rub(tariffs, budget.config, request)
+                )
+            except BudgetExhausted:
+                raise fail("budget_exhausted") from None
         attempts = attempt + 1
         try:
             response = transport.send(request)
         except TransportFailure as failure:
             last_failure = "timeout" if failure.kind == "timeout" else "provider_unavailable"
+            # A timed-out request may have been billed remotely. Keep its worst-case cost.
+            prior_cost += reservation.amount_rub
+            budget.settle(reservation, reservation.amount_rub, task, model_id, last_failure)
+            reservation = None
             continue
         failure_code = classify_failure(response)
         if failure_code in RETRYABLE_STATUSES:
             last_failure = failure_code
+            tokens = read_usage(response)
+            cost = (
+                tokens.gateway_cost
+                if tokens.gateway_cost is not None
+                else tariffs.cost_rub(model_id, tokens.input_tokens, tokens.output_tokens)
+            )
+            if failure_code != "rate_limited" and cost == 0:
+                cost = reservation.amount_rub
+            prior_cost += cost
+            budget.settle(reservation, cost, task, model_id, failure_code)
+            reservation = None
             continue
         if failure_code:
             if failure_code == "budget_exhausted":

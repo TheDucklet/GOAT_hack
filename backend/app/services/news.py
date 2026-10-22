@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
+from app.config import get_settings
 from app.db import utcnow
 from app.models import Event, Evidence, News, Source, uid
 
@@ -155,8 +156,11 @@ def collect_news(db: Session, client=None) -> dict:
     own_client = client is None
     client = client or httpx.Client(timeout=25, headers={"User-Agent": "GOAT-hack/0.1 news reader"})
     result = {}
+    added_total = 0
     try:
         for source in db.scalars(select(Source).order_by(Source.id)):
+            if added_total >= get_settings().news_max_new_publications:
+                break
             count, errors = 0, 0
             try:
                 raw = fetch_limited(client, normalize_url(source.feed_url, source.allowed_hosts))
@@ -202,6 +206,9 @@ def collect_news(db: Session, client=None) -> dict:
                                     dedup_key=f"summarize:{news.event_id}",
                                 )
                                 count += 1
+                                added_total += 1
+                                if added_total >= get_settings().news_max_new_publications:
+                                    break
                     except (ValueError, KeyError, httpx.HTTPError):
                         errors += 1
                 source.last_success_at = utcnow()

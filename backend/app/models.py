@@ -298,6 +298,19 @@ class Job(Base):
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+    @property
+    def enqueued_at(self):
+        return self.created_at
+
+    @property
+    def ready_at(self):
+        return self.finished_at
+
+    @property
+    def trace_id(self):
+        return self.id
 
 
 class Feedback(Base):

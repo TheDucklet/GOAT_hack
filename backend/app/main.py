@@ -9,7 +9,8 @@ from app.api import routers
 from app.api.error_handlers import install_errors
 from app.config import get_settings
 from app.contracts import install_contracts
-from app.db import get_engine
+from app.db import get_engine, utcnow
+from app.request_context import received_at
 from app.schemas import ErrorOut
 from app.security import guard_contract
 
@@ -31,7 +32,11 @@ def create_app():
     @app.middleware("http")
     async def request_context(request: Request, call_next):
         request.state.request_id = str(uuid.uuid4())
-        response = await call_next(request)
+        token = received_at.set(utcnow())
+        try:
+            response = await call_next(request)
+        finally:
+            received_at.reset(token)
         response.headers["X-Request-ID"] = request.state.request_id
         response.headers["X-Content-Type-Options"] = "nosniff"
         if request.url.path not in {"/health", "/docs", "/openapi.json", "/redoc"}:
