@@ -1,0 +1,19 @@
+# Apply after compose.yaml and compose.r05.yaml. Shared synthetic fixtures, real HTTP/DB/worker.
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: goat_r06
+  api:
+    environment: &r06-environment
+      DATABASE_URL: postgresql+psycopg://goat:r05-local-only@postgres:5432/goat_r06
+      AI_MODULE: chat_fixture_ai
+      AI_GENERATION_VERSION: r06-synthetic-regression
+      PYTHONPATH: /srv/backend:/srv/r05
+      CORS_ORIGINS: '["http://127.0.0.1:8087","http://localhost:8087"]'
+  worker:
+    environment: *r06-environment
+    volumes:
+      - ./frontend/tests:/srv/r05:ro
+  web:
+    ports: !override
+      - "127.0.0.1:8087:80"

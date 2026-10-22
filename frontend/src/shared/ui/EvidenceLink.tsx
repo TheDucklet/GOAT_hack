@@ -17,7 +17,8 @@ function SourceDetails({ source }: { source: Evidence }) {
     <strong>{source.kind === 'bank' ? 'Банковский материал' : source.kind === 'company' ? 'Наблюдаемый признак профиля' : 'Новостной первоисточник'}</strong>
     {source.kind === 'bank' && <>
       <p>Дата документа: {text(locator.document_date)}. {page ? `Страница ${page}.` : 'Страница не указана.'}</p>
-      {page && <a href={evidenceApi.fileUrl(source.id, page)} target="_blank" rel="noopener noreferrer">Открыть защищённый PDF · страница {page} ↗</a>}
+      <p>{({ current: 'Материал прошёл проверку давности', historical: 'Исторический материал — не текущая позиция банка', undated: 'Дата материала неизвестна', applicability_unknown: 'Применимость материала не подтверждена', period_expired: 'Период применения материала истёк', source_changed: 'Версия источника изменилась' } as Record<string, string>)[String(locator.temporal_status)] || 'Актуальность материала не подтверждена'}{locator.evaluated_on ? ` · проверено ${text(locator.evaluated_on)}` : ''}</p>
+      {page && locator.temporal_status !== 'source_changed' && <a href={evidenceApi.fileUrl(source.id, page)} target="_blank" rel="noopener noreferrer">Открыть защищённый PDF · страница {page} ↗</a>}
     </>}
     {source.kind === 'news' && <>
       <p>Дата публикации: {text(locator.published_at)}</p>

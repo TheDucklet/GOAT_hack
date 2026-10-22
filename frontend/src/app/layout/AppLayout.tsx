@@ -42,7 +42,7 @@ export function AppLayout() {
         {error != null && <ErrorNotice error={error} />}
         {companyError != null && <ErrorNotice error={companyError} retry={retry} />}
         {!loading && !companyError && !availableCompanies.length && <p className="membership-notice" role="status">Нет доступных компаний. Доступ появится после подтверждения членства администратором. <Link to="/app/companies">Подать заявку или проверить статус</Link></p>}
-        {loading ? <p role="status">Загружаем компании…</p> : <Outlet key={company?.id || ''} />}
+        {loading ? <p role="status">Загружаем компании…</p> : <Outlet />}
       </main>
     </div>
   </>;

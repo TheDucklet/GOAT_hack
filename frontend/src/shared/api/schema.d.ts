@@ -413,6 +413,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/chats/{chat_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Contract Only */
+        get: operations["get_chats_chat_id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/chats/{chat_id}/messages": {
         parameters: {
             query?: never;
@@ -658,6 +675,22 @@ export interface components {
             company_id: string;
             /** Event Id */
             event_id: string;
+        };
+        /** ChatStateOut */
+        ChatStateOut: {
+            /** Id */
+            id: string;
+            /** Company Id */
+            company_id: string;
+            /** Event Id */
+            event_id: string;
+            /** Event Title */
+            event_title: string;
+            last_job?: components["schemas"]["JobOut"] | null;
+            /** Last Message Id */
+            last_message_id?: string | null;
+            /** Last Client Message Id */
+            last_client_message_id?: string | null;
         };
         /** Claim */
         Claim: {
@@ -1324,6 +1357,13 @@ export interface components {
         MessageIn: {
             /** Text */
             text: string;
+            /** Client Message Id */
+            client_message_id?: string | null;
+            /**
+             * Retry
+             * @default false
+             */
+            retry: boolean;
         };
         /** MessageOut */
         MessageOut: {
@@ -3850,6 +3890,100 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ChatOut"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+            /** @description Contract only; implementation follows in A-02+ */
+            501: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorOut"];
+                };
+            };
+        };
+    };
+    get_chats_chat_id: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                chat_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChatStateOut"];
                 };
             };
             /** @description Unauthorized */

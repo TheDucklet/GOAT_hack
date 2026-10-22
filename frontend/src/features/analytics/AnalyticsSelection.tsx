@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useState, type ReactNode } from
 import type { Chat, FeedItem, Insight } from '../../shared/api/types';
 
 interface Selection {
+  userId: string;
   companyId: string;
   event: FeedItem | null;
   chat: Chat | null;
@@ -18,8 +19,9 @@ export function useAnalyticsSelection() {
   return selection;
 }
 
-function CompanySelection({ companyId, children }: { companyId: string; children: ReactNode }) {
-  const [selection, setSelection] = useState<{ event: FeedItem | null; chat: Chat | null; insightId: string | null }>({ event: null, chat: null, insightId: null });
+interface SelectionProps { companyId: string; userId?: string; children: ReactNode; initialEvent?: FeedItem; initialChat?: Chat }
+function CompanySelection({ companyId, userId = '', children, initialEvent, initialChat }: SelectionProps) {
+  const [selection, setSelection] = useState<{ event: FeedItem | null; chat: Chat | null; insightId: string | null }>({ event: initialEvent || null, chat: initialChat || null, insightId: null });
   const selectEvent = useCallback((next: FeedItem | null, insightId: string | null = null) => {
     setSelection((current) => current.event === next && (!insightId || current.insightId === insightId) ? current : {
       event: next, insightId, chat: next?.event_id === current.event?.event_id ? current.chat : null,
@@ -35,10 +37,10 @@ function CompanySelection({ companyId, children }: { companyId: string; children
     setSelection((current) => insight.company_id === companyId && insight.event_id === current.event?.event_id
       ? { ...current, insightId: insight.id } : current);
   }, [companyId]);
-  return <Context.Provider value={{ companyId, ...selection, selectEvent, setChat, rememberInsight }}>{children}</Context.Provider>;
+  return <Context.Provider value={{ companyId, userId, ...selection, selectEvent, setChat, rememberInsight }}>{children}</Context.Provider>;
 }
 
 // A company change resets the entire workspace, including in-flight requests.
-export function AnalyticsSelectionProvider(props: { companyId: string; children: ReactNode }) {
+export function AnalyticsSelectionProvider(props: SelectionProps) {
   return <CompanySelection key={props.companyId} {...props} />;
 }

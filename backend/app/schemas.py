@@ -455,8 +455,19 @@ class ChatOut(Schema):
     event_id: str
 
 
+class ChatStateOut(ChatOut):
+    event_title: str
+    last_job: JobOut | None = None
+    last_message_id: str | None = None
+    last_client_message_id: str | None = None
+
+
 class MessageIn(Schema):
     text: str = Field(min_length=1, max_length=10000)
+    client_message_id: str | None = Field(
+        default=None, min_length=8, max_length=64, pattern=r"^[a-zA-Z0-9_-]+$"
+    )
+    retry: bool = False
 
 
 class MessageOut(Schema):

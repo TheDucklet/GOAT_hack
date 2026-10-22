@@ -1,15 +1,18 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useCompany } from '../companies/CompanyProvider';
+import { useCompanySelection } from '../companies/CompanyProvider';
+import type { Chat } from '../../shared/api/types';
 import { ErrorNotice } from '../../shared/ui/ErrorNotice';
 import { ApiError } from '../../shared/api/errors';
 import { AnalyticsSelectionProvider, useAnalyticsSelection } from './AnalyticsSelection';
 import { FeedEvent } from './FeedEvent';
 import { ChatPanel, InsightPanel } from './EventWorkspace';
 import { useFeed } from './useFeed';
+import { useChatRoute } from './chat/useChatRoute';
 
-function AnalyticsWorkspace() {
-  const { companyId, event, selectEvent } = useAnalyticsSelection();
+function AnalyticsWorkspace({ writeUrl }: { writeUrl(chat: Chat | null): void }) {
+  const { companyId, event, chat, selectEvent } = useAnalyticsSelection();
+  useEffect(() => { writeUrl(chat); }, [chat, writeUrl]);
   const feed = useFeed(companyId);
   const forbidden = feed.error instanceof ApiError && feed.error.status === 403;
   useEffect(() => { if (forbidden) selectEvent(null); }, [forbidden, selectEvent]);
@@ -34,10 +37,17 @@ function AnalyticsWorkspace() {
   </div>;
 }
 
-export function AnalyticsPage() {
-  const company = useCompany();
+export function AnalyticsPage({ userId }: { userId: string }) {
+  const selection = useCompanySelection();
+  const { company } = selection;
+  const route = useChatRoute(company, selection.companies, selection.loading, selection.selectCompany);
+  if (route.restoring) return <p role="status">Восстанавливаем контекст диалога…</p>;
+  if (route.error) return <><ErrorNotice error={route.error} retry={route.retry} /><button className="button secondary" onClick={route.dismiss}>Открыть ленту без диалога</button></>;
   if (!company) return <><span className="eyebrow">Персональный контекст</span><h1>Бизнес-аналитика</h1><section className="panel empty-state"><h2>Нужен доступ к компании</h2><p>Лента станет доступна после подтверждения заявки администратором.</p><Link className="button primary" to="/app/companies">Компании и профиль</Link></section></>;
   return <><span className="eyebrow">Персональный контекст</span><h1>Бизнес-аналитика</h1><p className="page-lead">{company.name}</p>
-    <AnalyticsSelectionProvider companyId={company.id}><AnalyticsWorkspace /></AnalyticsSelectionProvider>
+    <AnalyticsSelectionProvider key={`${company.id}:${route.chat?.id || 'feed'}`} companyId={company.id} userId={userId}
+      initialChat={route.chat || undefined} initialEvent={route.chat ? { event_id: route.chat.event_id, title: route.chat.event_title, summary: null, published_at: null, status: 'restored', rank_score: 0, sources: [], relevance_reasons: [] } : undefined}>
+      <AnalyticsWorkspace writeUrl={route.writeUrl} />
+    </AnalyticsSelectionProvider>
   </>;
 }

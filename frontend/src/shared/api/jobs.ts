@@ -5,7 +5,7 @@ import { ApiError, normalizeError } from './errors';
 
 // The same job endpoint is shared by analytics and administrative OCR/news flows.
 export function createJobsApi(client: HttpClient) {
-  return { job(id: string, signal?: AbortSignal) { return client.request<Job>(`/jobs/${encodeURIComponent(id)}`, { signal }); } };
+  return { job(id: string, signal?: AbortSignal) { return client.request<Job>(`/jobs/${encodeURIComponent(id)}`, { signal, timeoutMs: 15000 }); } };
 }
 export const jobsApi = createJobsApi(http);
 

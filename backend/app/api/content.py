@@ -1,15 +1,16 @@
 from fastapi import APIRouter, Depends, Query, Request, Response
 from fastapi.responses import FileResponse
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
 from app.db import get_db
 from app.errors import AppError
-from app.models import BankDocument, Chat, Evidence, Feedback, Insight, Job, Message, News, User
+from app.models import BankDocument, Chat, Evidence, Feedback, Insight, Message, News, User
 from app.schemas import (
     ChatIn,
     ChatOut,
+    ChatStateOut,
     EventIn,
     EvidenceOut,
     FeedbackIn,
@@ -21,7 +22,9 @@ from app.schemas import (
 )
 from app.security import current_user
 from app.services.access import company_access, owned
+from app.services.chats import chat_state, submit_question
 from app.services.events import event_context
+from app.services.evidence import bank_locator
 from app.services.feed_snapshots import present_insight
 from app.services.insights import insight_versions
 from app.services.interactions import record_event, target
@@ -72,6 +75,13 @@ def create_chat(
     return chat
 
 
+@router.get("/chats/{chat_id}", response_model=ChatStateOut)
+def get_chat(
+    chat_id: str, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+):
+    return chat_state(db, user, chat_id)
+
+
 @router.post("/chats/{chat_id}/messages", response_model=JobOut, status_code=202)
 def send_message(
     chat_id: str,
@@ -80,35 +90,21 @@ def send_message(
     user: User = Depends(current_user),
     db: Session = Depends(get_db, scope="function"),
 ):
-    chat = owned(db, Chat, chat_id, user)
-    db.scalar(select(Chat).where(Chat.id == chat.id).with_for_update())
-    active = db.scalar(select(Job.id).where(Job.dedup_key == f"chat:{chat.id}"))
-    if active:
-        raise AppError(409, "chat_busy", "Предыдущий вопрос ещё обрабатывается")
-    sequence = (db.scalar(select(func.max(Message.sequence)).where(Message.chat_id == chat.id)) or 0) + 1
-    message = Message(chat_id=chat.id, role="user", text=body.text, sequence=sequence)
-    db.add(message)
-    db.flush()
-    event, _ = target(db, user, chat.company_id, chat.event_id)
-    record_event(
-        db,
-        user,
-        chat.company_id,
-        event,
-        None,
-        "chat",
-        request.state.login_session.token_hash,
-        request.headers.get("user-agent", ""),
-        message.id,
-    )
-    return enqueue(
-        db,
-        "chat",
-        {"chat_id": chat.id, "event_id": chat.event_id, "message_id": message.id},
-        user.id,
-        chat.company_id,
-        f"chat:{chat.id}",
-    )
+    chat, message, job, created = submit_question(db, user, chat_id, body)
+    if created:
+        event, _ = target(db, user, chat.company_id, chat.event_id)
+        record_event(
+            db,
+            user,
+            chat.company_id,
+            event,
+            None,
+            "chat",
+            request.state.login_session.token_hash,
+            request.headers.get("user-agent", ""),
+            message.id,
+        )
+    return job
 
 
 @router.get("/chats/{chat_id}/messages", response_model=list[MessageOut])
@@ -155,7 +151,10 @@ def source(
     obj = accessible_source(db, source_id, user)
     result = EvidenceOut.model_validate(obj).model_dump()
     if obj.kind == "bank":
-        result["locator"] = {**obj.locator, "url": f"/sources/{obj.id}/file#page={obj.locator['page']}"}
+        result["locator"] = {
+            **bank_locator(db, obj),
+            "url": f"/sources/{obj.id}/file#page={obj.locator['page']}",
+        }
     if obj.kind == "company":
         from app.services.clients import company_context
 
@@ -182,6 +181,8 @@ def source_file(
     document = db.get(BankDocument, obj.source_id)
     if not document:
         raise AppError(404, "not_found", "Документ не найден")
+    if obj.version != document.version:
+        raise AppError(409, "source_changed", "Версия PDF изменилась; обновите основания анализа")
     root = get_settings().storage_dir.resolve()
     path = (root / document.storage_key).resolve()
     if not path.is_relative_to(root) or not path.is_file():

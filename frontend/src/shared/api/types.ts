@@ -24,6 +24,7 @@ export type InsightResultV2 = components['schemas']['InsightResultV2'];
 export type InsightResult = components['schemas']['InsightOut']['result'];
 export type Insight = components['schemas']['InsightOut'];
 export type Chat = components['schemas']['ChatOut'];
+export type ChatState = components['schemas']['ChatStateOut'];
 export type Message = components['schemas']['MessageOut'];
 export type Job = components['schemas']['JobOut'];
 export type AdminStats = components['schemas']['StatsOut'];

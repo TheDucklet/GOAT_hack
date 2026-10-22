@@ -99,6 +99,9 @@ OPERATIONS = [
     Operation("GET", "/insights/{insight_id}", s.InsightOut, "own insight; active company membership"),
     Operation("POST", "/chats", s.ChatOut, "active company membership; own chat", s.ChatIn, 201),
     Operation(
+        "GET", "/chats/{chat_id}", s.ChatStateOut, "own chat; active company membership; visible event"
+    ),
+    Operation(
         "POST",
         "/chats/{chat_id}/messages",
         s.JobOut,

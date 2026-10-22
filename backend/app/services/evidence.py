@@ -1,9 +1,35 @@
 """Shared evidence validation and trace persistence for all AI results."""
 
+from zoneinfo import ZoneInfo
+
+from app.ai.rag.temporal import temporal_status
 from app.data_semantics import confirmed_value
+from app.db import utcnow
 from app.integrations.ai import AIError
 from app.models import BankDocument, Evidence, News, Trace
 from app.services.clients import company_context
+
+
+def bank_locator(db, evidence):
+    document = db.get(BankDocument, evidence.source_id)
+    locator = dict(evidence.locator)
+    day = utcnow().astimezone(ZoneInfo("Europe/Moscow")).date()
+    date = locator.get("document_date")
+    if document and document.version == evidence.version:
+        date = date or document.document_date
+    try:
+        status, reason = temporal_status(date, evidence.excerpt, day)
+    except (ValueError, TypeError):
+        status, reason = "undated", "Дата документа неизвестна"
+    if not document or document.version != evidence.version:
+        status, reason = "source_changed", "Версия документа изменилась или недоступна"
+    return {
+        **locator,
+        "document_date": date,
+        "temporal_status": status,
+        "temporal_reason": reason,
+        "evaluated_on": day.isoformat(),
+    }
 
 
 def store_evidence(db, envelope, company_id):

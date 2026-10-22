@@ -1,6 +1,6 @@
 import { CompanyProvider } from '../features/companies/CompanyProvider';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
-import { AuthProvider } from '../features/auth/AuthProvider';
+import { AuthProvider, useAuth } from '../features/auth/AuthProvider';
 import { RequireAuth } from '../features/auth/RequireAuth';
 import { AppLayout } from './layout/AppLayout';
 import { AdminPage } from '../features/admin/AdminPage';
@@ -8,6 +8,11 @@ import { AnalyticsPage } from '../features/analytics/AnalyticsPage';
 import { AuthPage } from '../features/auth/AuthPage';
 import { OverviewPage } from '../features/overview/OverviewPage';
 import { MembershipsPage } from '../features/companies/MembershipsPage';
+
+function AnalyticsRoute() {
+  const { state } = useAuth();
+  return state.status === 'authenticated' ? <AnalyticsPage userId={state.session.id} /> : null;
+}
 
 export function App() {
   return <AuthProvider><Routes>
@@ -17,7 +22,7 @@ export function App() {
     <Route element={<RequireAuth />}><Route element={<CompanyProvider><AppLayout /></CompanyProvider>}>
       <Route path="/app" element={<OverviewPage />} />
       <Route path="/app/companies" element={<MembershipsPage />} />
-      <Route path="/app/analytics" element={<AnalyticsPage />} />
+      <Route path="/app/analytics" element={<AnalyticsRoute />} />
       <Route path="/admin" element={<AdminPage />} />
     </Route></Route>
     <Route path="*" element={<main className="page-state"><h1>Страница не найдена</h1><Link to="/app">На главную</Link></main>} />
