@@ -7,6 +7,7 @@ from sqlalchemy import select
 from app.config import get_settings
 from app.db import as_utc, utcnow
 from app.models import Job
+from app.services.interactions import purge_events
 from app.services.queue import enqueue, mark_related_failure
 
 
@@ -17,6 +18,7 @@ def scheduler_tick(db):
         if not db.scalar(text("SELECT pg_try_advisory_xact_lock(761202602)")):
             return
     now = utcnow()
+    purge_events(db)
     last = db.scalar(
         select(Job.created_at).where(Job.kind == "collect_news").order_by(Job.created_at.desc()).limit(1)
     )

@@ -10,6 +10,7 @@ import companySchema from '../../../../docs/contracts/company-context-v2.schema.
 import companyFixtures from '../../../../docs/contracts/company-context-v2-examples.json';
 import feedFixtures from '../../../../docs/contracts/feed-snapshot-v2-examples.json';
 import feedSchema from '../../../../docs/contracts/feed-snapshot-v2.schema.json';
+import interactionFixtures from '../../../../docs/contracts/interaction-examples.json';
 import { insightNotice, isInsightV2 } from './insight-contract';
 import { demoCompanies, demoInsight } from './mock/fixtures';
 
@@ -20,6 +21,13 @@ validator.addSchema({ $id: 'backend', components: openapi.components });
 describe('A15 shared feed snapshots', () => {
   const validate = validator.compile(feedSchema);
   it.each(feedFixtures)('validates the $name response', ({ data }) => {
+    expect(validate(data), JSON.stringify(validate.errors)).toBe(true);
+  });
+});
+
+describe('A16 shared interaction examples', () => {
+  it.each(interactionFixtures)('validates $name against $schema', ({ schema, data }) => {
+    const validate = validator.compile({ $ref: `backend#/components/schemas/${schema}` });
     expect(validate(data), JSON.stringify(validate.errors)).toBe(true);
   });
 });

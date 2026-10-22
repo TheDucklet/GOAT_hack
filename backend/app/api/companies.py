@@ -11,8 +11,16 @@ from app.schemas import CompanyContext, CompanyContextV2, CompanyOut, FeedOut, F
 from app.security import current_user
 from app.services.access import company_access
 from app.services.clients import company_context
-from app.services.feed_snapshots import owned_snapshot, read_snapshot, request_snapshot
+from app.services.feed_snapshots import (
+    candidate_versions,
+    exclusions,
+    is_excluded,
+    owned_snapshot,
+    read_snapshot,
+    request_snapshot,
+)
 from app.services.focus import focus_hash
+from app.services.insights import company_versions, insight_key
 from app.services.queue import enqueue
 from app.services.ranking import rank_event
 
@@ -84,7 +92,13 @@ def feed(
             {"id": publication.source_id, "url": publication.url}
         )
     now = utcnow()
+    hidden = exclusions(db, user.id, company_id)
+    common = company_versions(db, user, company_id) if hidden else None
     for event in events:
+        if hidden and is_excluded(
+            hidden, event.id, insight_key(user.id, company_id, event.id, candidate_versions(common, event))
+        ):
+            continue
         score, reasons = rank_event(
             ctx, focus, {"topics": event.topics, "published_at": event.published_at}, now
         )

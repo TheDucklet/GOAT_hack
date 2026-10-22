@@ -323,6 +323,37 @@ class Feedback(Base):
     comment: Mapped[str] = mapped_column(Text, default="")
 
 
+class DemoAction(Base):
+    __tablename__ = "demo_actions"
+    __table_args__ = (UniqueConstraint("user_id", "company_id", "idempotency_key"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"))
+    event_id: Mapped[str] = mapped_column(ForeignKey("events.id"))
+    insight_id: Mapped[str | None] = mapped_column(ForeignKey("insights.id"))
+    idempotency_key: Mapped[str] = mapped_column(String(100))
+    action_type: Mapped[str] = mapped_column(String(32))
+    mode: Mapped[str] = mapped_column(String(16), default="demo")
+    status: Mapped[str] = mapped_column(String(16), default="recorded")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ProductEvent(Base):
+    __tablename__ = "product_events"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"))
+    event_id: Mapped[str] = mapped_column(ForeignKey("events.id"))
+    insight_id: Mapped[str | None] = mapped_column(ForeignKey("insights.id"))
+    event_type: Mapped[str] = mapped_column(String(16))
+    session_hash: Mapped[str] = mapped_column(String(64))
+    version: Mapped[str] = mapped_column(String(100))
+    versions: Mapped[dict] = mapped_column(JSON)
+    dedup_key: Mapped[str] = mapped_column(String(64), unique=True)
+    excluded_reason: Mapped[str | None] = mapped_column(String(16))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+
+
 class Trace(Base):
     __tablename__ = "traces"
     id: Mapped[str] = mapped_column(String(100), primary_key=True)

@@ -1,7 +1,7 @@
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
 from app.notice_policy import DISCLAIMER, POLICY_VERSION
 
@@ -159,6 +159,54 @@ class JobOut(Schema):
     ready_at: datetime | None = None
     attempts: int = 0
     trace_id: str | None = None
+
+
+class DismissalIn(Schema):
+    event_id: str = Field(min_length=1, max_length=36)
+    insight_id: str | None = Field(default=None, min_length=1, max_length=36)
+    hidden: bool
+
+
+class DismissalOut(Schema):
+    event_id: str
+    version: str
+    hidden: bool
+
+
+class DemoActionIn(Schema):
+    event_id: str = Field(min_length=1, max_length=36)
+    insight_id: str | None = Field(default=None, min_length=1, max_length=36)
+    action_type: Literal["contact_manager"]
+    idempotency_key: str = Field(min_length=8, max_length=100)
+
+
+class DemoActionOut(Schema):
+    id: str
+    company_id: str
+    event_id: str
+    insight_id: str | None
+    action_type: Literal["contact_manager"]
+    mode: Literal["demo"]
+    status: Literal["recorded"]
+    created_at: datetime
+
+    @field_validator("created_at")
+    @classmethod
+    def utc_timestamp(cls, value):
+        return value.replace(tzinfo=UTC) if value.tzinfo is None else value
+
+
+class ProductEventIn(Schema):
+    event_id: str = Field(min_length=1, max_length=36)
+    insight_id: str = Field(min_length=1, max_length=36)
+    event_type: Literal["impression", "open"]
+
+
+class ProductEventOut(Schema):
+    id: str
+    event_type: str
+    recorded: bool
+    excluded_reason: str | None
 
 
 class Claim(Schema):

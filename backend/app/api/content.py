@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, Query, Request, Response
 from fastapi.responses import FileResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -24,6 +24,7 @@ from app.services.access import company_access, owned
 from app.services.events import event_context
 from app.services.feed_snapshots import present_insight
 from app.services.insights import insight_versions
+from app.services.interactions import record_event, target
 from app.services.queue import enqueue
 
 router = APIRouter(tags=["analytics"])
@@ -75,6 +76,7 @@ def create_chat(
 def send_message(
     chat_id: str,
     body: MessageIn,
+    request: Request,
     user: User = Depends(current_user),
     db: Session = Depends(get_db, scope="function"),
 ):
@@ -87,6 +89,18 @@ def send_message(
     message = Message(chat_id=chat.id, role="user", text=body.text, sequence=sequence)
     db.add(message)
     db.flush()
+    event, _ = target(db, user, chat.company_id, chat.event_id)
+    record_event(
+        db,
+        user,
+        chat.company_id,
+        event,
+        None,
+        "chat",
+        request.state.login_session.token_hash,
+        request.headers.get("user-agent", ""),
+        message.id,
+    )
     return enqueue(
         db,
         "chat",
@@ -183,9 +197,13 @@ def source_file(
 
 @router.post("/feedback", response_model=FeedbackOut)
 def feedback(
-    body: FeedbackIn, user: User = Depends(current_user), db: Session = Depends(get_db, scope="function")
+    body: FeedbackIn,
+    request: Request,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db, scope="function"),
 ):
-    owned(db, Insight, body.insight_id, user)
+    insight = owned(db, Insight, body.insight_id, user)
+    event, _ = target(db, user, insight.company_id, insight.event_id, insight.id)
     obj = db.scalar(
         select(Feedback).where(Feedback.user_id == user.id, Feedback.insight_id == body.insight_id)
     )
@@ -195,4 +213,15 @@ def feedback(
     else:
         obj.rating, obj.comment = (body.rating, body.comment)
     db.flush()
+    record_event(
+        db,
+        user,
+        insight.company_id,
+        event,
+        insight,
+        "feedback",
+        request.state.login_session.token_hash,
+        request.headers.get("user-agent", ""),
+        str(body.rating),
+    )
     return {"id": obj.id, "rating": obj.rating}

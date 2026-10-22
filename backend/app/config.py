@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     ai_generation_version: str = "1"
     feed_candidate_limit: int = Field(default=30, ge=1, le=200)
     feed_prepare_top_k: int = Field(default=3, ge=1, le=10)
+    product_event_retention_days: int = Field(default=90, ge=1, le=365)
+    product_test_emails: list[str] = []
     admin_password: SecretStr | None = None
     demo_password: SecretStr | None = None
     ranking_weights: dict[str, float] = {"industry": 4, "product": 3, "geo": 2, "relation": 2, "focus": 2}

@@ -24,6 +24,35 @@ class Operation:
 
 
 OPERATIONS = [
+    Operation(
+        "GET",
+        "/companies/{company_id}/dismissals",
+        list[s.DismissalOut],
+        "active membership; own dismissals",
+        paginate=True,
+    ),
+    Operation(
+        "POST",
+        "/companies/{company_id}/dismissals",
+        s.DismissalOut,
+        "active membership; own insight",
+        s.DismissalIn,
+    ),
+    Operation(
+        "POST",
+        "/companies/{company_id}/demo-actions",
+        s.DemoActionOut,
+        "active membership; own insight; demo only",
+        s.DemoActionIn,
+    ),
+    Operation(
+        "POST",
+        "/companies/{company_id}/product-events",
+        s.ProductEventOut,
+        "active membership; own insight; server session",
+        s.ProductEventIn,
+    ),
+    Operation("GET", "/admin/product-metrics", dict, "admin"),
     Operation("GET", "/admin/runtime-metrics", dict, "admin"),
     Operation(
         "POST", "/auth/register", s.UserOut, "public; registration always creates user", s.Credentials, 201
