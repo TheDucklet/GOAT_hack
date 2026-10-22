@@ -1,12 +1,14 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react';
-import type { Chat, FeedItem } from '../../shared/api/types';
+import type { Chat, FeedItem, Insight } from '../../shared/api/types';
 
 interface Selection {
   companyId: string;
   event: FeedItem | null;
   chat: Chat | null;
-  selectEvent(event: FeedItem | null): void;
+  insightId: string | null;
+  selectEvent(event: FeedItem | null, insightId?: string | null): void;
   setChat(chat: Chat | null): void;
+  rememberInsight(insight: Insight): void;
 }
 const Context = createContext<Selection | null>(null);
 
@@ -17,10 +19,10 @@ export function useAnalyticsSelection() {
 }
 
 function CompanySelection({ companyId, children }: { companyId: string; children: ReactNode }) {
-  const [selection, setSelection] = useState<{ event: FeedItem | null; chat: Chat | null }>({ event: null, chat: null });
-  const selectEvent = useCallback((next: FeedItem | null) => {
-    setSelection((current) => current.event === next ? current : {
-      event: next, chat: next?.event_id === current.event?.event_id ? current.chat : null,
+  const [selection, setSelection] = useState<{ event: FeedItem | null; chat: Chat | null; insightId: string | null }>({ event: null, chat: null, insightId: null });
+  const selectEvent = useCallback((next: FeedItem | null, insightId: string | null = null) => {
+    setSelection((current) => current.event === next && (!insightId || current.insightId === insightId) ? current : {
+      event: next, insightId, chat: next?.event_id === current.event?.event_id ? current.chat : null,
     });
   }, []);
   const setChat = useCallback((next: Chat | null) => {
@@ -29,7 +31,11 @@ function CompanySelection({ companyId, children }: { companyId: string; children
       return { ...current, chat: next };
     });
   }, [companyId]);
-  return <Context.Provider value={{ companyId, ...selection, selectEvent, setChat }}>{children}</Context.Provider>;
+  const rememberInsight = useCallback((insight: Insight) => {
+    setSelection((current) => insight.company_id === companyId && insight.event_id === current.event?.event_id
+      ? { ...current, insightId: insight.id } : current);
+  }, [companyId]);
+  return <Context.Provider value={{ companyId, ...selection, selectEvent, setChat, rememberInsight }}>{children}</Context.Provider>;
 }
 
 // A company change resets the entire workspace, including in-flight requests.

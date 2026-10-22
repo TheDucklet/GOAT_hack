@@ -22,6 +22,7 @@ export class HttpClient {
 
   clearSession() { this.csrfToken = null; }
   setCsrfToken(token: string) { this.csrfToken = token; }
+  url(path: string) { return `${this.baseUrl}${path}`; }
 
   async request<T>(path: string, options: RequestOptions = {}): Promise<T> {
     const { body, public: isPublic = false, ...init } = options;
@@ -33,7 +34,7 @@ export class HttpClient {
     else if (body !== undefined) headers.set('Content-Type', 'application/json');
     if (!['GET', 'HEAD', 'OPTIONS'].includes(method) && !isPublic) {
       if (!this.csrfToken) {
-        const session = await this.request<Me>('/me');
+        const session = await this.request<Me>('/me', { signal: init.signal });
         this.setCsrfToken(session.csrf_token);
       }
       if (!this.csrfToken) throw normalizeError(401, { message: 'Войдите снова.' });
@@ -41,7 +42,7 @@ export class HttpClient {
     }
     let response: Response;
     try {
-      response = await this.transport(`${this.baseUrl}${path}`, {
+      response = await this.transport(this.url(path), {
         ...init, method, headers, credentials: 'include',
         body: body === undefined ? undefined : multipart ? body : JSON.stringify(body),
       });

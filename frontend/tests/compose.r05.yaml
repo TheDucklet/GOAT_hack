@@ -1,0 +1,22 @@
+# Synthetic regression only: real HTTP/PostgreSQL/worker, no external LLM calls.
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: goat_r05
+      POSTGRES_PASSWORD: r05-local-only
+  api:
+    environment: &r05-environment
+      DATABASE_URL: postgresql+psycopg://goat:r05-local-only@postgres:5432/goat_r05
+      AI_MODULE: tests.fake_feed_ai
+      AI_GENERATION_VERSION: r05-synthetic-regression
+      AI_LLM_API_KEY: ""
+      NEWS_COLLECTION_ENABLED: "false"
+      CORS_ORIGINS: '["http://127.0.0.1:8086","http://localhost:8086"]'
+    volumes:
+      - ./docs:/srv/docs:ro
+      - ./frontend/tests:/srv/r05:ro
+  worker:
+    environment: *r05-environment
+  web:
+    ports: !override
+      - "127.0.0.1:8086:80"
