@@ -1,6 +1,8 @@
 import threading
 from collections import Counter
 from collections.abc import Callable
+from contextlib import nullcontext
+from weakref import WeakValueDictionary
 
 from app.ai.cache.keys import CacheKey
 from app.ai.cache.store import CacheStore, MemoryStore
@@ -11,7 +13,7 @@ class ResultCache:
         self._store = store or MemoryStore()
         self._enabled = enabled
         self._lock = threading.Lock()
-        self._key_locks: dict[str, threading.Lock] = {}
+        self._key_locks = WeakValueDictionary()
         self._stats: Counter[str] = Counter()
 
     def fetch(self, key: CacheKey, compute: Callable[[], dict]) -> tuple[dict, bool]:
@@ -19,8 +21,9 @@ class ResultCache:
             return self.bypass(key.kind, compute), False
         with self._lock:
             key_lock = self._key_locks.setdefault(key.digest, threading.Lock())
-        try:
-            with key_lock:
+        with key_lock:
+            lock = getattr(self._store, "lock", None)
+            with lock(key) if lock else nullcontext():
                 value = self._store.get(key)
                 if value is not None:
                     self._count(key.kind, "hit")
@@ -29,9 +32,6 @@ class ResultCache:
                 value = compute()
                 self._store.put(key, value)
                 return value, False
-        finally:
-            with self._lock:
-                self._key_locks.pop(key.digest, None)
 
     def bypass(self, kind: str, compute: Callable[[], dict]) -> dict:
         self._count(kind, "bypass")

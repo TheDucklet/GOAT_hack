@@ -1,5 +1,9 @@
 # Интеграция backend, frontend и AI
 
+Приватные снимки персональной ленты v2 описаны в feed-v2.md.
+Новый формат включается параметром contract_version=v2 на существующем feed endpoint.
+Без этого параметра сохраняется прежний контракт frontend.
+
 Дополнение A-14: `/companies/{id}/context` возвращает CompanyContext v2 с
 `data_semantics_version=company-data-2`. См. [семантику данных](../data/data-semantics.md)
 и общие `company-context-v2-examples.json`. Wire-типы генерируются из OpenAPI;

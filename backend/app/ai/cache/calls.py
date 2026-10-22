@@ -1,9 +1,11 @@
 from functools import lru_cache
 from pathlib import Path
+from uuid import uuid4
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.ai.agent.prompts import AGENT_PROMPT_VERSION
+from app.ai.cache.identity import producer_identity
 from app.ai.cache.keys import digest_of, focus_hash, make_key
 from app.ai.cache.service import ResultCache
 from app.ai.cache.store import FileStore
@@ -54,6 +56,7 @@ def cached_summarize_event(
     cache = cache or get_result_cache()
     key = make_key(
         "summary",
+        producer=producer_identity(settings),
         event_id=event.get("id"),
         event_version=event.get("version"),
         input_hash=digest_of(event),
@@ -72,6 +75,7 @@ def cached_derive_user_focus(
     cache = cache or get_result_cache()
     key = make_key(
         "focus",
+        producer=producer_identity(settings),
         input_hash=digest_of([" ".join(position_text.split()), sorted(interests)]),
         prompt_version=FOCUS_PROMPT_VERSION,
         models=model_versions(FOCUS_TASKS, settings),
@@ -97,6 +101,7 @@ def cached_build_insight(
         return cache.bypass("insight", compute)
     key = make_key(
         "insight",
+        producer=producer_identity(settings),
         contract_versions=contract_versions(company_context.get("data_semantics_version")),
         company_id=company_context.get("company_id"),
         profile_version=company_context.get("profile_version"),
@@ -115,4 +120,6 @@ def cached_build_insight(
     envelope, hit = cache.fetch(key, compute)
     if hit:
         envelope["trace"] = {**envelope["trace"], "cache": {"hit": True, "key": key.digest}}
+        if "trace_id" in envelope["result"]:
+            envelope["result"]["trace_id"] = uuid4().hex
     return envelope

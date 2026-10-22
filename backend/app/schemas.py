@@ -1,7 +1,7 @@
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
 
 from app.notice_policy import DISCLAIMER, POLICY_VERSION
 
@@ -153,6 +153,60 @@ class JobOut(Schema):
     status: Literal["queued", "running", "done", "failed"]
     result: dict | None = None
     error: dict | None = None
+    received_at: datetime | None = None
+    enqueued_at: datetime | None = None
+    started_at: datetime | None = None
+    ready_at: datetime | None = None
+    attempts: int = 0
+    trace_id: str | None = None
+
+
+class DismissalIn(Schema):
+    event_id: str = Field(min_length=1, max_length=36)
+    insight_id: str | None = Field(default=None, min_length=1, max_length=36)
+    hidden: bool
+
+
+class DismissalOut(Schema):
+    event_id: str
+    version: str
+    hidden: bool
+
+
+class DemoActionIn(Schema):
+    event_id: str = Field(min_length=1, max_length=36)
+    insight_id: str | None = Field(default=None, min_length=1, max_length=36)
+    action_type: Literal["contact_manager"]
+    idempotency_key: str = Field(min_length=8, max_length=100)
+
+
+class DemoActionOut(Schema):
+    id: str
+    company_id: str
+    event_id: str
+    insight_id: str | None
+    action_type: Literal["contact_manager"]
+    mode: Literal["demo"]
+    status: Literal["recorded"]
+    created_at: datetime
+
+    @field_validator("created_at")
+    @classmethod
+    def utc_timestamp(cls, value):
+        return value.replace(tzinfo=UTC) if value.tzinfo is None else value
+
+
+class ProductEventIn(Schema):
+    event_id: str = Field(min_length=1, max_length=36)
+    insight_id: str = Field(min_length=1, max_length=36)
+    event_type: Literal["impression", "open"]
+
+
+class ProductEventOut(Schema):
+    id: str
+    event_type: str
+    recorded: bool
+    excluded_reason: str | None
 
 
 class Claim(Schema):
@@ -382,6 +436,9 @@ class InsightOut(Schema):
     event_id: str
     versions: dict
     result: InsightResultV2 | InsightResult
+    stale: bool = False
+    stale_reasons: list[str] = []
+    evaluated_at: datetime | None = None
 
 
 class EventIn(Schema):
@@ -446,6 +503,43 @@ class FeedOut(Schema):
     total: int
     limit: int
     offset: int
+
+
+class FeedSnapshotItem(FeedItem):
+    generation_status: Literal["ready", "not_requested", "failed", "deferred", "stale"]
+    insight_id: str | None = None
+    personalized_summary: StatementV2 | None = None
+    impact_level: Literal["low", "medium", "high", "undetermined"] = "undetermined"
+    relevance_status: Literal["active", "review_required", "expired", "undetermined"] = "undetermined"
+    versions: dict
+    error: dict | None = None
+
+    @model_validator(mode="after")
+    def ready_is_saved(self):
+        if self.generation_status == "ready" and not self.insight_id:
+            raise ValueError("ready preview requires a saved insight")
+        if self.generation_status != "ready" and (self.insight_id or self.personalized_summary):
+            raise ValueError("unready preview cannot expose a saved insight or summary")
+        return self
+
+
+class FeedSnapshotOut(Schema):
+    schema_version: Literal["v2"] = "v2"
+    snapshot_id: str
+    generation_status: Literal["queued", "running", "ready", "partial", "failed", "deferred", "stale"]
+    versions: dict
+    stale: bool
+    stale_reasons: list[str]
+    ranking_version: str
+    ranking_as_of: datetime
+    ready_at: datetime | None
+    job_id: str | None
+    error: dict | None
+    items: list[FeedSnapshotItem]
+    total: int
+    limit: int
+    offset: int
+    next_offset: int | None
 
 
 class DocumentOut(Schema):

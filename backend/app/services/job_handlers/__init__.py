@@ -2,6 +2,7 @@
 
 from .analysis import chat_job, focus_job, insight_job
 from .documents import ingest_document_job
+from .feed import prepare_feed_job
 from .news import collect_news_job, summarize_job
 
 HANDLERS = {
@@ -11,4 +12,5 @@ HANDLERS = {
     "focus": (focus_job, False),
     "insight": (insight_job, False),
     "chat": (chat_job, False),
+    "feed_prepare": (prepare_feed_job, False),
 }

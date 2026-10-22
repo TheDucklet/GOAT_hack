@@ -3,6 +3,7 @@ import threading
 from pathlib import Path
 from typing import Protocol
 
+from app.ai.process_lock import process_lock
 from app.ai.providers.models import UsageRecord
 
 logger = logging.getLogger("app.ai.llm")
@@ -33,7 +34,7 @@ class LoggingUsageSink:
         )
         if self._path is None:
             return
-        with self._lock:
+        with self._lock, process_lock(self._path.with_suffix(self._path.suffix + ".lock")):
             self._path.parent.mkdir(parents=True, exist_ok=True)
             with self._path.open("a", encoding="utf-8") as handle:
                 handle.write(entry.model_dump_json() + "\n")

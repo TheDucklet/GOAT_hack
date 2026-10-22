@@ -25,4 +25,5 @@ export const demoCompanies: Company[] = [{ id: demoMembership.company_id, name: 
 export const demoInsight: Insight = {
   id: 'example-insight', company_id: demoChat.company_id, event_id: demoChat.event_id,
   versions: { profile: 'demo-v1' }, result: contractExample('insufficient_data', 'InsightResult'),
+  stale: false, stale_reasons: [],
 };

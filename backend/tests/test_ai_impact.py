@@ -497,7 +497,11 @@ def test_cache_reuses_the_same_card_and_counts_one_model_call(monkeypatch):
     first = cached_build_insight(ctx, FOCUS, event(), tools, cache)
     calls = dict(router.calls)
     second = cached_build_insight(ctx, FOCUS, event(), tools, cache)
-    assert router.calls == calls and second["result"] == first["result"]
+    assert router.calls == calls
+    assert second["result"]["trace_id"] != first["result"]["trace_id"]
+    assert {k: v for k, v in second["result"].items() if k != "trace_id"} == {
+        k: v for k, v in first["result"].items() if k != "trace_id"
+    }
     assert second["trace"]["cache"]["hit"] is True
 
 

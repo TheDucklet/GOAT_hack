@@ -22,8 +22,19 @@ x-backend: &backend
     WORKER_POLL_SECONDS: ${WORKER_POLL_SECONDS:-2}
     JOB_TIMEOUT_SECONDS: ${JOB_TIMEOUT_SECONDS:-900}
     DEMO_PASSWORD: ${DEMO_PASSWORD:-Local-demo-password-2026}
+    AI_CACHE_DIR: /srv/backend/storage/ai/cache
+    AI_LLM_BUDGET_LEDGER_PATH: /srv/backend/storage/ai/budget.jsonl
+    AI_LLM_USAGE_LOG_PATH: /srv/backend/storage/ai/usage.jsonl
+    FEED_CANDIDATE_LIMIT: ${FEED_CANDIDATE_LIMIT:-30}
+    FEED_PREPARE_TOP_K: ${FEED_PREPARE_TOP_K:-3}
+    PRODUCT_EVENT_RETENTION_DAYS: ${PRODUCT_EVENT_RETENTION_DAYS:-90}
+    PRODUCT_TEST_EMAILS: ${PRODUCT_TEST_EMAILS:-[]}
+    NEWS_COLLECTION_ENABLED: ${NEWS_COLLECTION_ENABLED:-true}
+    NEWS_MAX_NEW_PUBLICATIONS: ${NEWS_MAX_NEW_PUBLICATIONS:-100}
+    NEWS_SOURCES_CONFIG: ${NEWS_SOURCES_CONFIG:-}
   volumes:
     - documents:/srv/backend/storage
+    - ./config:/srv/config:ro
 
 services:
   postgres:

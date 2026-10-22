@@ -1,0 +1,21 @@
+# Bounded local A17 acceptance. This file contains no provider credentials.
+services:
+  api:
+    environment:
+      NEWS_COLLECTION_ENABLED: "false"
+      NEWS_MAX_NEW_PUBLICATIONS: "1"
+      FEED_PREPARE_TOP_K: "1"
+      FEED_CANDIDATE_LIMIT: "3"
+      AI_LLM_MAX_RETRIES: "1"
+      AI_LLM_DAILY_LIMIT_RUB: "10"
+  worker:
+    environment:
+      NEWS_COLLECTION_ENABLED: "false"
+      NEWS_MAX_NEW_PUBLICATIONS: "1"
+      FEED_PREPARE_TOP_K: "1"
+      FEED_CANDIDATE_LIMIT: "3"
+      AI_LLM_MAX_RETRIES: "1"
+      AI_LLM_DAILY_LIMIT_RUB: "10"
+  web:
+    ports: !override
+      - "127.0.0.1:8085:80"

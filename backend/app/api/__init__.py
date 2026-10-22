@@ -6,6 +6,7 @@ from . import (
     auth,
     companies,
     content,
+    interactions,
     jobs,
     memberships,
 )
@@ -20,4 +21,5 @@ routers = (
     admin_materials.router,
     content.router,
     admin_stats.router,
+    interactions.router,
 )

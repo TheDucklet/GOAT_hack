@@ -121,13 +121,24 @@ def test_reservation_with_large_max_tokens_blocks_before_the_actual_spend_would(
     assert budget.status()["exhausted"] is False
 
 
-def test_failed_call_releases_its_reservation():
+def test_timeout_keeps_conservative_spend_and_releases_reservation():
     budget = ledger()
     transport = ScriptedTransport(*[TransportFailure("timeout")] * 3)
     with pytest.raises(Exception):
         call(budget, transport)
     status = budget.status()
-    assert status["spent_rub"] == 0 and status["reserved_rub"] == 0
+    assert status["spent_rub"] > 0 and status["reserved_rub"] == 0
+
+
+def test_retry_reserves_again_and_stops_before_an_over_budget_call():
+    budget = ledger(limit=0.003)
+    transport = ScriptedTransport(TransportFailure("timeout"), json_completion({"ok": True}, 10, 10))
+    with pytest.raises(Exception) as raised:
+        call(budget, transport)
+    assert raised.value.code == "budget_exhausted"
+    assert transport.calls == 1
+    assert budget.status()["spent_rub"] > 0
+    assert budget.status()["reserved_rub"] == 0
 
 
 def test_invalid_json_response_is_still_billed():
@@ -182,7 +193,8 @@ def test_ledger_survives_restart_through_the_journal(tmp_path):
     with pytest.raises(BudgetExhausted):
         second.reserve("r2", 0.4)
     lines = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
-    assert lines[0]["request_id"] == "r1" and lines[0]["task"] == TASK and lines[0]["cost_rub"] == 0.7
+    assert lines[0]["event"] == "reserved"
+    assert lines[1]["request_id"] == "r1" and lines[1]["task"] == TASK and lines[1]["cost_rub"] == 0.7
 
 
 def test_exhausted_marker_survives_restart(tmp_path):

@@ -227,6 +227,37 @@ class Insight(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 
+class FeedSnapshot(Base):
+    __tablename__ = "feed_snapshots"
+    __table_args__ = (
+        CheckConstraint("status IN ('queued','running','ready','partial','failed','deferred','stale')"),
+        Index("ix_feed_snapshots_owner", "user_id", "company_id", "created_at"),
+    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"))
+    input_key: Mapped[str] = mapped_column(String(64), unique=True)
+    versions: Mapped[dict] = mapped_column(JSON)
+    candidates: Mapped[list] = mapped_column(JSON, default=list)
+    items: Mapped[list] = mapped_column(JSON, default=list)
+    status: Mapped[str] = mapped_column(String(16), default="queued")
+    job_id: Mapped[str | None] = mapped_column(ForeignKey("jobs.id"))
+    error: Mapped[dict | None] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    ready_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class FeedDismissal(Base):
+    __tablename__ = "feed_dismissals"
+    __table_args__ = (UniqueConstraint("user_id", "company_id", "event_id", "version"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"))
+    event_id: Mapped[str] = mapped_column(ForeignKey("events.id"))
+    version: Mapped[str] = mapped_column(String(100))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class Chat(Base):
     __tablename__ = "chats"
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
@@ -267,6 +298,19 @@ class Job(Base):
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+    @property
+    def enqueued_at(self):
+        return self.created_at
+
+    @property
+    def ready_at(self):
+        return self.finished_at
+
+    @property
+    def trace_id(self):
+        return self.id
 
 
 class Feedback(Base):
@@ -277,6 +321,37 @@ class Feedback(Base):
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
     rating: Mapped[int] = mapped_column(Integer)
     comment: Mapped[str] = mapped_column(Text, default="")
+
+
+class DemoAction(Base):
+    __tablename__ = "demo_actions"
+    __table_args__ = (UniqueConstraint("user_id", "company_id", "idempotency_key"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"))
+    event_id: Mapped[str] = mapped_column(ForeignKey("events.id"))
+    insight_id: Mapped[str | None] = mapped_column(ForeignKey("insights.id"))
+    idempotency_key: Mapped[str] = mapped_column(String(100))
+    action_type: Mapped[str] = mapped_column(String(32))
+    mode: Mapped[str] = mapped_column(String(16), default="demo")
+    status: Mapped[str] = mapped_column(String(16), default="recorded")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ProductEvent(Base):
+    __tablename__ = "product_events"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=uid)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"))
+    event_id: Mapped[str] = mapped_column(ForeignKey("events.id"))
+    insight_id: Mapped[str | None] = mapped_column(ForeignKey("insights.id"))
+    event_type: Mapped[str] = mapped_column(String(16))
+    session_hash: Mapped[str] = mapped_column(String(64))
+    version: Mapped[str] = mapped_column(String(100))
+    versions: Mapped[dict] = mapped_column(JSON)
+    dedup_key: Mapped[str] = mapped_column(String(64), unique=True)
+    excluded_reason: Mapped[str | None] = mapped_column(String(16))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
 
 
 class Trace(Base):

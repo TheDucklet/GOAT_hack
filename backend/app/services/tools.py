@@ -61,6 +61,24 @@ class AnalysisTools:
             raise AppError(403, "forbidden", "Доступ отозван")
         company_access(self._db, user, self._company_id)
 
+    def corpus_version(self):
+        self._authorize()
+        import hashlib
+
+        rows = list(
+            self._db.execute(
+                select(
+                    BankDocument.id,
+                    BankDocument.sha256,
+                    BankDocument.version,
+                    BankDocument.index_version,
+                    BankDocument.status,
+                    BankDocument.document_date,
+                ).order_by(BankDocument.id)
+            )
+        )
+        return hashlib.sha256(repr(rows).encode()).hexdigest()
+
     def get_company_context(self, company_id=None):
         self._authorize()
         if company_id is not None and company_id != self._company_id:

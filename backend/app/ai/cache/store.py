@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Protocol
 
 from app.ai.cache.keys import CacheKey
+from app.ai.process_lock import process_lock
 
 
 class CacheStore(Protocol):
@@ -43,6 +44,9 @@ class FileStore:
 
     def _path(self, key: CacheKey) -> Path:
         return self._root / key.kind / key.digest[:2] / f"{key.digest}.json"
+
+    def lock(self, key: CacheKey):
+        return process_lock(self._path(key).with_suffix(".lock"))
 
     def get(self, key: CacheKey) -> dict | None:
         path = self._path(key)

@@ -1,4 +1,5 @@
 import hashlib
+import json
 import re
 from datetime import UTC, datetime, timedelta
 from difflib import SequenceMatcher
@@ -10,6 +11,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
+from app.config import get_settings
 from app.db import utcnow
 from app.models import Event, Evidence, News, Source, uid
 
@@ -30,11 +32,33 @@ DEFAULT_SOURCES = [
 
 
 def ensure_sources(db):
-    for source in DEFAULT_SOURCES:
+    sources = list(DEFAULT_SOURCES)
+    path = get_settings().news_sources_config
+    if path:
+        configured = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(configured, list) or len(configured) > 20:
+            raise ValueError("Source config must contain at most 20 sources")
+        seen = set()
+        for item in configured:
+            if (
+                not isinstance(item, dict)
+                or not re.fullmatch(r"[a-z0-9_]{1,64}", item.get("id", ""))
+                or item["id"] in seen
+                or not item.get("name")
+                or not item.get("allowed_hosts")
+                or not isinstance(item.get("allowed_hosts"), list)
+            ):
+                raise ValueError("Invalid source configuration")
+            normalize_url(item["feed_url"], item["allowed_hosts"])
+            seen.add(item["id"])
+            sources = [source for source in sources if source["id"] != item["id"]]
+            sources.append({key: item[key] for key in ("id", "name", "feed_url", "allowed_hosts")})
+    for source in sources:
         existing = db.get(Source, source["id"])
         if not existing:
             db.add(Source(**source))
         else:
+            existing.name = source["name"]
             existing.feed_url = source["feed_url"]
             existing.allowed_hosts = source["allowed_hosts"]
     db.flush()
@@ -155,8 +179,11 @@ def collect_news(db: Session, client=None) -> dict:
     own_client = client is None
     client = client or httpx.Client(timeout=25, headers={"User-Agent": "GOAT-hack/0.1 news reader"})
     result = {}
+    added_total = 0
     try:
         for source in db.scalars(select(Source).order_by(Source.id)):
+            if added_total >= get_settings().news_max_new_publications:
+                break
             count, errors = 0, 0
             try:
                 raw = fetch_limited(client, normalize_url(source.feed_url, source.allowed_hosts))
@@ -202,6 +229,9 @@ def collect_news(db: Session, client=None) -> dict:
                                     dedup_key=f"summarize:{news.event_id}",
                                 )
                                 count += 1
+                                added_total += 1
+                                if added_total >= get_settings().news_max_new_publications:
+                                    break
                     except (ValueError, KeyError, httpx.HTTPError):
                         errors += 1
                 source.last_success_at = utcnow()

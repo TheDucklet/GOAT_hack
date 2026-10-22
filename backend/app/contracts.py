@@ -25,6 +25,36 @@ class Operation:
 
 OPERATIONS = [
     Operation(
+        "GET",
+        "/companies/{company_id}/dismissals",
+        list[s.DismissalOut],
+        "active membership; own dismissals",
+        paginate=True,
+    ),
+    Operation(
+        "POST",
+        "/companies/{company_id}/dismissals",
+        s.DismissalOut,
+        "active membership; own insight",
+        s.DismissalIn,
+    ),
+    Operation(
+        "POST",
+        "/companies/{company_id}/demo-actions",
+        s.DemoActionOut,
+        "active membership; own insight; demo only",
+        s.DemoActionIn,
+    ),
+    Operation(
+        "POST",
+        "/companies/{company_id}/product-events",
+        s.ProductEventOut,
+        "active membership; own insight; server session",
+        s.ProductEventIn,
+    ),
+    Operation("GET", "/admin/product-metrics", dict, "admin"),
+    Operation("GET", "/admin/runtime-metrics", dict, "admin"),
+    Operation(
         "POST", "/auth/register", s.UserOut, "public; registration always creates user", s.Credentials, 201
     ),
     Operation("POST", "/auth/login", s.MeOut, "public; validate credentials", s.LoginCredentials),
@@ -46,9 +76,18 @@ OPERATIONS = [
         s.ProfileIn,
     ),
     Operation("GET", "/companies", list[s.CompanyOut], "authenticated; active memberships only"),
-    Operation("GET", "/companies/{company_id}/context", s.CompanyContextV2 | s.CompanyContext, "active membership in company"),
     Operation(
-        "GET", "/companies/{company_id}/feed", s.FeedOut, "active membership in company", paginate=True
+        "GET",
+        "/companies/{company_id}/context",
+        s.CompanyContextV2 | s.CompanyContext,
+        "active membership in company",
+    ),
+    Operation(
+        "GET",
+        "/companies/{company_id}/feed",
+        s.FeedOut | s.FeedSnapshotOut,
+        "active membership in company; v2 snapshot belongs to this user and company",
+        paginate=True,
     ),
     Operation(
         "POST",
