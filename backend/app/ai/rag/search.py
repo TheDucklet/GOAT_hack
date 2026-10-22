@@ -3,6 +3,7 @@ import re
 from datetime import date
 from itertools import combinations
 
+from app.ai.rag.temporal import temporal_status
 from app.ai.schemas import BankSearchResult, SearchBankAnalyticsInput
 
 MAX_QUERY_TERMS = 8
@@ -114,6 +115,32 @@ def is_historical(document_date: str | None, as_of: date) -> bool:
     return (as_of - date.fromisoformat(document_date)).days > HISTORICAL_AFTER_DAYS
 
 
+def title_of(chunk: dict) -> str | None:
+    name = chunk.get("title") or chunk.get("filename")
+    return str(name).removesuffix(".pdf") if name else None
+
+
+def item_for(score: float, chunk: dict, terms: list[str], as_of: date) -> dict:
+    status, reason = temporal_status(chunk["document_date"], chunk["text"], as_of)
+    return {
+        "chunk_id": chunk["chunk_id"],
+        "document_id": chunk["document_id"],
+        "version": chunk["version"],
+        "index_version": chunk["index_version"],
+        "page": chunk["page"],
+        "document_date": chunk["document_date"],
+        "date_unknown": chunk["document_date"] is None,
+        "historical": status != "current",
+        "title": title_of(chunk),
+        "temporal_status": status,
+        "temporal_reason": reason,
+        "text": chunk["text"],
+        "excerpt": excerpt_for(chunk["text"], terms),
+        "locator": {"page": chunk["page"]},
+        "score": round(score, 4),
+    }
+
+
 def search_bank_analytics(query: str, as_of: str, limit: int, repository) -> dict:
     request = SearchBankAnalyticsInput.model_validate({"query": query, "as_of": as_of, "limit": limit})
     terms = query_terms(request.query)
@@ -124,23 +151,7 @@ def search_bank_analytics(query: str, as_of: str, limit: int, repository) -> dic
                 continue
             candidates.setdefault(chunk["chunk_id"], chunk)
     ranked = score_candidates(list(candidates.values()), terms)[: request.limit]
-    items = [
-        {
-            "chunk_id": chunk["chunk_id"],
-            "document_id": chunk["document_id"],
-            "version": chunk["version"],
-            "index_version": chunk["index_version"],
-            "page": chunk["page"],
-            "document_date": chunk["document_date"],
-            "date_unknown": chunk["document_date"] is None,
-            "historical": is_historical(chunk["document_date"], request.as_of),
-            "text": chunk["text"],
-            "excerpt": excerpt_for(chunk["text"], terms),
-            "locator": {"page": chunk["page"]},
-            "score": round(score, 4),
-        }
-        for score, chunk in ranked
-    ]
+    items = [item_for(score, chunk, terms, request.as_of) for score, chunk in ranked]
     reason = (
         None
         if items

@@ -1,0 +1,780 @@
+{
+  "note": "Регрессионные случаи F-15. Новости и профиль учебные, фрагмент банка настоящий.",
+  "company_id": "U_243",
+  "event": {
+    "title": "Банк России сохранил ключевую ставку",
+    "summary": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых.",
+    "published_at": "2026-09-12"
+  },
+  "news": [
+    {
+      "id": "ev-news-1",
+      "source_id": "pub-1",
+      "version": "v1",
+      "url": "https://example.org/key-rate",
+      "excerpt": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых.",
+      "text": "Совет директоров Банка России сохранил ключевую ставку на уровне 14% годовых. Следующее заседание совета директоров запланировано на октябрь."
+    },
+    {
+      "id": "ev-news-2",
+      "source_id": "pub-2",
+      "version": "v1",
+      "url": "https://example.org/key-rate-forecast",
+      "excerpt": "Аналитики считают, что ставка, возможно, сохранится на уровне 14% до конца года.",
+      "text": "Аналитики считают, что ставка, возможно, сохранится на уровне 14% до конца года."
+    }
+  ],
+  "bank_chunks": [
+    "25f7831c-caab-4e5b-812a-00fd87ac9630"
+  ],
+  "cases": [
+    {
+      "name": "S5_existing_credits_unknown_debt",
+      "note": "регрессия S5 из ai-evaluation",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Снижение ставки уменьшит стоимость обслуживания существующих кредитов компании.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "unknown"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "presupposed_product"
+        ]
+      }
+    },
+    {
+      "name": "existing_credits_but_no_credit_product",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Снижение ставки уменьшит стоимость обслуживания существующих кредитов компании.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "false"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "contradiction",
+        "codes": [
+          "presupposed_product"
+        ]
+      }
+    },
+    {
+      "name": "absence_claimed_for_unknown_product",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "У компании нет текущих кредитов, поэтому ставка её не касается.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "unknown"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "absence_unconfirmed"
+        ]
+      }
+    },
+    {
+      "name": "invented_company_intent",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Компания планирует привлекать кредиты в следующем году.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "unknown"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "invented_company_intent"
+        ]
+      }
+    },
+    {
+      "name": "fts_without_direction",
+      "note": "запись ФТС не говорит о направлении",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Компания экспортирует металл в Китай, поэтому курс юаня для неё важен.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "trade_direction_unconfirmed"
+        ]
+      }
+    },
+    {
+      "name": "city_name_is_not_plant_location",
+      "note": "CITY_NAME/CITY – регистрация, не производство",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Завод компании расположен в Санкт-Петербурге.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "location_unconfirmed"
+        ]
+      }
+    },
+    {
+      "name": "self_payment_as_external_turnover",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Платежи компании самой себе подтверждают её внешний оборот.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "payments_as_turnover"
+        ]
+      }
+    },
+    {
+      "name": "payment_proves_supply",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Платёж контрагенту означает, что компания получает от него поставки.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "payment_meaning_unconfirmed"
+        ]
+      }
+    },
+    {
+      "name": "group_id_as_ownership",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Компания принадлежит группе, поэтому выручка группы входит в её оборот.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "group_ownership_unconfirmed"
+        ]
+      }
+    },
+    {
+      "name": "revenue_1000_unconfirmed",
+      "note": "1000 – возможная заглушка",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Выручка компании составляет 1000 руб. в год.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "revenue_unconfirmed"
+        ]
+      }
+    },
+    {
+      "name": "payments_with_unconfirmed_2025",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Платежи компании в 2025 году выросли.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "period_unconfirmed"
+        ]
+      }
+    },
+    {
+      "name": "amount_without_unit_and_period",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Долг компании составляет 120 млн.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "amount_without_unit_period"
+        ]
+      }
+    },
+    {
+      "name": "hypothesis_presented_as_fact",
+      "note": "",
+      "section": "facts",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Ставка сохранится на уровне 14% до конца года.",
+        "evidence_refs": [
+          "ev-news-2"
+        ]
+      },
+      "evidence": [],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "hypothesis_presented_as_fact"
+        ]
+      }
+    },
+    {
+      "name": "stale_bank_position",
+      "note": "",
+      "section": "bank_view",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Аналитики банка отмечают, что динамика предложения отстаёт от динамики спроса.",
+        "evidence_refs": [
+          "ev-bank-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "ev-bank-1",
+          "kind": "bank",
+          "source_id": "e9075243-e38d-4bbd-8475-0f4af4f5841e",
+          "version": "3c64c1e43f3b46a795f9581967f2dbc8efb0994cb77ab82e95da180830e9ff8c",
+          "locator": {
+            "page": 2
+          },
+          "excerpt": "динамика предложения отстает от динамики спроса, что находит отражение в росте импорта и ослаблении курса рубля"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": "2027-09-12",
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "stale_bank_position"
+        ]
+      }
+    },
+    {
+      "name": "bank_opinion_without_bank_source",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Альфа-Банк ожидает снижения ставки до конца года.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "bank_position_without_bank_source"
+        ]
+      }
+    },
+    {
+      "name": "another_company_identifier",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Как и у компании U_9085, выручка вырастет.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "insufficient",
+        "codes": [
+          "internal_identifier_in_text"
+        ]
+      }
+    },
+    {
+      "name": "conditional_credit_hypothesis",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Если у компании есть кредиты с плавающей ставкой, снижение ставки может уменьшить расходы на их обслуживание.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "unknown"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    },
+    {
+      "name": "credit_product_confirmed",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Снижение ставки уменьшает процентные расходы по существующим кредитам.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "true"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    },
+    {
+      "name": "confirmed_absence_of_credit_product",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "У компании нет кредитного продукта банка.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "false"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    },
+    {
+      "name": "registration_region_only",
+      "note": "",
+      "section": "ai_interpretation",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Компания зарегистрирована в Санкт-Петербурге, а событие касается ключевой ставки.",
+        "evidence_refs": [
+          "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "ev-news-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "1d65828f-546a-5caa-a3aa-d1ff454f64e5",
+          "kind": "company",
+          "source_id": "U_243",
+          "version": "csv-2026-10",
+          "locator": {
+            "feature_path": "features.REGION"
+          },
+          "excerpt": "Регион регистрации: Санкт-Петербург"
+        }
+      ],
+      "state": {
+        "flags": {
+          "CL_PRODUCT_LOA_MARK": "unknown"
+        },
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    },
+    {
+      "name": "current_bank_position",
+      "note": "",
+      "section": "bank_view",
+      "claim": {
+        "claim_id": "claim-1",
+        "text": "Аналитики банка отмечают, что динамика предложения отстаёт от динамики спроса.",
+        "evidence_refs": [
+          "ev-bank-1"
+        ]
+      },
+      "evidence": [
+        {
+          "id": "ev-bank-1",
+          "kind": "bank",
+          "source_id": "e9075243-e38d-4bbd-8475-0f4af4f5841e",
+          "version": "3c64c1e43f3b46a795f9581967f2dbc8efb0994cb77ab82e95da180830e9ff8c",
+          "locator": {
+            "page": 2
+          },
+          "excerpt": "динамика предложения отстает от динамики спроса, что находит отражение в росте импорта и ослаблении курса рубля"
+        }
+      ],
+      "state": {
+        "flags": {},
+        "event_day": null,
+        "revenue_confirmed": false
+      },
+      "expected": {
+        "verdict": "supported",
+        "codes": []
+      }
+    }
+  ]
+}

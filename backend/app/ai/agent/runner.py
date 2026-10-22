@@ -93,6 +93,15 @@ class AgentRun:
         return composed, check
 
 
+def verification_unknowns(checks: list[dict]) -> list[str]:
+    if not checks:
+        return []
+    failed = [item for item in checks[-1]["rejected_bank_claims"] if item["verdict"] == "unverified"]
+    if not failed:
+        return []
+    return [f"Позиция банка не показана: смысловая проверка утверждений не выполнена ({failed[0]['reason']})"]
+
+
 def stop_unknowns(stop_reason: str, extra: int) -> list[str]:
     if stop_reason != "retry_limit_reached":
         return []
@@ -184,7 +193,7 @@ def run_agent_detailed(
         run.steps,
         [*plan, "check_grounding", "retry_search_if_needed"],
         stop_reason,
-        extra_unknowns=stop_unknowns(stop_reason, run.extra_searches),
+        extra_unknowns=[*stop_unknowns(stop_reason, run.extra_searches), *verification_unknowns(run.checks)],
         extra_trace=trace_fields(run, stop_reason),
         drop_bank_view=False,
     )

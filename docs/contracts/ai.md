@@ -17,6 +17,8 @@
 
 Полный перечень входов, выходов и ошибок доступен в коде как `app.ai.schemas.FUNCTION_CONTRACTS`.
 
+С F-15 элемент результата `search_bank_analytics` дополнительно содержит необязательные `title` (название документа), `temporal_status` (`current`, `historical`, `undated`, `period_expired`, `applicability_unknown`) и `temporal_reason`. `historical` истинен для любого статуса, кроме `current`. Репозиторий может передавать имя файла в поле `filename`, backend делает это с F-15. В `locator` банковского evidence добавляются `document_date` и `title`.
+
 ## Ошибки
 
 Ошибка поднимается как `AIError(code, message)` из `app.integrations.ai`. Допустимые значения `code` перечислены в `AIErrorCode`. Повторяются только `timeout`, `rate_limited` и `provider_unavailable` (константа `RETRYABLE_CODES`), остальные коды завершают задание сразу. Текст `message` пишется на русском и не содержит ключей, путей и сообщений SDK.

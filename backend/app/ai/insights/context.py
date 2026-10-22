@@ -2,6 +2,7 @@ import uuid
 from dataclasses import dataclass
 
 from app.ai.summarization.vocabulary import PRODUCT_DESCRIPTIONS, TRUE_VALUES
+from app.ai.summarization.vocabulary import flag_state as feature_flag_state
 from app.data_semantics import confirmed_value
 
 EVIDENCE_NAMESPACE = uuid.UUID("5a1f0c8e-6c2b-4f6e-9a57-2d5f6a7b9c10")
@@ -23,7 +24,7 @@ FEATURE_LABELS: dict[str, str] = {
 }
 FLAG_FEATURES: tuple[str, ...] = tuple(PRODUCT_DESCRIPTIONS)
 FEATURE_ORDER: tuple[str, ...] = (*FEATURE_LABELS, *FLAG_FEATURES, "GROUP_ID", "FTS_FLAG")
-FALSE_VALUES = {"0", "0.0", "false", "False"}
+HIDDEN_FEATURES = frozenset({"CL_TYPE"})
 MISSING = {"", "nan", "None", "null", "NULL"}
 
 
@@ -73,19 +74,15 @@ def readable_value(feature: str, raw: str) -> str:
 
 
 def flag_state(context: dict, flag: str) -> str:
-    value = confirmed_value(context["features"].get(flag))
-    text = None if value is None else str(value)
-    if text in TRUE_VALUES:
-        return "true"
-    if text in FALSE_VALUES:
-        return "false"
-    return "unknown"
+    return feature_flag_state(context["features"], flag)
 
 
 def company_facts(context: dict) -> list[CompanyFact]:
     features = context["features"]
     facts = []
     for feature in FEATURE_ORDER:
+        if feature in HIDDEN_FEATURES:
+            continue
         entry = features.get(feature)
         value = confirmed_value(entry)
         raw = None if value is None else str(value)

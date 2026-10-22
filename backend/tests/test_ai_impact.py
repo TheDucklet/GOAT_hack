@@ -332,7 +332,8 @@ def test_undated_bank_material_is_not_shown_as_current_position(monkeypatch):
     envelope = make(monkeypatch, ImpactRouter(), context("u-client"), search=Search(default=[undated]))
     result = envelope["result"]
     assert result["bank_view"] is None
-    assert any("Дата материала банка неизвестна" in item for item in result["unknowns"])
+    assert any("stale_bank_position" in item for item in result["unknowns"])
+    assert any("Нет подтверждающих материалов банка" in item for item in result["unknowns"])
 
 
 def test_dated_horizon_sets_validity_and_review(monkeypatch):

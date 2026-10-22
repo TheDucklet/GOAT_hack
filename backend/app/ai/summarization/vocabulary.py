@@ -7,6 +7,7 @@ from pathlib import Path
 
 from app.ai.rag.search import stem
 from app.ai.summarization.grounding import normalize_text
+from app.data_semantics import confirmed_value
 
 VOCABULARY_PATH = Path(__file__).with_name("vocabulary.json")
 CSV_DELIMITER = ";"
@@ -44,6 +45,7 @@ THEMES: tuple[str, ...] = (
 )
 
 TRUE_VALUES = {"1", "1.0", "true", "True"}
+FALSE_VALUES = {"0", "0.0", "false", "False"}
 
 PRODUCT_FLAGS: tuple[str, ...] = (
     "CL_PRODUCT_RKO_MARK",
@@ -165,3 +167,13 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+def flag_state(features: dict, flag: str) -> str:
+    value = confirmed_value(features.get(flag))
+    text = None if value is None else str(value)
+    if text in TRUE_VALUES:
+        return "true"
+    if text in FALSE_VALUES:
+        return "false"
+    return "unknown"
