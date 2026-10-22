@@ -48,7 +48,7 @@ def agent(monkeypatch):
         counter["runs"] += 1
         return envelope()
 
-    monkeypatch.setattr(calls_module, "run_agent", fake_run_agent)
+    monkeypatch.setattr(calls_module, "build_impact_insight", fake_run_agent)
     return counter
 
 
@@ -103,7 +103,9 @@ def test_changed_prompt_version_excludes_the_old_card(agent, monkeypatch):
     assert agent["runs"] == 2
 
 
-@pytest.mark.parametrize("name", ["INSIGHT_CONTRACT_VERSION", "INSIGHT_SCHEMA_VERSION", "DATA_SEMANTICS_VERSION", "POLICY_VERSION"])
+@pytest.mark.parametrize(
+    "name", ["INSIGHT_CONTRACT_VERSION", "INSIGHT_SCHEMA_VERSION", "DATA_SEMANTICS_VERSION", "POLICY_VERSION"]
+)
 def test_changed_contract_version_excludes_the_old_card(agent, monkeypatch, name):
     from app import insight_versions
 

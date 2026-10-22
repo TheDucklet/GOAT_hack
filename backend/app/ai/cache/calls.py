@@ -4,10 +4,11 @@ from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.ai.agent.prompts import AGENT_PROMPT_VERSION
-from app.ai.agent.runner import run_agent
 from app.ai.cache.keys import digest_of, focus_hash, make_key
 from app.ai.cache.service import ResultCache
 from app.ai.cache.store import FileStore
+from app.ai.impact import build_impact_insight
+from app.ai.impact.prompts import IMPACT_PROMPT_VERSION
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION
 from app.ai.personalization.focus import FOCUS_PROMPT_VERSION, derive_user_focus
 from app.ai.providers import LLMSettings, get_llm_settings
@@ -18,7 +19,7 @@ from app.insight_versions import contract_versions
 
 SUMMARY_TASKS = ("summarize_event", "select_industries")
 FOCUS_TASKS = ("derive_user_focus",)
-INSIGHT_TASKS = ("agent_plan", "agent_query", "agent_check", "build_insight")
+INSIGHT_TASKS = ("agent_plan", "agent_query", "agent_check", "build_insight", "build_impact")
 
 
 class CacheSettings(BaseSettings):
@@ -89,7 +90,7 @@ def cached_build_insight(
     cache = cache or get_result_cache()
 
     def compute() -> dict:
-        return run_agent(company_context, user_focus, event, tools)
+        return build_impact_insight(company_context, user_focus, event, tools)
 
     corpus = corpus_version_of(tools)
     if corpus is None:
@@ -106,6 +107,7 @@ def cached_build_insight(
         prompt_version={
             "insight": INSIGHT_PROMPT_VERSION,
             "agent": AGENT_PROMPT_VERSION,
+            "impact": IMPACT_PROMPT_VERSION,
             "validation": VALIDATION_VERSION,
         },
         model_version=model_versions(INSIGHT_TASKS, settings),

@@ -17,7 +17,7 @@ from app.ai.schemas.outputs import (
     GroundedIngestResult,
     GroundedSummaryResult,
     GroundedUserFocus,
-    InsightEnvelope,
+    InsightEnvelopeV2,
 )
 
 
@@ -68,7 +68,7 @@ FUNCTION_CONTRACTS: dict[str, FunctionContract] = {
         FunctionContract(
             "build_insight",
             BuildInsightInput,
-            InsightEnvelope,
+            InsightEnvelopeV2,
             LLM_ERRORS + ("forbidden", "ai_contract_error"),
         ),
         FunctionContract(

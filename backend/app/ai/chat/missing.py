@@ -1,5 +1,6 @@
 from app.ai.insights.build import LOAN_FLAG, LOAN_THEMES, Prepared
-from app.ai.insights.context import TRUE_VALUES
+from app.ai.insights.context import flag_state
+from app.data_semantics import confirmed_value
 
 TRADE_THEMES = frozenset(
     {
@@ -13,11 +14,11 @@ TRADE_THEMES = frozenset(
 
 
 def flag_is_set(prepared: Prepared, flag: str) -> bool:
-    return str(prepared.context["features"].get(flag, {}).get("value", "")) in TRUE_VALUES
+    return flag_state(prepared.context, flag) == "true"
 
 
 def feature_known(prepared: Prepared, feature: str) -> bool:
-    return str(prepared.context["features"].get(feature, {}).get("value", "")).strip() != ""
+    return str(confirmed_value(prepared.context["features"].get(feature)) or "").strip() != ""
 
 
 def missing_parameters(prepared: Prepared) -> list[str]:

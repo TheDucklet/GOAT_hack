@@ -72,6 +72,16 @@ def readable_value(feature: str, raw: str) -> str:
     return raw
 
 
+def flag_state(context: dict, flag: str) -> str:
+    value = confirmed_value(context["features"].get(flag))
+    text = None if value is None else str(value)
+    if text in TRUE_VALUES:
+        return "true"
+    if text in FALSE_VALUES:
+        return "false"
+    return "unknown"
+
+
 def company_facts(context: dict) -> list[CompanyFact]:
     features = context["features"]
     facts = []
