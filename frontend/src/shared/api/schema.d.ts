@@ -4882,6 +4882,7 @@ export interface operations {
             query?: {
                 limit?: number;
                 offset?: number;
+                include_details?: boolean;
             };
             header?: never;
             path: {

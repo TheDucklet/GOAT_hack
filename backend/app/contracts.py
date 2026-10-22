@@ -21,6 +21,8 @@ class Operation:
     status: int = 200
     paginate: bool = False
     upload: bool = False
+    page_limits: tuple[int, int] = (20, 100)
+    query: tuple[tuple[str, object, object], ...] = ()
 
 
 OPERATIONS = [
@@ -30,6 +32,8 @@ OPERATIONS = [
         list[s.DismissalOut],
         "active membership; own dismissals",
         paginate=True,
+        page_limits=(100, 200),
+        query=(("include_details", bool, False),),
     ),
     Operation(
         "POST",
@@ -226,15 +230,23 @@ def install_contracts(app: FastAPI, access_dependency=None):
                 )
             )
         if operation.paginate:
-            for name, default, lower in [("limit", 20, 1), ("offset", 0, 0)]:
+            for name, default, lower in [("limit", operation.page_limits[0], 1), ("offset", 0, 0)]:
                 params.append(
                     inspect.Parameter(
                         name,
                         inspect.Parameter.KEYWORD_ONLY,
                         annotation=int,
-                        default=Query(default, ge=lower, le=100 if name == "limit" else None),
+                        default=Query(
+                            default, ge=lower, le=operation.page_limits[1] if name == "limit" else None
+                        ),
                     )
                 )
+        for name, annotation, default in operation.query:
+            params.append(
+                inspect.Parameter(
+                    name, inspect.Parameter.KEYWORD_ONLY, annotation=annotation, default=Query(default)
+                )
+            )
         public = operation.access.startswith("public;")
         if not public:
             params.append(

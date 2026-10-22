@@ -1,9 +1,26 @@
+from fastapi import FastAPI
 from sqlalchemy import func, select
 
+from app.contracts import install_contracts
 from app.db import session_factory
 from app.models import Event, Feedback, FeedDismissal
 from tests.factories import event_fixture, login
 from tests.test_interactions import BASE, card
+
+
+def test_dismissal_query_contract_matches_runtime(client):
+    contract = FastAPI()
+    install_contracts(contract)
+    published = contract.openapi()["paths"]["/companies/{company_id}/dismissals"]["get"]["parameters"]
+    runtime = client.get("/openapi.json").json()["paths"]["/companies/{company_id}/dismissals"]["get"][
+        "parameters"
+    ]
+    names = {"limit", "offset", "include_details"}
+    def parameters(rows):
+        return {row["name"]: row["schema"] for row in rows if row["name"] in names}
+    assert parameters(published) == parameters(runtime)
+    assert parameters(published)["include_details"]["default"] is False
+    assert parameters(published)["limit"]["maximum"] == 200
 
 
 def test_feedback_read_restores_rating_and_is_private(client):
@@ -35,7 +52,9 @@ def test_exact_version_restored_after_reload_and_details_are_opt_in(client):
     assert row["title"]
     assert set(client.get(BASE + "/dismissals").json()[0]) == {"event_id", "version", "hidden"}
     restore = {"event_id": event, "version": row["version"], "hidden": False}
-    assert client.post(BASE + "/dismissals", json=restore).json() == {key: value for key, value in restore.items()}
+    assert client.post(BASE + "/dismissals", json=restore).json() == {
+        key: value for key, value in restore.items()
+    }
     assert client.post(BASE + "/dismissals", json=restore).status_code == 200
     assert client.get(BASE + "/dismissals").json() == []
     assert client.post(BASE + "/dismissals", json={**restore, "hidden": True}).status_code == 422
@@ -58,6 +77,11 @@ def test_restore_version_cannot_delete_another_users_dismissal(client):
     login(client)
     client.post(BASE + "/dismissals", json={"event_id": event, "hidden": True})
     login(client, "user_b")
-    assert client.post(BASE + "/dismissals", json={"event_id": event, "version": "*", "hidden": False}).status_code == 403
+    assert (
+        client.post(
+            BASE + "/dismissals", json={"event_id": event, "version": "*", "hidden": False}
+        ).status_code
+        == 403
+    )
     login(client)
     assert len(client.get(BASE + "/dismissals").json()) == 1
