@@ -1,0 +1,25 @@
+# Isolated R09 regression: synthetic AI, real HTTP/PostgreSQL/worker, no external calls.
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: goat_r09
+      POSTGRES_PASSWORD: r09-local-only
+  api:
+    environment: &r09-environment
+      DATABASE_URL: postgresql+psycopg://goat:r09-local-only@postgres:5432/goat_r09
+      AI_MODULE: chat_fixture_ai
+      AI_GENERATION_VERSION: r09-synthetic-regression
+      AI_LLM_API_KEY: ""
+      NEWS_COLLECTION_ENABLED: "false"
+      PYTHONPATH: /srv/backend:/srv/r05
+      CORS_ORIGINS: '["http://127.0.0.1:8090","http://localhost:8090"]'
+    volumes:
+      - ./docs:/srv/docs:ro
+      - ./frontend/tests:/srv/r05:ro
+  worker:
+    environment: *r09-environment
+    volumes:
+      - ./frontend/tests:/srv/r05:ro
+  web:
+    ports: !override
+      - "127.0.0.1:8090:80"

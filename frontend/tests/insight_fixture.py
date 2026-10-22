@@ -21,7 +21,7 @@ from app.services.sessions import hasher
 
 COMPANY = 'r05-company-a'
 with session_factory()() as db, db.begin():
-    if db.bind.url.database not in {'goat_r05', 'goat_r06'}:
+    if db.bind.url.database not in {'goat_r05', 'goat_r06', 'goat_r09'}:
         raise SystemExit('Only dedicated goat_r05/goat_r06 acceptance databases are allowed')
     if sys.argv[1] == 'stale':
         db.get(Company, COMPANY).profile_version = 'r05-changed-profile'

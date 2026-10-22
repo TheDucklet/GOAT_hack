@@ -134,6 +134,12 @@ OPERATIONS = [
         None,
         "authenticated; bank PDF only; verify source authorization before file access",
     ),
+    Operation(
+        "GET",
+        "/insights/{insight_id}/feedback",
+        s.FeedbackOut | None,
+        "own insight; active company membership",
+    ),
     Operation("POST", "/feedback", s.FeedbackOut, "own insight; active company membership", s.FeedbackIn),
     Operation("GET", "/admin/users", list[s.UserOut], "admin", paginate=True),
     Operation(

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { FeedItem } from '../../shared/api/types';
+import type { FeedItem, FeedSnapshotItem } from '../../shared/api/types';
 import { ApiError } from '../../shared/api/errors';
 import { analyticsApi } from './api';
 
@@ -7,7 +7,7 @@ export const FEED_PAGE_SIZE = 20;
 
 export function useFeed(companyId: string) {
   const [request, setRequest] = useState({ offset: 0, attempt: 0 });
-  const [items, setItems] = useState<FeedItem[]>([]);
+  const [items, setItems] = useState<(FeedItem | FeedSnapshotItem)[]>([]);
   const [total, setTotal] = useState(0);
   const [nextOffset, setNextOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
@@ -22,9 +22,9 @@ export function useFeed(companyId: string) {
       setItems((previous) => [...new Map([
         ...(request.offset === 0 ? [] : previous), ...page.items,
       ].map((item) => [item.event_id, item])).values()]);
-      const next = page.offset + page.items.length;
-      setTotal(page.total); setNextOffset(next);
-      setHasMore(page.items.length > 0 && next < page.total);
+      const next = 'next_offset' in page ? page.next_offset : page.offset + page.items.length;
+      setTotal(page.total); setNextOffset(next ?? 0);
+      setHasMore(page.items.length > 0 && next !== null && next < page.total);
     }).catch((reason: unknown) => {
       if (controller.signal.aborted) return;
       if (reason instanceof ApiError && reason.status === 403) {

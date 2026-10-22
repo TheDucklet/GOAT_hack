@@ -36,6 +36,7 @@ export type AdminNews = components['schemas']['AdminEventOut'];
 export type AdminJob = components['schemas']['AdminJobOut'];
 export type Visibility = components['schemas']['VisibilityOut'];
 export type Dismissal = components['schemas']['DismissalOut'];
+export type Feedback = components['schemas']['FeedbackOut'];
 export type DismissalRequest = components['schemas']['DismissalIn'];
 export type DemoAction = components['schemas']['DemoActionOut'];
 export type DemoActionRequest = components['schemas']['DemoActionIn'];

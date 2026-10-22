@@ -9,32 +9,42 @@ import { FeedEvent } from './FeedEvent';
 import { ChatPanel, InsightPanel } from './EventWorkspace';
 import { useFeed } from './useFeed';
 import { useChatRoute } from './chat/useChatRoute';
+import { useDismissals } from './interactions/useDismissals';
 
 function AnalyticsWorkspace({ writeUrl }: { writeUrl(chat: Chat | null): void }) {
   const { companyId, event, chat, selectEvent } = useAnalyticsSelection();
   useEffect(() => { writeUrl(chat); }, [chat, writeUrl]);
   const feed = useFeed(companyId);
+  const dismissals = useDismissals(companyId, () => { selectEvent(null); feed.refresh(); }, () => { selectEvent(null); feed.refresh(); });
   const forbidden = feed.error instanceof ApiError && feed.error.status === 403;
   useEffect(() => { if (forbidden) selectEvent(null); }, [forbidden, selectEvent]);
-  return <div className="analytics-grid">
+  return <><nav className="workspace-navigation" aria-label="Навигация по аналитике"><a href="#feed-heading">События и источники</a><a href="#insight-heading">Анализ</a><a href="#chat-heading">Чат</a></nav><div className="analytics-grid">
     <section className="feed" aria-labelledby="feed-heading" aria-busy={feed.loading}>
       <div className="feed-heading"><div><h2 id="feed-heading">Персональная лента</h2>
         <p className="muted">События с учётом контекста компании и ваших интересов</p></div>
         <button className="button secondary" disabled={feed.loading} onClick={() => { selectEvent(null); feed.refresh(); }}>Обновить ленту</button>
       </div>
       {feed.error != null && <ErrorNotice error={feed.error} retry={feed.retry} />}
+      {dismissals.error != null && <ErrorNotice error={dismissals.error} retry={dismissals.retry} />}
+      <details className="hidden-events"><summary>Скрытые события ({dismissals.rows.length})</summary>
+        {dismissals.loading && <p role="status">Загружаем личные скрытия…</p>}
+        {!dismissals.loading && !dismissals.rows.length && <p>У вас нет скрытых событий.</p>}
+        <ul>{dismissals.rows.map((row) => <li key={`${row.event_id}:${row.version}`}><span>{row.title || `Событие ${row.event_id}`}</span>
+          <button className="button secondary" disabled={dismissals.busy || dismissals.loading} onClick={() => void dismissals.mutate({ event_id: row.event_id, version: row.version, hidden: false })}>Вернуть</button></li>)}</ul>
+      </details>
       {feed.items.length > 0 && <>
         <p className="feed-count">Показано {feed.items.length} из {feed.total}</p>
         <ul className="feed-list" aria-label="События">{feed.items.map((item) => <li key={item.event_id}>
-          <FeedEvent event={item} selected={event?.event_id === item.event_id} onSelect={() => selectEvent(item)} />
+          <FeedEvent event={item} selected={event?.event_id === item.event_id} onSelect={() => selectEvent(item, 'generation_status' in item && item.generation_status === 'ready' && typeof item.insight_id === 'string' ? item.insight_id : null)} />
+          <button className="button secondary" disabled={dismissals.busy || dismissals.loading} onClick={() => void dismissals.mutate({ event_id: item.event_id, hidden: true })}>Скрыть событие «{item.title}»</button>
         </li>)}</ul>
       </>}
       {feed.loading && <p className="feed-loading" role="status">{feed.items.length ? 'Загружаем следующие события…' : 'Загружаем события…'}</p>}
       {!feed.loading && !feed.error && !feed.items.length && <div className="panel empty-state"><h3>Нет подходящих событий</h3><p>Обновите ленту позже или выберите другую компанию.</p></div>}
       {feed.hasMore && !feed.error && <button className="button secondary feed-more" disabled={feed.loading} onClick={feed.loadMore}>Загрузить ещё</button>}
     </section>
-    <aside className="event-workspace" aria-label="Выбранное событие"><InsightPanel /><ChatPanel /></aside>
-  </div>;
+    <aside className="event-workspace" aria-label="Выбранное событие"><InsightPanel hide={event && !dismissals.busy && !dismissals.loading ? (insightId) => void dismissals.mutate({ event_id: event.event_id, insight_id: insightId, hidden: true }) : undefined} /><ChatPanel /></aside>
+  </div></>;
 }
 
 export function AnalyticsPage({ userId }: { userId: string }) {
