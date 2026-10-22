@@ -88,6 +88,9 @@ export function createMockTransport(store: MockSessionStore = cookieStore): Tran
       return json(result, profilePath ? 200 : 201);
     }
     if (path === '/admin/stats' && method === 'GET') return json(demoStats);
+    // Read-only defaults for legacy view tests. R-09 writes are tested against HTTP/DB.
+    if (/^\/companies\/[^/]+\/dismissals$/.test(path) && method === 'GET') return json([]);
+    if (/^\/insights\/[^/]+\/feedback$/.test(path) && method === 'GET') return json(null);
     const companyPath = /^\/companies\/([^/]+)\/(feed|insights)$/.exec(path);
     if (companyPath && !session(identity).memberships.some((item) => item.company_id === companyPath[1] && item.status === 'active')) return error(403, 'forbidden', 'Нет доступа');
     if (companyPath?.[2] === 'feed' && method === 'GET') {

@@ -4,9 +4,10 @@ import { InsightNotice } from '../../../shared/ui/InsightNotice';
 import { useAnalyticsSelection } from '../AnalyticsSelection';
 import { InsightContent } from './InsightContent';
 import { useInsight } from './useInsight';
+import { InsightActions } from '../interactions/InsightActions';
 
-function SelectedInsight() {
-  const { companyId, event, insightId, rememberInsight } = useAnalyticsSelection();
+function SelectedInsight({ hide }: { hide?: (insightId: string) => void }) {
+  const { userId, companyId, event, insightId, rememberInsight } = useAnalyticsSelection();
   const state = useInsight(companyId, event!.event_id, insightId, rememberInsight);
   const budget = state.error instanceof ApiError && state.error.body.code === 'budget_exhausted';
   return <>
@@ -25,15 +26,16 @@ function SelectedInsight() {
         {state.insight.stale && <button className="button primary" onClick={state.build}>Обновить анализ</button>}
       </div>
       <InsightContent insight={state.insight} />
+      {userId && <InsightActions key={state.insight.id} insight={state.insight} hide={hide ? () => hide(state.insight!.id) : undefined} />}
     </>}
   </>;
 }
 
-export function InsightPanel() {
+export function InsightPanel({ hide }: { hide?: (insightId: string) => void }) {
   const { event } = useAnalyticsSelection();
   return <section className="panel context-panel insight-panel" aria-labelledby="insight-heading" data-event-id={event?.event_id}>
     <h2 id="insight-heading">Анализ события</h2>
     <InsightNotice />
-    {event ? <SelectedInsight key={event.event_id} /> : <p>Выберите событие в ленте, чтобы перейти к его аналитике.</p>}
+    {event ? <SelectedInsight key={event.event_id} hide={hide} /> : <p>Выберите событие в ленте, чтобы перейти к его аналитике.</p>}
   </section>;
 }

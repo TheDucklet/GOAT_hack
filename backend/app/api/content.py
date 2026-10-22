@@ -196,6 +196,17 @@ def source_file(
     )
 
 
+@router.get("/insights/{insight_id}/feedback", response_model=FeedbackOut | None)
+def read_feedback(
+    insight_id: str,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db, scope="function"),
+):
+    insight = owned(db, Insight, insight_id, user)
+    company_access(db, user, insight.company_id)
+    return db.scalar(select(Feedback).where(Feedback.user_id == user.id, Feedback.insight_id == insight_id))
+
+
 @router.post("/feedback", response_model=FeedbackOut)
 def feedback(
     body: FeedbackIn,

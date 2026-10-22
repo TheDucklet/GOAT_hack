@@ -170,12 +170,20 @@ class DismissalIn(Schema):
     event_id: str = Field(min_length=1, max_length=36)
     insight_id: str | None = Field(default=None, min_length=1, max_length=36)
     hidden: bool
+    version: str | None = Field(default=None, min_length=1, max_length=100)
+
+    @model_validator(mode="after")
+    def restore_version_only(self):
+        if self.version is not None and (self.hidden or self.insight_id is not None):
+            raise ValueError("version is only accepted for restoration without insight_id")
+        return self
 
 
 class DismissalOut(Schema):
     event_id: str
     version: str
     hidden: bool
+    title: str | None = None
 
 
 class DemoActionIn(Schema):

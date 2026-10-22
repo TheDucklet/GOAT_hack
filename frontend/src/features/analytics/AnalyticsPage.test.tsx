@@ -13,6 +13,7 @@ vi.mock('../../shared/api/index', () => ({ http: new HttpClient('/api', createMo
 import { authApi } from '../auth/api';
 import { companiesApi } from '../companies/api';
 import { analyticsApi } from './api';
+import { interactionApi } from './interactions/api';
 import { App } from '../../app/App';
 import { AnalyticsSelectionProvider, useAnalyticsSelection } from './AnalyticsSelection';
 
@@ -33,6 +34,7 @@ function deferred<T>() {
   return { promise, resolve };
 }
 beforeEach(() => {
+  vi.spyOn(interactionApi, 'dismissals').mockResolvedValue([]);
   vi.spyOn(authApi, 'me').mockResolvedValue({ ...structuredClone(demoMe), memberships: companies.map((company) => ({ ...demoMembership, id: `m-${company.id}`, company_id: company.id })) });
   vi.spyOn(companiesApi, 'companies').mockResolvedValue(companies);
   vi.spyOn(analyticsApi, 'feed').mockResolvedValue(page());
@@ -60,6 +62,18 @@ describe('R-04 personalized feed', () => {
     expect(screen.queryByText('Нет подходящих событий')).not.toBeInTheDocument();
     await act(async () => result.resolve(page([])));
     expect(await screen.findByText('Нет подходящих событий')).toBeVisible();
+    expect(screen.queryByRole('button', { name: 'Загрузить ещё' })).not.toBeInTheDocument();
+  });
+
+  it('opens a ready snapshot card by saved id without requesting new generation', async () => {
+    vi.mocked(analyticsApi.feed).mockResolvedValue({ ...page(), schema_version: 'v2', snapshot_id: 'snapshot', generation_status: 'ready', versions: {}, stale: false, stale_reasons: [], ranking_version: 'test', ranking_as_of: '2026-10-23T00:00:00Z', ready_at: null, job_id: null, error: null, next_offset: null,
+      items: [{ ...event(), generation_status: 'ready', insight_id: 'saved-card', impact_level: 'low', relevance_status: 'active', versions: {} }] });
+    const read = vi.spyOn(analyticsApi, 'insight').mockReturnValue(new Promise(() => {}));
+    const build = vi.spyOn(analyticsApi, 'buildInsight');
+    open();
+    await userEvent.click(await screen.findByRole('button', { name: 'Событие event-1' }));
+    expect(read).toHaveBeenCalledWith('saved-card', expect.any(AbortSignal));
+    expect(build).not.toHaveBeenCalled();
     expect(screen.queryByRole('button', { name: 'Загрузить ещё' })).not.toBeInTheDocument();
   });
 

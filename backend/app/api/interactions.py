@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.errors import AppError
-from app.models import FeedDismissal, User
+from app.models import Event, FeedDismissal, User
 from app.schemas import (
     DemoActionIn,
     DemoActionOut,
@@ -20,23 +20,33 @@ from app.services.interactions import demo_action, product_metrics, record_event
 router = APIRouter(tags=["interactions"])
 
 
-@router.get("/companies/{company_id}/dismissals", response_model=list[DismissalOut])
+@router.get(
+    "/companies/{company_id}/dismissals", response_model=list[DismissalOut], response_model_exclude_none=True
+)
 def dismissals(
     company_id: str,
     limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
+    include_details: bool = False,
     user: User = Depends(current_user),
     db: Session = Depends(get_db, scope="function"),
 ):
     company_access(db, user, company_id)
-    rows = db.scalars(
-        select(FeedDismissal)
+    rows = db.execute(
+        select(FeedDismissal, Event.title, Event.visible)
+        .join(Event, Event.id == FeedDismissal.event_id)
         .where(FeedDismissal.user_id == user.id, FeedDismissal.company_id == company_id)
         .order_by(FeedDismissal.id)
         .offset(offset)
         .limit(limit)
     )
-    return [{"event_id": row.event_id, "version": row.version, "hidden": True} for row in rows]
+    result = []
+    for row, title, visible in rows:
+        item = {"event_id": row.event_id, "version": row.version, "hidden": True}
+        if include_details and visible:
+            item["title"] = title
+        result.append(item)
+    return result
 
 
 def record(db, user, company_id, event, insight, kind, request, identity=None):
@@ -53,7 +63,9 @@ def record(db, user, company_id, event, insight, kind, request, identity=None):
     )
 
 
-@router.post("/companies/{company_id}/dismissals", response_model=DismissalOut)
+@router.post(
+    "/companies/{company_id}/dismissals", response_model=DismissalOut, response_model_exclude_none=True
+)
 def dismissal(
     company_id: str,
     body: DismissalIn,

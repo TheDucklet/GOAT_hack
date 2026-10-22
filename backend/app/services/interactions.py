@@ -68,7 +68,7 @@ def record_event(db, user, company_id, event, insight, kind, session_hash, user_
 
 def set_dismissal(db, user, company_id, body):
     event, insight = target(db, user, company_id, body.event_id, body.insight_id)
-    version = insight.cache_key if insight else "*"
+    version = body.version if body.version is not None else insight.cache_key if insight else "*"
     statement = select(FeedDismissal).where(
         FeedDismissal.user_id == user.id,
         FeedDismissal.company_id == company_id,
