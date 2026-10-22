@@ -12,7 +12,7 @@
 | `summarize_event` | `SummarizeEventInput` | `GroundedSummaryResult` | те же |
 | `ingest_bank_document` | `IngestBankDocumentInput` | `GroundedIngestResult` | `invalid_ocr`, `not_found`, `model_not_allowed`, `budget_exhausted`, `timeout` |
 | `search_bank_analytics` | `SearchBankAnalyticsInput` | `BankSearchResult` | `forbidden`, `ai_contract_error` |
-| `build_insight` | `BuildInsightInput` | `InsightEnvelope` | коды LLM, `forbidden`, `ai_contract_error` |
+| `build_insight` | `BuildInsightInput` | `InsightEnvelopeV2` (с F-14; `InsightEnvelope` остаётся форматом v1) | коды LLM, `forbidden`, `ai_contract_error` |
 | `answer_chat` | `AnswerChatInput` | `ChatEnvelope` | коды LLM, `forbidden`, `ai_contract_error` |
 
 Полный перечень входов, выходов и ошибок доступен в коде как `app.ai.schemas.FUNCTION_CONTRACTS`.

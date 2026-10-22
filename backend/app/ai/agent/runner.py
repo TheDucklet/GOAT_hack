@@ -101,6 +101,14 @@ def stop_unknowns(stop_reason: str, extra: int) -> list[str]:
     ]
 
 
+@dataclass
+class AgentOutcome:
+    envelope: dict
+    prepared: Prepared
+    composed: Composed
+    run: AgentRun
+
+
 def run_agent(
     company_context: dict,
     user_focus: dict,
@@ -108,13 +116,23 @@ def run_agent(
     tools,
     max_extra_searches: int = MAX_EXTRA_SEARCHES,
 ) -> dict:
+    return run_agent_detailed(company_context, user_focus, event, tools, max_extra_searches).envelope
+
+
+def run_agent_detailed(
+    company_context: dict,
+    user_focus: dict,
+    event: dict,
+    tools,
+    max_extra_searches: int = MAX_EXTRA_SEARCHES,
+) -> AgentOutcome:
     prepared = prepare_insight(company_context, user_focus, event, tools)
     run = AgentRun(prepared, tools)
     run.steps.extend(base_steps(prepared))
     if not prepared.facts:
         composed = compose_card(prepared, [])
         run.steps.append({"stop": "no_event_facts"})
-        return assemble_envelope(
+        envelope = assemble_envelope(
             prepared,
             composed,
             run.steps,
@@ -122,6 +140,7 @@ def run_agent(
             "no_event_facts",
             extra_trace=trace_fields(run, "no_event_facts"),
         )
+        return AgentOutcome(envelope, prepared, composed, run)
     plan, first_queries, plan_usage = make_plan(prepared)
     run.steps.append({"plan": plan, "initial_queries": first_queries})
     run.steps.extend(plan_usage)
@@ -159,7 +178,7 @@ def run_agent(
     run.steps.append(
         {"stop": stop_reason, "iterations": run.iterations, "extra_searches": run.extra_searches}
     )
-    return assemble_envelope(
+    envelope = assemble_envelope(
         prepared,
         composed,
         run.steps,
@@ -169,6 +188,7 @@ def run_agent(
         extra_trace=trace_fields(run, stop_reason),
         drop_bank_view=False,
     )
+    return AgentOutcome(envelope, prepared, composed, run)
 
 
 def signature_of(hits: dict) -> frozenset[str]:

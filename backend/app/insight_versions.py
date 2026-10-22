@@ -4,7 +4,7 @@ from app.data_semantics import DATA_SEMANTICS_VERSION
 from app.notice_policy import POLICY_VERSION
 
 INSIGHT_CONTRACT_VERSION = "impact-contract-2"
-INSIGHT_SCHEMA_VERSION = "v1"  # F-14 switches the producer, not F-13's contract publication.
+INSIGHT_SCHEMA_VERSION = "v2"
 
 
 def contract_versions(semantics_version: str | None = None) -> dict[str, str]:

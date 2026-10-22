@@ -1,8 +1,8 @@
 # Контракт бизнес-влияния v2 — F-13
 
 Версия от 22.10.2026. Канонические wire-модели: `backend/app/schemas.py`.
-Контракт опубликован для F-14/A-15/R-05; текущий `build_insight` продолжает
-генерировать v1. Публикация схемы не означает готовность генератора v2.
+Контракт опубликован для F-14/A-15/R-05. С F-14 `build_insight` возвращает v2
+(генератор описан в `docs/ai/impact.md`), записи v1 остаются читаемым историческим форматом.
 Реализация контракта готова к ревью команды; отдельного подтверждения коллег пока нет.
 
 ## Версии и общие примеры
@@ -125,8 +125,8 @@ Fallback предназначен для валидного v1, а не для �
 ## Версии кеша и передача следующим задачам
 
 Общий namespace в `app/insight_versions.py`: contract, schema, semantics, policy.
-Он включён и в AI result cache, и в backend Insight cache. Текущий producer schema
-ещё v1; F-14 меняет INSIGHT_SCHEMA_VERSION на v2 одновременно с генератором.
+Он включён и в AI result cache, и в backend Insight cache. Producer schema
+с F-14 равен v2 (INSIGHT_SCHEMA_VERSION изменён одновременно с генератором).
 Любое несовместимое изменение схемы меняет INSIGHT_CONTRACT_VERSION;
 перетолкование данных — DATA_SEMANTICS_VERSION / data_semantics_version входного
 контекста, изменение политики — POLICY_VERSION. Версия профиля отдельно сохраняется.

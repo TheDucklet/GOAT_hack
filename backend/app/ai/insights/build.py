@@ -9,10 +9,10 @@ from typing import Annotated
 from pydantic import BeforeValidator, Field
 
 from app.ai.insights.context import (
-    TRUE_VALUES,
     CompanyFact,
     company_facts,
     evidence_id,
+    flag_state,
     matched_features,
 )
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
@@ -147,7 +147,10 @@ def bank_evidence(hit: dict) -> dict:
         "kind": "bank",
         "source_id": hit["document_id"],
         "version": hit["version"],
-        "locator": {"page": hit["page"]},
+        "locator": {
+            "page": hit["page"],
+            **({"document_date": hit["document_date"]} if hit.get("document_date") else {}),
+        },
         "excerpt": hit["excerpt"],
     }
 
@@ -277,13 +280,17 @@ def domain_unknowns(
         topics.get("theme") or []
     )
     if concerns_loans:
-        flag = str(context["features"].get(LOAN_FLAG, {}).get("value", ""))
-        if flag in TRUE_VALUES:
+        state = flag_state(context, LOAN_FLAG)
+        if state == "true":
             unknowns.append(
                 "Сумма задолженности, тип ставки и условия кредитов неизвестны, в данных есть только наличие кредитного продукта"
             )
-        else:
+        elif state == "false":
             unknowns.append("Долг компании в других банках, его сумма и тип ставки неизвестны")
+        else:
+            unknowns.append(
+                "Наличие кредитного продукта банка в профиле не подтверждено, долг компании, его сумма и тип ставки неизвестны"
+            )
     return unknowns
 
 

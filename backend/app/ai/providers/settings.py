@@ -10,6 +10,7 @@ DEFAULT_TASK_MODELS: dict[str, str] = {
     "derive_user_focus": "google/gemma-4-26b-a4b-it",
     "summarize_event": "qwen/qwen3.6-35b-a3b",
     "build_insight": "qwen/qwen3.6-35b-a3b",
+    "build_impact": "qwen/qwen3.6-35b-a3b",
     "answer_chat": "qwen/qwen3.6-35b-a3b",
     "select_industries": "google/gemma-4-26b-a4b-it",
     "chat_router": "google/gemma-4-26b-a4b-it",

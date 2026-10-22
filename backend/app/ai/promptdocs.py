@@ -10,6 +10,7 @@ from app.ai.agent.prompts import (
     VERIFY_SYSTEM_PROMPT,
 )
 from app.ai.chat.prompts import ANSWER_SYSTEM_PROMPT, CHAT_PROMPT_VERSION, ROUTER_SYSTEM_PROMPT
+from app.ai.impact.prompts import IMPACT_PROMPT_VERSION, IMPACT_SYSTEM_PROMPT
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
 from app.ai.ocr.engine import SYSTEM_PROMPT as OCR_SYSTEM_PROMPT
 from app.ai.ocr.settings import OCR_PROMPT_VERSION
@@ -73,6 +74,20 @@ PROMPTS: tuple[PromptDoc, ...] = (
         "JSON с полями `bank_view`, `ai_interpretation`, `risks`, `opportunities`, `actions` "
         "(объекты `text` и `evidence_ids` с метками) и `unknowns`. Код заменяет метки идентификаторами "
         "источников и проверяет числа и основания.",
+    ),
+    PromptDoc(
+        "build_impact.md",
+        "build_impact",
+        IMPACT_PROMPT_VERSION,
+        IMPACT_SYSTEM_PROMPT,
+        "JSON с полями `event`, `news` (факты под метками `N1`...), `user_focus`, `company_features` "
+        "(подтверждённые признаки профиля под метками `C1`...), `profile_gaps` (поля профиля, которых нет "
+        "или которые не подтверждены), `matched_with_event`, `bank_fragments` (подтверждённые утверждения "
+        "банка под метками `B1`... с датой документа) и `known_missing_parameters`.",
+        "JSON с полями `summary`, `mechanism`, `impact_level`, `impact_reason`, `horizon`, `assumptions`, "
+        "`relevance_reason`, `unknowns`. Код проверяет ссылки, числа и даты каждого утверждения, определяет "
+        "итоговую силу влияния по рубрике и сам задаёт горизонт, срок актуальности, действия и политику "
+        "уведомления.",
     ),
     PromptDoc(
         "agent_plan.md",
