@@ -1,0 +1,959 @@
+{
+  "run": {
+    "started_at": "2026-10-24T20:54:31.147176+00:00",
+    "source": {
+      "sha": "96ad34fa18f469636698ea2c32c3323aac39e575",
+      "tree_clean": false
+    },
+    "as_of_now": "2026-10-23T18:00:00+03:00",
+    "search_backend": "offline_snapshot: docs/ai/fixtures/bank-chunks.json",
+    "contract_versions": {
+      "contract": "impact-contract-2",
+      "schema": "v2",
+      "semantics": "company-data-2",
+      "context_semantics": "company-data-2",
+      "policy": "notice_v1"
+    },
+    "prompt_versions": {
+      "summary": "summary-1",
+      "focus": "focus-1",
+      "insight": "insight-2",
+      "agent": "agent-2",
+      "impact": "impact-1",
+      "validation": "validation-1"
+    },
+    "models": {
+      "agent_check": "qwen/qwen3.6-35b-a3b",
+      "agent_plan": "qwen/qwen3.6-35b-a3b",
+      "agent_query": "google/gemma-4-26b-a4b-it",
+      "answer_chat": "qwen/qwen3.6-35b-a3b",
+      "benchmark_judge": "deepseek/deepseek-v4.1-flash",
+      "build_impact": "qwen/qwen3.6-35b-a3b",
+      "build_insight": "qwen/qwen3.6-35b-a3b",
+      "chat_router": "google/gemma-4-26b-a4b-it",
+      "derive_user_focus": "google/gemma-4-26b-a4b-it",
+      "ocr_vision": "qwen/qwen3-vl-30b-a3b-instruct",
+      "select_industries": "google/gemma-4-26b-a4b-it",
+      "summarize_event": "qwen/qwen3.6-35b-a3b"
+    }
+  },
+  "cards": {
+    "pairs": 84,
+    "ok": 84,
+    "errors": 0,
+    "impact_levels": {
+      "low": 8,
+      "medium": 20,
+      "undetermined": 56
+    },
+    "latency_seconds": {
+      "median": 43.17,
+      "p90": 78.22,
+      "max": 101.14
+    },
+    "cost_rub": {
+      "total": 29.0876,
+      "mean": 0.3463
+    },
+    "bank_view_present": 16,
+    "validator_removed_claims": 29
+  },
+  "labels": {
+    "labelers": {
+      "labelers": [
+        "alexey",
+        "roman"
+      ],
+      "labeled_pairs": {
+        "alexey": 84,
+        "roman": 84
+      },
+      "kappa": {
+        "alexey|roman": 0.7993
+      }
+    },
+    "agreed": 74,
+    "disputed": 10,
+    "unlabeled": 0
+  },
+  "ranking": {
+    "baseline": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2286,
+        "precision_micro": 0.2286,
+        "precision_numerator": 8,
+        "precision_denominator": 35,
+        "precision_ceiling_numerator": 9,
+        "precision_ceiling_micro": 0.2571,
+        "recall_macro": 0.8571,
+        "recall_micro": 0.8889,
+        "recall_numerator": 8,
+        "recall_denominator": 9,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    },
+    "insight": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2286,
+        "precision_micro": 0.2286,
+        "precision_numerator": 8,
+        "precision_denominator": 35,
+        "precision_ceiling_numerator": 9,
+        "precision_ceiling_micro": 0.2571,
+        "recall_macro": 0.8571,
+        "recall_micro": 0.8889,
+        "recall_numerator": 8,
+        "recall_denominator": 9,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    }
+  },
+  "ranking_sensitivity_disputed_as_significant": {
+    "baseline": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 2,
+          "precision": 0.2,
+          "recall": 0.5
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2571,
+        "precision_micro": 0.2571,
+        "precision_numerator": 9,
+        "precision_denominator": 35,
+        "precision_ceiling_numerator": 11,
+        "precision_ceiling_micro": 0.3143,
+        "recall_macro": 0.7857,
+        "recall_micro": 0.8182,
+        "recall_numerator": 9,
+        "recall_denominator": 11,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    },
+    "insight": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 2,
+          "precision": 0.2,
+          "recall": 0.5
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2286,
+        "precision_micro": 0.2286,
+        "precision_numerator": 8,
+        "precision_denominator": 35,
+        "precision_ceiling_numerator": 11,
+        "precision_ceiling_micro": 0.3143,
+        "recall_macro": 0.6429,
+        "recall_micro": 0.7273,
+        "recall_numerator": 8,
+        "recall_denominator": 11,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    }
+  },
+  "grounded_claims": {
+    "overall": {
+      "claims": 782,
+      "grounded": 504,
+      "rate": 0.6445
+    },
+    "by_section": {
+      "ai_interpretation": {
+        "claims": 239,
+        "grounded": 82,
+        "rate": 0.3431
+      },
+      "bank_view": {
+        "claims": 21,
+        "grounded": 17,
+        "rate": 0.8095
+      },
+      "facts": {
+        "claims": 308,
+        "grounded": 294,
+        "rate": 0.9545
+      },
+      "impact_reason": {
+        "claims": 54,
+        "grounded": 30,
+        "rate": 0.5556
+      },
+      "mechanism": {
+        "claims": 106,
+        "grounded": 57,
+        "rate": 0.5377
+      },
+      "personalized_summary": {
+        "claims": 54,
+        "grounded": 24,
+        "rate": 0.4444
+      }
+    },
+    "not_judged": 0,
+    "critical_unsupported_facts": [
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "contradicted",
+        "reason": "Во фрагменте сказано, что цены сдвигали крупные объёмы сделок клиентов, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте сказано о средней ставке 12,5-13,5% в 2027 году, но нет утверждения о её снижении до этого диапазона.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Альфа-Банк прогнозировал снижение ключевой ставки до 13,5% на конец 2026 года и 12% на 2027 год, однако фактическое решение регулятора о сохранении ставки на уровне 14,00% указывает на более жесткие условия, чем ожидалось в прогнозе.",
+        "verdict": "unsupported",
+        "reason": "Прогноз Альфа-Банка подтверждён, но вывод о том, что фактическое решение указывает на более жесткие условия, чем ожидалось, во фрагментах отсутствует.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится, что крупные объёмы сделок клиентов сдвигали цены акций, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится о средней ключевой ставке 12,5-13,5% в 2027 году, но не утверждается, что это снижение относительно текущего уровня.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Рост дефицита банковской ликвидности приводит к поляризации спроса, а не расширению спредов, что влияет на доступность финансирования.",
+        "verdict": "unsupported",
+        "reason": "Фрагмент упоминает поляризацию спроса и рост дефицита ликвидности, но не утверждает, что это влияет на доступность финансирования.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте сказано, что цены сдвигали крупные объёмы сделок клиентов, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится о средней ключевой ставке 12,5-13,5% в 2027 году, но не утверждается, что это снижение относительно текущего уровня.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "contradicted",
+        "reason": "Во фрагменте сказано, что цены сдвигали крупные объёмы сделок клиентов, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится о средней ключевой ставке 12,5-13,5% в 2027 году, но не утверждается, что это снижение относительно текущего уровня.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Рост дефицита банковской ликвидности приводит к поляризации спроса, а не расширению спредов, что подвергает корпоративный сектор процентному риску.",
+        "verdict": "unsupported",
+        "reason": "Фрагмент говорит о поляризации спроса и процентном риске корпоративного сектора, но не утверждает, что рост дефицита ликвидности приводит к поляризации, а не к расширению спредов.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "contradicted",
+        "reason": "Во фрагменте сказано, что цены сдвигали крупные объёмы сделок клиентов, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится о средней ключевой ставке 12,5-13,5% в 2027 году, но не утверждается, что это снижение относительно текущего уровня.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится, что крупные объёмы сделок клиентов сдвигали цены акций, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится о средней ключевой ставке 12,5-13,5% в 2027 году, но нет утверждения о её снижении до этого диапазона.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "contradicted",
+        "reason": "Во фрагменте сказано, что цены сдвигали крупные объёмы сделок клиентов, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте говорится о средней ключевой ставке 12,5-13,5% в 2027 году, но не утверждается, что это снижение относительно текущего уровня.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Альфа-Банк ожидает дальнейшее снижение ключевой ставки до конца 2026 года и прогнозирует ставку на уровне 13,5% на конец года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано, что прогноз принадлежит Альфа-Банку, хотя он упоминается как источник рисунка.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-inflation-weekly"
+      }
+    ],
+    "false_bank_positions": [
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Альфа-Банк прогнозировал снижение ключевой ставки до 13,5% на конец 2026 года и 12% на 2027 год, однако фактическое решение регулятора о сохранении ставки на уровне 14,00% указывает на более жесткие условия, чем ожидалось в прогнозе.",
+        "verdict": "unsupported",
+        "reason": "Прогноз Альфа-Банка подтверждён, но вывод о том, что фактическое решение указывает на более жесткие условия, чем ожидалось, во фрагментах отсутствует.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Рост дефицита банковской ликвидности приводит к поляризации спроса, а не расширению спредов, что влияет на доступность финансирования.",
+        "verdict": "unsupported",
+        "reason": "Фрагмент упоминает поляризацию спроса и рост дефицита ликвидности, но не утверждает, что это влияет на доступность финансирования.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Рост дефицита банковской ликвидности приводит к поляризации спроса, а не расширению спредов, что подвергает корпоративный сектор процентному риску.",
+        "verdict": "unsupported",
+        "reason": "Фрагмент говорит о поляризации спроса и процентном риске корпоративного сектора, но не утверждает, что рост дефицита ликвидности приводит к поляризации, а не к расширению спредов.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Альфа-Банк ожидает дальнейшее снижение ключевой ставки до конца 2026 года и прогнозирует ставку на уровне 13,5% на конец года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано, что прогноз принадлежит Альфа-Банку, хотя он упоминается как источник рисунка.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-inflation-weekly"
+      }
+    ],
+    "unsupported_examples": [
+      {
+        "claim_id": "interpretation-1",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Компания имеет кредиты, которые, вероятно, привязаны к плавающей ставке, так как 67% рынка корпоративного кредитования составляют такие продукты. При сохранении высоких ставок обслуживание долга будет обходиться дороже, что увеличит финансовые затраты компании.",
+        "verdict": "unsupported",
+        "reason": "Утверждение подаёт как факт наличие у компании кредитов с плавающей ставкой, тогда как фрагменты лишь сообщают о наличии продукта «кредиты» и о доле плавающих кредитов на рынке, не подтверждая тип ставки у компании.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "interpretation-2",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Компания использует лизинг, стоимость которого также зависит от стоимости заемных средств. Высокие ставки по вкладам сигнализируют о дорогой ликвидности в банковской системе, что может привести к удорожанию новых лизинговых соглашений или рефинансированию существующих.",
+        "verdict": "unsupported",
+        "reason": "Утверждение утверждает, что стоимость лизинга зависит от заёмных средств и что высокие ставки по вкладам сигнализируют о дорогой ликвидности, но во фрагментах такой связи и сигнала нет.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "interpretation-3",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Наличие депозитов позволяет компании получать высокий доход от размещения свободных средств в условиях высоких ставок, что может частично компенсировать рост затрат по кредитам и лизингу, улучшая денежный поток.",
+        "verdict": "unsupported",
+        "reason": "Утверждение подаёт как факт получение компанией высокого дохода от депозитов и компенсацию затрат, тогда как фрагменты лишь подтверждают наличие продукта «депозиты» и приводят ставки по вкладам.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "summary",
+        "section": "personalized_summary",
+        "statement_type": "hypothesis",
+        "text": "Рост максимальных ставок по вкладам указывает на удорожание фондирования в банковском секторе, что может привести к повышению стоимости обслуживания существующих кредитов компании, если их ставка привязана к рыночным индикаторам. Для компании это означает риск роста затрат на обслуживание долга и необходимость пересмотра денежного потока.",
+        "verdict": "unsupported",
+        "reason": "Утверждение подаёт как факт удорожание фондирования и риск роста затрат, тогда как фрагменты не содержат данных о фондировании и связи ставок по вкладам со стоимостью обслуживания кредитов компании.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "contradicted",
+        "reason": "Во фрагменте сказано, что цены сдвигали крупные объёмы сделок клиентов, а не сделок трейдера.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "interpretation-1",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Событие касается рынка ценных бумаг и биржевых торгов, однако компания не является эмитентом акций и не занимается венчурным инвестированием. Прямое влияние на операционную деятельность строительства зданий отсутствует, так как нарушение совершалось трейдером инвестиционной компании и не затрагивает корпоративное управление или доступ к капиталу строительной фирмы.",
+        "verdict": "unsupported",
+        "reason": "Утверждение о том, что компания не является эмитентом акций и не занимается венчурным инвестированием, а также вывод об отсутствии влияния на строительство, не подтверждается фрагментами.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "interpretation-2",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Компания имеет кредиты в банке и участвует в зарплатном проекте. Общий тренд ускорения корпоративного кредитования может свидетельствовать о повышении стоимости заемных средств или ужесточении условий на рынке. Хотя инсайдерская торговля не влияет напрямую на ставки, она является частью общего контекста регулирования финансового рынка, что может косвенно влиять на комплаенс-процедуры при обслуживании корпоративных клиентов, включая проверку контрагентов.",
+        "verdict": "unsupported",
+        "reason": "Связь инсайдерской торговли с комплаенс-процедурами и стоимостью заемных средств не следует из фрагментов, а тренд кредитования приведён без прямой связи с событием.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "interpretation-3",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Компания находится в стадии оптимизации бизнеса и имеет численность персонала 101-250 человек. Инсайдерские скандалы на бирже могут временно повышать волатильность рынка и неопределенность, что требует от компании более тщательного контроля денежных потоков (приоритет пользователя) и затрат на персонал, так как любые колебания ликвидности в финансовом секторе могут затруднить рефинансирование или доступ к новым кредитным линиям.",
+        "verdict": "unsupported",
+        "reason": "Утверждение о влиянии инсайдерских скандалов на волатильность и рефинансирование компании не подтверждается фрагментами.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте сказано о средней ставке 12,5-13,5% в 2027 году, но нет утверждения о её снижении до этого диапазона.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "bank-2",
+        "section": "bank_view",
+        "statement_type": "fact",
+        "text": "Альфа-Банк прогнозировал снижение ключевой ставки до 13,5% на конец 2026 года и 12% на 2027 год, однако фактическое решение регулятора о сохранении ставки на уровне 14,00% указывает на более жесткие условия, чем ожидалось в прогнозе.",
+        "verdict": "unsupported",
+        "reason": "Прогноз Альфа-Банка подтверждён, но вывод о том, что фактическое решение указывает на более жесткие условия, чем ожидалось, во фрагментах отсутствует.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "interpretation-2",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Высокая инфляция (6,8%) и её ожидаемый рост (7,1-7,6%) приводят к удорожанию строительных материалов и услуг, что критично для компании в сфере строительства. При сохранении ставки 14% стоимость заемного финансирования для покрытия кассовых разрывов или финансирования текущих проектов остается высокой, сжимая маржинальность.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают инфляцию, ставку и отрасль строительства, но не содержат связи инфляции с удорожанием стройматериалов и услуг или сжатием маржинальности.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "interpretation-3",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Компания участвует в зарплатном проекте и имеет депозиты. Высокая ключевая ставка может способствовать росту ставок по депозитам, что позволяет компании эффективнее управлять свободными денежными потоками, однако это может конкурировать с потребностью в ликвидности для операционной деятельности и обслуживания долгов.",
+        "verdict": "unsupported",
+        "reason": "Наличие депозитов и зарплатного проекта подтверждено, но рост ставок по депозитам и конкуренция с ликвидностью во фрагментах не упоминаются.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "mechanism-1",
+        "section": "mechanism",
+        "statement_type": "hypothesis",
+        "text": "Если Банк России сохраняет ключевую ставку на уровне 14%, то при условии, что у компании есть действующие кредиты с плавающей ставкой, привязанной к ключевой ставке, стоимость обслуживания долга останется высокой, что увеличит финансовые расходы.",
+        "verdict": "unsupported",
+        "reason": "Наличие кредитов и ставка 14% подтверждены, но плавающая ставка, привязанная к ключевой, во фрагментах не указана.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "impact",
+        "section": "impact_reason",
+        "statement_type": "hypothesis",
+        "text": "Влияние подтверждено наличием кредитов и лизинга, но его сила ограничена неизвестностью условий ставок (плавающая или фиксированная) и сумм задолженностей. Прямая экспозиция к ставке не может быть количественно оценена без данных о структуре долга.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты лишь подтверждают наличие кредитов и лизинга, но не содержат утверждений об условиях ставок, суммах задолженностей или невозможности количественной оценки экспозиции.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "interpretation-1",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Расширение Ломбардного списка повышает ликвидность облигаций эмитентов, таких как РЖД и Газпром нефть, которые являются ключевыми поставщиками в строительной отрасли. Для компании, занимающейся строительством, это может означать снижение стоимости заимствований для её контрагентов, что косвенно стабилизирует цепочки поставок и снижает риски срывов сроков строительства.",
+        "verdict": "unsupported",
+        "reason": "Во фрагментах нет утверждений о повышении ликвидности, о РЖД и Газпром нефти как ключевых поставщиках строительной отрасли и о влиянии на цепочки поставок и сроки строительства.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "interpretation-2",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Снижение ключевой ставки, прогнозируемое Альфа-Банком, в сочетании с расширением инструментов хеджирования через Ломбардный список, снижает процентный риск для корпоративного сектора. Для компании, имеющей кредитный продукт, это создает возможность рефинансирования существующей задолженности на более выгодных условиях или получения новых кредитов с меньшей маржой риска.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают прогноз снижения ставки и наличие кредитного продукта, но не содержат связи Ломбардного списка с хеджированием, снижением процентного риска или возможностью рефинансирования.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "interpretation-3",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Наличие депозитного продукта у компании позволяет ей эффективно размещать свободные денежные средства. В условиях ожидаемого снижения ключевой ставки доходность по депозитам может снизиться, однако расширение Ломбардного списка повышает общую стабильность финансовой системы, что делает депозитные инструменты более надежными для управления денежными потоками компании.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают наличие депозитного продукта и прогноз снижения ставки, но не содержат утверждений о повышении стабильности финансовой системы из-за Ломбардного списка и надёжности депозитов.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "mechanism-1",
+        "section": "mechanism",
+        "statement_type": "hypothesis",
+        "text": "Если компания является эмитентом облигаций, включенных в Ломбардный список, то её стоимость заимствований может снизиться, при условии, что текущие долговые обязательства привязаны к рыночным ставкам.",
+        "verdict": "unsupported",
+        "reason": "Во фрагментах нет сведений о том, что компания является эмитентом облигаций из Ломбардного списка или что её долговые обязательства привязаны к рыночным ставкам.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "mechanism-2",
+        "section": "mechanism",
+        "statement_type": "hypothesis",
+        "text": "Если компания использует лизинг или кредиты с плавающей ставкой, то снижение рыночных ставок, вызванное расширением ликвидности через Ломбардный список, может уменьшить процентные расходы, при условии, что условия договоров позволяют пересмотреть ставку.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают наличие кредитов и лизинга, но не содержат связи расширения Ломбардного списка со снижением рыночных ставок и уменьшением процентных расходов.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "mechanism-3",
+        "section": "mechanism",
+        "statement_type": "hypothesis",
+        "text": "Если компания имеет депозиты, то изменение ликвидности на межбанковском рынке, связанное с решением ЦБ, может повлиять на доходность по вкладам, при условии, что ставки по депозитам индексируются относительно ключевой ставки или рыночных индикаторов.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают наличие депозитов, но не содержат утверждений о влиянии решения ЦБ на ликвидность межбанковского рынка и доходность вкладов.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      }
+    ]
+  },
+  "leaks": [],
+  "behaviours": {
+    "role_difference_same_company": {
+      "events_compared": 7,
+      "different": 7,
+      "rate": 1.0,
+      "threshold": 0.8
+    },
+    "credit_vs_non_credit_same_industry": {
+      "events_compared": 7,
+      "different": 7,
+      "rate": 1.0,
+      "threshold": 0.8
+    },
+    "undetermined_cards": {
+      "count": 56,
+      "without_unknowns": 0,
+      "with_summary_but_not_labelled_hypothesis": 0
+    },
+    "long_term_cards": 22,
+    "dated_horizon_cards": 9,
+    "additional_search_cards": 69,
+    "bank_view_context": {
+      "current": 16,
+      "missing": 68
+    }
+  },
+  "targeted": {
+    "corpus_change": {
+      "name": "corpus_change",
+      "description": "повтор с тем же корпусом берёт кеш, изменение версии корпуса вычисляет карточку заново",
+      "computations": 2,
+      "stats": {
+        "insight.miss": 2,
+        "insight.hit": 1
+      },
+      "passed": true
+    },
+    "historical_bank": {
+      "name": "historical_bank",
+      "description": "то же событие с датой 20.12.2027, материалы банка в корпусе старше года",
+      "bank_view": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "temporal_unknowns": [
+        "Материал банка «FI_Strategy_3Q26_22072026» от 2026-07-22: документ старше года, позиция не показана как текущая",
+        "Материал банка «ALFA-consumption» от 2026-08-05: документ старше года, позиция не показана как текущая"
+      ],
+      "passed": true
+    },
+    "additional_search": {
+      "name": "additional_search",
+      "description": "первые два поиска скрыты, агент обязан уточнить запрос",
+      "extra_searches": 1,
+      "stop_reason": "supported",
+      "queries": [
+        "ключевая ставка кредитование строительства",
+        "инфляция ожидания себестоимость",
+        "влияние процентных ставок на девелопмент"
+      ],
+      "passed": true
+    },
+    "llm_failure": {
+      "name": "llm_failure",
+      "description": "недоступная модель и исчерпанный бюджет дают явную ошибку без карточки",
+      "outcomes": [
+        {
+          "case": "provider_unavailable",
+          "code": "provider_unavailable",
+          "card_returned": false
+        },
+        {
+          "case": "budget_exhausted",
+          "code": "budget_exhausted",
+          "card_returned": false
+        }
+      ],
+      "passed": true
+    }
+  }
+}

@@ -1,0 +1,900 @@
+{
+  "pair_id": "B04-finance_director__ev-syn-housing",
+  "context_id": "B04-finance_director",
+  "event_id": "ev-syn-housing",
+  "status": "ok",
+  "latency_seconds": 43.11,
+  "cost_rub": 0.242671,
+  "llm_calls": 6,
+  "searches": [
+    {
+      "query": "строительство кредитование Татарстан",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "0c775b35-64a7-45e4-9d39-9a5c0af3672f"
+      ]
+    },
+    {
+      "query": "розничная торговля недвижимость",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "de603582-78d5-4b1e-94bd-a31065ffb165",
+        "3147e81f-d92c-4a5f-9332-bc72f929dbba",
+        "edb56ff3-8668-4728-96f5-9931aff9da64",
+        "074a4077-2bd8-4278-9020-d8b896f09ab3",
+        "2ba1d91b-5b77-424d-895e-dc3c499b5a5f"
+      ]
+    },
+    {
+      "query": "динамика объемов жилищного строительства",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "статистика ввода жилой площади",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-housing",
+        "kind": "news",
+        "source_id": "pub-ev-syn-housing",
+        "version": "a560039ec66868d8",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-housing"
+        },
+        "excerpt": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв."
+      },
+      {
+        "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+        "kind": "company",
+        "source_id": "B04",
+        "version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004",
+        "locator": {
+          "feature_path": "features.MAINOKVED_NAME"
+        },
+        "excerpt": "Основной вид деятельности: Торговля розничная преимущественно пищевыми продуктами в неспециализированных магазинах"
+      },
+      {
+        "id": "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+        "kind": "company",
+        "source_id": "B04",
+        "version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004",
+        "locator": {
+          "feature_path": "features.MAINOKVED_CODE"
+        },
+        "excerpt": "Код ОКВЭД: 47.11"
+      },
+      {
+        "id": "72786517-b985-5cf1-96b0-d48e4e57bed1",
+        "kind": "bank",
+        "source_id": "d2a4babb-08ac-4ff9-b752-74ed4bd31cf2",
+        "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6",
+        "locator": {
+          "page": 1,
+          "document_date": "2026-08-05",
+          "title": "ALFA-consumption"
+        },
+        "excerpt": "В целом мы считаем, что сильный рост оборота розничной торговли за 1П26 на 5,4% г/г был реализован «взаймы» у 2П26, и ожидаем замедления роста этого показателя до 1,5% г/г на 2П26, включая нулевой рост в 4К26.\nРис. 1: Динамика оборота розничной торговли по сегментам, % г/г\nПродовольственный сегмент\nНепродовольственный"
+      },
+      {
+        "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+        "kind": "company",
+        "source_id": "B04",
+        "version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_LOA_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «кредиты»"
+      },
+      {
+        "id": "eeec3032-6c52-5010-aef6-c4a984927f08",
+        "kind": "company",
+        "source_id": "B04",
+        "version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_RKO_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «расчётно-кассовое обслуживание»"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-2",
+      "plan": [
+        "Данные о динамике ввода жилья в Татарстане и Казани",
+        "Влияние стоимости заимствований на застройщиков региона",
+        "Состояние рынка недвижимости и его связь с розничной торговлей",
+        "Прогнозы по кредитным ставкам для строительного сектора",
+        "Структура расходов компании на логистику и запасы",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B04",
+          "profile_version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-housing",
+          "event_version": "a560039ec66868d8",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Данные о динамике ввода жилья в Татарстане и Казани",
+            "Влияние стоимости заимствований на застройщиков региона",
+            "Состояние рынка недвижимости и его связь с розничной торговлей",
+            "Прогнозы по кредитным ставкам для строительного сектора",
+            "Структура расходов компании на логистику и запасы"
+          ],
+          "initial_queries": [
+            "строительство кредитование Татарстан",
+            "розничная торговля недвижимость"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "804b25c4287f4d7cbffb446ea85e384a",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 541,
+          "output_tokens": 129,
+          "cost_rub": 0.018495171974500003
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительство кредитование Татарстан",
+          "as_of": "2026-09-24",
+          "returned": [
+            {
+              "chunk_id": "0c775b35-64a7-45e4-9d39-9a5c0af3672f",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "5e9d122c-6dae-5239-8557-ae491457516f"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "розничная торговля недвижимость",
+          "as_of": "2026-09-24",
+          "returned": [
+            {
+              "chunk_id": "de603582-78d5-4b1e-94bd-a31065ffb165",
+              "page": 11,
+              "historical": false
+            },
+            {
+              "chunk_id": "3147e81f-d92c-4a5f-9332-bc72f929dbba",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "edb56ff3-8668-4728-96f5-9931aff9da64",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "074a4077-2bd8-4278-9020-d8b896f09ab3",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "2ba1d91b-5b77-424d-895e-dc3c499b5a5f",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "fe4e9baa-58a3-5d05-ab62-348897766aff",
+            "bb7d6842-329e-545d-926a-e18df514ccf5",
+            "192242b8-a8fa-579d-ac71-d4e98ef6a867",
+            "72786517-b985-5cf1-96b0-d48e4e57bed1",
+            "b3905ec6-9239-5b6b-999a-4ba977f6e6cf"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "69fe94b41b05439abef6b5f1f2270dc6",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2130,
+          "output_tokens": 952,
+          "cost_rub": 0.116991254822
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "7d9bd8fe41ce4f70a60494933be40a58",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 592,
+          "output_tokens": 44,
+          "cost_rub": 0.010344313564
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "72786517-b985-5cf1-96b0-d48e4e57bed1",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+            "eeec3032-6c52-5010-aef6-c4a984927f08",
+            "evidence-ev-syn-housing"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "4c07b73ce82f4cd1819916f508c132ab",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 420,
+          "output_tokens": 62,
+          "cost_rub": 0.005674714526
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство кредитование Татарстан",
+            "розничная торговля недвижимость"
+          ],
+          "new_query": "динамика объемов жилищного строительства",
+          "reason": "Запрос заменен с привязки к регионам и торговле на более широкую тематику показателей строительной отрасли для поиска статистических данных по вводу жилья."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "динамика объемов жилищного строительства",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "7fc54da68442474fa29f2cab57278e20",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 498,
+          "output_tokens": 46,
+          "cost_rub": 0.00324945461308
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство кредитование Татарстан",
+            "розничная торговля недвижимость",
+            "динамика объемов жилищного строительства"
+          ],
+          "new_query": "статистика ввода жилой площади",
+          "reason": "Использование термина «жилая площадь» вместо «объемов ввода» поможет найти более точные количественные показатели в отчетах."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "статистика ввода жилой площади",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "b1312fb6cfef45599d8b0044f3a21dbf",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2121,
+          "output_tokens": 682,
+          "cost_rub": 0.087916195341
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_LOA_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "fe4e9baa-58a3-5d05-ab62-348897766aff",
+        "bb7d6842-329e-545d-926a-e18df514ccf5",
+        "192242b8-a8fa-579d-ac71-d4e98ef6a867",
+        "72786517-b985-5cf1-96b0-d48e4e57bed1"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-2",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "строительство кредитование Татарстан",
+        "розничная торговля недвижимость",
+        "динамика объемов жилищного строительства",
+        "статистика ввода жилой площади"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Альфа-Банк прогнозирует замедление роста оборота розничной торговли до 1,5% г/г во втором полугодии 2026 года, включая нулевой рост в четвертом квартале, считая сильный рост в первом полугодии реализованным «взаймы» у второго.",
+              "verdict": "insufficient",
+              "reason": "не относится к событию"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "72786517-b985-5cf1-96b0-d48e4e57bed1",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+            "eeec3032-6c52-5010-aef6-c4a984927f08",
+            "evidence-ev-syn-housing"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+                "status": "valid"
+              },
+              {
+                "id": "72786517-b985-5cf1-96b0-d48e4e57bed1",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "72786517-b985-5cf1-96b0-d48e4e57bed1",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "eeec3032-6c52-5010-aef6-c4a984927f08",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "72786517-b985-5cf1-96b0-d48e4e57bed1",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              },
+              {
+                "id": "72786517-b985-5cf1-96b0-d48e4e57bed1",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "72786517-b985-5cf1-96b0-d48e4e57bed1",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "eeec3032-6c52-5010-aef6-c4a984927f08",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 12,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "low",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "industry"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "MAINOKVED_NAME"
+        ],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "b1312fb6cfef45599d8b0044f3a21dbf",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2121,
+            "output_tokens": 682,
+            "cost_rub": 0.087916195341
+          }
+        ]
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв. м жилья, что на 3% меньше, чем годом ранее.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [
+        {
+          "claim_id": "interpretation-1",
+          "text": "Снижение объемов ввода жилья и высокая стоимость заимствований для застройщиков могут привести к сокращению строительства и, как следствие, к снижению доходов населения в строительном секторе и смежных отраслях. Поскольку компания работает в сфере розничной торговли продуктами, это может негативно сказаться на покупательной способности клиентов и, как следствие, на обороте компании, что согласуется с прогнозом Альфа-Банка о замедлении роста розничной торговли.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+            "72786517-b985-5cf1-96b0-d48e4e57bed1"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "interpretation-2",
+          "text": "Высокая стоимость заимствований для застройщиков является индикатором жестких условий кредитования в экономике в целом. Компания имеет кредиты в банке, поэтому рост стоимости заемного капитала может увеличить расходы компании на обслуживание долга, что противоречит приоритету руководителя по управлению стоимостью заемного капитала.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "interpretation-3",
+          "text": "Прогнозируемое замедление розничной торговли может повлиять на денежные потоки компании, занимающейся торговлей продуктами. Это требует более тщательного управления ликвидностью, что является одним из приоритетов руководителя, особенно в условиях возможного снижения выручки.",
+          "evidence_refs": [
+            "72786517-b985-5cf1-96b0-d48e4e57bed1",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "eeec3032-6c52-5010-aef6-c4a984927f08"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "risks": [
+        {
+          "claim_id": "risk-1",
+          "text": "Рост стоимости обслуживания существующих кредитов из-за высокой стоимости заимствований в экономике.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "risk-2",
+          "text": "Снижение оборота розничной торговли и покупательной способности клиентов, что может привести к падению выручки компании.",
+          "evidence_refs": [
+            "72786517-b985-5cf1-96b0-d48e4e57bed1",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "opportunities": [
+        {
+          "claim_id": "opportunity-1",
+          "text": "Возможность пересмотра условий кредитования или рефинансирования в связи с изменением рыночной конъюнктуры, если текущие ставки станут неконкурентоспособными.",
+          "evidence_refs": [
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "72786517-b985-5cf1-96b0-d48e4e57bed1"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "actions": [
+        {
+          "claim_id": "action-1",
+          "text": "Проверить текущие условия по кредитам компании (ставка, тип, срок) и оценить влияние возможного роста ключевой ставки на обслуживание долга.",
+          "evidence_refs": [
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "action-2",
+          "text": "Оценить влияние прогнозируемого замедления розничной торговли на денежные потоки компании и потребность в оборотном финансировании.",
+          "evidence_refs": [
+            "72786517-b985-5cf1-96b0-d48e4e57bed1",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "eeec3032-6c52-5010-aef6-c4a984927f08"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "unknowns": [
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Сумма задолженности, тип ставки и условия кредитов неизвестны, в данных есть только наличие кредитного продукта",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Текущая ставка по кредитам компании и тип ставки (фиксированная или плавающая).",
+        "Сумма и структура текущего кредитного портфеля компании.",
+        "Детальная структура выручки компании и зависимость от потребительского спроса в регионе Казань.",
+        "Условия контрактов с поставщиками и возможность переноса издержек.",
+        "Срок актуальности вывода источниками не установлен",
+        "Доля выручки компании, зависящая от населения, связанного со строительным сектором",
+        "Динамика розничных продаж компании в текущем периоде",
+        "Влияние ключевой ставки на стоимость заемного капитала компании"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-housing",
+        "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+        "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+        "72786517-b985-5cf1-96b0-d48e4e57bed1",
+        "4d1f500f-9424-55cb-94c2-2641297a28c0",
+        "eeec3032-6c52-5010-aef6-c4a984927f08"
+      ],
+      "trace_id": "f87597f4-e9c0-4380-b4bb-b9ad3e895e15",
+      "schema_version": "v2",
+      "personalized_summary": {
+        "claim_id": "summary",
+        "text": "Снижение объемов ввода жилья в России может косвенно повлиять на компанию через цепочку спроса на продовольствие, так как компания занимается розничной торговлей продуктами питания. Прямая связь с отраслью строительства отсутствует, так как компания не является застройщиком.",
+        "evidence_refs": [
+          "evidence-ev-syn-housing",
+          "87d0e121-c748-52ad-b27c-d0a13826ec4d"
+        ],
+        "statement_type": "hypothesis",
+        "quantitative_scenario": null
+      },
+      "mechanism": [
+        {
+          "claim_id": "mechanism-1",
+          "text": "Если снижение объемов ввода жилья приведет к сокращению доходов и занятости в строительном секторе, то это может снизить покупательную способность населения, что отразится на выручке компании, если компания зависит от розничного спроса в регионе.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "impact_level": "low",
+      "impact_reason": {
+        "claim_id": "impact",
+        "text": "Влияние является косвенным и опосредованным. Компания занимается розничной торговлей продуктами питания, а не строительством, поэтому прямое воздействие снижения ввода жилья на её операционную деятельность минимально. Отраслевая принадлежность компании не совпадает с отраслью события.",
+        "evidence_refs": [
+          "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+          "evidence-ev-syn-housing"
+        ],
+        "statement_type": "hypothesis",
+        "quantitative_scenario": null
+      },
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [
+        {
+          "claim_id": "assumption-1",
+          "text": "Снижение активности в строительном секторе приводит к заметному снижению доходов населения в регионе присутствия компании.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "assumption-2",
+          "text": "Спрос на продукты питания в компании эластичен по доходу, то есть при падении доходов клиентов объем покупок снижается.",
+          "evidence_refs": [
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Какие данные нужно уточнить, чтобы проверить это влияние на моей компании?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

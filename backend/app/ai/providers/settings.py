@@ -18,6 +18,7 @@ DEFAULT_TASK_MODELS: dict[str, str] = {
     "agent_query": "google/gemma-4-26b-a4b-it",
     "agent_check": "qwen/qwen3.6-35b-a3b",
     "ocr_vision": "qwen/qwen3-vl-30b-a3b-instruct",
+    "benchmark_judge": "deepseek/deepseek-v4.1-flash",
 }
 
 

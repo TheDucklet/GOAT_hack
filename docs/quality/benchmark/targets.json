@@ -1,0 +1,20 @@
+{
+  "status": "approved",
+  "note": "Внутренние целевые значения команды, не метрики организаторов. Предложены автором до прогона, подтверждены капитаном до запуска прогона, дата в approved_at.",
+  "approved_by": ["Fedor Piskun (капитан)"],
+  "approved_at": "2026-10-24",
+  "gates": {
+    "critical_unsupported_facts": {"operator": "==", "value": 0, "description": "факты и позиции банка с вердиктом unsupported или contradicted"},
+    "false_bank_positions": {"operator": "==", "value": 0, "description": "позиция банка, не подтверждённая своим фрагментом"},
+    "leaks": {"operator": "==", "value": 0, "description": "идентификаторы и признаки другой компании в карточке"},
+    "generation_errors": {"operator": "==", "value": 0, "description": "пары без карточки из-за ошибки генерации"},
+    "targeted_checks_failed": {"operator": "==", "value": 0, "description": "целевые проверки протокола"}
+  },
+  "targets": {
+    "grounded_claims_rate": {"operator": ">=", "value": 0.9, "description": "доля существенных утверждений со статусом supported по оценке независимой модели"},
+    "precision_at_5_insight_micro": {"operator": ">=", "value": 0.6, "description": "доля значимых событий среди первых пяти в ранжировании по картам v2"},
+    "recall_at_5_insight_micro": {"operator": ">=", "value": 0.7, "description": "доля найденных значимых событий среди первых пяти в ранжировании по картам v2"},
+    "precision_at_5_not_worse_than_baseline": {"operator": ">=", "value": 0.0, "description": "разность Precision@5 ранжирования v2 и event-ranker не отрицательна"},
+    "role_difference_rate": {"operator": ">=", "value": 0.5, "description": "доля событий с различающимся механизмом для двух должностей одной компании"}
+  }
+}

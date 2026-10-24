@@ -9,6 +9,7 @@ from app.ai.agent.prompts import (
     QUERY_SYSTEM_PROMPT,
     VERIFY_SYSTEM_PROMPT,
 )
+from app.ai.benchmark.judge import JUDGE_SYSTEM_PROMPT
 from app.ai.chat.prompts import ANSWER_SYSTEM_PROMPT, CHAT_PROMPT_VERSION, ROUTER_SYSTEM_PROMPT
 from app.ai.impact.prompts import IMPACT_PROMPT_VERSION, IMPACT_SYSTEM_PROMPT
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
@@ -137,6 +138,16 @@ PROMPTS: tuple[PromptDoc, ...] = (
         "и `known_missing_parameters`.",
         "JSON с полями `answer`, `evidence_ids` (метки) и `unknowns`. Код удаляет метки из текста, "
         "предложения с числами без источника и ответ без действительных оснований.",
+    ),
+    PromptDoc(
+        "benchmark_judge.md",
+        "benchmark_judge",
+        "judge-1",
+        JUDGE_SYSTEM_PROMPT,
+        'JSON `{"claims": [...]}`, каждое утверждение содержит `id`, `section`, `statement_type`, `text` и дословные '
+        "фрагменты источников `sources`. Идентификаторов компаний и пользователей во входе нет.",
+        'JSON `{"verdicts": [{"id": "...", "verdict": "supported|unsupported|contradicted", '
+        '"reason": "..."}]}`. Используется только в бенчмарке качества и не влияет на карточки.',
     ),
     PromptDoc(
         "ocr_vision.md",
