@@ -1,3 +1,4 @@
+import csv
 import json
 from datetime import datetime
 from types import SimpleNamespace
@@ -361,3 +362,31 @@ def test_essential_claims_give_judge_full_publication_for_news_evidence():
         item["section"]: item["sources"] for item in essential_claims(bank, {"doc": "не должно подставиться"})
     }
     assert sources["bank_view"] == ["фрагмент банка"]
+
+
+def test_calibration_sheets_are_blind_disjoint_and_reproducible(tmp_path):
+    from pathlib import Path
+
+    from app.ai.benchmark.calibration import SEED, build_sheets
+
+    root = Path(__file__).resolve().parents[2]
+    run = root / "docs" / "quality" / "benchmark" / "runs" / "run-1"
+    selection = build_sheets(run, tmp_path, SEED)
+    assert selection["critical_occurrences"] == 18 and selection["critical_unique"] == 6
+    assert selection["calibration_rows"] >= 6 + 30 and selection["control_rows"] >= 30
+    calibration = list(
+        csv.DictReader((tmp_path / "calibration-sheet.csv").open(encoding="utf-8-sig", newline=""))
+    )
+    control = list(csv.DictReader((tmp_path / "control-sheet.csv").open(encoding="utf-8-sig", newline="")))
+    assert {"verdict", "premises_supported"} <= set(calibration[0])
+    assert "judge" not in " ".join(calibration[0]) and all(
+        not row["verdict"] for row in calibration + control
+    )
+    assert {row["claim"] for row in calibration}.isdisjoint({row["claim"] for row in control})
+    assert {row["section"] for row in calibration} >= {"facts", "bank_view", "mechanism", "scenario"}
+    saved = json.loads(
+        (root / "docs" / "quality" / "benchmark" / "calibration" / "selection.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert saved == selection
