@@ -361,3 +361,33 @@ def test_essential_claims_give_judge_full_publication_for_news_evidence():
         item["section"]: item["sources"] for item in essential_claims(bank, {"doc": "не должно подставиться"})
     }
     assert sources["bank_view"] == ["фрагмент банка"]
+
+
+def test_demo_trace_v2_shows_rejected_claim_extra_search_and_dated_page(tmp_path):
+    from pathlib import Path
+
+    from app.ai.benchmark.demo import DEFAULT_PAIR, build_demo
+
+    root = Path(__file__).resolve().parents[2]
+    run = root / "docs" / "quality" / "benchmark" / "runs" / "run-1"
+    demo = build_demo(
+        run,
+        DEFAULT_PAIR,
+        root / "docs" / "ai" / "fixtures" / "bank-chunks.json",
+        root / "docs" / "quality" / "benchmark",
+    )
+    kinds = [step["step"] for step in demo["steps"]]
+    assert "retry" in kinds and kinds[-1] == "stop"
+    assert demo["rejected_bank_claims"]
+    for claim in demo["bank_view"]:
+        for source in claim["sources"]:
+            assert source["page"] >= 1 and source["document_date"] and source["quote"]
+    assert all(
+        item["document_date"]
+        for step in demo["steps"]
+        if step["step"] == "search"
+        for item in step["fragments"]
+    )
+    assert demo["selection"]["cards_total"] == 84
+    saved = json.loads((root / "docs" / "demo" / "agent-trace-v2.json").read_text(encoding="utf-8"))
+    assert saved == demo
