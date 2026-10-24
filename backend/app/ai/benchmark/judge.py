@@ -37,7 +37,13 @@ class RawJudgements(Lenient):
     verdicts: list[RawJudgement] = Field(default_factory=list)
 
 
-def essential_claims(envelope: dict) -> list[dict]:
+def source_text(item: dict, publications: dict[str, str] | None) -> str:
+    if item["kind"] == "news" and publications and item["source_id"] in publications:
+        return publications[item["source_id"]]
+    return item["excerpt"]
+
+
+def essential_claims(envelope: dict, publications: dict[str, str] | None = None) -> list[dict]:
     result = envelope["result"]
     evidence = {item["id"]: item for item in envelope["evidence"]}
     claims = []
@@ -48,7 +54,9 @@ def essential_claims(envelope: dict) -> list[dict]:
         if result.get(section):
             claims.append({"section": section, **result[section]})
     for claim in claims:
-        claim["sources"] = [evidence[ref]["excerpt"] for ref in claim["evidence_refs"] if ref in evidence]
+        claim["sources"] = [
+            source_text(evidence[ref], publications) for ref in claim["evidence_refs"] if ref in evidence
+        ]
     return claims
 
 
@@ -86,8 +94,8 @@ def judge_batch(claims: list[dict]) -> tuple[dict[str, dict], dict | None]:
     }
 
 
-def judge_card(envelope: dict) -> dict:
-    claims = essential_claims(envelope)
+def judge_card(envelope: dict, publications: dict[str, str] | None = None) -> dict:
+    claims = essential_claims(envelope, publications)
     judged, usage = [], []
     for start in range(0, len(claims), BATCH):
         batch = claims[start : start + BATCH]

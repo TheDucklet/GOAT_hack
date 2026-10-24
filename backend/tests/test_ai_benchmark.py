@@ -197,6 +197,10 @@ def test_aggregate_reports_micro_macro_and_na_counts():
     assert summary["precision_macro"] == pytest.approx(0.3333, abs=1e-4)
     assert (summary["precision_numerator"], summary["precision_denominator"]) == (5, 15)
     assert (summary["recall_numerator"], summary["recall_denominator"]) == (6, 8)
+    assert (summary["precision_ceiling_numerator"], summary["precision_ceiling_micro"]) == (
+        7,
+        round(7 / 15, 4),
+    )
     assert summary["precision_na_contexts"] == 1 and summary["recall_na_contexts"] == 1
     assert aggregate([])["precision_micro"] is None
 
@@ -340,3 +344,20 @@ def test_judge_card_tolerates_recoverable_errors_but_not_budget(monkeypatch):
 def test_corpus_change_recomputes_only_for_new_corpus_version():
     result = corpus_change()
     assert result["passed"] and result["computations"] == 2
+
+
+def test_essential_claims_give_judge_full_publication_for_news_evidence():
+    card = envelope(facts=("факт из второго предложения",))
+    plain = essential_claims(card)
+    full = essential_claims(card, {"pub-1": "Первое предложение. Второе предложение с фактом."})
+    assert plain[0]["sources"] == ["дословный фрагмент"]
+    assert full[0]["sources"] == ["Первое предложение. Второе предложение с фактом."]
+    bank = envelope(bank_view=("позиция",))
+    bank["evidence"].append(
+        {"id": "evidence-2", "kind": "bank", "source_id": "doc", "excerpt": "фрагмент банка"}
+    )
+    bank["result"]["bank_view"][0]["evidence_refs"] = ["evidence-2"]
+    sources = {
+        item["section"]: item["sources"] for item in essential_claims(bank, {"doc": "не должно подставиться"})
+    }
+    assert sources["bank_view"] == ["фрагмент банка"]

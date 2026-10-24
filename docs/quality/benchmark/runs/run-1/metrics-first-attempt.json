@@ -1,0 +1,2900 @@
+{
+  "run": {
+    "started_at": "2026-10-24T20:54:31.147176+00:00",
+    "source": {
+      "sha": "96ad34fa18f469636698ea2c32c3323aac39e575",
+      "tree_clean": false
+    },
+    "as_of_now": "2026-10-23T18:00:00+03:00",
+    "search_backend": "offline_snapshot: docs/ai/fixtures/bank-chunks.json",
+    "contract_versions": {
+      "contract": "impact-contract-2",
+      "schema": "v2",
+      "semantics": "company-data-2",
+      "context_semantics": "company-data-2",
+      "policy": "notice_v1"
+    },
+    "prompt_versions": {
+      "summary": "summary-1",
+      "focus": "focus-1",
+      "insight": "insight-2",
+      "agent": "agent-2",
+      "impact": "impact-1",
+      "validation": "validation-1"
+    },
+    "models": {
+      "agent_check": "qwen/qwen3.6-35b-a3b",
+      "agent_plan": "qwen/qwen3.6-35b-a3b",
+      "agent_query": "google/gemma-4-26b-a4b-it",
+      "answer_chat": "qwen/qwen3.6-35b-a3b",
+      "benchmark_judge": "deepseek/deepseek-v4.1-flash",
+      "build_impact": "qwen/qwen3.6-35b-a3b",
+      "build_insight": "qwen/qwen3.6-35b-a3b",
+      "chat_router": "google/gemma-4-26b-a4b-it",
+      "derive_user_focus": "google/gemma-4-26b-a4b-it",
+      "ocr_vision": "qwen/qwen3-vl-30b-a3b-instruct",
+      "select_industries": "google/gemma-4-26b-a4b-it",
+      "summarize_event": "qwen/qwen3.6-35b-a3b"
+    }
+  },
+  "cards": {
+    "pairs": 84,
+    "ok": 84,
+    "errors": 0,
+    "impact_levels": {
+      "low": 8,
+      "medium": 20,
+      "undetermined": 56
+    },
+    "latency_seconds": {
+      "median": 43.17,
+      "p90": 78.22,
+      "max": 101.14
+    },
+    "cost_rub": {
+      "total": 29.0876,
+      "mean": 0.3463
+    },
+    "bank_view_present": 16,
+    "validator_removed_claims": 29
+  },
+  "labels": {
+    "labelers": {
+      "labelers": [
+        "alexey",
+        "roman"
+      ],
+      "labeled_pairs": {
+        "alexey": 84,
+        "roman": 84
+      },
+      "kappa": {
+        "alexey|roman": 0.7993
+      }
+    },
+    "agreed": 74,
+    "disputed": 10,
+    "unlabeled": 0
+  },
+  "ranking": {
+    "baseline": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2286,
+        "precision_micro": 0.2286,
+        "precision_numerator": 8,
+        "precision_denominator": 35,
+        "recall_macro": 0.8571,
+        "recall_micro": 0.8889,
+        "recall_numerator": 8,
+        "recall_denominator": 9,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    },
+    "insight": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2286,
+        "precision_micro": 0.2286,
+        "precision_numerator": 8,
+        "precision_denominator": 35,
+        "recall_macro": 0.8571,
+        "recall_micro": 0.8889,
+        "recall_numerator": 8,
+        "recall_denominator": 9,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    }
+  },
+  "ranking_sensitivity_disputed_as_significant": {
+    "baseline": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 2,
+          "precision": 0.2,
+          "recall": 0.5
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2571,
+        "precision_micro": 0.2571,
+        "precision_numerator": 9,
+        "precision_denominator": 35,
+        "recall_macro": 0.7857,
+        "recall_micro": 0.8182,
+        "recall_numerator": 9,
+        "recall_denominator": 11,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    },
+    "insight": {
+      "per_context": [
+        {
+          "context_id": "B01-chief_accountant",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 1,
+          "precision": 0.2,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B01-procurement_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        {
+          "context_id": "B02-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B03-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B04-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 1,
+          "significant_in_pool": 2,
+          "precision": 0.2,
+          "recall": 0.5
+        },
+        {
+          "context_id": "B05-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 2,
+          "significant_in_pool": 2,
+          "precision": 0.4,
+          "recall": 1.0
+        },
+        {
+          "context_id": "B06-finance_director",
+          "k": 5,
+          "returned": 5,
+          "hits": 0,
+          "significant_in_pool": 1,
+          "precision": 0.0,
+          "recall": 0.0
+        }
+      ],
+      "summary": {
+        "contexts": 7,
+        "precision_macro": 0.2286,
+        "precision_micro": 0.2286,
+        "precision_numerator": 8,
+        "precision_denominator": 35,
+        "recall_macro": 0.6429,
+        "recall_micro": 0.7273,
+        "recall_numerator": 8,
+        "recall_denominator": 11,
+        "precision_na_contexts": 0,
+        "recall_na_contexts": 0
+      }
+    }
+  },
+  "grounded_claims": {
+    "overall": {
+      "claims": 782,
+      "grounded": 341,
+      "rate": 0.4361
+    },
+    "by_section": {
+      "ai_interpretation": {
+        "claims": 239,
+        "grounded": 119,
+        "rate": 0.4979
+      },
+      "bank_view": {
+        "claims": 21,
+        "grounded": 21,
+        "rate": 1.0
+      },
+      "facts": {
+        "claims": 308,
+        "grounded": 91,
+        "rate": 0.2955
+      },
+      "impact_reason": {
+        "claims": 54,
+        "grounded": 33,
+        "rate": 0.6111
+      },
+      "mechanism": {
+        "claims": 106,
+        "grounded": 54,
+        "rate": 0.5094
+      },
+      "personalized_summary": {
+        "claims": 54,
+        "grounded": 23,
+        "rate": 0.4259
+      }
+    },
+    "not_judged": 0,
+    "critical_unsupported_facts": [
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026, ни значения 13,06%, ни сравнения декад.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует значение 12,55% и упоминание вкладов сроком до 90 дней.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о доступе к клиентским торговым поручениям или торговле со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о крупных объёмах сделок и сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается закон № 224-ФЗ и его квалификация.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о направлении предписаний трейдеру.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения регулятора повышенным ценовым давлением и инфляционными ожиданиями.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о базовом сценарии снижения средней ключевой ставки в 2027 году до 12,5-13,5%.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу или о публикации на сайте Банка России.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания обсуждения макропруденциального регулирования или рынка потребительского кредитования.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Совет заслушал отчет о деятельности Банка России во втором квартале 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается отчет о деятельности Банка России за второй квартал 2026 года.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано основание отзыва лицензии — неисполнение обязанности по уплате обязательных платежей более 14 дней.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания приказа № ОД-1865 и назначения временной администрации.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о приостановлении полномочий исполнительных органов ООО НКО «Тайдон».",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В перечень системно значимых организаций вошли 12 банков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о 12 банках в перечне системно значимых организаций.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Активы 12 системно значимых банков составляют около 80% совокупных активов российского банковского сектора.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о доле активов 12 системно значимых банков в 80% совокупных активов сектора.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения Минстроя о высокой стоимости заимствований как причине снижения ввода.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных отраслевого издания о 66,9 млн кв. м и снижении на 5%.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет прогнозов экспертов о дальнейшем замедлении ввода жилья.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о годовой инфляции 6,2% и 6,3%.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию, при этом цены на услуги продолжили расти.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются плодоовощная продукция, сезонное снижение цен или рост цен на услуги.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Следующее заседание Банка России по ключевой ставке запланировано на 23 октября 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о дате заседания Банка России 23 октября 2026 года.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера распространяется на разработчиков программного обеспечения и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются разработчики ПО и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Минцифры оценивает ожидаемый эффект для отрасли в 40 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минцифры в 40 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Условием сохранения льготы остаётся доля доходов от профильной деятельности не менее 70%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано условие о доле доходов от профильной деятельности не менее 70%.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о пассажиропотоке новой станции.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются планы властей продолжить строительство в сторону северных районов.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о конкурсе на подрядчика и сроках до конца года.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания Челябинской и Свердловской областей, Китая и Турции.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минпромторга и цифры 24 млрд рублей.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026 года, ни значения 13,06%, ни сравнения декад.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует значение 12,55% и упоминание вкладов сроком до 90 дней.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о доступе к клиентским торговым поручениям или торговле со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют сведения о крупных объёмах сделок и сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается закон № 224-ФЗ и его квалификация регулятором.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о направлении трейдеру предписаний.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения регулятора повышенным ценовым давлением и инфляционными ожиданиями.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет базового сценария снижения средней ключевой ставки в 2027 году до 12,5-13,5%.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу или о публикации на сайте Банка России.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания обсуждения макропруденциального регулирования или рынка потребительского кредитования.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Совет заслушал отчет о деятельности Банка России во втором квартале 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания отчёта о деятельности Банка России во втором квартале 2026 года.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано основание для отзыва лицензии — неисполнение обязанности по уплате обязательных платежей более 14 дней.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания приказа № ОД-1865 и назначения временной администрации.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о приостановлении полномочий исполнительных органов ООО НКО «Тайдон».",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В перечень системно значимых организаций вошли 12 банков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о 12 банках в перечне.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Активы 12 системно значимых банков составляют около 80% совокупных активов российского банковского сектора.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о доле активов 80% или о 12 банках.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения Минстроя о высокой стоимости заимствований у застройщиков.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных отраслевого издания о 66,9 млн кв. м и снижении на 5%.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет прогноза экспертов о дальнейшем замедлении ввода жилья.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о годовой инфляции 6,2% и 6,3% на указанные даты.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию, при этом цены на услуги продолжили расти.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются сезонное снижение цен на плодоовощную продукцию или рост цен на услуги.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Следующее заседание Банка России по ключевой ставке запланировано на 23 октября 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о дате следующего заседания Банка России по ключевой ставке.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера распространяется на разработчиков программного обеспечения и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о разработчиках ПО и компаниях, оказывающих услуги по разработке и поддержке информационных систем.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Минцифры оценивает ожидаемый эффект для отрасли в 40 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует оценка Минцифры в 40 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Условием сохранения льготы остаётся доля доходов от профильной деятельности не менее 70%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано условие о доле доходов от профильной деятельности не менее 70%.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о пассажиропотоке новой станции.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются планы городских властей о продолжении строительства в сторону северных районов.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о конкурсе на подрядчика и сроках до конца года.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания Челябинской и Свердловской областей, Китая и Турции.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минпромторга и цифры 24 млрд рублей.",
+        "grounded": false,
+        "pair_id": "B01-procurement_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026, ни значения 13,06%, ни сравнения декад.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует ставка 12,55% и разбивка по срокам до 90 дней.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о доступе к клиентским торговым поручениям или о торговле со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют сведения о крупных объёмах сделок и сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается закон № 224-ФЗ и его квалификация регулятором.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о направлении трейдеру предписаний о недопущении нарушений.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения регулятора ценовым давлением и инфляционными ожиданиями.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет базового сценария и диапазона средней ключевой ставки 12,5-13,5% в 2027 году.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу (с первого рабочего дня после публикации на сайте Банка России).",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания обсуждения макропруденциального регулирования или рынка потребительского кредитования.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Совет заслушал отчет о деятельности Банка России во втором квартале 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания отчета о деятельности Банка России во втором квартале 2026 года.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано основание для отзыва лицензии, в частности неисполнение обязанности по уплате обязательных платежей более 14 дней.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания приказа № ОД-1865 и назначения временной администрации.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о приостановлении полномочий исполнительных органов ООО НКО «Тайдон».",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В перечень системно значимых организаций вошли 12 банков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о 12 банках в перечне.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Активы 12 системно значимых банков составляют около 80% совокупных активов российского банковского сектора.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о доле активов 12 системно значимых банков.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения Минстроя о высокой стоимости заимствований как причине снижения ввода.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных отраслевого издания о 66,9 млн кв. м и снижении на 5%.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет прогноза экспертов о дальнейшем замедлении ввода из-за сокращения запусков.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о годовой инфляции 6,2% и 6,3% на указанные даты.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию, при этом цены на услуги продолжили расти.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются сезонное снижение цен на плодоовощную продукцию и рост цен на услуги.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Следующее заседание Банка России по ключевой ставке запланировано на 23 октября 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о дате следующего заседания Банка России по ключевой ставке.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера распространяется на разработчиков программного обеспечения и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются разработчики ПО и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Минцифры оценивает ожидаемый эффект для отрасли в 40 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минцифры в 40 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Условием сохранения льготы остаётся доля доходов от профильной деятельности не менее 70%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано условие о доле доходов от профильной деятельности не менее 70%.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о пассажиропотоке или расчётной нагрузке станции.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются планы городских властей о продолжении строительства в северных районах.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о конкурсе на подрядчика и сроках до конца года.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания Челябинской области, Китая, Турции или поставок металлургических предприятий.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минпромторга и цифры 24 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B02-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026 года, ни значения ставки 13,06%, ни сравнения первой и второй декад.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует значение средней максимальной ставки 12,55% и упоминание срока вкладов до 90 дней.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о доступе к клиентским торговым поручениям или торговле со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о крупных объёмах сделок или сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается закон № 224-ФЗ или его квалификация.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о направлении предписаний трейдеру.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения регулятора ценовым давлением и инфляционными ожиданиями.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет базового сценария и диапазона средней ключевой ставки 12,5-13,5% в 2027 году.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу или о публикации на сайте Банка России.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания обсуждения макропруденциального регулирования или рынка потребительского кредитования.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Совет заслушал отчет о деятельности Банка России во втором квартале 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается отчет о деятельности Банка России во втором квартале 2026 года.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано основание отзыва лицензии и срок неисполнения обязательств более 14 дней.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания приказа № ОД-1865 и назначения временной администрации.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о приостановлении полномочий исполнительных органов ООО НКО «Тайдон».",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В перечень системно значимых организаций вошли 12 банков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается число 12 банков в перечне.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Активы 12 системно значимых банков составляют около 80% совокупных активов российского банковского сектора.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о доле активов 80%.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения Минстроя о высокой стоимости заимствований как причине снижения ввода.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных отраслевого издания о 66,9 млн кв. м и снижении на 5%.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет прогнозов экспертов о дальнейшем замедлении ввода из-за сокращения запусков проектов.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о годовой инфляции 6,2% на 21 сентября и 6,3% на 14 сентября.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию, при этом цены на услуги продолжили расти.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются сезонное снижение цен на плодоовощную продукцию или рост цен на услуги.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Следующее заседание Банка России по ключевой ставке запланировано на 23 октября 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о дате следующего заседания Банка России по ключевой ставке.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера распространяется на разработчиков программного обеспечения и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются разработчики ПО и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Минцифры оценивает ожидаемый эффект для отрасли в 40 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных об оценке Минцифры в 40 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Условием сохранения льготы остаётся доля доходов от профильной деятельности не менее 70%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано условие о доле доходов от профильной деятельности не менее 70%.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+        "verdict": "unsupported",
+        "reason": "В источнике нет данных о пассажиропотоке в 20 тысяч пассажиров в сутки.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+        "verdict": "unsupported",
+        "reason": "В источнике не упоминаются планы городских властей продолжить строительство в сторону северных районов.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+        "verdict": "unsupported",
+        "reason": "В источнике нет сведений о конкурсе на подрядчика и сроках до конца года.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания Челябинской и Свердловской областей, Китая и Турции как направлений поставок.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует оценка Минпромторга и цифра 24 млрд рублей.",
+        "grounded": false,
+        "pair_id": "B03-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026, ни значения 13,06%, ни сравнения декад.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует значение 12,55% и упоминание вкладов сроком до 90 дней.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о доступе к клиентским торговым поручениям или о торговле со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют сведения о крупных объёмах сделок и сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается закон № 224-ФЗ и его квалификация регулятором.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о направлении трейдеру предписаний о недопущении нарушений.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения сохранением ценового давления и инфляционных ожиданий.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет базового сценария со снижением средней ключевой ставки до 12,5-13,5% в 2027 году.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу или о публикации на сайте Банка России.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания обсуждения макропруденциального регулирования или рынка потребительского кредитования.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Совет заслушал отчет о деятельности Банка России во втором квартале 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания отчета о деятельности Банка России во втором квартале 2026 года.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано основание отзыва лицензии (неисполнение обязанности по уплате обязательных платежей более 14 дней).",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания приказа № ОД-1865 и назначения временной администрации.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о приостановлении полномочий исполнительных органов ООО НКО «Тайдон».",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В перечень системно значимых организаций вошли 12 банков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано количество банков в перечне (12).",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Активы 12 системно значимых банков составляют около 80% совокупных активов российского банковского сектора.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о доле активов 12 банков (80%).",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения Минстроя о высокой стоимости заимствований у застройщиков как причине снижения ввода.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных отраслевого издания о 66,9 млн кв. м и снижении на 5%.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет прогнозов экспертов о дальнейшем замедлении ввода жилья из-за сокращения запусков новых проектов.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о годовой инфляции 6,2% и 6,3% на указанные даты.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию, при этом цены на услуги продолжили расти.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются сезонное снижение цен на плодоовощную продукцию и рост цен на услуги.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Следующее заседание Банка России по ключевой ставке запланировано на 23 октября 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о дате следующего заседания Банка России по ключевой ставке.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера распространяется на разработчиков программного обеспечения и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания разработчиков ПО и компаний, оказывающих услуги по разработке и поддержке информационных систем.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Минцифры оценивает ожидаемый эффект для отрасли в 40 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных об оценке Минцифры в 40 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Условием сохранения льготы остаётся доля доходов от профильной деятельности не менее 70%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано условие о доле доходов от профильной деятельности не менее 70%.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о пассажиропотоке новой станции.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются планы властей продолжить строительство в сторону северных районов.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о конкурсе и выборе подрядчика до конца года.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания Челябинской и Свердловской областей, Китая и Турции.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минпромторга и цифры 24 млрд рублей.",
+        "grounded": false,
+        "pair_id": "B04-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026, ни значения 13,06%, ни сравнения декад.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует ставка 12,55% и разбивка по срокам до 90 дней.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о доступе к клиентским торговым поручениям или торговле со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о крупных объёмах сделок или сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается закон № 224-ФЗ и его квалификация.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о направлении трейдеру предписаний.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения сохранением ценового давления и инфляционных ожиданий.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет базового сценария и диапазона средней ключевой ставки 12,5-13,5% в 2027 году.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу или о публикации на сайте Банка России.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания обсуждения макропруденциального регулирования или рынка потребительского кредитования.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Совет заслушал отчет о деятельности Банка России во втором квартале 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается отчет о деятельности Банка России во втором квартале 2026 года.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано основание отзыва лицензии и срок неисполнения обязанности по уплате обязательных платежей.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания приказа № ОД-1865 и назначения временной администрации.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о приостановлении полномочий исполнительных органов ООО НКО «Тайдон».",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В перечень системно значимых организаций вошли 12 банков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается число банков в перечне (12).",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Активы 12 системно значимых банков составляют около 80% совокупных активов российского банковского сектора.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о доле активов 12 банков (около 80%).",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения Минстроя о высокой стоимости заимствований у застройщиков.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных отраслевого издания о 66,9 млн кв. м и снижении на 5%.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет прогнозов экспертов о дальнейшем замедлении ввода жилья из-за сокращения запусков новых проектов.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о годовой инфляции 6,2% и 6,3%.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию, при этом цены на услуги продолжили расти.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминаются плодоовощная продукция, услуги и причины замедления инфляции.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Следующее заседание Банка России по ключевой ставке запланировано на 23 октября 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о заседании Банка России 23 октября 2026 года.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера распространяется на разработчиков программного обеспечения и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания разработчиков ПО и компаний, оказывающих услуги по разработке и поддержке информационных систем.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Минцифры оценивает ожидаемый эффект для отрасли в 40 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных об оценке Минцифры в 40 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Условием сохранения льготы остаётся доля доходов от профильной деятельности не менее 70%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается условие о доле профильных доходов не менее 70%.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о пассажиропотоке новой станции.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о планах властей продолжать строительство на север.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о конкурсе и выборе подрядчика до конца года.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания Челябинской и Свердловской областей, Китая и Турции.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минпромторга и цифры 24 млрд рублей.",
+        "grounded": false,
+        "pair_id": "B05-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026 года, ни значения ставки 13,06%, ни сравнения декад.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует значение средней максимальной ставки 12,55% и упоминание вкладов сроком до 90 дней.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается доступ к клиентским торговым поручениям или торговля со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о крупных объёмах сделок или сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указан закон № 224-ФЗ и не говорится о квалификации нарушения по нему.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается направление предписаний трейдеру.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения сохранением ценового давления и инфляционных ожиданий.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет базового сценария и диапазона средней ключевой ставки 12,5-13,5% в 2027 году.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу или о публикации на сайте Банка России.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания обсуждения макропруденциального регулирования или рынка потребительского кредитования.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Совет заслушал отчет о деятельности Банка России во втором квартале 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания отчета о деятельности Банка России во втором квартале 2026 года.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-nfs-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано основание отзыва лицензии и срок неисполнения обязанности по уплате обязательных платежей.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания приказа № ОД-1865 и назначения временной администрации.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о приостановлении полномочий исполнительных органов ООО НКО «Тайдон».",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-nko-license-2026-10-22"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В перечень системно значимых организаций вошли 12 банков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано количество банков в перечне, число 12 отсутствует.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Активы 12 системно значимых банков составляют около 80% совокупных активов российского банковского сектора.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о доле активов системно значимых банков в 80%.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-cbr-systemic-banks-2026-10-07"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Ведомство объясняет снижение объемов ввода жилья высокой стоимостью заимствований у застройщиков.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения Минстроя о высокой стоимости заимствований у застройщиков как причине снижения ввода.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных от отраслевого издания о 66,9 млн кв. м и снижении на 5%.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Эксперты прогнозируют дальнейшее замедление ввода жилья из-за сокращения запусков новых проектов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет прогнозов экспертов о дальнейшем замедлении ввода жилья из-за сокращения запусков новых проектов.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-housing"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о годовой инфляции 6,2% и 6,3%.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию, при этом цены на услуги продолжили расти.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о плодоовощной продукции и росте цен на услуги.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Следующее заседание Банка России по ключевой ставке запланировано на 23 октября 2026 года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет даты заседания Банка России 23 октября 2026 года.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-inflation-weekly"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера распространяется на разработчиков программного обеспечения и компании, оказывающие услуги по разработке и поддержке информационных систем.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о разработчиках ПО и компаниях, оказывающих услуги по разработке и поддержке информационных систем.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Минцифры оценивает ожидаемый эффект для отрасли в 40 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует оценка Минцифры в 40 млрд рублей в год.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Условием сохранения льготы остаётся доля доходов от профильной деятельности не менее 70%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не указано условие о доле доходов от профильной деятельности не менее 70%.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-it-benefits"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет данных о пассажиропотоке или расчётной мощности станции.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют сведения о планах городских властей продолжать строительство в сторону северных районов.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о выборе подрядчика по конкурсу или сроках до конца года.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-metro"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания Челябинской и Свердловской областей, Китая и Турции.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-steel-duty"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет оценки Минпромторга и цифры 24 млрд рублей.",
+        "grounded": false,
+        "pair_id": "B06-finance_director__ev-syn-steel-duty"
+      }
+    ],
+    "false_bank_positions": [],
+    "unsupported_examples": [
+      {
+        "claim_id": "fact-1",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "В октябре 2026 года максимальная ставка по рублевым вкладам десяти крупнейших банков составляла 13,06% как в первой, так и во второй декаде месяца.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет ни даты октябрь 2026, ни значения 13,06%, ни сравнения декад.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Средняя максимальная ставка по вкладам сроком до 90 дней составила 12,55%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствует значение 12,55% и упоминание вкладов сроком до 90 дней.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "interpretation-1",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Компания имеет кредиты, которые, вероятно, привязаны к плавающей ставке, так как 67% рынка корпоративного кредитования составляют такие продукты. При сохранении высоких ставок обслуживание долга будет обходиться дороже, что увеличит финансовые затраты компании.",
+        "verdict": "unsupported",
+        "reason": "Утверждение подаёт как факт наличие у компании кредитов с плавающей ставкой, тогда как фрагменты лишь подтверждают наличие продукта «кредиты» и долю таких кредитов на рынке.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Трейдер использовал доступ к клиентским торговым поручениям для торговли со своего брокерского счёта.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет упоминания о доступе к клиентским торговым поручениям или торговле со своего брокерского счёта.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Крупные объёмы сделок трейдера сдвигали цены акций.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о крупных объёмах сделок и сдвиге цен акций.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-5",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор квалифицировал действия трейдера как нарушение закона № 224-ФЗ.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не упоминается закон № 224-ФЗ и его квалификация.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-6",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте не говорится о направлении предписаний трейдеру.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-insider-2026-10-21"
+      },
+      {
+        "claim_id": "fact-2",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет объяснения решения регулятора повышенным ценовым давлением и инфляционными ожиданиями.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте отсутствуют данные о годовой инфляции 6,8% и прогнозе 7,1-7,6%.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-4",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет информации о базовом сценарии снижения средней ключевой ставки в 2027 году до 12,5-13,5%.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "interpretation-2",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Высокая инфляция (6,8%) и её ожидаемый рост (7,1-7,6%) приводят к удорожанию строительных материалов и услуг, что критично для компании в сфере строительства. При сохранении ставки 14% стоимость заемного финансирования для покрытия кассовых разрывов или финансирования текущих проектов остается высокой, сжимая маржинальность.",
+        "verdict": "unsupported",
+        "reason": "Данные о высокой инфляции 6,8% и её росте до 7,1-7,6% отсутствуют во фрагментах, хотя отрасль строительства подтверждена.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "impact",
+        "section": "impact_reason",
+        "statement_type": "hypothesis",
+        "text": "Влияние подтверждено наличием кредитов и лизинга, но его сила ограничена неизвестностью условий ставок (плавающая или фиксированная) и сумм задолженностей. Прямая экспозиция к ставке не может быть количественно оценена без данных о структуре долга.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты лишь подтверждают наличие кредитов и лизинга, но не содержат утверждений об условиях ставок, суммах задолженностей или невозможности количественной оценки экспозиции.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23"
+      },
+      {
+        "claim_id": "fact-3",
+        "section": "facts",
+        "statement_type": "fact",
+        "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после публикации на сайте Банка России.",
+        "verdict": "unsupported",
+        "reason": "Во фрагменте нет сведений о сроке вступления решения в силу или о публикации на сайте Банка России.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "interpretation-1",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Расширение Ломбардного списка повышает ликвидность облигаций эмитентов, таких как РЖД и Газпром нефть, которые являются ключевыми поставщиками в строительной отрасли. Для компании, занимающейся строительством, это может означать снижение стоимости заимствований для её контрагентов, что косвенно стабилизирует цепочки поставок и снижает риски срывов сроков строительства.",
+        "verdict": "unsupported",
+        "reason": "Во фрагментах нет утверждения, что РЖД и Газпром нефть являются ключевыми поставщиками в строительной отрасли, а также связи расширения списка со снижением стоимости заимствований контрагентов.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "interpretation-2",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Снижение ключевой ставки, прогнозируемое Альфа-Банком, в сочетании с расширением инструментов хеджирования через Ломбардный список, снижает процентный риск для корпоративного сектора. Для компании, имеющей кредитный продукт, это создает возможность рефинансирования существующей задолженности на более выгодных условиях или получения новых кредитов с меньшей маржой риска.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают прогноз снижения ставки и наличие кредитного продукта, но не содержат связи Ломбардного списка с хеджированием процентного риска или возможностью рефинансирования.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "interpretation-3",
+        "section": "ai_interpretation",
+        "statement_type": "hypothesis",
+        "text": "Наличие депозитного продукта у компании позволяет ей эффективно размещать свободные денежные средства. В условиях ожидаемого снижения ключевой ставки доходность по депозитам может снизиться, однако расширение Ломбардного списка повышает общую стабильность финансовой системы, что делает депозитные инструменты более надежными для управления денежными потоками компании.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают наличие депозитного продукта и прогноз снижения ставки, но не содержат утверждений о влиянии Ломбардного списка на надёжность депозитов или стабильность финансовой системы.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "mechanism-1",
+        "section": "mechanism",
+        "statement_type": "hypothesis",
+        "text": "Если компания является эмитентом облигаций, включенных в Ломбардный список, то её стоимость заимствований может снизиться, при условии, что текущие долговые обязательства привязаны к рыночным ставкам.",
+        "verdict": "unsupported",
+        "reason": "Во фрагментах нет сведений, что компания является эмитентом облигаций из Ломбардного списка или что её долговые обязательства привязаны к рыночным ставкам.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "mechanism-2",
+        "section": "mechanism",
+        "statement_type": "hypothesis",
+        "text": "Если компания использует лизинг или кредиты с плавающей ставкой, то снижение рыночных ставок, вызванное расширением ликвидности через Ломбардный список, может уменьшить процентные расходы, при условии, что условия договоров позволяют пересмотреть ставку.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают наличие кредитов и лизинга, но не содержат связи расширения Ломбардного списка со снижением рыночных ставок или пересмотром условий договоров.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "mechanism-3",
+        "section": "mechanism",
+        "statement_type": "hypothesis",
+        "text": "Если компания имеет депозиты, то изменение ликвидности на межбанковском рынке, связанное с решением ЦБ, может повлиять на доходность по вкладам, при условии, что ставки по депозитам индексируются относительно ключевой ставки или рыночных индикаторов.",
+        "verdict": "unsupported",
+        "reason": "Фрагменты подтверждают наличие депозитов, но не содержат утверждений о влиянии решения ЦБ на ликвидность межбанковского рынка или индексации ставок по вкладам.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      },
+      {
+        "claim_id": "summary",
+        "section": "personalized_summary",
+        "statement_type": "hypothesis",
+        "text": "Включение облигаций в Ломбардный список ЦБ может снизить стоимость заимствований для эмитентов, однако компания является застройщиком, а не эмитентом этих бумаг, поэтому прямое влияние на её финансирование отсутствует.",
+        "verdict": "unsupported",
+        "reason": "Во фрагментах нет утверждения, что компания не является эмитентом включённых бумаг, а вывод об отсутствии прямого влияния не следует из источников.",
+        "grounded": false,
+        "pair_id": "B01-chief_accountant__ev-cbr-lombard-2026-10-05"
+      }
+    ]
+  },
+  "leaks": [],
+  "behaviours": {
+    "role_difference_same_company": {
+      "events_compared": 7,
+      "different": 7,
+      "rate": 1.0,
+      "threshold": 0.8
+    },
+    "credit_vs_non_credit_same_industry": {
+      "events_compared": 7,
+      "different": 7,
+      "rate": 1.0,
+      "threshold": 0.8
+    },
+    "undetermined_cards": {
+      "count": 56,
+      "without_unknowns": 0,
+      "with_summary_but_not_labelled_hypothesis": 0
+    },
+    "long_term_cards": 22,
+    "dated_horizon_cards": 9,
+    "additional_search_cards": 69,
+    "bank_view_context": {
+      "current": 16,
+      "missing": 68
+    }
+  },
+  "targeted": {
+    "corpus_change": {
+      "name": "corpus_change",
+      "description": "повтор с тем же корпусом берёт кеш, изменение версии корпуса вычисляет карточку заново",
+      "computations": 2,
+      "stats": {
+        "insight.miss": 2,
+        "insight.hit": 1
+      },
+      "passed": true
+    },
+    "historical_bank": {
+      "name": "historical_bank",
+      "description": "то же событие с датой 20.12.2027, материалы банка в корпусе старше года",
+      "bank_view": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "temporal_unknowns": [
+        "Материал банка «FI_Strategy_3Q26_22072026» от 2026-07-22: документ старше года, позиция не показана как текущая",
+        "Материал банка «ALFA-consumption» от 2026-08-05: документ старше года, позиция не показана как текущая"
+      ],
+      "passed": true
+    },
+    "additional_search": {
+      "name": "additional_search",
+      "description": "первые два поиска скрыты, агент обязан уточнить запрос",
+      "extra_searches": 1,
+      "stop_reason": "supported",
+      "queries": [
+        "ключевая ставка кредитование строительства",
+        "инфляция ожидания себестоимость",
+        "влияние процентных ставок на девелопмент"
+      ],
+      "passed": true
+    },
+    "llm_failure": {
+      "name": "llm_failure",
+      "description": "недоступная модель и исчерпанный бюджет дают явную ошибку без карточки",
+      "outcomes": [
+        {
+          "case": "provider_unavailable",
+          "code": "provider_unavailable",
+          "card_returned": false
+        },
+        {
+          "case": "budget_exhausted",
+          "code": "budget_exhausted",
+          "card_returned": false
+        }
+      ],
+      "passed": true
+    }
+  }
+}

@@ -34,12 +34,17 @@ def run(args) -> int:
 def judge(args) -> int:
     run_dir = RUNS / args.run_id
     pairs = {key: item for key, item in load_pairs(run_dir).items() if item["status"] == "ok"}
+    publications = {
+        publication["id"]: publication["text"]
+        for event in read(run_dir / "events.json")
+        for publication in event["publications"]
+    }
 
     def work(key):
         path = run_dir / "judge" / f"{key}.json"
         if path.exists():
             return key
-        write(path, judge_card(pairs[key]["envelope"]))
+        write(path, judge_card(pairs[key]["envelope"], publications))
         return key
 
     with ThreadPoolExecutor(max_workers=args.workers) as pool:

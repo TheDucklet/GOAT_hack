@@ -25,12 +25,17 @@ def aggregate(per_context: list[dict]) -> dict:
     slots = sum(item["k"] for item in per_context if item["precision"] is not None)
     found = sum(item["hits"] for item in per_context if item["recall"] is not None)
     available = sum(item["significant_in_pool"] for item in per_context if item["recall"] is not None)
+    ceiling = sum(
+        min(item["significant_in_pool"], item["k"]) for item in per_context if item["precision"] is not None
+    )
     return {
         "contexts": len(per_context),
         "precision_macro": round(sum(precision) / len(precision), 4) if precision else None,
         "precision_micro": round(hits / slots, 4) if slots else None,
         "precision_numerator": hits,
         "precision_denominator": slots,
+        "precision_ceiling_numerator": ceiling,
+        "precision_ceiling_micro": round(ceiling / slots, 4) if slots else None,
         "recall_macro": round(sum(recall) / len(recall), 4) if recall else None,
         "recall_micro": round(found / available, 4) if available else None,
         "recall_numerator": found,
