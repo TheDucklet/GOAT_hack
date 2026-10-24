@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from app.ai.benchmark.data import DEFAULT_DIRECTORY, load_contexts, load_events, load_positions
+from app.ai.benchmark.demo import DEFAULT_PAIR, build_demo
 from app.ai.benchmark.judge import judge_card
 from app.ai.benchmark.labels import sheet_rows, write_sheet
 from app.ai.benchmark.report import build_metrics, load_pairs
@@ -61,6 +62,14 @@ def targeted(args) -> int:
     return 0 if all(item["passed"] for item in results.values()) else 2
 
 
+def demo(args) -> int:
+    run_dir = RUNS / args.run_id
+    value = build_demo(run_dir, args.pair, DEFAULT_FIXTURES / "bank-chunks.json", Path(args.directory))
+    write(Path(args.output), value)
+    print(f"трасса записана: {args.output}")
+    return 0
+
+
 def metrics(args) -> int:
     run_dir = RUNS / args.run_id
     directory = Path(args.directory)
@@ -79,14 +88,23 @@ def metrics(args) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m app.ai.benchmark")
-    parser.add_argument("command", choices=["prepare", "run", "judge", "targeted", "metrics"])
+    parser.add_argument("command", choices=["prepare", "run", "judge", "targeted", "metrics", "demo"])
     parser.add_argument("--directory", default=str(DEFAULT_DIRECTORY))
     parser.add_argument("--run-id", default="run-1")
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--only", nargs="*")
     parser.add_argument("--offline", action="store_true")
+    parser.add_argument("--pair", default=DEFAULT_PAIR)
+    parser.add_argument("--output", default="../docs/demo/agent-trace-v2.json")
     args = parser.parse_args(argv)
-    handlers = {"prepare": prepare, "run": run, "judge": judge, "targeted": targeted, "metrics": metrics}
+    handlers = {
+        "prepare": prepare,
+        "run": run,
+        "judge": judge,
+        "targeted": targeted,
+        "metrics": metrics,
+        "demo": demo,
+    }
     try:
         return handlers[args.command](args)
     except LLMError as error:
