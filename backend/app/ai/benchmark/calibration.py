@@ -178,37 +178,46 @@ def build_sheets(run_dir: Path, output: Path, seed: int = SEED) -> dict:
     extra = draw(pool, taken, rng)
     control = draw(pool, taken, rng)
     unique_critical = list({unique_key(item): item for item in critical}.values())
-    calibration_rows, mapping = [], {}
-    for number, item in enumerate(unique_critical, start=1):
-        row_id = f"K{number:02d}"
-        calibration_rows.append(sheet_row(row_id, item))
-        mapping[row_id] = {
-            "kind": "critical",
-            "pair_ids": sorted({x["pair_id"] for x in critical if unique_key(x) == unique_key(item)}),
-        }
-    for number, item in enumerate(extra, start=1):
-        row_id = f"E{number:02d}"
-        calibration_rows.append(sheet_row(row_id, item))
-        mapping[row_id] = {"kind": "extra", "pair_ids": [item["pair_id"]], "judge": item["judge_verdict"]}
-    for number, item in enumerate(SCENARIO_FIXTURES, start=1):
-        row_id = f"S{number:02d}"
-        calibration_rows.append(
-            sheet_row(
-                row_id,
-                {
-                    "section": "scenario",
-                    "statement_type": "scenario",
-                    "claim": item["claim"],
-                    "sources": item["sources"],
-                },
-            )
+    calibration_items = [
+        (
+            item,
+            {
+                "kind": "critical",
+                "pair_ids": sorted({x["pair_id"] for x in critical if unique_key(x) == unique_key(item)}),
+            },
         )
-        mapping[row_id] = {"kind": "scenario_fixture", "expected": item["expected"]}
-    control_rows = []
-    for number, item in enumerate(control, start=1):
-        row_id = f"C{number:02d}"
-        control_rows.append(sheet_row(row_id, item))
-        mapping[row_id] = {"kind": "control", "pair_ids": [item["pair_id"]], "judge": item["judge_verdict"]}
+        for item in unique_critical
+    ]
+    calibration_items += [
+        (item, {"kind": "extra", "pair_ids": [item["pair_id"]], "judge": item["judge_verdict"]})
+        for item in extra
+    ]
+    calibration_items += [
+        (
+            {
+                "section": "scenario",
+                "statement_type": "scenario",
+                "claim": fixture["claim"],
+                "sources": fixture["sources"],
+            },
+            {"kind": "scenario_fixture", "expected": fixture["expected"]},
+        )
+        for fixture in SCENARIO_FIXTURES
+    ]
+    control_items = [
+        (item, {"kind": "control", "pair_ids": [item["pair_id"]], "judge": item["judge_verdict"]})
+        for item in control
+    ]
+    mapping, calibration_rows, control_rows = {}, [], []
+    for prefix, items, rows in (
+        ("K", calibration_items, calibration_rows),
+        ("C", control_items, control_rows),
+    ):
+        rng.shuffle(items)
+        for number, (item, info) in enumerate(items, start=1):
+            row_id = f"{prefix}{number:02d}"
+            rows.append(sheet_row(row_id, item))
+            mapping[row_id] = info
     write_sheet(output / "calibration-sheet.csv", calibration_rows)
     write_sheet(output / "control-sheet.csv", control_rows)
     selection = {
