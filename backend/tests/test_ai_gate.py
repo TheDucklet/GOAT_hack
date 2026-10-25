@@ -326,3 +326,36 @@ def test_a_rejected_hypothesis_is_not_passed_on_as_a_rejected_premise(monkeypatc
     verifier = Verifier({ids["mechanism"][0]: "unsupported"})
     run(monkeypatch, verifier)
     assert verifier.payloads[1]["rejected_premises"] == []
+
+
+@pytest.mark.parametrize(
+    "part",
+    [
+        {"status": "in_sources"},
+        {"text": "", "kind": "event_fact", "status": "in_sources"},
+        {"text": "Ставка сохранена", "kind": "magic", "status": "in_sources"},
+        {"text": "Ставка сохранена", "kind": "event_fact", "status": "fine"},
+    ],
+)
+def test_claim_with_an_empty_or_invalid_breakdown_is_unverified(monkeypatch, part):
+    claims = [
+        {
+            "claim_id": "c1",
+            "section": "facts",
+            "statement_type": "fact",
+            "text": "Ставка сохранена",
+            "evidence_refs": ["e"],
+        }
+    ]
+    sources = {"e": {"kind": "news", "text": "Ставка сохранена.", "locator": {}}}
+
+    def call(task, request, max_tokens, **options):
+        from types import SimpleNamespace
+
+        usage = SimpleNamespace(input_tokens=1, output_tokens=1, cost_rub=0.0)
+        row = {"id": "c1", "verdict": "supported", "reason": "", "parts": [part]}
+        return SimpleNamespace(data={"verdicts": [row]}, request_id="r", model_id="m", usage=usage)
+
+    monkeypatch.setattr(gate_verify, "call_llm", call)
+    verdicts, _ = gate_verify.verify_claims(claims, sources)
+    assert verdicts["c1"]["verdict"] == gate_verify.UNVERIFIED

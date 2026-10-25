@@ -1,10 +1,13 @@
+import hashlib
 import json
 
 from pydantic import Field
 
-from app.ai.gate.prompts import GATE_SYSTEM_PROMPT
+from app.ai.benchmark.judge_prompts import CURRENT_JUDGE_VERSION, JUDGE_PROMPTS, prompt_sha256
+from app.ai.gate.verify import BATCH as VERIFY_BATCH
+from app.ai.gate.verify import MAX_TOKENS as VERIFY_MAX_TOKENS
 from app.ai.gate.verify import verify_claims
-from app.ai.providers import LLMError, LLMInput, call_llm
+from app.ai.providers import LLMError, LLMInput, call_llm, get_llm_settings
 from app.ai.summarization.summarize import Lenient
 
 JUDGE_TASK = "benchmark_judge"
@@ -124,11 +127,30 @@ def judge_card(envelope: dict, publications: dict[str, str] | None = None) -> di
     return {"claims": judged, "usage": usage}
 
 
-JUDGE2_PROMPT_VERSION = "judge-2"
-JUDGE2_SYSTEM_PROMPT = GATE_SYSTEM_PROMPT.replace(
-    "Ты независимый проверяющий аналитической карточки перед публикацией.",
-    "Ты независимый оценщик качества аналитических карточек в бенчмарке, ты ничего не публикуешь.",
-)
+JUDGE2_PROMPT_VERSION = CURRENT_JUDGE_VERSION
+JUDGE2_SYSTEM_PROMPT = JUDGE_PROMPTS[CURRENT_JUDGE_VERSION]
+
+
+def card_digest(envelope: dict) -> str:
+    text = json.dumps(
+        {"result": envelope["result"], "evidence": envelope["evidence"]},
+        ensure_ascii=False,
+        sort_keys=True,
+        default=str,
+    )
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def judge_identity(envelope: dict, version: str = CURRENT_JUDGE_VERSION) -> dict:
+    return {
+        "judge_version": version,
+        "prompt_sha256": prompt_sha256(version),
+        "model": get_llm_settings().llm_task_models.get(JUDGE_TASK),
+        "temperature": 0.0,
+        "batch": VERIFY_BATCH,
+        "max_tokens": VERIFY_MAX_TOKENS,
+        "card_digest": card_digest(envelope),
+    }
 
 
 def typed_sources(envelope: dict, publications: dict[str, str], context: dict[str, str]) -> dict[str, dict]:
@@ -183,4 +205,10 @@ def judge_card_v2(envelope: dict, publications: dict[str, str], context: dict[st
                 "parts": item.get("parts", []),
             }
         )
-    return {"judge_version": JUDGE2_PROMPT_VERSION, "claims": judged, "usage": usage}
+    identity = judge_identity(envelope)
+    return {
+        "judge_version": identity["judge_version"],
+        "identity": identity,
+        "claims": judged,
+        "usage": usage,
+    }

@@ -525,3 +525,52 @@ def test_demo_trace_v2_shows_rejected_claim_extra_search_and_dated_page(tmp_path
     assert demo["selection"]["cards_total"] == 84
     saved = json.loads((root / "docs" / "demo" / "agent-trace-v2.json").read_text(encoding="utf-8"))
     assert saved == demo
+
+
+def test_frozen_judge_prompts_keep_their_recorded_hashes():
+    from app.ai.benchmark.judge_prompts import CURRENT_JUDGE_VERSION, JUDGE_PROMPTS, prompt_sha256
+
+    assert prompt_sha256("judge-2") == "72a1cefe3d5893e6d93333da510cc9e8e186fe3f8a4f8c2b550641d157cc8aba"
+    assert prompt_sha256("judge-3") == "8c0a5d2d821b40bc25ece6d57f9f4d41300f84088ab993b9f658ba8a9f77fc60"
+    assert CURRENT_JUDGE_VERSION in JUDGE_PROMPTS and JUDGE_PROMPTS["judge-2"] != JUDGE_PROMPTS["judge-3"]
+
+
+def test_judge_prompt_does_not_follow_the_publication_gate_prompt(monkeypatch):
+    from app.ai.benchmark import judge
+    from app.ai.gate import prompts as gate_prompts
+
+    before = judge.JUDGE2_SYSTEM_PROMPT
+    monkeypatch.setattr(
+        gate_prompts, "GATE_SYSTEM_PROMPT", gate_prompts.GATE_SYSTEM_PROMPT + " Новое правило."
+    )
+    assert judge.JUDGE2_SYSTEM_PROMPT == before and "Новое правило" not in judge.JUDGE2_SYSTEM_PROMPT
+
+
+def test_judge_result_records_identity_and_is_reused_only_for_the_same_card(monkeypatch):
+    from app.ai.benchmark import judge
+
+    card = {"result": {"facts": []}, "evidence": []}
+    same = judge.judge_identity(card)
+    assert same["prompt_sha256"] == judge.prompt_sha256(same["judge_version"]) and same["model"]
+    assert judge.judge_identity({"result": {"facts": [{"x": 1}]}, "evidence": []}) != same
+    assert judge.judge_identity(card, "judge-2") != same
+    monkeypatch.setattr(judge, "verify_claims", lambda *args, **kwargs: ({}, []))
+    monkeypatch.setattr(judge, "essential_claims", lambda *args, **kwargs: [])
+    saved = judge.judge_card_v2(card, {}, {})
+    assert saved["identity"] == same and saved["judge_version"] == same["judge_version"]
+
+
+def test_metrics_flag_a_directory_that_mixes_different_judges(tmp_path):
+    from app.ai.benchmark.report_v2 import judge_v2
+
+    directory = tmp_path / "judge2"
+    directory.mkdir()
+    for name, sha in (("a", "1"), ("b", "2")):
+        (directory / f"{name}.json").write_text(
+            json.dumps({"judge_version": "judge-3", "identity": {"prompt_sha256": sha}, "claims": []}),
+            encoding="utf-8",
+        )
+    report = judge_v2(tmp_path, {})
+    assert (
+        report["mixed_judges"] is True and report["judge_version"] == "mixed" and len(report["judges"]) == 2
+    )
