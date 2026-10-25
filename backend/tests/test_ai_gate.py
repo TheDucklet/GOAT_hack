@@ -305,3 +305,10 @@ def test_verdict_is_decided_from_parts_and_a_missing_decomposition_is_unverified
     assert verdicts["a"]["verdict"] == "unsupported" and "добавленная часть" in verdicts["a"]["reason"]
     assert verdicts["b"]["verdict"] == "unverified"
     assert verdicts["c"]["verdict"] == "supported"
+
+
+def test_a_rejected_hypothesis_is_not_passed_on_as_a_rejected_premise(monkeypatch):
+    ids = claim_ids(FULL)
+    verifier = Verifier({ids["mechanism"][0]: "unsupported"})
+    run(monkeypatch, verifier)
+    assert verifier.payloads[1]["rejected_premises"] == []

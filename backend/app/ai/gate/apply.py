@@ -213,7 +213,11 @@ def enforce_publication(envelope: dict, news_texts: dict[str, str]) -> dict:
             report = report_of(envelope, verdicts, removed, changes, attempts, "repair_invalid", usage)
             report["decision"] = "block"
             return with_report(envelope, report)
-        rejected = [item["text"][:200] for item in claims if item["claim_id"] in failed]
+        rejected = [
+            item["text"][:200]
+            for item in claims
+            if item["claim_id"] in failed and item["section"] in CRITICAL_SECTIONS
+        ]
         remaining = insight_claims(candidate["result"])
         sources = source_map(candidate, news_texts)
         verdicts, again = verify_checked(remaining, sources, rejected)
