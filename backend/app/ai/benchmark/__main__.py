@@ -42,6 +42,7 @@ def run(args) -> int:
         args.limit_rub,
         args.retries,
         {"as_of": args.as_of} if args.as_of else None,
+        set(args.pairs) if args.pairs else None,
     )
     print(
         f"пар: {summary['pairs']}, готово: {summary['ok']}, отказов проверки: {summary['blocked']}, "
@@ -203,6 +204,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--run-id", default="run-1")
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--only", nargs="*")
+    parser.add_argument("--pairs", nargs="*")
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--sheet", default="calibration")

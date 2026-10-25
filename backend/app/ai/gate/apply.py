@@ -15,6 +15,7 @@ from app.publication_policy import (
 )
 
 MAX_UNKNOWNS = 12
+PUBLISHABLE = frozenset({"all_supported", "repaired_by_removal"})
 BANK_REMOVED = (
     "Позиция банка не показана: утверждения не подтверждены источниками при проверке перед публикацией"
 )
@@ -37,7 +38,25 @@ def source_map(envelope: dict, news_texts: dict[str, str]) -> dict[str, dict]:
     return sources
 
 
-def drop(result: dict, failed: set[str]) -> tuple[dict, list[dict]]:
+def refresh_bank_context(result: dict, evidence: list[dict]) -> None:
+    context = result["bank_view_context"]
+    if not result["bank_view"]:
+        return
+    catalogue = {item["id"]: item for item in evidence}
+    dates = sorted(
+        {
+            catalogue[ref]["locator"]["document_date"]
+            for claim in result["bank_view"]
+            for ref in claim["evidence_refs"]
+            if catalogue[ref]["locator"].get("document_date")
+        }
+    )
+    if dates and dates != list(context["document_dates"]):
+        status = "historical" if context["status"] == "current" else context["status"]
+        result["bank_view_context"] = {"status": status, "document_dates": dates}
+
+
+def drop(result: dict, failed: set[str], evidence: list[dict]) -> tuple[dict, list[dict]]:
     result = copy.deepcopy(result)
     changes: list[dict] = []
     unknowns = list(result["unknowns"])
@@ -52,6 +71,7 @@ def drop(result: dict, failed: set[str]) -> tuple[dict, list[dict]]:
         result["bank_view_context"] = {"status": "missing", "document_dates": []}
         unknowns.append(BANK_REMOVED)
         changes.append({"field": "bank_view", "action": "removed", "because": "bank claims not supported"})
+    refresh_bank_context(result, evidence)
     if not result["facts"]:
         unknowns.append(FACTS_REMOVED)
     for field in ("personalized_summary", "impact_reason", "relevance_reason"):
@@ -132,8 +152,8 @@ def report_of(
     entries = [entry(claim, verdicts[claim["claim_id"]], versions) for claim in claims]
     supported = sum(1 for item in entries if item["verdict"] == "supported")
     unresolved = [item["claim_id"] for item in entries if item["verdict"] != "supported"]
-    decision = "allow" if not unresolved and result["facts"] and stop_reason == "all_supported" else "block"
-    if decision == "block" and stop_reason == "all_supported":
+    decision = "allow" if not unresolved and result["facts"] and stop_reason in PUBLISHABLE else "block"
+    if decision == "block" and stop_reason in PUBLISHABLE:
         stop_reason = "no_verified_facts"
     return {
         "policy_version": PUBLICATION_POLICY_VERSION,
@@ -186,7 +206,7 @@ def enforce_publication(envelope: dict, news_texts: dict[str, str]) -> dict:
             for claim in claims
             if claim["claim_id"] in failed
         ]
-        repaired, changes = drop(envelope["result"], failed)
+        repaired, changes = drop(envelope["result"], failed, envelope["evidence"])
         try:
             candidate = rebuilt(envelope, repaired)
         except (ValidationError, ValueError):
@@ -199,8 +219,27 @@ def enforce_publication(envelope: dict, news_texts: dict[str, str]) -> dict:
         verdicts, again = verify_checked(remaining, sources, rejected)
         usage = usage + again
         envelope = candidate
-        if any(item["verdict"] != "supported" for item in verdicts.values()):
-            stop_reason = "repair_failed"
+        stop_reason = "repaired_by_removal"
+        failed_again = {claim_id for claim_id, item in verdicts.items() if item["verdict"] != "supported"}
+        if failed_again:
+            removed += [
+                {
+                    "claim_id": claim["claim_id"],
+                    "section": claim["section"],
+                    "verdict": verdicts[claim["claim_id"]]["verdict"],
+                    "reason": verdicts[claim["claim_id"]]["reason"],
+                }
+                for claim in remaining
+                if claim["claim_id"] in failed_again
+            ]
+            pruned, more = drop(candidate["result"], failed_again, candidate["evidence"])
+            changes = changes + more
+            try:
+                envelope = rebuilt(candidate, pruned)
+            except (ValidationError, ValueError):
+                report = report_of(candidate, verdicts, removed, changes, attempts, "repair_invalid", usage)
+                report["decision"] = "block"
+                return with_report(candidate, report)
     return with_report(
         envelope, report_of(envelope, verdicts, removed, changes, attempts, stop_reason, usage)
     )

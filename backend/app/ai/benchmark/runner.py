@@ -205,6 +205,7 @@ def run_all(
     limit_rub: float | None = None,
     retries: int = 0,
     extra_meta: dict | None = None,
+    pairs: set[str] | None = None,
 ) -> dict:
     contexts = [c for c in load_contexts(directory) if not only or c.context_id in only]
     events = summarized_events(run_dir, events_dir or directory)
@@ -212,7 +213,12 @@ def run_all(
     search = repository_search(FileRepository(fixtures / "bank-chunks.json"))
     meta = {"limit_rub": limit_rub, "workers": workers, "retries": retries, **(extra_meta or {})}
     write(run_dir / "run.json", metadata("offline_snapshot: docs/ai/fixtures/bank-chunks.json", meta))
-    jobs = [(context, event) for context in contexts for event in events]
+    jobs = [
+        (context, event)
+        for context in contexts
+        for event in events
+        if not pairs or pair_id(context.context_id, event["id"]) in pairs
+    ]
     spent = {"rub": 0.0}
     lock = threading.Lock()
 

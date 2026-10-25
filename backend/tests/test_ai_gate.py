@@ -69,13 +69,26 @@ def test_rejected_bank_claim_is_removed_and_the_rest_is_rechecked(monkeypatch):
     assert check(envelope) == []
 
 
-def test_rejected_fact_is_passed_as_a_rejected_premise_and_blocks_dependents(monkeypatch):
-    ids = claim_ids(FULL)
+def test_rejected_fact_is_passed_as_a_rejected_premise_and_its_dependents_are_removed(monkeypatch):
+    source = copy.deepcopy(FULL)
+    source["result"]["facts"].append({**copy.deepcopy(source["result"]["facts"][0]), "claim_id": "event-2"})
+    ids = claim_ids(source)
     verifier = Verifier({ids["fact"][0]: "contradicted", (1, ids["mechanism"][0]): "unsupported"})
-    envelope = run(monkeypatch, verifier)
+    envelope = run(monkeypatch, verifier, source)
     report = envelope["trace"]["publication"]
     assert verifier.payloads[1]["rejected_premises"]
-    assert report["decision"] == "block" and report["stop_reason"] in {"repair_failed", "no_verified_facts"}
+    assert report["decision"] == "allow" and report["stop_reason"] == "repaired_by_removal"
+    assert {ids["fact"][0], ids["mechanism"][0]} <= {item["claim_id"] for item in report["removed"]}
+    assert [item["claim_id"] for item in envelope["result"]["facts"]] == ["event-2"]
+    assert envelope["result"]["mechanism"] == [] and envelope["result"]["impact_level"] == "undetermined"
+    assert check(envelope) == []
+
+
+def test_card_without_any_verified_fact_is_blocked(monkeypatch):
+    ids = claim_ids(FULL)
+    envelope = run(monkeypatch, Verifier({fact: "unsupported" for fact in ids["fact"]}))
+    report = envelope["trace"]["publication"]
+    assert report["decision"] == "block" and report["stop_reason"] == "no_verified_facts"
     assert check(envelope)
 
 
@@ -102,14 +115,40 @@ def test_missing_verdict_is_never_supported(monkeypatch):
     assert report["decision"] == "allow" and envelope["result"]["bank_view"] is None
 
 
-def test_second_pass_failure_blocks_without_another_attempt(monkeypatch):
+def test_second_pass_failure_removes_the_claim_without_another_attempt(monkeypatch):
     ids = claim_ids(FULL)
     verifier = Verifier({ids["bank"][0]: "unsupported", (1, ids["summary"]): "unsupported"})
     envelope = run(monkeypatch, verifier)
     report = envelope["trace"]["publication"]
-    assert report["decision"] == "block" and report["stop_reason"] == "repair_failed"
+    assert report["decision"] == "allow" and report["stop_reason"] == "repaired_by_removal"
     assert len(verifier.payloads) == 2 and report["repair_attempts"] == 1
-    assert check(envelope)
+    assert (
+        envelope["result"]["personalized_summary"] is None
+        and envelope["result"]["impact_level"] == "undetermined"
+    )
+    assert {ids["bank"][0], ids["summary"]} <= {item["claim_id"] for item in report["removed"]}
+    assert check(envelope) == []
+
+
+def test_removing_part_of_the_bank_view_keeps_its_dates_consistent(monkeypatch):
+    source = copy.deepcopy(FULL)
+    extra = copy.deepcopy(source["result"]["bank_view"][0])
+    extra["claim_id"] = "bank-extra"
+    other = next(item for item in source["evidence"] if item["id"] in extra["evidence_refs"])
+    clone = {**copy.deepcopy(other), "id": "bank-evidence-extra"}
+    clone["locator"] = {**clone["locator"], "document_date": "2025-12-01"}
+    extra["evidence_refs"] = [clone["id"]]
+    source["evidence"].append(clone)
+    source["result"]["bank_view"].append(extra)
+    source["result"]["evidence_refs"].append(clone["id"])
+    source["result"]["bank_view_context"]["document_dates"] = sorted(
+        {*source["result"]["bank_view_context"]["document_dates"], "2025-12-01"}
+    )
+    envelope = run(monkeypatch, Verifier({"bank-extra": "unsupported"}), source)
+    report = envelope["trace"]["publication"]
+    assert report["decision"] == "allow"
+    assert "2025-12-01" not in envelope["result"]["bank_view_context"]["document_dates"]
+    assert envelope["result"]["bank_view"] and check(envelope) == []
 
 
 def test_verifier_failure_is_an_error_not_a_ready_card(monkeypatch):
