@@ -94,7 +94,9 @@ def test_card_without_any_verified_fact_is_blocked(monkeypatch):
 
 def test_rejected_mechanism_downgrades_the_impact_instead_of_keeping_it(monkeypatch):
     mechanism = claim_ids(FULL)["mechanism"][0]
-    envelope = run(monkeypatch, Verifier({mechanism: "unsupported"}))
+    source = copy.deepcopy(FULL)
+    source["result"]["ai_interpretation"] = []
+    envelope = run(monkeypatch, Verifier({mechanism: "unsupported"}), source)
     result, report = envelope["result"], envelope["trace"]["publication"]
     assert report["decision"] == "allow"
     assert result["impact_level"] == "undetermined" and result["mechanism"] == []
@@ -117,7 +119,7 @@ def test_missing_verdict_is_never_supported(monkeypatch):
 
 def test_second_pass_failure_removes_the_claim_without_another_attempt(monkeypatch):
     ids = claim_ids(FULL)
-    verifier = Verifier({ids["bank"][0]: "unsupported", (1, ids["summary"]): "unsupported"})
+    verifier = Verifier({ids["bank"][0]: "unsupported", (1, "summary-restored"): "unsupported"})
     envelope = run(monkeypatch, verifier)
     report = envelope["trace"]["publication"]
     assert report["decision"] == "allow" and report["stop_reason"] == "repaired_by_removal"
@@ -126,7 +128,7 @@ def test_second_pass_failure_removes_the_claim_without_another_attempt(monkeypat
         envelope["result"]["personalized_summary"] is None
         and envelope["result"]["impact_level"] == "undetermined"
     )
-    assert {ids["bank"][0], ids["summary"]} <= {item["claim_id"] for item in report["removed"]}
+    assert {ids["bank"][0], "summary-restored"} <= {item["claim_id"] for item in report["removed"]}
     assert check(envelope) == []
 
 
@@ -326,6 +328,51 @@ def test_a_rejected_hypothesis_is_not_passed_on_as_a_rejected_premise(monkeypatc
     verifier = Verifier({ids["mechanism"][0]: "unsupported"})
     run(monkeypatch, verifier)
     assert verifier.payloads[1]["rejected_premises"] == []
+
+
+def test_rejected_mechanism_can_use_a_supported_alternative_only_after_recheck(monkeypatch):
+    source = copy.deepcopy(FULL)
+    refs = [item["id"] for item in source["evidence"] if item["kind"] in {"news", "company"}]
+    alternative = {
+        **source["result"]["mechanism"][0], "claim_id": "alternative", "evidence_refs": refs,
+        "text": "Если применим подтверждённый отраслевой канал, то может потребоваться проверка планов.",
+    }
+    source["result"]["ai_interpretation"] = [alternative]
+    verifier = Verifier({claim_ids(source)["mechanism"][0]: "unsupported"})
+    envelope = run(monkeypatch, verifier, source)
+    result, report = envelope["result"], envelope["trace"]["publication"]
+    assert report["decision"] == "allow" and report["repair_attempts"] == 1
+    assert len(verifier.payloads) == 2
+    assert result["mechanism"][0]["text"] == result["personalized_summary"]["text"] == alternative["text"]
+    assert result["impact_level"] == "undetermined"
+    assert any(c["id"] == "mechanism-restored" for c in verifier.payloads[1]["claims"])
+    assert check(envelope) == []
+
+
+def test_a_rejected_fallback_cannot_trigger_another_repair_attempt(monkeypatch):
+    source = copy.deepcopy(FULL)
+    refs = [item["id"] for item in source["evidence"] if item["kind"] in {"news", "company"}]
+    source["result"]["ai_interpretation"] = [
+        {**source["result"]["mechanism"][0], "claim_id": "alternative", "evidence_refs": refs}
+    ]
+    verifier = Verifier({claim_ids(source)["mechanism"][0]: "unsupported", (1, "mechanism-restored"): "unsupported"})
+    envelope = run(monkeypatch, verifier, source)
+    assert len(verifier.payloads) == 2 and envelope["trace"]["publication"]["repair_attempts"] == 1
+    assert envelope["result"]["mechanism"] == []
+
+
+def test_a_missing_mechanism_can_use_a_verified_interpretation_without_invented_text(monkeypatch):
+    source = copy.deepcopy(FULL)
+    alternative = {**source["result"]["mechanism"][0], "claim_id": "alternative"}
+    source["result"]["mechanism"] = []
+    source["result"]["personalized_summary"] = None
+    source["result"]["ai_interpretation"] = [alternative]
+    verifier = Verifier()
+    envelope = run(monkeypatch, verifier, source)
+    assert envelope["result"]["mechanism"][0]["text"] == alternative["text"]
+    assert envelope["result"]["impact_level"] == "undetermined"
+    assert envelope["trace"]["publication"]["repair_attempts"] == 1
+    assert len(verifier.payloads) == 2 and check(envelope) == []
 
 
 @pytest.mark.parametrize(

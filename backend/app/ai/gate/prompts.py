@@ -1,4 +1,4 @@
-GATE_PROMPT_VERSION = "gate-5"
+GATE_PROMPT_VERSION = "gate-6"
 
 PART_KINDS = (
     "event_fact, company_property, bank_position, causal_link, forecast, conditional_inference, quantity"
