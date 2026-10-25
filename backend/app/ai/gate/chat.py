@@ -2,7 +2,7 @@ import copy
 
 from app.ai.gate.apply import source_map, with_report
 from app.ai.gate.prompts import GATE_PROMPT_VERSION
-from app.ai.gate.verify import verify_claims
+from app.ai.gate.verify import verify_checked
 from app.publication_policy import (
     PUBLICATION_POLICY_VERSION,
     SERVICE_ANSWER_KIND,
@@ -66,7 +66,7 @@ def enforce_chat(envelope: dict, news_texts: dict[str, str]) -> dict:
         return with_report(envelope, chat_report(envelope, {}, [], SERVICE_ANSWER_KIND, "no_evidence"))
     sources = source_map(envelope, news_texts)
     claims = chat_claims(envelope["result"])
-    verdicts, usage = verify_claims(claims, sources)
+    verdicts, usage = verify_checked(claims, sources)
     kept = [claim for claim in claims if verdicts[claim["claim_id"]]["verdict"] == "supported"]
     if len(kept) == len(claims):
         return with_report(envelope, chat_report(envelope, verdicts, usage, "allow", "all_supported"))
@@ -74,7 +74,7 @@ def enforce_chat(envelope: dict, news_texts: dict[str, str]) -> dict:
         return service_envelope(envelope, usage, "no_supported_sentences")
     envelope["result"] = {**envelope["result"], "answer": " ".join(claim["text"] for claim in kept)}
     again = chat_claims(envelope["result"])
-    verdicts, more = verify_claims(
+    verdicts, more = verify_checked(
         again, sources, [item["text"][:200] for item in claims if item not in kept]
     )
     usage = usage + more

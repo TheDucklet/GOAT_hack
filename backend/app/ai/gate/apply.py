@@ -3,7 +3,7 @@ import copy
 from pydantic import ValidationError
 
 from app.ai.gate.prompts import GATE_PROMPT_VERSION
-from app.ai.gate.verify import verify_claims
+from app.ai.gate.verify import verify_checked
 from app.ai.impact.assemble import next_actions
 from app.ai.schemas import InsightEnvelopeV2
 from app.publication_policy import (
@@ -169,7 +169,7 @@ def enforce_publication(envelope: dict, news_texts: dict[str, str]) -> dict:
     envelope = copy.deepcopy(envelope)
     sources = source_map(envelope, news_texts)
     claims = insight_claims(envelope["result"])
-    verdicts, usage = verify_claims(claims, sources)
+    verdicts, usage = verify_checked(claims, sources)
     failed = {claim_id for claim_id, item in verdicts.items() if item["verdict"] != "supported"}
     removed: list[dict] = []
     changes: list[dict] = []
@@ -196,7 +196,7 @@ def enforce_publication(envelope: dict, news_texts: dict[str, str]) -> dict:
         rejected = [item["text"][:200] for item in claims if item["claim_id"] in failed]
         remaining = insight_claims(candidate["result"])
         sources = source_map(candidate, news_texts)
-        verdicts, again = verify_claims(remaining, sources, rejected)
+        verdicts, again = verify_checked(remaining, sources, rejected)
         usage = usage + again
         envelope = candidate
         if any(item["verdict"] != "supported" for item in verdicts.values()):

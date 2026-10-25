@@ -7,16 +7,27 @@ from app.ai.lenient import Lenient
 from app.ai.providers import LLMInput, call_llm
 
 GATE_TASK = "gate_verify"
-BATCH = 12
-MAX_TOKENS = 2200
+BATCH = 6
+MAX_TOKENS = 3800
 VERDICTS = frozenset({"supported", "unsupported", "contradicted"})
+PASSING_PARTS = frozenset({"in_sources", "acceptable_condition"})
+SEVERITY = {"supported": 0, "unsupported": 1, "contradicted": 2}
 UNVERIFIED = "unverified"
+
+
+class RawPart(Lenient):
+    text: str = ""
+    kind: str = ""
+    actor_in_claim: str = ""
+    actor_in_source: str = ""
+    status: str = ""
 
 
 class RawVerdict(Lenient):
     id: str = ""
     verdict: str = ""
     reason: str = ""
+    parts: list[RawPart] = Field(default_factory=list)
 
 
 class RawVerdicts(Lenient):
@@ -31,6 +42,20 @@ def source_label(item: dict) -> dict:
         label["date"] = locator.get("document_date")
         label["page"] = locator.get("page")
     return label
+
+
+def decided(item: RawVerdict) -> dict:
+    derived = "supported"
+    failing = None
+    for part in item.parts:
+        if part.status == "contradicted":
+            derived, failing = "contradicted", failing or part
+        elif part.status not in PASSING_PARTS:
+            derived = derived if derived == "contradicted" else "unsupported"
+            failing = failing or part
+    final = max(derived, item.verdict, key=lambda value: SEVERITY[value])
+    reason = item.reason[:240] if final == item.verdict or failing is None else failing.text[:240]
+    return {"verdict": final, "reason": reason, "parts": [part.model_dump() for part in item.parts]}
 
 
 def verify_claims(
@@ -84,11 +109,25 @@ def verify_claims(
                     "verdict": UNVERIFIED,
                     "reason": "проверяющий не вернул вердикт по этому утверждению",
                 }
+            elif item.verdict in VERDICTS and item.parts:
+                verdicts[claim["claim_id"]] = decided(item)
             elif item.verdict in VERDICTS:
-                verdicts[claim["claim_id"]] = {"verdict": item.verdict, "reason": item.reason[:240]}
+                verdicts[claim["claim_id"]] = {
+                    "verdict": UNVERIFIED,
+                    "reason": "проверяющий не разобрал утверждение на части",
+                }
             else:
                 verdicts[claim["claim_id"]] = {
                     "verdict": UNVERIFIED,
                     "reason": f"неизвестный вердикт проверки: {item.verdict[:40]}",
                 }
     return verdicts, usage
+
+
+def verify_checked(
+    claims: list[dict], sources: dict[str, dict], rejected_premises: list[str] | None = None
+) -> tuple[dict[str, dict], list[dict]]:
+    from app.ai.gate.guards import apply_bank_guard
+
+    verdicts, usage = verify_claims(claims, sources, rejected_premises)
+    return apply_bank_guard(claims, sources, verdicts), usage

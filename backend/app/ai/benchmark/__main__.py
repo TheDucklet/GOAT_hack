@@ -10,6 +10,7 @@ from app.ai.benchmark.labels import sheet_rows, write_sheet
 from app.ai.benchmark.report import build_metrics, load_pairs
 from app.ai.benchmark.runner import DEFAULT_FIXTURES, read, run_all, write
 from app.ai.benchmark.targeted import run_targeted
+from app.ai.benchmark.verifier_check import check_verifier
 from app.ai.providers import LLMError
 
 RUNS = Path("../docs/quality/benchmark/runs")
@@ -71,6 +72,16 @@ def calibration(args) -> int:
     return 0
 
 
+def verifier_check(args) -> int:
+    base = Path(args.directory) / "calibration"
+    report = check_verifier(base / f"{args.sheet}-sheet.csv", Path(args.labels), Path(args.output))
+    print(
+        f"строк: {report['rows']}, согласие: {report['agreement']}, kappa: {report['kappa_binary']}, "
+        f"ложных supported: {report['false_supported']}, ложных unsupported: {report['false_unsupported']}"
+    )
+    return 0
+
+
 def metrics(args) -> int:
     run_dir = RUNS / args.run_id
     directory = Path(args.directory)
@@ -89,13 +100,18 @@ def metrics(args) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m app.ai.benchmark")
-    parser.add_argument("command", choices=["prepare", "run", "judge", "targeted", "metrics", "calibration"])
+    parser.add_argument(
+        "command", choices=["prepare", "run", "judge", "targeted", "metrics", "calibration", "verifier-check"]
+    )
     parser.add_argument("--directory", default=str(DEFAULT_DIRECTORY))
     parser.add_argument("--run-id", default="run-1")
     parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--only", nargs="*")
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--seed", type=int, default=SEED)
+    parser.add_argument("--sheet", default="calibration")
+    parser.add_argument("--labels")
+    parser.add_argument("--output", default="verifier-check.json")
     args = parser.parse_args(argv)
     handlers = {
         "prepare": prepare,
@@ -104,6 +120,7 @@ def main(argv: list[str] | None = None) -> int:
         "targeted": targeted,
         "metrics": metrics,
         "calibration": calibration,
+        "verifier-check": verifier_check,
     }
     try:
         return handlers[args.command](args)

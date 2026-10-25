@@ -18,6 +18,10 @@ FIXTURES = json.loads(
     )
 )
 FULL = next(item["envelope"] for item in FIXTURES if item["name"] == "historical_bank_position")
+for _claim in FULL["result"]["bank_view"] or []:
+    for _item in FULL["evidence"]:
+        if _item["id"] in _claim["evidence_refs"]:
+            _item["excerpt"] = _claim["text"] + " Дополнительный контекст материала банка."
 NEWS = {item["id"]: "Полный текст публикации." for item in FULL["evidence"] if item["kind"] == "news"}
 
 
@@ -33,6 +37,7 @@ def claim_ids(envelope):
 
 def run(monkeypatch, verifier, envelope=None):
     monkeypatch.setattr(gate_verify, "call_llm", verifier)
+    monkeypatch.setattr(gate_verify, "BATCH", 100)
     return enforce_publication(copy.deepcopy(envelope or FULL), NEWS)
 
 
@@ -152,6 +157,7 @@ CHAT = {
 
 def run_chat(monkeypatch, verifier, envelope=None):
     monkeypatch.setattr(gate_verify, "call_llm", verifier)
+    monkeypatch.setattr(gate_verify, "BATCH", 100)
     return enforce_chat(copy.deepcopy(envelope or CHAT), NEWS)
 
 
@@ -182,3 +188,81 @@ def test_chat_refusal_without_evidence_is_a_service_message_without_a_model_call
 def test_apply_module_does_not_trust_model_text_for_the_decision():
     assert "decision" not in gate_verify.RawVerdict.model_fields
     assert gate_apply.PUBLICATION_POLICY_VERSION
+
+
+def test_bank_claim_with_added_clauses_fails_the_coverage_guard_without_the_model():
+    from app.ai.gate.guards import apply_bank_guard, bank_coverage
+
+    fragment = "Услуги дорожают повышенными темпами. Медианный рост стоимости услуг стабилизировался на повышенном уровне."
+    exact = "Услуги дорожают повышенными темпами, медианный рост стоимости услуг стабилизировался на повышенном уровне."
+    added = "Цены на услуги растут повышенными темпами, что создаёт инфляционное давление несмотря на замедление общей инфляции за счёт товаров."
+    assert bank_coverage(exact, [fragment]) >= 0.8 > bank_coverage(added, [fragment])
+    claims = [
+        {"claim_id": "a", "section": "bank_view", "evidence_refs": ["b"], "text": added},
+        {"claim_id": "c", "section": "bank_view", "evidence_refs": ["b"], "text": exact},
+        {"claim_id": "d", "section": "facts", "evidence_refs": ["b"], "text": added},
+    ]
+    sources = {"b": {"kind": "bank", "text": fragment}}
+    verdicts = {item["claim_id"]: {"verdict": "supported", "reason": ""} for item in claims}
+    result = apply_bank_guard(claims, sources, verdicts)
+    assert result["a"]["verdict"] == "unsupported" and "банковский фрагмент" in result["a"]["reason"]
+    assert result["c"]["verdict"] == "supported" and result["d"]["verdict"] == "supported"
+    assert (
+        apply_bank_guard(
+            claims[:1],
+            {"b": {"kind": "news", "text": fragment}},
+            {"a": {"verdict": "supported", "reason": ""}},
+        )["a"]["verdict"]
+        == "unsupported"
+    )
+
+
+def test_verdict_is_decided_from_parts_and_a_missing_decomposition_is_unverified(monkeypatch):
+    from app.ai.gate.verify import verify_claims
+
+    class Parted:
+        def __call__(self, task, request, max_tokens, **options):
+            from types import SimpleNamespace
+
+            usage = SimpleNamespace(input_tokens=1, output_tokens=1, cost_rub=0.0)
+            rows = [
+                {
+                    "id": "a",
+                    "verdict": "supported",
+                    "reason": "модель сказала ок",
+                    "parts": [
+                        {"text": "часть 1", "kind": "event_fact", "status": "in_sources"},
+                        {"text": "добавленная часть", "kind": "causal_link", "status": "not_in_sources"},
+                    ],
+                },
+                {"id": "b", "verdict": "supported", "reason": "ок", "parts": []},
+                {
+                    "id": "c",
+                    "verdict": "supported",
+                    "reason": "ок",
+                    "parts": [
+                        {
+                            "text": "условный вывод",
+                            "kind": "conditional_inference",
+                            "status": "acceptable_condition",
+                        },
+                    ],
+                },
+            ]
+            return SimpleNamespace(data={"verdicts": rows}, request_id="r", model_id="m", usage=usage)
+
+    monkeypatch.setattr(gate_verify, "call_llm", Parted())
+    claims = [
+        {
+            "claim_id": key,
+            "section": "mechanism",
+            "statement_type": "hypothesis",
+            "text": "т",
+            "evidence_refs": [],
+        }
+        for key in "abc"
+    ]
+    verdicts, _ = verify_claims(claims, {})
+    assert verdicts["a"]["verdict"] == "unsupported" and "добавленная часть" in verdicts["a"]["reason"]
+    assert verdicts["b"]["verdict"] == "unverified"
+    assert verdicts["c"]["verdict"] == "supported"
