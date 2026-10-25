@@ -1,0 +1,920 @@
+{
+  "pair_id": "B01-chief_accountant__ev-syn-inflation-weekly",
+  "context_id": "B01-chief_accountant",
+  "event_id": "ev-syn-inflation-weekly",
+  "status": "ok",
+  "latency_seconds": 79.95,
+  "cost_rub": 0.752579,
+  "llm_calls": 9,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "инфляция строительство материалы",
+      "as_of": "2026-09-25",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "deff62cf-1ad0-4c13-b370-85dab169bbd4",
+        "edb56ff3-8668-4728-96f5-9931aff9da64",
+        "7184c1fa-87c9-43a3-bc4d-44f5ee2539d1"
+      ]
+    },
+    {
+      "query": "стоимость услуг строительство",
+      "as_of": "2026-09-25",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "30255ea2-3857-4aa3-823e-9033560a5231",
+        "b33df564-0b95-4ba4-9b8b-9571cbfaa6da",
+        "deff62cf-1ad0-4c13-b370-85dab169bbd4",
+        "c8bf85a9-4baf-40b9-8616-b7b218ee059c"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-inflation-weekly",
+        "kind": "news",
+        "source_id": "pub-ev-syn-inflation-weekly",
+        "version": "0127b1e31819b644",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-inflation-weekly"
+        },
+        "excerpt": "Росстат сообщил, что за неделю с 15 по 21 сентября 2026 года потребительские цены выросли на 0,04% после роста на 0,07% неделей ранее."
+      },
+      {
+        "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+        "kind": "company",
+        "source_id": "B01",
+        "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_LOA_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «кредиты»"
+      },
+      {
+        "id": "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+        "kind": "company",
+        "source_id": "B01",
+        "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_DEP_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «депозиты»"
+      },
+      {
+        "id": "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+        "kind": "company",
+        "source_id": "B01",
+        "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c",
+        "locator": {
+          "feature_path": "features.MAINOKVED_NAME"
+        },
+        "excerpt": "Основной вид деятельности: Строительство жилых и нежилых зданий"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-4",
+      "plan": [
+        "Оценка влияния замедления инфляции на стоимость строительных материалов",
+        "Анализ динамики цен на услуги в секторе строительства",
+        "Изучение влияния сезонных факторов на маржинальность проектов",
+        "Оценка рисков кассовых разрывов при оптимизации расходов",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-inflation-weekly",
+          "event_version": "0127b1e31819b644",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Оценка влияния замедления инфляции на стоимость строительных материалов",
+            "Анализ динамики цен на услуги в секторе строительства",
+            "Изучение влияния сезонных факторов на маржинальность проектов",
+            "Оценка рисков кассовых разрывов при оптимизации расходов"
+          ],
+          "initial_queries": [
+            "инфляция строительство материалы",
+            "стоимость услуг строительство"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "9d60cd9ae04349ef969bf6b1654d6dc6",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 463,
+          "output_tokens": 107,
+          "cost_rub": 0.014930152978
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфляция строительство материалы",
+          "as_of": "2026-09-25",
+          "returned": [
+            {
+              "chunk_id": "deff62cf-1ad0-4c13-b370-85dab169bbd4",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "edb56ff3-8668-4728-96f5-9931aff9da64",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "7184c1fa-87c9-43a3-bc4d-44f5ee2539d1",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "0ea65bcd-856a-5268-bb8d-2030bbd292d6",
+            "192242b8-a8fa-579d-ac71-d4e98ef6a867",
+            "eb420d78-2bb4-5577-a872-5cfbcbb87b76"
+          ],
+          "new_fragments": 3,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "стоимость услуг строительство",
+          "as_of": "2026-09-25",
+          "returned": [
+            {
+              "chunk_id": "30255ea2-3857-4aa3-823e-9033560a5231",
+              "page": 12,
+              "historical": false
+            },
+            {
+              "chunk_id": "b33df564-0b95-4ba4-9b8b-9571cbfaa6da",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "deff62cf-1ad0-4c13-b370-85dab169bbd4",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "c8bf85a9-4baf-40b9-8616-b7b218ee059c",
+              "page": 3,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "2fad5836-1a0c-548f-b0b4-2803066448d4",
+            "62282287-4622-51b1-b73a-2598fe22739b",
+            "4d7718b9-b2f9-5e5b-ab52-eeabc7a2d582",
+            "01c6b9ae-a8d3-5d0d-9592-338c9abc24d9"
+          ],
+          "new_fragments": 3,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "d44b3a8a60c3450e8b96de44fdb74c7d",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2399,
+          "output_tokens": 614,
+          "cost_rub": 0.086188653096
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "6a1c5bed54de466ba1b39f6cd73e269f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 762,
+          "output_tokens": 269,
+          "cost_rub": 0.0347340690775
+        },
+        {
+          "check": "supported",
+          "iteration": 1,
+          "reasons": [],
+          "evidence_ids": [
+            "0ea65bcd-856a-5268-bb8d-2030bbd292d6",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+            "evidence-ev-syn-inflation-weekly"
+          ]
+        },
+        {
+          "stop": "supported",
+          "iterations": 1,
+          "extra_searches": 0
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "8af3ee7c0bd443fdbbcc41e8c388181f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2412,
+          "output_tokens": 664,
+          "cost_rub": 0.087821965764
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "0ea65bcd-856a-5268-bb8d-2030bbd292d6",
+        "2fad5836-1a0c-548f-b0b4-2803066448d4",
+        "192242b8-a8fa-579d-ac71-d4e98ef6a867",
+        "eb420d78-2bb4-5577-a872-5cfbcbb87b76"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "supported",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 0,
+      "queries": [
+        "инфляция строительство материалы",
+        "стоимость услуг строительство"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "supported",
+          "reasons": [],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-2",
+              "text": "Альфа-Банк ожидает дефляцию на уровне 0,07%.",
+              "verdict": "insufficient",
+              "reason": "Фрагмент содержит текст 'Росстат покажет дефляцию на уровне 0,07%', который является подписью к графику или частью описания данных Росстата, а не прогнозом Альфа-Банка. Далее идет копирайт 'Альфа-Банк"
+            }
+          ],
+          "claims": [
+            "bank-1",
+            "interpretation-1",
+            "interpretation-2",
+            "risk-1",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0ea65bcd-856a-5268-bb8d-2030bbd292d6",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+            "evidence-ev-syn-inflation-weekly"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "0ea65bcd-856a-5268-bb8d-2030bbd292d6",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              },
+              {
+                "id": "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 11,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-2",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "low",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "industry"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": true,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [
+          {
+            "claim_id": "mechanism-2",
+            "verdict": "insufficient",
+            "reasons": [
+              "missing_premise"
+            ]
+          }
+        ],
+        "cited_features": [
+          "MAINOKVED_NAME"
+        ],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "8af3ee7c0bd443fdbbcc41e8c388181f",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2412,
+            "output_tokens": 664,
+            "cost_rub": 0.087821965764
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-4",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "06622a2a7d611965deb81ac525528dc7ff6fab9406f4a0d5056cabf32736774a",
+        "required": 9,
+        "checked": 9,
+        "supported": 9,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Числа, даты и период совпадают с источником."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Причинная связь прямо указана в источнике."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, наличие кредитов с плавающей ставкой названо неизвестным условием, а не фактом, вывод сформулирован с «может» и не добавляет новых фактов, и не противоречит признакам компании (продукт «кредиты» есть)."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              },
+              {
+                "id": "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, использование депозитов названо неизвестным условием, а не установленным фактом, вывод с «может» не добавляет новых фактов и не противоречит признакам компании (продукт «депозиты» есть)."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условие (кредиты с плавающей ставкой) названо как неизвестная предпосылка, не противоречит наличию продукта «кредиты», вывод сформулирован с «может» без добавления фактов и чисел."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              },
+              {
+                "id": "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условие о снижении цен на стройматериалы подано как неизвестная предпосылка, вид деятельности компании соответствует источникам, вывод с «может» не добавляет новых фактов."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              },
+              {
+                "id": "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условие подано как неизвестная предпосылка, не противоречит источникам, вывод с «может» не добавляет фактов, чисел или субъектов."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "unsupported",
+            "reason": "в утверждении банка только 50 % слов опираются на банковский фрагмент"
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Источник связывает замедление с сезонным снижением цен на плодоовощную продукцию (при росте цен на услуги), а не со стабилизацией цен, и не содержит вывода о пересмотре бюджетных ассигнований."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующую задолженность, поэтому рекомендация по «текущим кредитам» опирается на неподтверждённое свойство компании."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «депозиты» не доказывает действующие депозитные размещения, поэтому рекомендация опирается на неподтверждённое свойство компании."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Причинная связь «замедление инфляции → снижение давления на себестоимость строительства» подана с «может» без явного условия, а наличие у компании действующих кредитов не подтверждено (есть только банковский продукт)."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Наличие у компании действующих кредитов не подтверждено (только банковский продукт), а утверждения об отсутствии известной связи и неопределенности масштаба не следуют из источников."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Вывод предполагает действующую финансовую нагрузку по кредитам, однако наличие банковского продукта «кредиты» не доказывает действующую задолженность компании."
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "bank_view",
+            "action": "removed",
+            "because": "bank claims not supported"
+          },
+          {
+            "field": "impact_level",
+            "action": "low -> undetermined",
+            "because": "no supported basis"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "repaired_by_removal",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "ddbdfa7eadd94658b633c40ce095907f",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2577,
+            "output_tokens": 686,
+            "cost_rub": 0.08402189632265
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "07e0702e7e7f4784af13598e235d9978",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2489,
+            "output_tokens": 1734,
+            "cost_rub": 0.14285046823905
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "097f169f7020416a9dea3d0a606fca69",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2280,
+            "output_tokens": 1231,
+            "cost_rub": 0.1102747799725
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "fe4d8e03e24b40318a58aff2009788ed",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2651,
+            "output_tokens": 880,
+            "cost_rub": 0.09647171743495
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "290cf6a58e8f43f6803f38a4edb42944",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2269,
+            "output_tokens": 974,
+            "cost_rub": 0.09528547176005002
+          }
+        ],
+        "cost_rub": 0.528904
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "За неделю с 15 по 21 сентября 2026 года потребительские цены выросли на 0,04% после роста на 0,07% неделей ранее.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Цены на услуги продолжили расти.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [
+        {
+          "claim_id": "interpretation-1",
+          "text": "Если у компании есть кредиты с плавающей ставкой, то снижение недельной инфляции может привести к снижению процентных расходов по ним.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly",
+            "80de953c-0644-575b-8651-1d96ec1a69bc"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "interpretation-2",
+          "text": "Если компания использует депозиты для управления денежными потоками, то замедление инфляции может повлиять на доходность этих средств в контексте общей денежно-кредитной политики.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly",
+            "c3f6e407-4471-5c3d-9c81-fd2dc181be86"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "risks": [
+        {
+          "claim_id": "risk-1",
+          "text": "Если у компании есть кредиты с плавающей ставкой, то изменение ключевой ставки в ответ на инфляцию может изменить стоимость обслуживания долга.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly",
+            "80de953c-0644-575b-8651-1d96ec1a69bc"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Тип процентной ставки по кредитам компании (фиксированная или плавающая)",
+        "Сумма и условия действующих кредитных договоров",
+        "Структура и объемы депозитных размещений компании",
+        "Срок актуальности вывода источниками не установлен",
+        "Влияние инфляции на продукты питания на цены строительных материалов и услуг",
+        "Сумма и условия кредитов компании",
+        "Чувствительность себестоимости строительства к изменению цен на материалы",
+        "Позиция банка не показана: утверждения не подтверждены источниками при проверке перед публикацией",
+        "Сила влияния не определена: механизм или его обоснование не подтверждены источниками при проверке"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-inflation-weekly",
+        "80de953c-0644-575b-8651-1d96ec1a69bc",
+        "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+        "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4"
+      ],
+      "trace_id": "22701ee2-1291-4329-af92-aaeb50e1e085",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [
+        {
+          "claim_id": "mechanism-1",
+          "text": "Если замедление инфляции, связанное со снижением цен на плодоовощную продукцию, приведет к общему снижению цен на строительные материалы и услуги, то компания может получить снижение себестоимости строительства.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [
+        {
+          "claim_id": "assumption-1",
+          "text": "Если замедление инфляции, связанное со снижением цен на плодоовощную продукцию, приведет к общему снижению цен на строительные материалы и услуги, то компания может получить снижение себестоимости строительства.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}
