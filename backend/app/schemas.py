@@ -533,6 +533,14 @@ class FeedSnapshotItem(FeedItem):
     generation_status: Literal["ready", "not_requested", "failed", "deferred", "stale"]
     insight_id: str | None = None
     personalized_summary: StatementV2 | None = None
+    mechanism: list[StatementV2] = Field(default_factory=list)
+    impact_reason: StatementV2 | None = None
+    time_horizon: TimeHorizon | None = None
+    relevance_reason: StatementV2 | None = None
+    valid_from: date | None = None
+    valid_until: date | None = None
+    review_after: date | None = None
+    unknowns: list[str] = Field(default_factory=list)
     impact_level: Literal["low", "medium", "high", "undetermined"] = "undetermined"
     relevance_status: Literal["active", "review_required", "expired", "undetermined"] = "undetermined"
     versions: dict
@@ -542,7 +550,18 @@ class FeedSnapshotItem(FeedItem):
     def ready_is_saved(self):
         if self.generation_status == "ready" and not self.insight_id:
             raise ValueError("ready preview requires a saved insight")
-        if self.generation_status != "ready" and (self.insight_id or self.personalized_summary):
+        if self.generation_status != "ready" and (
+            self.insight_id
+            or self.personalized_summary
+            or self.mechanism
+            or self.impact_reason
+            or self.time_horizon
+            or self.relevance_reason
+            or self.valid_from
+            or self.valid_until
+            or self.review_after
+            or self.unknowns
+        ):
             raise ValueError("unready preview cannot expose a saved insight or summary")
         return self
 

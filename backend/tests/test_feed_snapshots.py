@@ -1,10 +1,11 @@
 from datetime import UTC, date, datetime, timedelta
 
 import pytest
+from sqlalchemy import event as sql_events
 from sqlalchemy import func, select
 
 from app.config import get_settings
-from app.db import session_factory
+from app.db import get_engine, session_factory
 from app.integrations.ai import AIError
 from app.models import (
     BankDocument,
@@ -108,6 +109,18 @@ def test_worker_is_bounded_and_returns_real_saved_v2_previews(client, feed_ai):
     assert len([item for item in result["items"] if item["generation_status"] == "not_requested"]) == 5
     for item in ready:
         assert item["personalized_summary"]["evidence_refs"]
+        saved = client.get(f"/insights/{item['insight_id']}").json()["result"]
+        for field in (
+            "mechanism",
+            "impact_reason",
+            "time_horizon",
+            "relevance_reason",
+            "valid_from",
+            "valid_until",
+            "review_after",
+            "unknowns",
+        ):
+            assert item[field] == saved[field]
         assert client.get(f"/insights/{item['insight_id']}").json()["stale"] is False
         assert {"prompt", "model", "focus", "corpus", "event", "profile", "semantics", "contract"} <= item[
             "versions"
@@ -133,6 +146,60 @@ def test_failed_and_budget_deferred_are_never_ready(client, feed_ai, monkeypatch
         assert db.scalar(select(func.count()).select_from(Insight)) == 0
     assert get_feed(client)["snapshot_id"] == result["snapshot_id"]
     assert not run_one()
+
+
+def test_preview_is_a_batched_read_of_saved_results_without_ai(client, feed_ai, monkeypatch):
+    events(3)
+    login(client)
+    saved = prepared(client)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Reading saved previews must not generate")
+
+    monkeypatch.setattr(fake_feed_ai, "build_insight", forbidden)
+    statements = []
+
+    def record(connection, cursor, statement, parameters, context, executemany):
+        if "from insights" in statement.lower():
+            statements.append(statement)
+
+    sql_events.listen(get_engine(), "before_cursor_execute", record)
+    try:
+        page = get_feed(client, snapshot_id=saved["snapshot_id"])
+    finally:
+        sql_events.remove(get_engine(), "before_cursor_execute", record)
+    assert len(statements) == 1
+    assert sum(item["generation_status"] == "ready" for item in page["items"]) == 2
+    assert all(item["mechanism"] for item in page["items"] if item["generation_status"] == "ready")
+
+
+@pytest.mark.parametrize("field", ["mechanism", "impact_reason", "time_horizon", "unknowns"])
+def test_unready_projection_rejects_personal_fields(client, feed_ai, field):
+    from pydantic import ValidationError
+
+    from app.schemas import FeedSnapshotItem
+
+    events(1)
+    login(client)
+    item = prepared(client)["items"][0]
+    value = item[field]
+    unready = {
+        **item,
+        "generation_status": "deferred",
+        "insight_id": None,
+        "personalized_summary": None,
+        "mechanism": [],
+        "impact_reason": None,
+        "time_horizon": None,
+        "relevance_reason": None,
+        "valid_from": None,
+        "valid_until": None,
+        "review_after": None,
+        "unknowns": [],
+    }
+    unready[field] = value
+    with pytest.raises(ValidationError, match="unready preview"):
+        FeedSnapshotItem.model_validate(unready)
 
 
 def test_v1_producer_cannot_be_published_as_ready_v2(client, feed_ai, monkeypatch):
@@ -177,8 +244,25 @@ def test_snapshot_rechecks_company_and_user_access(client, feed_ai):
     )
 
 
+def test_snapshot_cannot_project_another_events_insight(client, feed_ai):
+    events(2)
+    login(client)
+    original = prepared(client)
+    with session_factory()() as db, db.begin():
+        snapshot = db.get(FeedSnapshot, original["snapshot_id"])
+        rows = list(snapshot.items)
+        rows[0] = {**rows[0], "insight_id": rows[1]["insight_id"]}
+        snapshot.items = rows
+    assert (
+        client.get(
+            PATH, params={"contract_version": "v2", "snapshot_id": original["snapshot_id"]}
+        ).status_code
+        == 403
+    )
+
+
 @pytest.mark.parametrize(
-    "change", ["profile", "focus", "corpus", "generation", "semantics", "event", "summary"]
+    "change", ["profile", "focus", "corpus", "generation", "semantics", "event", "summary", "contract"]
 )
 def test_changed_versions_mark_saved_preview_stale(client, feed_ai, monkeypatch, change):
     event_id = events(1)
@@ -212,10 +296,18 @@ def test_changed_versions_mark_saved_preview_stale(client, feed_ai, monkeypatch,
     if change == "generation":
         monkeypatch.setenv("AI_GENERATION_VERSION", "updated")
         get_settings.cache_clear()
+    elif change == "contract":
+        from app import insight_versions as namespace
+
+        monkeypatch.setattr(namespace, "INSIGHT_CONTRACT_VERSION", "synthetic-next-contract")
     stale = get_feed(client, snapshot_id=result["snapshot_id"])
     assert stale["stale"] is True and stale["generation_status"] == "stale"
     assert stale["items"][0]["generation_status"] == "stale"
     assert stale["items"][0]["personalized_summary"] is None
+    assert stale["items"][0]["mechanism"] == []
+    assert stale["items"][0]["impact_reason"] is None
+    assert stale["items"][0]["time_horizon"] is None
+    assert stale["items"][0]["unknowns"] == []
     assert client.get(f"/insights/{insight_id}").json()["stale"] is True
     assert get_feed(client)["snapshot_id"] != result["snapshot_id"]
 

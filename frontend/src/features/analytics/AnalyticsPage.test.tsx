@@ -1,13 +1,14 @@
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { HttpClient } from '../../shared/api/http';
 import { createMockTransport } from '../../shared/api/mock/transport';
 import { demoMe, demoMembership } from '../../shared/api/mock/fixtures';
 import { normalizeError } from '../../shared/api/errors';
 import { insightNotice } from '../../shared/api/insight-contract';
-import type { Feed, FeedItem } from '../../shared/api/types';
+import type { Feed, FeedItem, FeedSnapshot } from '../../shared/api/types';
+import feedExamples from '../../../../docs/contracts/feed-snapshot-v2-examples.json';
 
 vi.mock('../../shared/api/index', () => ({ http: new HttpClient('/api', createMockTransport()) }));
 import { authApi } from '../auth/api';
@@ -33,11 +34,120 @@ function deferred<T>() {
   const promise = new Promise<T>((done) => { resolve = done; });
   return { promise, resolve };
 }
+function snapshot(overrides: Partial<FeedSnapshot> = {}): FeedSnapshot {
+  return { ...structuredClone(feedExamples.find((entry) => entry.name === 'ready')!.data) as FeedSnapshot, ...overrides };
+}
+afterEach(() => { vi.useRealTimers(); });
 beforeEach(() => {
   vi.spyOn(interactionApi, 'dismissals').mockResolvedValue([]);
   vi.spyOn(authApi, 'me').mockResolvedValue({ ...structuredClone(demoMe), memberships: companies.map((company) => ({ ...demoMembership, id: `m-${company.id}`, company_id: company.id })) });
   vi.spyOn(companiesApi, 'companies').mockResolvedValue(companies);
   vi.spyOn(analyticsApi, 'feed').mockResolvedValue(page());
+});
+
+describe('R-13 prepared insight feed', () => {
+  it('shows personalized meaning, mechanism, impact, horizon and evidence before opening any detail', async () => {
+    const saved = snapshot();
+    saved.items[0]!.summary = 'Raw source text that is not a personal conclusion';
+    vi.mocked(analyticsApi.feed).mockResolvedValue(saved);
+    const read = vi.spyOn(analyticsApi, 'insight').mockReturnValue(new Promise(() => {}));
+    const build = vi.spyOn(analyticsApi, 'buildInsight');
+    open();
+    const list = await screen.findByRole('list', { name: 'События' });
+    expect(within(list).getByText(saved.items[0]!.personalized_summary!.text)).toBeVisible();
+    expect(within(list).getByText(saved.items[0]!.mechanism![0]!.text)).toBeVisible();
+    expect(within(list).getByText(saved.items[0]!.impact_reason!.text)).toBeVisible();
+    expect(within(list).getByText(/Горизонт:/)).toHaveTextContent(saved.items[0]!.time_horizon!.label);
+    expect(within(list).getAllByRole('button', { name: 'Основание 1' }).length).toBeGreaterThan(0);
+    expect(within(list).getByText('Raw source text that is not a personal conclusion')).not.toBeVisible();
+    expect(read).not.toHaveBeenCalled(); expect(build).not.toHaveBeenCalled();
+    await userEvent.click(within(list).getByRole('button', { name: 'Учебное событие' }));
+    expect(read).toHaveBeenCalledWith('synthetic-insight', expect.any(AbortSignal));
+    expect(build).not.toHaveBeenCalled();
+  });
+
+  it('polls only the same snapshot while queued and stops on a bounded timeout', async () => {
+    vi.useFakeTimers();
+    vi.mocked(analyticsApi.feed).mockResolvedValue(snapshot({ generation_status: 'queued', items: [], total: 0 }));
+    await act(async () => { open(); });
+    expect(screen.getByText('Персональная лента в очереди…')).toBeVisible();
+    await act(async () => { await vi.advanceTimersByTimeAsync(120_000); });
+    expect(screen.getByRole('alert')).toBeVisible();
+    expect(analyticsApi.feed).toHaveBeenLastCalledWith('company-a', 20, 0, expect.any(AbortSignal), 'synthetic-snapshot');
+    const count = vi.mocked(analyticsApi.feed).mock.calls.length;
+    await act(async () => { await vi.advanceTimersByTimeAsync(120_000); });
+    expect(analyticsApi.feed).toHaveBeenCalledTimes(count);
+  });
+
+  it('transitions queued to saved previews without build POSTs', async () => {
+    vi.useFakeTimers();
+    vi.mocked(analyticsApi.feed).mockResolvedValueOnce(snapshot({ generation_status: 'queued', items: [], total: 0 })).mockResolvedValue(snapshot());
+    const build = vi.spyOn(analyticsApi, 'buildInsight');
+    await act(async () => { open(); });
+    await act(async () => { await vi.advanceTimersByTimeAsync(2000); });
+    expect(screen.getByText(snapshot().items[0]!.personalized_summary!.text)).toBeVisible();
+    expect(build).not.toHaveBeenCalled();
+    expect(analyticsApi.feed).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps pagination pinned and can cross a page whose slots have all been hidden', async () => {
+    const first = snapshot({ total: 41, next_offset: 20 });
+    const last = structuredClone(first.items[0]!); last.event_id = 'last'; last.title = 'Последний инсайт';
+    vi.mocked(analyticsApi.feed).mockResolvedValueOnce(first)
+      .mockResolvedValueOnce(snapshot({ total: 41, offset: 20, items: [], next_offset: 40 }))
+      .mockResolvedValueOnce(snapshot({ total: 41, offset: 40, items: [last] }));
+    open();
+    await userEvent.click(await screen.findByRole('button', { name: 'Загрузить ещё' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Загрузить ещё' })).toBeEnabled());
+    await userEvent.click(screen.getByRole('button', { name: 'Загрузить ещё' }));
+    expect(await screen.findByRole('button', { name: 'Последний инсайт' })).toBeVisible();
+    expect(analyticsApi.feed).toHaveBeenLastCalledWith('company-a', 20, 40, expect.any(AbortSignal), 'synthetic-snapshot');
+    expect(screen.queryByRole('button', { name: 'Загрузить ещё' })).not.toBeInTheDocument();
+  });
+
+  it.each(['failed', 'deferred', 'not_requested'] as const)('never displays raw summary or a leftover preview as a ready insight for %s', async (status) => {
+    const result = snapshot({ generation_status: status === 'not_requested' ? 'ready' : status });
+    result.items[0]!.generation_status = status;
+    vi.mocked(analyticsApi.feed).mockResolvedValue(result);
+    open();
+    await screen.findByRole('button', { name: 'Учебное событие' });
+    expect(screen.queryByText(result.items[0]!.personalized_summary!.text)).not.toBeInTheDocument();
+    expect(screen.queryByText('Анализ подготовлен')).not.toBeInTheDocument();
+    expect(screen.getByText(/Готового персонального вывода пока нет/)).toBeVisible();
+  });
+
+  it('hides all previous personal fields and clears the selected workspace when a version check reports stale', async () => {
+    vi.mocked(analyticsApi.feed).mockResolvedValueOnce(snapshot()).mockResolvedValue(snapshot({ stale: true, generation_status: 'stale', stale_reasons: ['focus'] }));
+    vi.spyOn(analyticsApi, 'insight').mockReturnValue(new Promise(() => {}));
+    open();
+    await userEvent.click(await screen.findByRole('button', { name: 'Учебное событие' }));
+    expect(screen.getByRole('region', { name: 'Анализ события' })).toHaveAttribute('data-event-id');
+    fireEvent(window, new Event('focus'));
+    await waitFor(() => expect(screen.queryByText(snapshot().items[0]!.personalized_summary!.text)).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('region', { name: 'Анализ события' })).not.toHaveAttribute('data-event-id'));
+    expect(screen.getByText(/Предыдущий персональный вывод скрыт/)).toBeVisible();
+  });
+
+  it('does not turn an undetermined impact into a definite claim', async () => {
+    const result = snapshot(); result.items[0]!.impact_level = 'undetermined';
+    result.items[0]!.unknowns = ['Неизвестны условия пересмотра ставки'];
+    vi.mocked(analyticsApi.feed).mockResolvedValue(result);
+    open();
+    expect(await screen.findByText('Влияние: Недостаточно данных')).toBeVisible();
+    expect(screen.getByText('Неизвестны условия пересмотра ставки')).toBeVisible();
+  });
+
+  it('clears previous readiness and selection when the server changes to an unsupported feed schema', async () => {
+    const unsupported = { ...snapshot(), schema_version: 'v3' } as unknown as FeedSnapshot;
+    vi.mocked(analyticsApi.feed).mockResolvedValueOnce(snapshot()).mockResolvedValue(unsupported);
+    vi.spyOn(analyticsApi, 'insight').mockReturnValue(new Promise(() => {}));
+    open();
+    await userEvent.click(await screen.findByRole('button', { name: 'Учебное событие' }));
+    fireEvent(window, new Event('focus'));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Формат ленты изменился');
+    expect(screen.queryByText(snapshot().items[0]!.personalized_summary!.text)).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole('region', { name: 'Анализ события' })).not.toHaveAttribute('data-event-id'));
+  });
 });
 
 describe('R-04 personalized feed', () => {

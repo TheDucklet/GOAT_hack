@@ -42,5 +42,5 @@ function CompanySelection({ companyId, userId = '', children, initialEvent, init
 
 // A company change resets the entire workspace, including in-flight requests.
 export function AnalyticsSelectionProvider(props: SelectionProps) {
-  return <CompanySelection key={props.companyId} {...props} />;
+  return <CompanySelection key={`${props.userId || ''}:${props.companyId}`} {...props} />;
 }
