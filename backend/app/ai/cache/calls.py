@@ -15,13 +15,13 @@ from app.ai.impact.prompts import IMPACT_PROMPT_VERSION
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION
 from app.ai.personalization.focus import FOCUS_PROMPT_VERSION, derive_user_focus
 from app.ai.providers import LLMSettings, get_llm_settings
-from app.ai.summarization.prompts import SUMMARY_PROMPT_VERSION
+from app.ai.summarization.prompts import FACT_CHECK_PROMPT_VERSION, SUMMARY_PROMPT_VERSION
 from app.ai.summarization.summarize import summarize_event
 from app.ai.validation import VALIDATION_VERSION
 from app.insight_versions import contract_versions
 from app.publication_policy import PUBLICATION_POLICY_VERSION
 
-SUMMARY_TASKS = ("summarize_event", "select_industries")
+SUMMARY_TASKS = ("summarize_event", "select_industries", "verify_event_facts")
 FOCUS_TASKS = ("derive_user_focus",)
 INSIGHT_TASKS = ("agent_plan", "agent_query", "agent_check", "build_insight", "build_impact", "gate_verify")
 
@@ -62,7 +62,7 @@ def cached_summarize_event(
         event_id=event.get("id"),
         event_version=event.get("version"),
         input_hash=digest_of(event),
-        prompt_version=SUMMARY_PROMPT_VERSION,
+        prompt_version={"summary": SUMMARY_PROMPT_VERSION, "factcheck": FACT_CHECK_PROMPT_VERSION},
         models=model_versions(SUMMARY_TASKS, settings),
     )
     return cache.fetch(key, lambda: summarize_event(event))[0]

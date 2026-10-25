@@ -1,20 +1,25 @@
 from dataclasses import dataclass
 from typing import Annotated
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, model_validator
+from pydantic import BeforeValidator, Field
 
+from app.ai.gate.verify import verify_claims
+from app.ai.lenient import Lenient, StrList, to_dict_list
 from app.ai.providers import LLMInput, call_llm
 from app.ai.rag.search import stem
 from app.ai.schemas import EventPayload, GroundedSummaryResult, SummarizeEventInput
 from app.ai.summarization.grounding import (
+    SENTENCE_END,
+    context_sentence,
     normalize_text,
     quote_in_source,
     strip_instructions,
     supported_sentences,
+    unsupported_direction,
     unsupported_numbers,
 )
 from app.ai.summarization.industries import select_industries
-from app.ai.summarization.prompts import SUMMARY_SYSTEM_PROMPT
+from app.ai.summarization.prompts import FACT_CHECK_SYSTEM_PROMPT, SUMMARY_SYSTEM_PROMPT
 from app.ai.summarization.vocabulary import (
     PRODUCT_FLAGS,
     canonical,
@@ -32,32 +37,7 @@ MAX_ENTITIES = 15
 MAX_TOKENS = 2200
 RETRY_TEMPERATURE = 0.3
 ATTEMPTS = 2
-
-
-def to_str_list(value):
-    if value is None:
-        return []
-    if isinstance(value, str):
-        return [value]
-    return [str(item) for item in value if item is not None]
-
-
-def to_dict_list(value):
-    return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
-
-
-StrList = Annotated[list[str], BeforeValidator(to_str_list)]
-
-
-class Lenient(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-
-    @model_validator(mode="before")
-    @classmethod
-    def drop_nulls(cls, data):
-        if isinstance(data, dict):
-            return {key: value for key, value in data.items() if value is not None}
-        return data
+FACT_CHECK_TASK = "verify_event_facts"
 
 
 class RawFact(Lenient):
@@ -112,7 +92,9 @@ def build_prompt(event: EventPayload, sources: list[Source]) -> str:
     return "\n\n".join(parts)
 
 
-def verified_facts(raw_facts: list[RawFact], sources: list[Source]) -> list[dict]:
+def verified_facts(
+    raw_facts: list[RawFact], sources: list[Source], rejected: list[dict] | None = None
+) -> list[dict]:
     by_label = {source.label: source for source in sources}
     facts, seen = [], set()
     for raw in raw_facts:
@@ -120,6 +102,17 @@ def verified_facts(raw_facts: list[RawFact], sources: list[Source]) -> list[dict
         candidates = [by_label[raw.source]] if raw.source in by_label else sources
         source = next((item for item in candidates if quote_in_source(raw.quote, item.text)), None)
         if not text or source is None or unsupported_numbers(text, source.text):
+            continue
+        direction = unsupported_direction(text, context_sentence(raw.quote, source.text))
+        if direction:
+            if rejected is not None:
+                rejected.append(
+                    {
+                        "text": text,
+                        "stage": "direction_guard",
+                        "reason": "направление изменения: " + ", ".join(sorted(direction)),
+                    }
+                )
             continue
         key = normalize_text(text)
         if key in seen:
@@ -163,7 +156,56 @@ def summary_text(raw: RawSummary, facts: list[dict], sources: list[Source], titl
     return facts[0]["text"] if facts else title
 
 
-def summarize_event(event: dict) -> dict:
+def checked_facts_and_summary(
+    facts: list[dict], summary: str, sources: list[Source], rejected: list[dict], usage: list[dict]
+) -> tuple[list[dict], str]:
+    by_evidence = {source.evidence_id: source for source in sources}
+    sentences = [part for part in SENTENCE_END.split(summary.strip()) if part]
+    claims = [
+        {
+            "claim_id": f"check-fact-{number}",
+            "section": "facts",
+            "statement_type": "fact",
+            "text": fact["text"],
+            "evidence_refs": fact["evidence_refs"],
+        }
+        for number, fact in enumerate(facts, start=1)
+    ] + [
+        {
+            "claim_id": f"check-summary-{number}",
+            "section": "summary",
+            "statement_type": "fact",
+            "text": sentence,
+            "evidence_refs": [source.evidence_id for source in sources],
+        }
+        for number, sentence in enumerate(sentences, start=1)
+    ]
+    if not claims:
+        return facts, summary
+    evidence = {
+        source.evidence_id: {"kind": "news", "text": source.text, "locator": {}}
+        for source in by_evidence.values()
+    }
+    verdicts, used = verify_claims(claims, evidence, task=FACT_CHECK_TASK, system=FACT_CHECK_SYSTEM_PROMPT)
+    usage.extend(used)
+    kept_facts = []
+    for number, fact in enumerate(facts, start=1):
+        verdict = verdicts[f"check-fact-{number}"]
+        if verdict["verdict"] == "supported":
+            kept_facts.append({**fact, "claim_id": f"fact-{len(kept_facts) + 1}"})
+        else:
+            rejected.append({"text": fact["text"], "stage": "fact_check", **verdict})
+    kept_sentences = []
+    for number, sentence in enumerate(sentences, start=1):
+        verdict = verdicts[f"check-summary-{number}"]
+        if verdict["verdict"] == "supported":
+            kept_sentences.append(sentence)
+        else:
+            rejected.append({"text": sentence, "stage": "summary_check", **verdict})
+    return kept_facts, " ".join(kept_sentences)
+
+
+def summarize_event(event: dict, diagnostics: dict | None = None) -> dict:
     payload = SummarizeEventInput.model_validate({"event": event}).event
     sources = sources_of(payload)
     if not sources:
@@ -171,7 +213,9 @@ def summarize_event(event: dict) -> dict:
             {"summary": payload.title, "facts": [], "entities": [], "topics": topics_of(RawTopics(), "")}
         ).model_dump(mode="json")
     prompt = build_prompt(payload, sources)
-    raw, facts = RawSummary(), []
+    raw, facts, summary = RawSummary(), [], ""
+    rejected: list[dict] = []
+    usage: list[dict] = []
     for attempt in range(ATTEMPTS):
         result = call_llm(
             "summarize_event",
@@ -181,12 +225,18 @@ def summarize_event(event: dict) -> dict:
             temperature=RETRY_TEMPERATURE if attempt else 0.0,
         )
         raw = RawSummary.model_validate(result.data)
-        facts = verified_facts(raw.facts, sources)
+        facts = verified_facts(raw.facts, sources, rejected)
+        summary = summary_text(raw, facts, sources, payload.title)
+        if facts:
+            facts, checked = checked_facts_and_summary(facts, summary, sources, rejected, usage)
+            summary = checked or (facts[0]["text"] if facts else payload.title)
         if facts:
             break
+    if diagnostics is not None:
+        diagnostics.update(rejected=rejected, usage=usage)
     return GroundedSummaryResult.model_validate(
         {
-            "summary": summary_text(raw, facts, sources, payload.title),
+            "summary": summary or payload.title,
             "facts": facts,
             "entities": verified_entities(raw.entities, sources),
             "topics": topics_of(

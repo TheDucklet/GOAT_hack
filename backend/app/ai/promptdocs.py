@@ -19,7 +19,12 @@ from app.ai.ocr.settings import OCR_PROMPT_VERSION
 from app.ai.personalization.focus import FOCUS_PROMPT_VERSION, FOCUS_SYSTEM_PROMPT
 from app.ai.providers.settings import DEFAULT_TASK_MODELS
 from app.ai.summarization.industries import SELECTION_SYSTEM_PROMPT
-from app.ai.summarization.prompts import SUMMARY_PROMPT_VERSION, SUMMARY_SYSTEM_PROMPT
+from app.ai.summarization.prompts import (
+    FACT_CHECK_PROMPT_VERSION,
+    FACT_CHECK_SYSTEM_PROMPT,
+    SUMMARY_PROMPT_VERSION,
+    SUMMARY_SYSTEM_PROMPT,
+)
 
 DEFAULT_DIRECTORY = Path(__file__).with_name("prompts")
 
@@ -149,6 +154,16 @@ PROMPTS: tuple[PromptDoc, ...] = (
         "фрагменты источников `sources`. Идентификаторов компаний и пользователей во входе нет.",
         'JSON `{"verdicts": [{"id": "...", "verdict": "supported|unsupported|contradicted", '
         '"reason": "..."}]}`. Используется только в бенчмарке качества и не влияет на карточки.',
+    ),
+    PromptDoc(
+        "verify_event_facts.md",
+        "verify_event_facts",
+        FACT_CHECK_PROMPT_VERSION,
+        FACT_CHECK_SYSTEM_PROMPT,
+        "JSON с полями `rejected_premises` и `claims`: утверждения (факты события и предложения краткого содержания) с `id`, "
+        "`section`, `statement_type`, `text` и `sources`, где источник – полный текст публикации.",
+        'JSON `{"verdicts": [{"id": "...", "verdict": "supported|unsupported|contradicted", "reason": "..."}]}`. '
+        "Утверждение без явного supported не попадает в факты события и краткое содержание.",
     ),
     PromptDoc(
         "gate_verify.md",

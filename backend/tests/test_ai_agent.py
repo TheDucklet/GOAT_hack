@@ -331,7 +331,7 @@ def test_bridge_exposes_the_agent_as_build_insight(monkeypatch):
     monkeypatch.setattr(gate_verify_module, "call_llm", patched)
     ctx = company()
     envelope = bridge.build_insight(ctx, FOCUS, event(), Tools(ctx, Search(default=[hit()])))
-    assert envelope["trace"]["agent_version"] == "agent-2"
+    assert envelope["trace"]["agent_version"] == "agent-3"
     assert envelope["result"]["schema_version"] == "v2"
     assert {
         "build_insight",

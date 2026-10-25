@@ -1,7 +1,6 @@
 import copy
 import json
 from pathlib import Path
-from types import SimpleNamespace
 
 import pytest
 
@@ -11,6 +10,7 @@ from app.ai.gate.apply import enforce_publication
 from app.ai.gate.chat import SERVICE_ANSWER, enforce_chat
 from app.ai.providers import LLMError
 from app.publication_policy import content_digest, report_problems
+from tests.support_gate import Verifier
 
 FIXTURES = json.loads(
     (Path(__file__).resolve().parents[2] / "docs/contracts/insight-v2-examples.json").read_text(
@@ -29,31 +29,6 @@ def claim_ids(envelope):
     ids["summary"] = result["personalized_summary"]["claim_id"]
     ids["reason"] = result["impact_reason"]["claim_id"]
     return ids
-
-
-class Verifier:
-    def __init__(self, verdicts=None, error=None, omit=()):
-        self.verdicts = verdicts or {}
-        self.error = error
-        self.omit = set(omit)
-        self.payloads = []
-
-    def __call__(self, task, request, max_tokens, **options):
-        if self.error:
-            raise self.error
-        payload = json.loads(request.user)
-        self.payloads.append(payload)
-        position = len(self.payloads) - 1
-        rows = []
-        for item in payload["claims"]:
-            if item["id"] in self.omit:
-                continue
-            verdict = self.verdicts.get((position, item["id"])) or self.verdicts.get(item["id"], "supported")
-            rows.append({"id": item["id"], "verdict": verdict, "reason": f"{verdict} в тесте"})
-        usage = SimpleNamespace(input_tokens=10, output_tokens=5, cost_rub=0.01)
-        return SimpleNamespace(
-            data={"verdicts": rows}, request_id=f"r{position}", model_id="verifier-model", usage=usage
-        )
 
 
 def run(monkeypatch, verifier, envelope=None):

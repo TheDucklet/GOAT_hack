@@ -3,8 +3,8 @@ import json
 from pydantic import Field
 
 from app.ai.gate.prompts import GATE_SYSTEM_PROMPT
+from app.ai.lenient import Lenient
 from app.ai.providers import LLMInput, call_llm
-from app.ai.summarization.summarize import Lenient
 
 GATE_TASK = "gate_verify"
 BATCH = 12
@@ -34,7 +34,11 @@ def source_label(item: dict) -> dict:
 
 
 def verify_claims(
-    claims: list[dict], sources: dict[str, dict], rejected_premises: list[str] | None = None
+    claims: list[dict],
+    sources: dict[str, dict],
+    rejected_premises: list[str] | None = None,
+    task: str = GATE_TASK,
+    system: str = GATE_SYSTEM_PROMPT,
 ) -> tuple[dict[str, dict], list[dict]]:
     verdicts: dict[str, dict] = {}
     usage: list[dict] = []
@@ -56,15 +60,15 @@ def verify_claims(
             ],
         }
         result = call_llm(
-            GATE_TASK,
-            LLMInput(system=GATE_SYSTEM_PROMPT, user=json.dumps(payload, ensure_ascii=False)),
+            task,
+            LLMInput(system=system, user=json.dumps(payload, ensure_ascii=False)),
             MAX_TOKENS,
             response_model=RawVerdicts,
             temperature=0.0,
         )
         usage.append(
             {
-                "llm": GATE_TASK,
+                "llm": task,
                 "request_id": result.request_id,
                 "model": result.model_id,
                 "input_tokens": result.usage.input_tokens,
