@@ -8,6 +8,7 @@ from app.ai.agent import steps as steps_module
 from app.ai.cache import ResultCache
 from app.ai.cache import calls as calls_module
 from app.ai.cache.calls import cached_build_insight
+from app.ai.gate import verify as gate_verify_module
 from app.ai.impact import build_impact_insight
 from app.ai.impact import generate as impact_module
 from app.ai.impact.assemble import bank_context, relevance_window
@@ -474,7 +475,7 @@ def test_cache_reuses_the_same_card_and_counts_one_model_call(monkeypatch):
             **k,
         ),
     )
-    for module in (build_module, steps_module):
+    for module in (build_module, steps_module, gate_verify_module):
         monkeypatch.setattr(
             module,
             "call_llm",
@@ -509,7 +510,7 @@ def test_changed_impact_prompt_or_schema_version_gives_a_new_cache_identity(monk
     ctx = context("u-client")
     seen = []
     monkeypatch.setattr(
-        calls_module, "build_impact_insight", lambda *a: seen.append(1) or {"result": {}, "trace": {}}
+        calls_module, "build_published_insight", lambda *a: seen.append(1) or {"result": {}, "trace": {}}
     )
 
     class CorpusTools(Tools):

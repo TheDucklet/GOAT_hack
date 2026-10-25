@@ -48,7 +48,7 @@ def agent(monkeypatch):
         counter["runs"] += 1
         return envelope()
 
-    monkeypatch.setattr(calls_module, "build_impact_insight", fake_run_agent)
+    monkeypatch.setattr(calls_module, "build_published_insight", fake_run_agent)
     return counter
 
 

@@ -9,7 +9,8 @@ from app.ai.cache.identity import producer_identity
 from app.ai.cache.keys import digest_of, focus_hash, make_key
 from app.ai.cache.service import ResultCache
 from app.ai.cache.store import FileStore
-from app.ai.impact import build_impact_insight
+from app.ai.gate.pipeline import build_published_insight
+from app.ai.gate.prompts import GATE_PROMPT_VERSION
 from app.ai.impact.prompts import IMPACT_PROMPT_VERSION
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION
 from app.ai.personalization.focus import FOCUS_PROMPT_VERSION, derive_user_focus
@@ -18,10 +19,11 @@ from app.ai.summarization.prompts import SUMMARY_PROMPT_VERSION
 from app.ai.summarization.summarize import summarize_event
 from app.ai.validation import VALIDATION_VERSION
 from app.insight_versions import contract_versions
+from app.publication_policy import PUBLICATION_POLICY_VERSION
 
 SUMMARY_TASKS = ("summarize_event", "select_industries")
 FOCUS_TASKS = ("derive_user_focus",)
-INSIGHT_TASKS = ("agent_plan", "agent_query", "agent_check", "build_insight", "build_impact")
+INSIGHT_TASKS = ("agent_plan", "agent_query", "agent_check", "build_insight", "build_impact", "gate_verify")
 
 
 class CacheSettings(BaseSettings):
@@ -94,7 +96,7 @@ def cached_build_insight(
     cache = cache or get_result_cache()
 
     def compute() -> dict:
-        return build_impact_insight(company_context, user_focus, event, tools)
+        return build_published_insight(company_context, user_focus, event, tools)
 
     corpus = corpus_version_of(tools)
     if corpus is None:
@@ -114,6 +116,8 @@ def cached_build_insight(
             "agent": AGENT_PROMPT_VERSION,
             "impact": IMPACT_PROMPT_VERSION,
             "validation": VALIDATION_VERSION,
+            "gate": GATE_PROMPT_VERSION,
+            "publication": PUBLICATION_POLICY_VERSION,
         },
         model_version=model_versions(INSIGHT_TASKS, settings),
     )

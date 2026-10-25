@@ -13,6 +13,7 @@ from app.services.events import event_context
 from app.services.evidence import check_refs, save_trace, store_evidence
 from app.services.focus import derive_focus
 from app.services.insights import insight_versions
+from app.services.publication import require_publication
 
 
 def user_context(db, job):
@@ -67,6 +68,7 @@ def insight_job(db, job):
         except ValueError as exc:
             raise AIError("invalid_evidence", "Некорректные основания карточки v2") from exc
     result = parsed.model_dump(mode="json")
+    require_publication(envelope, result, "insight")
     store_evidence(db, envelope, job.company_id)
     check_refs(db, result, job.company_id)
     insight = db.scalar(select(Insight).where(Insight.cache_key == key))
@@ -108,6 +110,7 @@ def chat_job(db, job):
         )
     )
     result = ChatResult.model_validate(envelope.result).model_dump(mode="json")
+    require_publication(envelope, result, "chat")
     store_evidence(db, envelope, job.company_id)
     check_refs(db, result, job.company_id)
     db.scalar(select(Chat).where(Chat.id == chat.id).with_for_update())

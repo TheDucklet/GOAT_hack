@@ -73,8 +73,8 @@ def corpus_change() -> dict:
         def corpus_version(self):
             return self.version
 
-    original = cache_calls.build_impact_insight
-    cache_calls.build_impact_insight = fake
+    original = cache_calls.build_published_insight
+    cache_calls.build_published_insight = fake
     try:
         cache = ResultCache()
         context = {"company_id": "B01", "profile_version": "p1"}
@@ -84,7 +84,7 @@ def corpus_change() -> dict:
         cache_calls.cached_build_insight(context, focus, event, Tools("corpus-1"), cache)
         cache_calls.cached_build_insight(context, focus, event, Tools("corpus-2"), cache)
     finally:
-        cache_calls.build_impact_insight = original
+        cache_calls.build_published_insight = original
     return {
         "name": "corpus_change",
         "description": "повтор с тем же корпусом берёт кеш, изменение версии корпуса вычисляет карточку заново",

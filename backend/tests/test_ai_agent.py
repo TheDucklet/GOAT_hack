@@ -6,6 +6,7 @@ from app.ai.agent import runner as runner_module
 from app.ai.agent import steps as steps_module
 from app.ai.agent.runner import run_agent
 from app.ai.agent.steps import fallback_queries, signature
+from app.ai.gate import verify as gate_verify_module
 from app.ai.insights import build as build_module
 from app.ai.insights.build import prepare_insight
 from app.ai.providers import LLMSettings, MemoryUsageSink, call_llm
@@ -32,7 +33,7 @@ class Router:
         )
         self.verify = verify
         self.insight = insight if insight is not None else [GOOD]
-        self.calls = {"plan": 0, "query": 0, "verify": 0, "insight": 0}
+        self.calls = {"plan": 0, "query": 0, "verify": 0, "insight": 0, "gate": 0}
         self.requests = []
 
     def send(self, request):
@@ -44,6 +45,8 @@ class Router:
             kind, source = "query", self.query
         elif "проверяешь, подтверждают ли" in system:
             kind, source = "verify", self.verify or [self._supported(request)]
+        elif "перед публикацией" in system:
+            kind, source = "gate", [self._gate_supported(request)]
         else:
             kind, source = "insight", self.insight
         index = min(self.calls[kind], len(source) - 1)
@@ -52,6 +55,11 @@ class Router:
         if isinstance(answer, str):
             return completion(answer)
         return json_completion(answer)
+
+    @staticmethod
+    def _gate_supported(request):
+        claims = json.loads(request.user)["claims"]
+        return {"verdicts": [{"id": item["id"], "verdict": "supported", "reason": "ok"} for item in claims]}
 
     @staticmethod
     def _supported(request):
@@ -320,6 +328,7 @@ def test_bridge_exposes_the_agent_as_build_insight(monkeypatch):
     monkeypatch.setattr(build_module, "call_llm", patched)
     monkeypatch.setattr(steps_module, "call_llm", patched)
     monkeypatch.setattr(impact_module, "call_llm", patched)
+    monkeypatch.setattr(gate_verify_module, "call_llm", patched)
     ctx = company()
     envelope = bridge.build_insight(ctx, FOCUS, event(), Tools(ctx, Search(default=[hit()])))
     assert envelope["trace"]["agent_version"] == "agent-2"

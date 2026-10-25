@@ -19,6 +19,7 @@ DEFAULT_TASK_MODELS: dict[str, str] = {
     "agent_check": "qwen/qwen3.6-35b-a3b",
     "ocr_vision": "qwen/qwen3-vl-30b-a3b-instruct",
     "benchmark_judge": "deepseek/deepseek-v4.1-flash",
+    "gate_verify": "z-ai/glm-5.3-flash",
 }
 
 

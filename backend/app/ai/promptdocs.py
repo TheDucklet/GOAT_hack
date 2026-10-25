@@ -11,6 +11,7 @@ from app.ai.agent.prompts import (
 )
 from app.ai.benchmark.judge import JUDGE_SYSTEM_PROMPT
 from app.ai.chat.prompts import ANSWER_SYSTEM_PROMPT, CHAT_PROMPT_VERSION, ROUTER_SYSTEM_PROMPT
+from app.ai.gate.prompts import GATE_PROMPT_VERSION, GATE_SYSTEM_PROMPT
 from app.ai.impact.prompts import IMPACT_PROMPT_VERSION, IMPACT_SYSTEM_PROMPT
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
 from app.ai.ocr.engine import SYSTEM_PROMPT as OCR_SYSTEM_PROMPT
@@ -148,6 +149,17 @@ PROMPTS: tuple[PromptDoc, ...] = (
         "фрагменты источников `sources`. Идентификаторов компаний и пользователей во входе нет.",
         'JSON `{"verdicts": [{"id": "...", "verdict": "supported|unsupported|contradicted", '
         '"reason": "..."}]}`. Используется только в бенчмарке качества и не влияет на карточки.',
+    ),
+    PromptDoc(
+        "gate_verify.md",
+        "gate_verify",
+        GATE_PROMPT_VERSION,
+        GATE_SYSTEM_PROMPT,
+        "JSON с полями `rejected_premises` и `claims`: у каждого утверждения `id`, `section`, `statement_type`, `text` и "
+        "`sources` с видом источника (`news`, `company`, `bank`), его текстом и для материалов банка названием, датой и "
+        "страницей. Идентификаторов компаний и пользователей во входе нет.",
+        'JSON `{"verdicts": [{"id": "...", "verdict": "supported|unsupported|contradicted", "reason": "..."}]}`. '
+        "Вердикты используются программным допуском к публикации: утверждение без явного supported из карточки убирается.",
     ),
     PromptDoc(
         "ocr_vision.md",

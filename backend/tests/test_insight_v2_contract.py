@@ -182,11 +182,13 @@ def test_v2_worker_persistence_and_readback(client, monkeypatch, complete_catalo
         )
         # Policy intentionally omitted: the application must supply it.
         del result["policy_version"], result["disclaimer"]
-        return {
+        envelope = {
             "result": result,
             "evidence": kwargs["event"]["evidence"] if complete_catalogue else [],
             "trace": {},
         }
+        envelope["trace"] = fake_ai.allowed({**envelope, "result": dict(result)})["trace"]
+        return envelope
 
     monkeypatch.setattr(fake_ai, "build_insight", v2_result)
     login(client)

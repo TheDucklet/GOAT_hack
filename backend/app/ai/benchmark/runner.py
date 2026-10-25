@@ -16,7 +16,7 @@ from app.ai.benchmark.data import (
     load_positions,
     pair_id,
 )
-from app.ai.impact import build_impact_insight
+from app.ai.gate.pipeline import build_published_insight
 from app.ai.impact.prompts import IMPACT_PROMPT_VERSION
 from app.ai.insights.local_tools import LocalTools, repository_search
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION
@@ -134,7 +134,7 @@ def run_pair(
         "event_id": event["id"],
     }
     try:
-        envelope = build_impact_insight(
+        envelope = build_published_insight(
             context.context, focus, event, LocalTools(context.context, event, logged)
         )
     except LLMError as error:
