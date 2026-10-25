@@ -25,7 +25,7 @@ Ranking-v2 оценивается раздельно на исходном и н
 
 ## Версии
 
-Контракт `impact-contract-2`, схема `v2`, политика `notice_v1`, политика публикации `publication-1`. Промпты: summary-2, factcheck-1, focus-1, insight-3, agent-3, impact-1, validation-1, gate-3, судья judge-2. Модели: генерация и агент `qwen/qwen3.6-35b-a3b`, запросы агента и фокус `google/gemma-4-26b-a4b-it`, проверка допуска и проверка фактов события `z-ai/glm-5.3-flash`, судья бенчмарка `deepseek/deepseek-v4.1-flash`. Версия кода фиксируется в `run.json` (SHA и чистота дерева).
+Контракт `impact-contract-2`, схема `v2`, политика `notice_v1`, политика публикации `publication-1`. Промпты: summary-2, factcheck-2, focus-1, insight-3, agent-3, impact-1, validation-1, gate-3, судья judge-2. Модели: генерация и агент `qwen/qwen3.6-35b-a3b`, запросы агента и фокус `google/gemma-4-26b-a4b-it`, проверка допуска и проверка фактов события `z-ai/glm-5.3-flash`, судья бенчмарка `deepseek/deepseek-v4.1-flash`. Версия кода фиксируется в `run.json` (SHA и чистота дерева).
 
 ## Порядок
 
