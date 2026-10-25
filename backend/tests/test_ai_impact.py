@@ -668,3 +668,9 @@ def test_committed_examples_are_valid_v2_envelopes_with_application_policy():
         assert envelope.result.next_actions[0].action == "ask_question"
     unknown = next(c for c in cases if c["name"] == "unconfirmed_profile_accountant")["envelope"]["result"]
     assert unknown["impact_level"] == "undetermined" and unknown["mechanism"] == []
+
+
+def test_relevance_window_with_an_end_before_the_event_is_undetermined():
+    event_day, today = date(2026, 10, 23), date(2026, 10, 25)
+    window = relevance_window("dated", None, date(2026, 9, 1), event_day, today, True)
+    assert window["relevance_status"] == "undetermined" and window["valid_until"] is None

@@ -1,0 +1,870 @@
+{
+  "pair_id": "B01-chief_accountant__ev-cbr-nfs-2026-10-07",
+  "context_id": "B01-chief_accountant",
+  "event_id": "ev-cbr-nfs-2026-10-07",
+  "status": "ok",
+  "latency_seconds": 89.98,
+  "cost_rub": 0.921195,
+  "llm_calls": 10,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "ключевая ставка влияние кредитование строительство",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "240d6c48-965a-41ba-828b-7504f2eb30af",
+        "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+        "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+        "a417f958-504c-4608-b97f-35ef9eaabccb",
+        "621f1430-4ac8-46d1-8601-3fcb93419887"
+      ]
+    },
+    {
+      "query": "рынок ипотеки Москва спрос застройщики",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "0fe99527-9661-4c90-b588-5d8a5f94bf25"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-nfs-2026-10-07",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-nfs-2026-10-07",
+        "version": "9cb721960e99a2f7",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639269710780956055TODAY.htm"
+        },
+        "excerpt": "7 октября 2026 года Национальный финансовый совет рассмотрел проекты Основных направлений единой государственной денежно-кредитной политики и Основных направлений развития финансового рынка на 2027 год и на период 2028 и 2029 годов."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-4",
+      "plan": [
+        "Определить влияние решения по ключевой ставке на стоимость кредитования для строительного сектора",
+        "Оценить изменение спроса на ипотеку и строительство в Москве при текущей монетарной политике",
+        "Проанализировать риски ликвидности и доступность банковских продуктов для компаний стадии оптимизации",
+        "Выявить тренды макропруденциального регулирования и их воздействие на оборотный капитал застройщиков",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-nfs-2026-10-07",
+          "event_version": "9cb721960e99a2f7",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Определить влияние решения по ключевой ставке на стоимость кредитования для строительного сектора",
+            "Оценить изменение спроса на ипотеку и строительство в Москве при текущей монетарной политике",
+            "Проанализировать риски ликвидности и доступность банковских продуктов для компаний стадии оптимизации",
+            "Выявить тренды макропруденциального регулирования и их воздействие на оборотный капитал застройщиков"
+          ],
+          "initial_queries": [
+            "ключевая ставка влияние кредитование строительство",
+            "рынок ипотеки Москва спрос застройщики"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "ce7500fca1c543fa9bf88ea8810665da",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 554,
+          "output_tokens": 143,
+          "cost_rub": 0.02010230976
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ключевая ставка влияние кредитование строительство",
+          "as_of": "2026-10-07",
+          "returned": [
+            {
+              "chunk_id": "240d6c48-965a-41ba-828b-7504f2eb30af",
+              "page": 10,
+              "historical": false
+            },
+            {
+              "chunk_id": "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "a417f958-504c-4608-b97f-35ef9eaabccb",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "621f1430-4ac8-46d1-8601-3fcb93419887",
+              "page": 23,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "c00101c2-f0f6-5189-9937-ff0dcc88c6a7",
+            "96964105-d9d2-5c75-bc36-de9f41646d95"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "рынок ипотеки Москва спрос застройщики",
+          "as_of": "2026-10-07",
+          "returned": [
+            {
+              "chunk_id": "0fe99527-9661-4c90-b588-5d8a5f94bf25",
+              "page": 11,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "95c22905-41f6-55a3-a069-fa8b3f250ca2"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "f0502851bc3e4424adff27d60cd0533f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2630,
+          "output_tokens": 921,
+          "cost_rub": 0.11432141680700002
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "31f0c23d312c4ef7ab40ec9e168e5f97",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 890,
+          "output_tokens": 887,
+          "cost_rub": 0.10218674128
+        },
+        {
+          "check": "supported",
+          "iteration": 1,
+          "reasons": [],
+          "evidence_ids": [
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4"
+          ]
+        },
+        {
+          "stop": "supported",
+          "iterations": 1,
+          "extra_searches": 0
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "7a3d05a04e9646849d3cfbac2817edc4",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2756,
+          "output_tokens": 649,
+          "cost_rub": 0.096805185438
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_LOA_MARK",
+          "value": "1"
+        },
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_LEA_MARK",
+          "value": "1"
+        },
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_DEP_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+        "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+        "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "c00101c2-f0f6-5189-9937-ff0dcc88c6a7"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "supported",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 0,
+      "queries": [
+        "ключевая ставка влияние кредитование строительство",
+        "рынок ипотеки Москва спрос застройщики"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "supported",
+          "reasons": [],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-2",
+              "text": "Банк ожидает дальнейшее снижение ключевой ставки на 25 базисных пунктов еще два раза до конца 2026 года и ожидает ставку на уровне 13,5% на конец 2026 года.",
+              "verdict": "insufficient",
+              "reason": "Фрагменты содержат прогноз по ключевой ставке (снижение на 25 б.п. еще два раза, ставка 13,5% на конец 2026 года), однако источник прогноза указан как 'Альфа-Банк' (см. подписи к рисункам: 'Источники:"
+            }
+          ],
+          "claims": [
+            "bank-1",
+            "interpretation-1",
+            "interpretation-2",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              },
+              {
+                "id": "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              },
+              {
+                "id": "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              },
+              {
+                "id": "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              },
+              {
+                "id": "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              },
+              {
+                "id": "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              },
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 13,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-2",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product"
+          ],
+          "direct_event_matches": [
+            "CL_PRODUCT_LEA_MARK",
+            "CL_PRODUCT_LOA_MARK"
+          ],
+          "bank_evidence": true,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_LEA_MARK",
+          "CL_PRODUCT_LOA_MARK"
+        ],
+        "synthesized": [
+          "impact_reason"
+        ],
+        "horizon_kind": "unknown",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "7a3d05a04e9646849d3cfbac2817edc4",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2756,
+            "output_tokens": 649,
+            "cost_rub": 0.096805185438
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "b3f1b2bdeaa8ef2efd1a42bc41798665e14c09d1bd425ea5f97c7b87ecdc2752",
+        "required": 4,
+        "checked": 4,
+        "supported": 4,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "version": "9cb721960e99a2f7"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "version": "9cb721960e99a2f7"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "version": "9cb721960e99a2f7"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nfs-2026-10-07",
+                "version": "9cb721960e99a2f7"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "unsupported",
+            "reason": "в утверждении банка только 78 % слов опираются на банковский фрагмент"
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Источник говорит о риске при росте ключевой ставки, а не при сохранении высокой ставки, и о процентном риске сектора, а не о расходах на обслуживание долга конкретной компании; наличие продукта «кредиты» не подтверждает плавающую ставку."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Условие о планах привлечения финансирования отсутствует в источниках, а прогноз банка говорит о снижении ключевой ставки, а не о сохранении высокой стоимости заемных средств"
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Связь между высокой стоимостью денег и замедлением реализации строительных проектов отсутствует в источниках"
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат информации о высокой доходности депозитов в текущий период"
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «лизинг» не доказывает действующие лизинговые договоры, а источник банка говорит о плавающих ставках на кредитном рынке, а не о лизинговых договорах компании."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Источник сообщает об утверждении нормативных актов «о текущей деятельности», а не о влияющих на ДКП, и связь нормативных актов со стоимостью обслуживания долга в источниках отсутствует."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат ни прогноза изменения процентных ставок из-за нормативных актов, ни связи изменения ставок со стоимостью лизинговых платежей."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источник подтверждает лишь наличие продукта «кредиты»; механизм передачи изменения ключевой ставки в финансовые расходы через плавающие ставки в источниках отсутствует."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источник подтверждает лишь наличие продукта «лизинг»; механизм влияния ключевой ставки на финансовые расходы через плавающие ставки лизинга в источниках отсутствует."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Связь между утверждением нормативных актов и изменением условий кредитования и лизинга, а также наличие у компании кредитов или лизинга с плавающей ставкой в источниках отсутствуют."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Источники (новость о заседании НФС и наличие банковских продуктов) не содержат утверждений о неопределённости силы влияния или статусе механизма как гипотезы."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Условие опирается на отклонённую предпосылку (позицию банка о процентном риске при росте ключевой ставки), наличие у компании кредитов с плавающей ставкой не подтверждено (есть лишь продукт «кредиты»), а влияние на рентабельность в источник"
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Наличие у компании долга не подтверждено (есть лишь банковский продукт «кредиты»), поэтому вывод об улучшении стоимости обслуживания долга и финансовых показателей не следует из источников."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Источники подтверждают лишь наличие банковского продукта «кредиты» и долю плавающих ставок 67% по рынку в целом, но не структуру кредитного портфеля компании (доли плавающих/фиксированных ставок и сроки погашения)."
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "bank_view",
+            "action": "removed",
+            "because": "bank claims not supported"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "repaired_by_removal",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "e2dbd94b64e54b8a86cd5a65dde34168",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2614,
+            "output_tokens": 1117,
+            "cost_rub": 0.1094801105398
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "51c4253972f1432584d2c53c66de6221",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2763,
+            "output_tokens": 1876,
+            "cost_rub": 0.15576096728335
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "b30ba99750f749ca9e4bef8cc33beb7b",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2317,
+            "output_tokens": 1652,
+            "cost_rub": 0.13515714677465
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "175f2416b5db4370b010efca7c29bcc1",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1439,
+            "output_tokens": 237,
+            "cost_rub": 0.03850691664105
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "868e08b66f72456eaeda55746dbb8b96",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2595,
+            "output_tokens": 1098,
+            "cost_rub": 0.10805776742475
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "a372d0349a824ed6b202b9667786b34e",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1466,
+            "output_tokens": 269,
+            "cost_rub": 0.0408160647752
+          }
+        ],
+        "cost_rub": 0.587779
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Национальный финансовый совет рассмотрел проекты Основных направлений единой государственной денежно-кредитной политики и Основных направлений развития финансового рынка на 2027 год и на период 2028 и 2029 годов.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nfs-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Участники заседания обсудили макропруденциальное регулирование и ситуацию на рынке потребительского кредитования.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nfs-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Совет заслушал отчет Совета директоров о деятельности Банка России во втором квартале 2026 года.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nfs-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Участники заседания утвердили нормативные акты о текущей деятельности.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nfs-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: доказательств недостаточно",
+        "Сумма задолженности, тип ставки и условия кредитов неизвестны, в данных есть только наличие кредитного продукта",
+        "Доля кредитов с плавающей ставкой в общем объеме задолженности компании",
+        "Условия рефинансирования лизинговых обязательств",
+        "Объем и сроки погашения текущей задолженности",
+        "Срок актуальности вывода источниками не установлен",
+        "Тип ставки по кредитам (плавающая или фиксированная) и привязка к ключевой ставке",
+        "Условия лизинговых договоров: остаток платежей и привязка к ставке",
+        "Сумма действующей задолженности по кредитам",
+        "Объём средств на депозитах и условия ставки по ним",
+        "Позиция банка не показана: утверждения не подтверждены источниками при проверке перед публикацией"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-nfs-2026-10-07"
+      ],
+      "trace_id": "1179d042-ffae-4cfc-a413-b0a451932a15",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Период до 2029 года",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

@@ -1,0 +1,52 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\benchmark\__main__.py", line 238, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\benchmark\__main__.py", line 231, in main
+    return handlers[args.command](args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\benchmark\__main__.py", line 35, in run
+    summary = run_all(
+              ^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\benchmark\runner.py", line 240, in run_all
+    records = list(pool.map(work, jobs))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Fedor Piskun\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Fedor Piskun\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Fedor Piskun\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Fedor Piskun\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\Fedor Piskun\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\benchmark\runner.py", line 233, in work
+    record = run_pair(context, event, role_focus[context.role], search, retries=retries)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\benchmark\runner.py", line 168, in run_pair
+    envelope = build_published_insight(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\gate\pipeline.py", line 19, in build_published_insight
+    envelope = build_impact_insight(company_context, user_focus, event, tools, now)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\impact\generate.py", line 463, in build_impact_insight
+    return finalize(run_agent_detailed(company_context, user_focus, event, tools), now)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\app\ai\impact\generate.py", line 455, in finalize
+    return InsightEnvelopeV2.model_validate(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\User Data\Универ\Хакатоны\Альфа-хак\GOAT_hack\backend\.venv\Lib\site-packages\pydantic\main.py", line 790, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for InsightEnvelopeV2
+result
+  Value error, validity interval must be ordered [type=value_error, input_value={'schema_version': 'v2', ...4699-8307-16eaa6f07142'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.14/v/value_error
+exit 1
