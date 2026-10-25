@@ -1,0 +1,47 @@
+{
+  "id": "S8",
+  "title": "Отказ LLM",
+  "criteria": "при недоступности модели и исчерпанном бюджете возвращается явная ошибка без подставленного результата",
+  "cards": [],
+  "outcomes": [
+    {
+      "case": "provider_unavailable",
+      "expected_code": "provider_unavailable",
+      "returned_card": false,
+      "code": "provider_unavailable",
+      "message": "Провайдер модели временно недоступен, повторите запрос позже",
+      "retryable": true
+    },
+    {
+      "case": "budget_exhausted",
+      "expected_code": "budget_exhausted",
+      "returned_card": false,
+      "code": "budget_exhausted",
+      "message": "Дневной лимит на обращения к модели исчерпан, дождитесь сброса в 3:00 МСК",
+      "retryable": false
+    }
+  ],
+  "extra_checks": [
+    {
+      "name": "provider_unavailable_gives_explicit_error",
+      "ok": true,
+      "detail": "код: provider_unavailable, сообщение: Провайдер модели временно недоступен, повторите запрос позже"
+    },
+    {
+      "name": "provider_unavailable_returns_no_partial_card",
+      "ok": true,
+      "detail": "результат не подставлен"
+    },
+    {
+      "name": "budget_exhausted_gives_explicit_error",
+      "ok": true,
+      "detail": "код: budget_exhausted, сообщение: Дневной лимит на обращения к модели исчерпан, дождитесь сброса в 3:00 МСК"
+    },
+    {
+      "name": "budget_exhausted_returns_no_partial_card",
+      "ok": true,
+      "detail": "результат не подставлен"
+    }
+  ],
+  "verdict": "PASS"
+}

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from app.ai.benchmark.calibration import SEED, build_sheets
 from app.ai.benchmark.data import DEFAULT_DIRECTORY, load_contexts, load_events, load_positions
+from app.ai.benchmark.demo import DEFAULT_PAIR, build_demo
 from app.ai.benchmark.judge import judge_card, judge_card_v2
 from app.ai.benchmark.labels import read_labels, sheet_rows, write_sheet
 from app.ai.benchmark.report import build_metrics, load_pairs
@@ -94,7 +95,10 @@ def calibration(args) -> int:
 def verifier_check(args) -> int:
     base = Path(args.directory) / "calibration"
     report = check_verifier(
-        base / f"{args.sheet}-sheet.csv", Path(args.labels), Path(args.output), args.variant
+        base / f"{args.sheet}-sheet.csv",
+        Path(args.labels),
+        Path(args.output or "verifier-check.json"),
+        args.variant,
     )
     print(
         f"строк: {report['rows']}, согласие: {report['agreement']}, kappa: {report['kappa_binary']}, "
@@ -168,6 +172,15 @@ def metrics_v2(args) -> int:
     return 0
 
 
+def demo(args) -> int:
+    run_dir = RUNS / args.run_id
+    value = build_demo(run_dir, args.pair, DEFAULT_FIXTURES / "bank-chunks.json", Path(args.directory))
+    output = args.output or "../docs/demo/agent-trace-v2.json"
+    write(Path(output), value)
+    print(f"трасса записана: {output}")
+    return 0
+
+
 def metrics(args) -> int:
     run_dir = RUNS / args.run_id
     directory = Path(args.directory)
@@ -194,6 +207,7 @@ def main(argv: list[str] | None = None) -> int:
             "judge",
             "targeted",
             "metrics",
+            "demo",
             "calibration",
             "verifier-check",
             "judge2",
@@ -214,7 +228,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--retries", type=int, default=0)
     parser.add_argument("--as-of")
     parser.add_argument("--variant", default="gate")
-    parser.add_argument("--output", default="verifier-check.json")
+    parser.add_argument("--output")
+    parser.add_argument("--pair", default=DEFAULT_PAIR)
     args = parser.parse_args(argv)
     handlers = {
         "prepare": prepare,
@@ -226,6 +241,7 @@ def main(argv: list[str] | None = None) -> int:
         "verifier-check": verifier_check,
         "judge2": judge_two,
         "metrics-v2": metrics_v2,
+        "demo": demo,
     }
     try:
         return handlers[args.command](args)
