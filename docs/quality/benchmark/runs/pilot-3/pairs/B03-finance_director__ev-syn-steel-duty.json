@@ -1,0 +1,839 @@
+{
+  "pair_id": "B03-finance_director__ev-syn-steel-duty",
+  "context_id": "B03-finance_director",
+  "event_id": "ev-syn-steel-duty",
+  "status": "ok",
+  "latency_seconds": 42.12,
+  "cost_rub": 0.454896,
+  "llm_calls": 8,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "экспортные пошлины металлургия влияние",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "торговля металлами Китай тарифы",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "налоговое бремя металлургического экспорта",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "изменения правил экспорта стального проката",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "5280c4f5-2c58-4e64-aa92-d24b7c2e4188",
+        "75dd933b-2b6a-497b-8d9e-d9f5b0c8d014"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-steel-duty",
+        "kind": "news",
+        "source_id": "pub-ev-syn-steel-duty",
+        "version": "b5820cb4b00ec8d9",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-steel-duty"
+        },
+        "excerpt": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов."
+      },
+      {
+        "id": "e0e22123-58fa-5717-a1b2-eca017e40467",
+        "kind": "company",
+        "source_id": "B03",
+        "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3",
+        "locator": {
+          "feature_path": "features.FTS_COUNTRY_NAME"
+        },
+        "excerpt": "Страна в записи ФТС; направление торговли неизвестно: Китай"
+      },
+      {
+        "id": "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+        "kind": "company",
+        "source_id": "B03",
+        "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3",
+        "locator": {
+          "feature_path": "features.MAINOKVED_NAME"
+        },
+        "excerpt": "Основной вид деятельности: Торговля оптовая металлами и металлическими рудами"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-4",
+      "plan": [
+        "Данные о структуре экспорта компании в Китай",
+        "Объем поставок проката из Челябинской и Свердловской областей",
+        "Влияние пошлины на маржинальность оптовой торговли металлами",
+        "Альтернативные рынки сбыта для черных металлов",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B03",
+          "profile_version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-steel-duty",
+          "event_version": "b5820cb4b00ec8d9",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Данные о структуре экспорта компании в Китай",
+            "Объем поставок проката из Челябинской и Свердловской областей",
+            "Влияние пошлины на маржинальность оптовой торговли металлами",
+            "Альтернативные рынки сбыта для черных металлов"
+          ],
+          "initial_queries": [
+            "экспортные пошлины металлургия влияние",
+            "торговля металлами Китай тарифы"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "28a1daa103ad43d3ba2e9226e71571a7",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 526,
+          "output_tokens": 114,
+          "cost_rub": 0.016249367056
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "экспортные пошлины металлургия влияние",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "торговля металлами Китай тарифы",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "5aeb0df57a13411d9a0cd46238e66764",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2125,
+          "output_tokens": 504,
+          "cost_rub": 0.069740356933
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "3a50e7ed440a431d8b9c300b2c4d37b3",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2125,
+          "output_tokens": 513,
+          "cost_rub": 0.070588423126
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "bfd4248f17be4ada8492abfb131af259",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 451,
+          "output_tokens": 49,
+          "cost_rub": 0.00311187943066
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины металлургия влияние",
+            "торговля металлами Китай тарифы"
+          ],
+          "new_query": "налоговое бремя металлургического экспорта",
+          "reason": "Использование терминологии налогового давления вместо тарифной политики позволит найти аналитику по фискальной нагрузке на отрасль."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "налоговое бремя металлургического экспорта",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "90f8da0badcf470ab5d2c05857f94a6d",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 427,
+          "output_tokens": 62,
+          "cost_rub": 0.0106008274125
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины металлургия влияние",
+            "торговля металлами Китай тарифы",
+            "налоговое бремя металлургического экспорта"
+          ],
+          "new_query": "изменения правил экспорта стального проката",
+          "reason": "Запрос заменяет общие термины на конкретную номенклатуру товара и фокусируется на регуляторных изменениях, что поможет найти профильную аналитику."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "изменения правил экспорта стального проката",
+          "as_of": "2026-09-20",
+          "returned": [
+            {
+              "chunk_id": "5280c4f5-2c58-4e64-aa92-d24b7c2e4188",
+              "page": 1,
+              "historical": true
+            },
+            {
+              "chunk_id": "75dd933b-2b6a-497b-8d9e-d9f5b0c8d014",
+              "page": 1,
+              "historical": true
+            }
+          ],
+          "evidence_ids": [],
+          "new_fragments": 2,
+          "empty_reason": null
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "fc9d9ed6d46c4d30a2435a0375766894",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2604,
+          "output_tokens": 613,
+          "cost_rub": 0.08823552890749999
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "FTS_COUNTRY_NAME",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "GROUP_ID",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "industry",
+          "feature": "MAINOKVED_NAME",
+          "value": "Торговля оптовая металлами и металлическими рудами"
+        },
+        {
+          "factor": "geo",
+          "feature": "FTS_COUNTRY_NAME",
+          "value": "Китай"
+        }
+      ],
+      "bank_fragments_offered": [],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Если компания осуществляет экспорт проката из чёрных металлов в Китай, то увеличение стоимости поставок на 7% может снизить маржинальность сделок или потребовать пересмотра цен для зарубежных покупате"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Если компания импортирует чёрные металлы или прокат для дальнейшей перепродажи, то рост внутренних цен на экспортные поставки может привести к удорожанию закупочных цен и снижению конкурентоспособност"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Если компания имеет действующие экспортные контракты с фиксированной ценой, то введение пошлины может увеличить издержки и снизить прибыль, так как компания может не иметь возможности переложить расхо"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Если компания зависит от поставок чёрных металлов для оптовой торговли, то рост цен на внутреннем рынке из-за экспортных ограничений может увеличить стоимость товарных запасов и потребовать дополнител"
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Если компания сможет переложить часть бремени пошлины на конечных потребителей или найти альтернативные рынки сбыта, то это может сохранить объемы продаж и прибыль."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Если компания специализируется на внутреннем рынке и её конкуренты-экспортеры сократят предложение внутри страны, то это может привести к росту цен на прокат и увеличению маржи для оптовых торговцев."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Уточнить структуру экспорта компании: долю поставок в Китай и Турцию, а также наличие действующих контрактов с фиксированными ценами."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить зависимость компании от импорта чёрных металлов и влияние роста внутренних цен на её закупочную политику и денежные потоки."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "экспортные пошлины металлургия влияние",
+        "торговля металлами Китай тарифы",
+        "налоговое бремя металлургического экспорта",
+        "изменения правил экспорта стального проката"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 4,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-2",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "industry",
+            "trade"
+          ],
+          "direct_event_matches": [
+            "FTS_COUNTRY_NAME",
+            "MAINOKVED_NAME"
+          ],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "FTS_COUNTRY_NAME",
+          "MAINOKVED_NAME"
+        ],
+        "synthesized": [
+          "impact_reason"
+        ],
+        "horizon_kind": "dated",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "fc9d9ed6d46c4d30a2435a0375766894",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2604,
+            "output_tokens": 613,
+            "cost_rub": 0.08823552890749999
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-4",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "b7a8b9957522c9343187c4c6d4e14c0090436aed8fe134fdae8538b6e7c68361",
+        "required": 10,
+        "checked": 10,
+        "supported": 10,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Оценка, число, единицы и период дословно совпадают с источником."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              },
+              {
+                "id": "e0e22123-58fa-5717-a1b2-eca017e40467",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный: условие (торговля с Китаем, затронутая пошлиной) названо как неизвестная предпосылка, а не факт, запись ФТС с Китаем не противоречит условию, следствие сформулировано с «может» без добавленных фактов и чисел."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              },
+              {
+                "id": "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условие совпадает с признаком компании из источника, вывод условный с «может» и не добавляет фактов, чисел или субъектов, отсутствующих в источниках."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              },
+              {
+                "id": "e0e22123-58fa-5717-a1b2-eca017e40467",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный: условие (торговля с Китаем затронутыми товарами) названо неизвестным, не выдаётся за факт и не противоречит записи ФТС, а следствие сформулировано с «может» без добавленных фактов."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              },
+              {
+                "id": "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, условие совпадает с признаком компании из источников и не противоречит им, следствие сформулировано с «может» без добавленных фактов и чисел."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              },
+              {
+                "id": "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              },
+              {
+                "id": "e0e22123-58fa-5717-a1b2-eca017e40467",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Влияние пошлины подано как явное условие (связь торговли с Китаем с затронутыми товарами), которое не установлено как факт и не противоречит источникам, а следствие сформулировано с «может»."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              },
+              {
+                "id": "e0e22123-58fa-5717-a1b2-eca017e40467",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              },
+              {
+                "id": "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+                "version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Заявление корректно фиксирует, что источники не дают количественной оценки силы влияния, и помечает механизм как гипотезу."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "34041b1064274d7aba83a07dbe62b800",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2481,
+            "output_tokens": 983,
+            "cost_rub": 0.09946612399295
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "8f1ee07d7dfd4a649a86f7e1b7ecdbe8",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2306,
+            "output_tokens": 991,
+            "cost_rub": 0.0969036029962
+          }
+        ],
+        "cost_rub": 0.19637
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Производители просят рассмотреть переходный период для действующих контрактов.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: доказательств недостаточно",
+        "Нет подтверждающих материалов банка на дату события",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Доля экспорта компании в Китай и Турцию от общего объема продаж.",
+        "Наличие у компании действующих контрактов с фиксированными ценами, на которые распространяется пошлина.",
+        "Способность компании переложить расходы на пошлину на покупателей или найти альтернативные рынки.",
+        "Зависимость компании от импорта чёрных металлов для дальнейшей перепродажи.",
+        "Срок актуальности вывода источниками не установлен",
+        "доля закупок и продаж затронутых товаров в обороте компании",
+        "условия действующих контрактов: фиксация цен и переходные периоды",
+        "годовая выручка компании",
+        "суммы и условия, необходимые для расчёта эффекта в рублях"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-steel-duty",
+        "e0e22123-58fa-5717-a1b2-eca017e40467",
+        "01732a78-e407-59c0-8cbe-ae6f75a6a62b"
+      ],
+      "trace_id": "0add3735-10a7-4a7c-9d0e-ea23819a356b",
+      "schema_version": "v2",
+      "personalized_summary": {
+        "claim_id": "summary",
+        "text": "Введение экспортной пошлины на прокат из чёрных металлов может повлиять на компанию, если её торговля с Китаем связана с затронутыми товарами, что может изменить стоимость заемного капитала или налоговую нагрузку.",
+        "evidence_refs": [
+          "evidence-ev-syn-steel-duty",
+          "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+          "e0e22123-58fa-5717-a1b2-eca017e40467"
+        ],
+        "statement_type": "hypothesis",
+        "quantitative_scenario": null
+      },
+      "mechanism": [
+        {
+          "claim_id": "mechanism-1",
+          "text": "Если у компании есть торговля с Китаем, затронутая введением экспортной пошлины на прокат из чёрных металлов, то может измениться стоимость заемного капитала или налоговая нагрузка.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty",
+            "e0e22123-58fa-5717-a1b2-eca017e40467"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "mechanism-2",
+          "text": "Если у компании основной вид деятельности — торговля оптовая металлами и металлическими рудами, то может измениться стоимость заемного капитала или налоговая нагрузка.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty",
+            "01732a78-e407-59c0-8cbe-ae6f75a6a62b"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "impact_level": "undetermined",
+      "impact_reason": {
+        "claim_id": "impact",
+        "text": "Сила влияния не определена по рубрике: доказательств недостаточно. Механизм ниже – гипотеза, а не оценка силы.",
+        "evidence_refs": [
+          "evidence-ev-syn-steel-duty",
+          "e0e22123-58fa-5717-a1b2-eca017e40467",
+          "01732a78-e407-59c0-8cbe-ae6f75a6a62b"
+        ],
+        "statement_type": "hypothesis",
+        "quantitative_scenario": null
+      },
+      "time_horizon": {
+        "label": "С 1 октября 2026 года",
+        "starts_on": "2026-10-01",
+        "ends_on": null
+      },
+      "assumptions": [
+        {
+          "claim_id": "assumption-1",
+          "text": "Если у компании есть торговля с Китаем, затронутая введением экспортной пошлины на прокат из чёрных металлов, то может измениться стоимость заемного капитала или налоговая нагрузка.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty",
+            "e0e22123-58fa-5717-a1b2-eca017e40467"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "assumption-2",
+          "text": "Если у компании основной вид деятельности — торговля оптовая металлами и металлическими рудами, то может измениться стоимость заемного капитала или налоговая нагрузка.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty",
+            "01732a78-e407-59c0-8cbe-ae6f75a6a62b"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}
