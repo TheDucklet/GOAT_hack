@@ -1,0 +1,109 @@
+{
+  "ev-cbr-key-rate-2026-10-23": {
+    "rejected": [
+      {
+        "text": "В то же время базовый сценарий предполагает снижение ставки и инфляции в 2027 году.",
+        "stage": "summary_check",
+        "verdict": "unsupported",
+        "reason": "Текст называет среднюю ключевую ставку 2027 года (12,5-13,5%), но не формулирует направление изменения ставки как снижение.",
+        "parts": [
+          {
+            "text": "базовый сценарий предполагает снижение ставки в 2027 году",
+            "kind": "forecast",
+            "actor_in_claim": "базовый сценарий (Банк России)",
+            "actor_in_source": "базовый сценарий",
+            "status": "not_in_sources"
+          },
+          {
+            "text": "базовый сценарий предполагает снижение инфляции в 2027 году (возврат к 4,0%)",
+            "kind": "forecast",
+            "actor_in_claim": "базовый сценарий (Банк России)",
+            "actor_in_source": "базовый сценарий («годовая инфляция вернется к 4,0% в 2027 году»)",
+            "status": "in_sources"
+          }
+        ]
+      }
+    ],
+    "usage": [
+      {
+        "llm": "verify_event_facts",
+        "request_id": "511bdc16f307434a9a39034355c89bbd",
+        "model": "z-ai/glm-5.3-flash",
+        "input_tokens": 2581,
+        "output_tokens": 788,
+        "cost_rub": 0.08996464164545001
+      },
+      {
+        "llm": "verify_event_facts",
+        "request_id": "ce09e1241a754858b83e37004bab79a0",
+        "model": "z-ai/glm-5.3-flash",
+        "input_tokens": 1214,
+        "output_tokens": 523,
+        "cost_rub": 0.05108918265880001
+      }
+    ]
+  },
+  "ev-syn-housing": {
+    "rejected": [
+      {
+        "text": "Различные источники приводят разные данные о снижении объемов ввода, связывая это с высокой стоимостью заимствований для застройщиков.",
+        "stage": "summary_check",
+        "verdict": "unsupported",
+        "reason": "Причину снижения с высокой стоимостью заимствований связывает только Минстрой; текст не говорит, что отраслевое издание также связывает снижение с этой причиной.",
+        "parts": [
+          {
+            "text": "Различные источники приводят разные данные о снижении объемов ввода",
+            "kind": "event_fact",
+            "actor_in_claim": "Различные источники",
+            "actor_in_source": "Минстрой и отраслевое издание",
+            "status": "in_sources"
+          },
+          {
+            "text": "различные источники связывают снижение с высокой стоимостью заимствований для застройщиков",
+            "kind": "causal_link",
+            "actor_in_claim": "Различные источники",
+            "actor_in_source": "Только ведомство (Минстрой)",
+            "status": "not_in_sources"
+          }
+        ]
+      }
+    ],
+    "usage": [
+      {
+        "llm": "verify_event_facts",
+        "request_id": "ea6f880ae33e442cafa3c013deb3fdae",
+        "model": "z-ai/glm-5.3-flash",
+        "input_tokens": 1809,
+        "output_tokens": 913,
+        "cost_rub": 0.08382610820155
+      },
+      {
+        "llm": "verify_event_facts",
+        "request_id": "f6288af9914448dd8546bf1fe4922275",
+        "model": "z-ai/glm-5.3-flash",
+        "input_tokens": 757,
+        "output_tokens": 163,
+        "cost_rub": 0.02246380765915
+      }
+    ]
+  },
+  "ev-syn-it-benefits": {
+    "rejected": [
+      {
+        "text": "Условием сохранения пониженной ставки остаётся доля доходов от профильной деятельности не менее 70%.",
+        "stage": "direction_guard",
+        "reason": "направление изменения: down"
+      }
+    ],
+    "usage": [
+      {
+        "llm": "verify_event_facts",
+        "request_id": "ea1db68a0e154b02b4ddfc341b80518b",
+        "model": "z-ai/glm-5.3-flash",
+        "input_tokens": 1407,
+        "output_tokens": 566,
+        "cost_rub": 0.05689948307615
+      }
+    ]
+  }
+}
