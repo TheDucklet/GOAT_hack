@@ -1,5 +1,6 @@
 import json
 import subprocess
+import threading
 import time
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
@@ -16,17 +17,20 @@ from app.ai.benchmark.data import (
     load_positions,
     pair_id,
 )
-from app.ai.impact import build_impact_insight
+from app.ai.benchmark.judge import JUDGE2_PROMPT_VERSION
+from app.ai.gate.pipeline import build_published_insight
+from app.ai.gate.prompts import GATE_PROMPT_VERSION
 from app.ai.impact.prompts import IMPACT_PROMPT_VERSION
 from app.ai.insights.local_tools import LocalTools, repository_search
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION
 from app.ai.personalization.focus import FOCUS_PROMPT_VERSION, derive_user_focus
 from app.ai.providers import LLMError, get_llm_settings
 from app.ai.rag.file_repository import FileRepository
-from app.ai.summarization.prompts import SUMMARY_PROMPT_VERSION
+from app.ai.summarization.prompts import FACT_CHECK_PROMPT_VERSION, SUMMARY_PROMPT_VERSION
 from app.ai.summarization.summarize import summarize_event
 from app.ai.validation import VALIDATION_VERSION
 from app.insight_versions import contract_versions
+from app.publication_policy import PUBLICATION_POLICY_VERSION
 
 DEFAULT_FIXTURES = Path("../docs/ai/fixtures")
 AS_OF_NOW = datetime.fromisoformat("2026-10-23T18:00:00+03:00")
@@ -51,9 +55,10 @@ def source_sha() -> dict:
     }
 
 
-def metadata(search_backend: str) -> dict:
+def metadata(search_backend: str, extra: dict | None = None) -> dict:
     settings = get_llm_settings()
     return {
+        **(extra or {}),
         "started_at": datetime.now(UTC).isoformat(),
         "source": source_sha(),
         "as_of_now": AS_OF_NOW.isoformat(),
@@ -66,6 +71,10 @@ def metadata(search_backend: str) -> dict:
             "agent": AGENT_PROMPT_VERSION,
             "impact": IMPACT_PROMPT_VERSION,
             "validation": VALIDATION_VERSION,
+            "gate": GATE_PROMPT_VERSION,
+            "fact_check": FACT_CHECK_PROMPT_VERSION,
+            "judge": JUDGE2_PROMPT_VERSION,
+            "publication_policy": PUBLICATION_POLICY_VERSION,
         },
         "models": dict(sorted(settings.llm_task_models.items())),
     }
@@ -75,14 +84,17 @@ def summarized_events(run_dir: Path, directory: Path) -> list[dict]:
     path = run_dir / "events.json"
     if path.exists():
         return read(path)
-    result = []
+    result, diagnostics = [], {}
     for item in load_events(directory):
         raw = event_payload(item)
-        summary = summarize_event(raw)
+        notes: dict = {}
+        summary = summarize_event(raw, notes)
+        diagnostics[item["id"]] = notes
         result.append(
             {**raw, "summary": summary["summary"], "facts": summary["facts"], "topics": summary["topics"]}
         )
     write(path, result)
+    write(run_dir / "summary-diagnostics.json", diagnostics)
     return result
 
 
@@ -99,8 +111,25 @@ def focuses(run_dir: Path, directory: Path, contexts: list[BenchmarkContext]) ->
     return result
 
 
+FATAL_CODES = {"budget_exhausted", "ai_unavailable", "model_not_allowed"}
+
+
+def pair_cost(envelope: dict) -> tuple[float, int]:
+    steps = [step for step in envelope["trace"]["steps"] if "llm" in step]
+    report = envelope["trace"].get("publication") or {}
+    return (
+        round(sum(step.get("cost_rub", 0) for step in steps) + report.get("cost_rub", 0), 6),
+        len(steps) + len(report.get("usage", [])),
+    )
+
+
 def run_pair(
-    context: BenchmarkContext, event: dict, focus: dict, search: Callable, suppressed: int = 0
+    context: BenchmarkContext,
+    event: dict,
+    focus: dict,
+    search: Callable,
+    suppressed: int = 0,
+    retries: int = 0,
 ) -> dict:
     calls: list[dict] = []
 
@@ -133,29 +162,36 @@ def run_pair(
         "context_id": context.context_id,
         "event_id": event["id"],
     }
-    try:
-        envelope = build_impact_insight(
-            context.context, focus, event, LocalTools(context.context, event, logged)
-        )
-    except LLMError as error:
-        if error.code in {"budget_exhausted", "ai_unavailable", "model_not_allowed"}:
-            raise
+    failures: list[dict] = []
+    for attempt in range(retries + 1):
+        try:
+            envelope = build_published_insight(
+                context.context, focus, event, LocalTools(context.context, event, logged)
+            )
+        except LLMError as error:
+            if error.code in FATAL_CODES:
+                raise
+            failures.append({"attempt": attempt + 1, "error": error.code})
+            continue
+        cost, calls_made = pair_cost(envelope)
+        allowed = envelope["trace"].get("publication", {}).get("decision") == "allow"
         return {
             **record,
-            "status": "error",
-            "error": error.code,
+            "status": "ok" if allowed else "blocked",
             "latency_seconds": round(time.monotonic() - started, 2),
+            "cost_rub": cost,
+            "llm_calls": calls_made,
+            "failed_attempts": failures,
             "searches": calls,
+            "envelope": envelope,
         }
-    steps = [step for step in envelope["trace"]["steps"] if "llm" in step]
     return {
         **record,
-        "status": "ok",
+        "status": "error",
+        "error": failures[-1]["error"],
+        "failed_attempts": failures,
         "latency_seconds": round(time.monotonic() - started, 2),
-        "cost_rub": round(sum(step.get("cost_rub", 0) for step in steps), 6),
-        "llm_calls": len(steps),
         "searches": calls,
-        "envelope": envelope,
     }
 
 
@@ -165,23 +201,48 @@ def run_all(
     fixtures: Path = DEFAULT_FIXTURES,
     workers: int = 3,
     only: set[str] | None = None,
+    events_dir: Path | None = None,
+    limit_rub: float | None = None,
+    retries: int = 0,
+    extra_meta: dict | None = None,
+    pairs: set[str] | None = None,
 ) -> dict:
     contexts = [c for c in load_contexts(directory) if not only or c.context_id in only]
-    events = summarized_events(run_dir, directory)
+    events = summarized_events(run_dir, events_dir or directory)
     role_focus = focuses(run_dir, directory, contexts)
     search = repository_search(FileRepository(fixtures / "bank-chunks.json"))
-    write(run_dir / "run.json", metadata("offline_snapshot: docs/ai/fixtures/bank-chunks.json"))
-    jobs = [(context, event) for context in contexts for event in events]
+    meta = {"limit_rub": limit_rub, "workers": workers, "retries": retries, **(extra_meta or {})}
+    write(run_dir / "run.json", metadata("offline_snapshot: docs/ai/fixtures/bank-chunks.json", meta))
+    jobs = [
+        (context, event)
+        for context in contexts
+        for event in events
+        if not pairs or pair_id(context.context_id, event["id"]) in pairs
+    ]
+    spent = {"rub": 0.0}
+    lock = threading.Lock()
 
     def work(job):
         context, event = job
         path = run_dir / "pairs" / f"{pair_id(context.context_id, event['id'])}.json"
         if path.exists():
             return read(path)
-        record = run_pair(context, event, role_focus[context.role], search)
+        with lock:
+            if limit_rub is not None and spent["rub"] >= limit_rub:
+                return {"status": "not_started_budget", "pair_id": pair_id(context.context_id, event["id"])}
+        record = run_pair(context, event, role_focus[context.role], search, retries=retries)
+        with lock:
+            spent["rub"] += record.get("cost_rub", 0.0)
         write(path, record)
         return record
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
         records = list(pool.map(work, jobs))
-    return {"pairs": len(records), "errors": sum(1 for item in records if item["status"] != "ok")}
+    return {
+        "pairs": len(records),
+        "ok": sum(1 for item in records if item["status"] == "ok"),
+        "blocked": sum(1 for item in records if item["status"] == "blocked"),
+        "errors": sum(1 for item in records if item["status"] == "error"),
+        "not_started": sum(1 for item in records if item["status"] == "not_started_budget"),
+        "spent_rub": round(spent["rub"], 4),
+    }

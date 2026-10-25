@@ -1,3 +1,4 @@
+import csv
 import json
 from datetime import datetime
 from types import SimpleNamespace
@@ -361,6 +362,139 @@ def test_essential_claims_give_judge_full_publication_for_news_evidence():
         item["section"]: item["sources"] for item in essential_claims(bank, {"doc": "не должно подставиться"})
     }
     assert sources["bank_view"] == ["фрагмент банка"]
+
+
+def test_calibration_sheets_are_blind_disjoint_and_reproducible(tmp_path):
+    from pathlib import Path
+
+    from app.ai.benchmark.calibration import SEED, build_sheets
+
+    root = Path(__file__).resolve().parents[2]
+    run = root / "docs" / "quality" / "benchmark" / "runs" / "run-1"
+    selection = build_sheets(run, tmp_path, SEED)
+    assert selection["critical_occurrences"] == 18 and selection["critical_unique"] == 6
+    assert selection["calibration_rows"] >= 6 + 30 and selection["control_rows"] >= 30
+    calibration = list(
+        csv.DictReader((tmp_path / "calibration-sheet.csv").open(encoding="utf-8-sig", newline=""))
+    )
+    control = list(csv.DictReader((tmp_path / "control-sheet.csv").open(encoding="utf-8-sig", newline="")))
+    assert {"verdict", "premises_supported"} <= set(calibration[0])
+    assert "judge" not in " ".join(calibration[0]) and all(
+        not row["verdict"] for row in calibration + control
+    )
+    assert {row["claim"] for row in calibration}.isdisjoint({row["claim"] for row in control})
+    assert {row["section"] for row in calibration} >= {"facts", "bank_view", "mechanism", "scenario"}
+    saved = json.loads(
+        (root / "docs" / "quality" / "benchmark" / "calibration" / "selection.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert saved == selection
+
+
+def test_new_event_set_is_fixed_deterministic_and_disjoint_from_the_first_run():
+    import hashlib
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2] / "docs" / "quality" / "benchmark"
+    new = json.loads((root / "events-v2" / "events.json").read_text(encoding="utf-8"))
+    old = json.loads((root / "events.json").read_text(encoding="utf-8"))["events"]
+    events = new["events"]
+    assert len(events) == 6 and sum(item["source"] == "real_public_cbr" for item in events) >= 3
+    assert all(item["published_at"] <= new["as_of"] for item in events)
+    assert all(hashlib.sha256(item["text"].encode("utf-8")).hexdigest() == item["sha256"] for item in events)
+    assert all(
+        item["url"] and item["text_kind"] == "full_text" for item in events if item["source"] != "synthetic"
+    )
+    assert all(not item["used_in_tuning"] for item in events)
+    assert not {item["url"] for item in events if item["url"]} & {
+        item["url"] for item in old if item.get("url")
+    }
+    assert {"macro", "regulatory"} <= {item["category"] for item in events}
+    assert not any("Фото на превью" in item["text"] or "\xa0" in item["text"] for item in events)
+    sheet = list(
+        csv.DictReader(
+            (root / "events-v2" / "labeling" / "sheet-v2.csv").open(encoding="utf-8-sig", newline="")
+        )
+    )
+    assert len(sheet) == 42 and all(not row["label"] for row in sheet)
+
+
+def test_pair_run_retries_only_transient_errors_and_never_regenerates_a_blocked_card(monkeypatch):
+    from app.ai.benchmark import runner
+    from app.ai.benchmark.data import BenchmarkContext
+    from app.ai.providers import LLMError
+
+    calls = {"count": 0}
+    envelope = {
+        "trace": {
+            "steps": [{"llm": "x", "cost_rub": 0.1}],
+            "publication": {"decision": "block", "usage": [], "cost_rub": 0.02},
+        },
+        "result": {},
+    }
+
+    def flaky(*args, **kwargs):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            raise LLMError("provider_unavailable", "r")
+        return envelope
+
+    monkeypatch.setattr(runner, "build_published_insight", flaky)
+    context = BenchmarkContext("B-r", "B", "r", "g", {})
+    record = runner.run_pair(context, {"id": "e"}, {}, lambda *a: {"items": []}, retries=1)
+    assert (
+        record["status"] == "blocked"
+        and calls["count"] == 2
+        and record["failed_attempts"][0]["error"] == "provider_unavailable"
+    )
+    assert record["cost_rub"] == pytest.approx(0.12)
+    calls["count"] = 0
+    monkeypatch.setattr(
+        runner, "build_published_insight", lambda *a, **k: (_ for _ in ()).throw(LLMError("timeout", "r"))
+    )
+    lost = runner.run_pair(context, {"id": "e"}, {}, lambda *a: {"items": []}, retries=1)
+    assert lost["status"] == "error" and len(lost["failed_attempts"]) == 2
+    monkeypatch.setattr(
+        runner,
+        "build_published_insight",
+        lambda *a, **k: (_ for _ in ()).throw(LLMError("budget_exhausted", "r")),
+    )
+    with pytest.raises(LLMError):
+        runner.run_pair(context, {"id": "e"}, {}, lambda *a: {"items": []}, retries=1)
+
+
+def test_every_verifier_prompt_requires_a_decomposition_into_parts():
+    from app.ai.gate.prompts import GATE_SYSTEM_PROMPT
+    from app.ai.summarization.prompts import FACT_CHECK_SYSTEM_PROMPT
+
+    for prompt in (GATE_SYSTEM_PROMPT, FACT_CHECK_SYSTEM_PROMPT):
+        assert '"parts"' in prompt and "not_in_sources" in prompt and "in_sources" in prompt
+
+
+def test_event_with_no_verified_facts_is_not_backfilled_with_the_first_sentence():
+    from app.ai.insights.build import event_facts
+    from app.ai.schemas import EventPayload
+
+    base = {
+        "id": "e",
+        "title": "t",
+        "published_at": "2026-10-01T10:00:00+03:00",
+        "version": "v",
+        "publications": [{"id": "p", "url": "https://x.example/1", "text": "Первое предложение. Второе."}],
+        "evidence": [
+            {
+                "id": "ev",
+                "kind": "news",
+                "source_id": "p",
+                "version": "v",
+                "locator": {},
+                "excerpt": "Первое предложение.",
+            }
+        ],
+    }
+    assert event_facts(EventPayload.model_validate({**base, "facts": []})) == []
+    assert len(event_facts(EventPayload.model_validate({**base, "facts": None}))) == 1
 
 
 def test_demo_trace_v2_shows_rejected_claim_extra_search_and_dated_page(tmp_path):

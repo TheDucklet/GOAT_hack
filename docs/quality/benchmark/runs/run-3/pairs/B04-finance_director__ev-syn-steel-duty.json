@@ -1,0 +1,1040 @@
+{
+  "pair_id": "B04-finance_director__ev-syn-steel-duty",
+  "context_id": "B04-finance_director",
+  "event_id": "ev-syn-steel-duty",
+  "status": "ok",
+  "latency_seconds": 110.98,
+  "cost_rub": 1.15332,
+  "llm_calls": 13,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "инфляция продовольствия цены",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "4ac3c008-c87d-4095-a0f4-4b583cd87d1b",
+        "f7e82258-6c46-4bc7-ac12-ba34c21d71fd",
+        "4bebfea7-9ac3-4e78-a5ad-04b3ad7bb140",
+        "4f9c9a79-c224-4bb7-bae1-66f01a085214",
+        "0503fa1e-6e98-4c79-a462-04b806491001"
+      ]
+    },
+    {
+      "query": "себестоимость ритейл логистика",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "влияние экспортных пошлин на металлургию",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "анализ влияния металлургических пошлин на экономику",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "16541d2f-7953-4702-a8f7-a671b869cca5"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-steel-duty",
+        "kind": "news",
+        "source_id": "pub-ev-syn-steel-duty",
+        "version": "b5820cb4b00ec8d9",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-steel-duty"
+        },
+        "excerpt": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Определить прямые поставки чёрных металлов в ассортимент компании",
+        "Оценить влияние роста цен на металлопрокат на себестоимость",
+        "Проверить наличие долгосрочных контрактов с поставщиками",
+        "Анализировать эластичность спроса на продовольствие в регионе",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B04",
+          "profile_version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-steel-duty",
+          "event_version": "b5820cb4b00ec8d9",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Определить прямые поставки чёрных металлов в ассортимент компании",
+            "Оценить влияние роста цен на металлопрокат на себестоимость",
+            "Проверить наличие долгосрочных контрактов с поставщиками",
+            "Анализировать эластичность спроса на продовольствие в регионе"
+          ],
+          "initial_queries": [
+            "инфляция продовольствия цены",
+            "себестоимость ритейл логистика"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "af9bfb38f8674ceca67fcd99716c5aa7",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 485,
+          "output_tokens": 121,
+          "cost_rub": 0.016479706022
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфляция продовольствия цены",
+          "as_of": "2026-09-20",
+          "returned": [
+            {
+              "chunk_id": "4ac3c008-c87d-4095-a0f4-4b583cd87d1b",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "f7e82258-6c46-4bc7-ac12-ba34c21d71fd",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "4bebfea7-9ac3-4e78-a5ad-04b3ad7bb140",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "4f9c9a79-c224-4bb7-bae1-66f01a085214",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "0503fa1e-6e98-4c79-a462-04b806491001",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "40f02861-9bc7-51ea-8838-0613e80b64fe",
+            "38d7a5c2-20bf-5d00-8150-29fa203477df",
+            "85dfa0b0-9204-5be6-974f-c9aa6fc41781",
+            "129748ab-6d53-5e16-bec5-58734f3c3c91",
+            "c8583d81-da7f-52f2-8df8-d5e33a108031"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "себестоимость ритейл логистика",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "b028c38d0ca94a76a71d8af36166e369",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2189,
+          "output_tokens": 828,
+          "cost_rub": 0.095412681689
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "10e84dd8472b4e1f94aa36266d98bc0e",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2189,
+          "output_tokens": 909,
+          "cost_rub": 0.10857341261
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "d8146293507b413b84293a3f4e4ea0ea",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 408,
+          "output_tokens": 61,
+          "cost_rub": 0.004523019696
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "инфляция продовольствия цены",
+            "себестоимость ритейл логистика"
+          ],
+          "new_query": "влияние экспортных пошлин на металлургию",
+          "reason": "Запрос переключен с ритейла на металлургию и экспортные тарифы, чтобы найти аналитику по прямой теме события."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние экспортных пошлин на металлургию",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "f27027f7fdb34d38b7013a1fc62c3f8c",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 490,
+          "output_tokens": 56,
+          "cost_rub": 0.003444614537
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "инфляция продовольствия цены",
+            "себестоимость ритейл логистика",
+            "влияние экспортных пошлин на металлургию"
+          ],
+          "new_query": "анализ влияния металлургических пошлин на экономику",
+          "reason": "Запрос расширяет тему до макроэкономических последствий, что может помочь найти аналитические отчеты банка о влиянии отрасли на финансовые показатели."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "анализ влияния металлургических пошлин на экономику",
+          "as_of": "2026-09-20",
+          "returned": [
+            {
+              "chunk_id": "16541d2f-7953-4702-a8f7-a671b869cca5",
+              "page": 3,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "bede9eae-fd6f-5320-95a1-35bca578f535"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "80cedb852f0a46468d31450c2f0d4b2d",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2189,
+          "output_tokens": 888,
+          "cost_rub": 0.095538321125
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "39824730b46e45608d0e2941f02be32f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2189,
+          "output_tokens": 1186,
+          "cost_rub": 0.123618735071
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": [
+            "38d7a5c2-20bf-5d00-8150-29fa203477df",
+            "40f02861-9bc7-51ea-8838-0613e80b64fe",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "71cf398c-2184-5737-b720-d5dcf0ee65a1",
+            "85dfa0b0-9204-5be6-974f-c9aa6fc41781",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "eeec3032-6c52-5010-aef6-c4a984927f08",
+            "evidence-ev-syn-steel-duty"
+          ]
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "57fe62b415e94f478b3475c32153e262",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2210,
+          "output_tokens": 971,
+          "cost_rub": 0.11419054239450002
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "40f02861-9bc7-51ea-8838-0613e80b64fe",
+        "38d7a5c2-20bf-5d00-8150-29fa203477df",
+        "85dfa0b0-9204-5be6-974f-c9aa6fc41781",
+        "129748ab-6d53-5e16-bec5-58734f3c3c91"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "инфляция продовольствия цены",
+        "себестоимость ритейл логистика",
+        "влияние экспортных пошлин на металлургию",
+        "анализ влияния металлургических пошлин на экономику"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "risk-3",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2",
+            "action-3"
+          ],
+          "evidence_ids": [
+            "38d7a5c2-20bf-5d00-8150-29fa203477df",
+            "40f02861-9bc7-51ea-8838-0613e80b64fe",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "71cf398c-2184-5737-b720-d5dcf0ee65a1",
+            "85dfa0b0-9204-5be6-974f-c9aa6fc41781",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "eeec3032-6c52-5010-aef6-c4a984927f08",
+            "evidence-ev-syn-steel-duty"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              },
+              {
+                "id": "71cf398c-2184-5737-b720-d5dcf0ee65a1",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "38d7a5c2-20bf-5d00-8150-29fa203477df",
+                "status": "valid"
+              },
+              {
+                "id": "85dfa0b0-9204-5be6-974f-c9aa6fc41781",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "eeec3032-6c52-5010-aef6-c4a984927f08",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "38d7a5c2-20bf-5d00-8150-29fa203477df",
+                "status": "valid"
+              },
+              {
+                "id": "85dfa0b0-9204-5be6-974f-c9aa6fc41781",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-3",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "40f02861-9bc7-51ea-8838-0613e80b64fe",
+                "status": "valid"
+              },
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+                "status": "valid"
+              },
+              {
+                "id": "eeec3032-6c52-5010-aef6-c4a984927f08",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              },
+              {
+                "id": "40f02861-9bc7-51ea-8838-0613e80b64fe",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 15,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "low",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "industry",
+            "product"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_DEP_MARK",
+          "CL_PRODUCT_LOA_MARK",
+          "MAINOKVED_CODE",
+          "MAINOKVED_NAME"
+        ],
+        "synthesized": [],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2",
+          "assumption-3"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "57fe62b415e94f478b3475c32153e262",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2210,
+            "output_tokens": 971,
+            "cost_rub": 0.11419054239450002
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "5ef502fb85937239f9cebf2bf955d6e62f886c98077f4afef90f7be297536c1a",
+        "required": 4,
+        "checked": 4,
+        "supported": 4,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Число, единицы, период и источник оценки совпадают с источником."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Причинно-следственные связи (рост цен, перенаправление объёмов, влияние на издержки и маржинальность) отсутствуют в источниках; вид деятельности компании не подтверждает использование металла как ключевого материала."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Характеристика регионов как крупных металлургических центров, зависимость компании от логистических цепочек и вывод о влиянии на неё не следуют из источников; атрибуция оценки Минпромторгу в источнике не подтверждена (оценка поступлений — М"
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Части о зависимости выручки компании от покупательной способности, снижении реальных доходов клиентов, корректировке ценовой политики и влиянии на стоимость заемного капитала и ликвидность отсутствуют в источниках"
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источник описывает только экспортную пошлину на прокат для поставок в Китай и Турцию; связь с ценами на внутреннем рынке, упаковочными материалами, оборудованием и логистикой отсутствует"
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источники говорят о сдерживании потребления, но прямая связь со снижением покупательной способности клиентов компании и её выручки в источниках отсутствует"
+          },
+          {
+            "claim_id": "risk-3",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источник об инфляции не содержит данных о ключевой ставке и стоимости кредитов, а наличие банковского продукта «кредиты» не доказывает действующую задолженность"
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат информации о поставщиках компании, росте их затрат или возможности пересмотра условий и фиксации цен"
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Наличие продуктов «депозиты» и «расчётно-кассовое обслуживание» не подтверждает возможность хеджирования рисков и оптимизации денежных потоков — этого нет в источниках"
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат сведений о расходах на упаковку и логистику компании (розничная торговля продуктами) и о связи роста цен на металл с её себестоимостью."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующие кредитные линии; источник банка описывает динамику цен на топливо, а не ожидаемую инфляционную динамику и не условия кредитования."
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат сведений о контрактах компании с поставщиками; новость о контрактах металлургических производителей касается других лиц."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Источники не сообщают о влиянии пошлины на внутренние цены, о расходах компании на содержание магазинов и логистику и о её маржинальности — причинная цепочка добавлена от себя."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Источники не связывают пошлину с ключевой ставкой и инфляцией, наличие банковского продукта «кредиты» не доказывает действующую задолженность, а данных о выручке и денежном потоке компании нет."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Новость сообщает только о вводе экспортной пошлины и поступлениях в бюджет, но не о росте внутренних цен и не о влиянии на расходы ритейлера; предположение подано как факт."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источник содержит только вид деятельности компании; утверждение о невозможности переложить издержки в цены в источниках отсутствует."
+          },
+          {
+            "claim_id": "assumption-3",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта не подтверждает действующий кредитный портфель и влияние макроконъюнктуры на стоимость его обслуживания."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Отрицание прямой затронутости и косвенное влияние на расходы и ликвидность не следуют из источников; «могут» без явного условия не делает вывод допустимым."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Отрицание прямой экспозиции и утверждение об исключительно вторичных каналах влияния отсутствуют в источниках."
+          },
+          {
+            "claim_id": "relevance",
+            "section": "relevance_reason",
+            "verdict": "unsupported",
+            "reason": "Условие «изменение ключевой ставки ЦБ РФ в ответ на фискальные меры» подменяет неизвестную причинную связь фактом; такой связи в источниках нет."
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "impact_level",
+            "action": "low -> undetermined",
+            "because": "no supported basis"
+          },
+          {
+            "field": "relevance",
+            "action": "cleared",
+            "because": "impact undetermined"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "7633a64f937f4fb3b2291d1229a36383",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2429,
+            "output_tokens": 1146,
+            "cost_rub": 0.09026408230125
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "58c0558385574bdd91dae6d20fed4726",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2768,
+            "output_tokens": 1906,
+            "cost_rub": 0.1575748866406
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "a21729e2984240668422b6116c247722",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2580,
+            "output_tokens": 1810,
+            "cost_rub": 0.148798972036
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "6124ce4c66424038b05dab78a39b12dc",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2142,
+            "output_tokens": 1495,
+            "cost_rub": 0.1230931434304
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "c605ee1769b34f329e2a8b721e8e0bc9",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2680,
+            "output_tokens": 443,
+            "cost_rub": 0.0718081726505
+          }
+        ],
+        "cost_rub": 0.591539
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Мера затронет поставки металлургических предприятий Челябинской области и Свердловской области в Китай и Турцию.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "По оценке Минпромторга, ожидаемые поступления в бюджет составят 24 млрд рублей в год.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Производители просят рассмотреть переходный период для действующих контрактов.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Доля расходов компании на материалы и оборудование, содержащие металл.",
+        "Условия текущих кредитных договоров (ставка, срок, возможность досрочного погашения).",
+        "Наличие долгосрочных контрактов с фиксированными ценами на закупки.",
+        "Зависимость логистических цепочек компании от регионов, затронутых пошлиной (Челябинская и Свердловская области).",
+        "Доля затрат на строительные материалы и логистику в операционных расходах компании",
+        "Эластичность спроса на продукты питания компании к изменению цен",
+        "Текущая структура кредитного портфеля компании (плавающая или фиксированная ставка)",
+        "Влияние изменения налоговой нагрузки на чистую прибыль компании",
+        "Сила влияния не определена: механизм или его обоснование не подтверждены источниками при проверке"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-steel-duty"
+      ],
+      "trace_id": "ddc035cd-1d6b-4df5-be00-5369ecd68e50",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Эффект сохраняется в среднесрочной перспективе через макроэкономические каналы",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

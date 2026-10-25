@@ -1,0 +1,929 @@
+{
+  "pair_id": "B02-finance_director__ev-syn-housing",
+  "context_id": "B02-finance_director",
+  "event_id": "ev-syn-housing",
+  "status": "ok",
+  "latency_seconds": 65.49,
+  "cost_rub": 0.78568,
+  "llm_calls": 13,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "кредитование застройщиков стоимость заимствований",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "ввод жилья Свердловская область динамика",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "динамика объемов жилищного строительства",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "влияние процентных ставок на девелопмент",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "240d6c48-965a-41ba-828b-7504f2eb30af",
+        "178f4ca9-7b26-48b8-8b6f-6af66ba8d068"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-housing",
+        "kind": "news",
+        "source_id": "pub-ev-syn-housing",
+        "version": "a560039ec66868d8",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-housing"
+        },
+        "excerpt": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв."
+      },
+      {
+        "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+        "kind": "company",
+        "source_id": "B02",
+        "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444",
+        "locator": {
+          "feature_path": "features.MAINOKVED_NAME"
+        },
+        "excerpt": "Основной вид деятельности: Строительство жилых и нежилых зданий"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-4",
+      "plan": [
+        "Оценка влияния высокой стоимости заимствований на маржинальность застройщиков",
+        "Анализ динамики ввода жилья в Свердловской области и Екатеринбурге",
+        "Изучение кредитной нагрузки и ликвидности компаний сектора строительства",
+        "Прогноз спроса на жилищное строительство в регионе в 2026 году",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B02",
+          "profile_version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-housing",
+          "event_version": "a560039ec66868d8",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Оценка влияния высокой стоимости заимствований на маржинальность застройщиков",
+            "Анализ динамики ввода жилья в Свердловской области и Екатеринбурге",
+            "Изучение кредитной нагрузки и ликвидности компаний сектора строительства",
+            "Прогноз спроса на жилищное строительство в регионе в 2026 году"
+          ],
+          "initial_queries": [
+            "кредитование застройщиков стоимость заимствований",
+            "ввод жилья Свердловская область динамика"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "dc99af3326d9479883daa5f97264bab6",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 519,
+          "output_tokens": 126,
+          "cost_rub": 0.017306832309
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "кредитование застройщиков стоимость заимствований",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ввод жилья Свердловская область динамика",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "53956a5f14c84edfb67539908f8c3ab0",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1816,
+          "output_tokens": 470,
+          "cost_rub": 0.06822221374800001
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "d5130859be9d4abab1130c153dccaa5d",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1816,
+          "output_tokens": 350,
+          "cost_rub": 0.04627719226
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "560883d348494648a095bb4d9fb23c70",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 426,
+          "output_tokens": 60,
+          "cost_rub": 0.005674714526
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "кредитование застройщиков стоимость заимствований",
+            "ввод жилья Свердловская область динамика"
+          ],
+          "new_query": "динамика объемов жилищного строительства",
+          "reason": "Запрос заменен с узкого вопроса о стоимости кредитов на более широкий поиск статистических данных по строительной отрасли, что поможет найти общие аналитические отчеты."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "динамика объемов жилищного строительства",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "490703ce55ff4cc1b92b29be9667c17f",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 453,
+          "output_tokens": 66,
+          "cost_rub": 0.004756237899075
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "кредитование застройщиков стоимость заимствований",
+            "ввод жилья Свердловская область динамика",
+            "динамика объемов жилищного строительства"
+          ],
+          "new_query": "влияние процентных ставок на девелопмент",
+          "reason": "Запрос заменяет общие термины на более специфическую связь между стоимостью кредитов и строительной отраслью для поиска аналитики по макроэкономическим факторам."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние процентных ставок на девелопмент",
+          "as_of": "2026-09-24",
+          "returned": [
+            {
+              "chunk_id": "240d6c48-965a-41ba-828b-7504f2eb30af",
+              "page": 10,
+              "historical": false
+            },
+            {
+              "chunk_id": "178f4ca9-7b26-48b8-8b6f-6af66ba8d068",
+              "page": 10,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+            "a910b217-8657-5a7f-a1a9-ecd361b0bc7c"
+          ],
+          "new_fragments": 2,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "816271c3b047424f84b5a25f328b21f8",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2047,
+          "output_tokens": 558,
+          "cost_rub": 0.07047325364300001
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "854995965cd044568e28531f98ac6fe9",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2047,
+          "output_tokens": 507,
+          "cost_rub": 0.064128462125
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "2660643bfbeb44de83fa482418defa18",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 607,
+          "output_tokens": 108,
+          "cost_rub": 0.017662810711
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "0912fa7b-ba57-52d0-acd8-77f93f139555",
+            "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+            "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+            "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+            "evidence-ev-syn-housing",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ]
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "3baf394e1ad54640a20d5ed79b2abb28",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2339,
+          "output_tokens": 478,
+          "cost_rub": 0.06716474849500001
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "industry",
+          "feature": "MAINOKVED_NAME",
+          "value": "Строительство жилых и нежилых зданий"
+        }
+      ],
+      "bank_fragments_offered": [
+        "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+        "a910b217-8657-5a7f-a1a9-ecd361b0bc7c"
+      ],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Если у компании есть кредиты с плавающей ставкой в других банках, то рост стоимости заимствований, связанный с высокой ключевой ставкой, может увеличить расходы на обслуживание долга."
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Если компания планирует запуск новых строительных проектов, то сокращение запусков в отрасли из-за высокой стоимости денег может ограничить доступ к выгодным условиям финансирования или снизить объем "
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "кредитование застройщиков стоимость заимствований",
+        "ввод жилья Свердловская область динамика",
+        "динамика объемов жилищного строительства",
+        "влияние процентных ставок на девелопмент"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Кредиты по плавающей ставке формируют 67% рынка.",
+              "verdict": "insufficient",
+              "reason": "Утверждение касается структуры рынка кредитования (доля кредитов с плавающей ставкой), что не относится к предмету события (объемы ввода жилья и причины их снижения). Кроме того, фрагмент не содержит "
+            }
+          ],
+          "claims": [
+            "risk-1",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0912fa7b-ba57-52d0-acd8-77f93f139555",
+            "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+            "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+            "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+            "evidence-ev-syn-housing",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+                "status": "valid"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "0912fa7b-ba57-52d0-acd8-77f93f139555",
+                "status": "valid"
+              },
+              {
+                "id": "7fade288-ffbf-5c0e-87c4-8c26d1f60016",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+                "status": "valid"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 8,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-2",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "industry"
+          ],
+          "direct_event_matches": [
+            "MAINOKVED_NAME"
+          ],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [
+          "low_contradicts_direct_link"
+        ],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "MAINOKVED_NAME"
+        ],
+        "synthesized": [],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-1"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "3baf394e1ad54640a20d5ed79b2abb28",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2339,
+            "output_tokens": 478,
+            "cost_rub": 0.06716474849500001
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "968483040aad71a2331d7dbce31fcfc0882b5b32cb62ac00ce052ab3d86e2b32",
+        "required": 8,
+        "checked": 8,
+        "supported": 8,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части прямо следуют из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Источник прямо указывает, что ведомство связывает снижение с высокой стоимостью заимствований."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Числа, период и направление изменения совпадают с источником."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Прогноз и его причина прямо указаны в источнике."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условный вывод с явно названным условием опирается на подтверждённые источниками факты о снижении ввода жилья из-за стоимости заимствований и строительном профиле компании."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условный вывод с явно названным условием опирается на подтверждённые источниками факты и не использует отклонённые предпосылки."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, условие названо как неизвестная предпосылка, а не факт, и не противоречит источникам."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Принадлежность к отрасли и снижение ввода жилья подтверждены источниками, а неизвестность масштаба корректно подана как неопределённость, а не факт."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "contradicted",
+            "reason": "Источник компании прямо указывает, что банковского продукта «кредиты» у компании нет, а банковский материал описывает рынок в целом, а не задолженность компании."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Планы компании по запуску новых проектов не упоминаются в источниках; признаки компании содержат только стадию роста и вид деятельности."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Условие опирается на предпосылку из списка rejected_premises (наличие кредитов с плавающей ставкой), а связь роста ставок с расходами на обслуживание долга в источниках не приведена."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "contradicted",
+            "reason": "Источники сообщают об ожидаемом дальнейшем замедлении ввода жилья из-за сокращения запусков новых проектов, что противоречит посылке о сохранении спроса; использование гарантий для тендеров также не подтверждено (есть лишь банковский продук"
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "repaired_by_removal",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "43b5933634714b7aa2499dcff28469ea",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2631,
+            "output_tokens": 809,
+            "cost_rub": 0.09203769233945
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "df9718deeaa34e6698a47eddbb3f92d2",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2579,
+            "output_tokens": 1383,
+            "cost_rub": 0.12419301199305001
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "de95e94ea6f54c7aa5bfd8e65732b0d5",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2680,
+            "output_tokens": 1241,
+            "cost_rub": 0.11776079636750002
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "ab36ea17919a4236ac4ac3688b56fb62",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2181,
+            "output_tokens": 909,
+            "cost_rub": 0.09002222638695
+          }
+        ],
+        "cost_rub": 0.424014
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв. м жилья, что на 3% меньше, чем годом ранее.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Минстрой связывает снижение объёма ввода жилья с высокой стоимостью заимствований у застройщиков.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Отраслевое издание сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Эксперты ожидают дальнейшего замедления ввода жилья из-за сокращения запусков новых проектов.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: связь события с компанией прямая, а малая сила не доказана данными",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Наличие и объем кредитов компании в других банках.",
+        "Тип процентной ставки по существующим обязательствам компании.",
+        "Планы компании по запуску новых объектов в 2026-2027 годах.",
+        "Срок актуальности вывода источниками не установлен",
+        "Доля выручки компании от жилищного строительства",
+        "Зависимость компании от внешнего финансирования",
+        "Региональные особенности рынка недвижимости в Свердловской области"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-housing",
+        "f7f3ff8f-038b-53b1-b56a-999910516133"
+      ],
+      "trace_id": "3fe56514-0a8f-4e9e-abdb-38a903779b3d",
+      "schema_version": "v2",
+      "personalized_summary": {
+        "claim_id": "summary",
+        "text": "Снижение ввода жилья из-за высокой стоимости заимствований может повлиять на компанию, если её деятельность зависит от объёмов строительства в отрасли.",
+        "evidence_refs": [
+          "evidence-ev-syn-housing",
+          "f7f3ff8f-038b-53b1-b56a-999910516133"
+        ],
+        "statement_type": "hypothesis",
+        "quantitative_scenario": null
+      },
+      "mechanism": [
+        {
+          "claim_id": "mechanism-1",
+          "text": "Если высокая стоимость заимствований, вызвавшая снижение ввода жилья, сохранится, то компания может столкнуться со снижением спроса на свои услуги.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "impact_level": "undetermined",
+      "impact_reason": {
+        "claim_id": "impact",
+        "text": "Влияние основано на принадлежности компании к отрасли строительства и факте снижения ввода жилья, но масштаб воздействия на конкретную компанию неизвестен.",
+        "evidence_refs": [
+          "evidence-ev-syn-housing",
+          "f7f3ff8f-038b-53b1-b56a-999910516133"
+        ],
+        "statement_type": "hypothesis",
+        "quantitative_scenario": null
+      },
+      "time_horizon": {
+        "label": "Эффект сохраняется долго и не привязан к дате",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [
+        {
+          "claim_id": "assumption-1",
+          "text": "Если высокая стоимость заимствований, вызвавшая снижение ввода жилья, сохранится, то компания может столкнуться со снижением спроса на свои услуги.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

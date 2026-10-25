@@ -1,0 +1,873 @@
+{
+  "pair_id": "B01-procurement_director__ev-cbr-insider-2026-10-21",
+  "context_id": "B01-procurement_director",
+  "event_id": "ev-cbr-insider-2026-10-21",
+  "status": "ok",
+  "latency_seconds": 59.41,
+  "cost_rub": 0.776035,
+  "llm_calls": 12,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "санкции инвестиционный сектор ликвидность",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+        "edb56ff3-8668-4728-96f5-9931aff9da64"
+      ]
+    },
+    {
+      "query": "строительство кредитные риски ставки",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "621f1430-4ac8-46d1-8601-3fcb93419887",
+        "0c775b35-64a7-45e4-9d39-9a5c0af3672f",
+        "c56200de-4fd5-4125-a422-1f653ce415de"
+      ]
+    },
+    {
+      "query": "злоупотребления инсайдерской информацией биржевые сделки",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "нарушения правил торговли ценными бумагами",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "b3cebc27-fd02-44c9-82bd-5765d818bb7a",
+        "1ee512e4-51ca-4c3f-8c1f-0bb618c5d9dc",
+        "49ed5c61-89ce-4848-8d9b-4b39c36ed623",
+        "6c3aa00c-2f47-4e13-803a-4291141f9b29",
+        "7821f07f-a7d4-4bd9-8b3d-e8c50d28a386"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-insider-2026-10-21",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-insider-2026-10-21",
+        "version": "2b7da901b50f9986",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639281939787093652PNP.htm"
+        },
+        "excerpt": "Банк России установил, что старший трейдер одной инвестиционной компании неправомерно использовал инсайдерскую информацию при сделках с рядом акций на Московской бирже в период с 16.01.2023 по 29.03.2024."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния регуляторных санкций на инвестиционный сектор",
+        "Анализ ликвидности и кредитных рисков в строительной отрасли",
+        "Изучение динамики цен на акции строительных компаний",
+        "Оценка репутационных рисков для клиентов банка",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-insider-2026-10-21",
+          "event_version": "2b7da901b50f9986",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Оценка влияния регуляторных санкций на инвестиционный сектор",
+            "Анализ ликвидности и кредитных рисков в строительной отрасли",
+            "Изучение динамики цен на акции строительных компаний",
+            "Оценка репутационных рисков для клиентов банка"
+          ],
+          "initial_queries": [
+            "санкции инвестиционный сектор ликвидность",
+            "строительство кредитные риски ставки"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "9f6d05b971b24db18fb243f378dddc9c",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 448,
+          "output_tokens": 106,
+          "cost_rub": 0.015233781615000002
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "санкции инвестиционный сектор ликвидность",
+          "as_of": "2026-10-21",
+          "returned": [
+            {
+              "chunk_id": "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "edb56ff3-8668-4728-96f5-9931aff9da64",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+            "192242b8-a8fa-579d-ac71-d4e98ef6a867"
+          ],
+          "new_fragments": 2,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительство кредитные риски ставки",
+          "as_of": "2026-10-21",
+          "returned": [
+            {
+              "chunk_id": "621f1430-4ac8-46d1-8601-3fcb93419887",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "0c775b35-64a7-45e4-9d39-9a5c0af3672f",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "c56200de-4fd5-4125-a422-1f653ce415de",
+              "page": 3,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+            "db6d4173-3c73-53d4-82f5-eca95fa5e322",
+            "47def6a0-ca8b-5276-adbc-d345c3cf722a"
+          ],
+          "new_fragments": 3,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "83a3b66ac10c4f269591026e608c8f37",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2032,
+          "output_tokens": 1096,
+          "cost_rub": 0.13028809513200001
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "911491faf8144ff1b9299f81d1685581",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2032,
+          "output_tokens": 943,
+          "cost_rub": 0.10954188326250001
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "6213c01b710741a29c9b2fae3440f1db",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 820,
+          "output_tokens": 381,
+          "cost_rub": 0.046800689910000005
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "0135216c-3bae-50bf-9eb6-0bfb26be3682",
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "47def6a0-ca8b-5276-adbc-d345c3cf722a",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+            "a502d69b-0614-5a4f-a006-056bb2087923",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "db6d4173-3c73-53d4-82f5-eca95fa5e322"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "c6352630011d4621b2a45b87bdab9422",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 411,
+          "output_tokens": 64,
+          "cost_rub": 0.00328149266926
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "санкции инвестиционный сектор ликвидность",
+            "строительство кредитные риски ставки"
+          ],
+          "new_query": "злоупотребления инсайдерской информацией биржевые сделки",
+          "reason": "Запрос использует терминологию рыночных манипуляций и инсайдинга вместо общих санкций, что поможет найти специфические отчеты о нарушениях на бирже."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "злоупотребления инсайдерской информацией биржевые сделки",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "4cabc1076b5846388568501c65b3e4db",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 391,
+          "output_tokens": 72,
+          "cost_rub": 0.006355261471
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "санкции инвестиционный сектор ликвидность",
+            "строительство кредитные риски ставки",
+            "злоупотребления инсайдерской информацией биржевые сделки"
+          ],
+          "new_query": "нарушения правил торговли ценными бумагами",
+          "reason": "Запрос заменяет узкий термин «инсайдерская информация» на более широкое понятие «нарушения правил торговли», что позволит найти отчеты о дисциплинарных мерах и комплаенс-рисках."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "нарушения правил торговли ценными бумагами",
+          "as_of": "2026-10-21",
+          "returned": [
+            {
+              "chunk_id": "b3cebc27-fd02-44c9-82bd-5765d818bb7a",
+              "page": 27,
+              "historical": false
+            },
+            {
+              "chunk_id": "1ee512e4-51ca-4c3f-8c1f-0bb618c5d9dc",
+              "page": 3,
+              "historical": false
+            },
+            {
+              "chunk_id": "49ed5c61-89ce-4848-8d9b-4b39c36ed623",
+              "page": 4,
+              "historical": false
+            },
+            {
+              "chunk_id": "6c3aa00c-2f47-4e13-803a-4291141f9b29",
+              "page": 5,
+              "historical": false
+            },
+            {
+              "chunk_id": "7821f07f-a7d4-4bd9-8b3d-e8c50d28a386",
+              "page": 5,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "f72a4699-ab63-5204-86d9-721402beeb15",
+            "5971eb30-975b-5a1d-9c16-7bb35c1477f1",
+            "d96d6b33-3529-5b8a-9057-81a3af7ac8e9",
+            "24ff40a6-8fa8-5a3d-af46-efe622929ada",
+            "f1930b5b-4d6a-5214-b5e4-ebf4ddd9d062"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "c1441553dfd940eabeb6b56386ed6038",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2020,
+          "output_tokens": 984,
+          "cost_rub": 0.11349429052
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "5d21905355c242c4aea4bbc1e3a58a61",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 715,
+          "output_tokens": 274,
+          "cost_rub": 0.05457463001250001
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+            "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-cbr-insider-2026-10-21"
+          ]
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "f9f2534c8f434cedbc36c08076069e19",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2089,
+          "output_tokens": 180,
+          "cost_rub": 0.03977535144700001
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+        "f72a4699-ab63-5204-86d9-721402beeb15",
+        "db6d4173-3c73-53d4-82f5-eca95fa5e322",
+        "76f7c1ef-0a39-5256-b4f8-daeb3728ed76"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "санкции инвестиционный сектор ликвидность",
+        "строительство кредитные риски ставки",
+        "злоупотребления инсайдерской информацией биржевые сделки",
+        "нарушения правил торговли ценными бумагами"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Длительный период повышенных ставок и крепкого рубля существенно ослабил запас прочности эмитентов, а высокий уровень ключевой ставки повышает риски разворота денежно-кредитной политики и истощения запаса прочности по кредитным метрикам у к",
+              "verdict": "insufficient",
+              "reason": "Утверждение приписывает банку позицию о том, что 'высокий уровень ключевой ставки повышает риски разворота денежно-кредитной политики'. Во фрагментах говорится, что высокий уровень ставки 'повышает ри"
+            },
+            {
+              "claim_id": "bank-2",
+              "text": "Рост дефицита банковской ликвидности привел к росту ставок денежного рынка выше ключевой ставки, что подвергает корпоративный сектор процентному риску.",
+              "verdict": "insufficient",
+              "reason": "Утверждение приписывает банку позицию о том, что рост дефицита ликвидности подвергает корпоративный сектор процентному риску. Во фрагментах указано, что 'рост дефицита банковской ликвидности уже приве"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0135216c-3bae-50bf-9eb6-0bfb26be3682",
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "47def6a0-ca8b-5276-adbc-d345c3cf722a",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+            "a502d69b-0614-5a4f-a006-056bb2087923",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "db6d4173-3c73-53d4-82f5-eca95fa5e322"
+          ]
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Длительный период повышенных ставок и крепкого рубля существенно ослабил запас прочности эмитентов, и ухудшение кредитных метрик отмечается у части рынка.",
+              "verdict": "insufficient",
+              "reason": "Утверждение содержит причинно-следственную связь: 'Длительный период... ослабил запас прочности... и ухудшение... отмечается'. Фрагмент подтверждает, что длительный период ослабил запас прочности и чт"
+            },
+            {
+              "claim_id": "bank-2",
+              "text": "Рост дефицита банковской ликвидности привел к росту ставок денежного рынка выше ключевой ставки, что подвергает корпоративный сектор процентному риску, который вырастет при росте ключевой ставки.",
+              "verdict": "insufficient",
+              "reason": "не относится к событию"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+            "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-cbr-insider-2026-10-21"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+                "status": "valid"
+              },
+              {
+                "id": "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "c3f6e407-4471-5c3d-9c81-fd2dc181be86",
+                "status": "valid"
+              },
+              {
+                "id": "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "9e46a124-e4ce-584a-a73e-c3c2a7194b7d",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 9,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "f9f2534c8f434cedbc36c08076069e19",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2089,
+            "output_tokens": 180,
+            "cost_rub": 0.03977535144700001
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "7d28c0c25d9dfac84110e8475b81d6fcdb1ccca96e188413b47478e826750cce",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из источника."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующую задолженность, а связь роста ставок с обслуживанием долга компании и плавающая ставка в источниках отсутствуют."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Влияние события на неопределённость и доступ строительных компаний к финансированию в источниках отсутствует, а фрагмент банка об ухудшении кредитных метрик обрывается и не называет строительный сектор."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Связь нестабильности рынка со скоростью транзакций и доверием к контрагентам, а также оценка минимальности влияния на деятельность компании в источниках отсутствуют."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующую задолженность, а снижение финансовой устойчивости компании из-за роста ставок в источниках не следует."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Затруднения с доступом к финансированию и общая нестабильность рынка ценных бумаг в источниках отсутствуют; фрагмент банка об ухудшении кредитных метрик обрывается и не связан с доступом к рефинансированию."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Источники подтверждают лишь наличие банковского продукта «кредиты» и рост ставок; возможность пересмотра условий, программы поддержки или реструктуризации в источниках отсутствуют, явного условия вывода нет."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие продукта «кредиты» не доказывает действующие договоры и их условия (фиксированная/плавающая ставка), а рекомендация действия не следует из источников; явного условия применимости нет."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Планы компании по привлечению финансирования отсутствуют в источниках (наличие продукта и стадия «Оптимизация» их не доказывают), явного условия вывода нет."
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "a4bb6d8fa9c648d2926f95fdb4161182",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3017,
+            "output_tokens": 1690,
+            "cost_rub": 0.14943816266665
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "e6e12042bc1143baaf2d47fa2bf3a45a",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1763,
+            "output_tokens": 604,
+            "cost_rub": 0.06523775364535
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "c4297d8cd54d4d429b272d3a9a0665ab",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1772,
+            "output_tokens": 198,
+            "cost_rub": 0.0420138273984
+          }
+        ],
+        "cost_rub": 0.25669
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Банк России установил, что старший трейдер одной инвестиционной компании неправомерно использовал инсайдерскую информацию при сделках с рядом акций на Московской бирже в период с 16.01.2023 по 29.03.2024.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Тип процентной ставки по текущим кредитам (фиксированная или плавающая).",
+        "Сумма и срок действия действующих кредитных обязательств.",
+        "Наличие хеджирующих инструментов для защиты от процентного риска.",
+        "Планы компании по привлечению нового финансирования в ближайший год.",
+        "Срок актуальности вывода источниками не установлен",
+        "Связь компании с инвестиционной компанией, чей сотрудник использовал инсайдерскую информацию",
+        "Наличие у компании акций, по которым совершались сделки с использованием инсайдерской информации",
+        "Влияние инцидента на репутацию или доступ к финансированию для строительной компании"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-insider-2026-10-21"
+      ],
+      "trace_id": "c0f0bbe0-6ec4-44e5-999d-b9b0b6ebf94d",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

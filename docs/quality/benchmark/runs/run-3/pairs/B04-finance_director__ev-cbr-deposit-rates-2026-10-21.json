@@ -1,0 +1,1030 @@
+{
+  "pair_id": "B04-finance_director__ev-cbr-deposit-rates-2026-10-21",
+  "context_id": "B04-finance_director",
+  "event_id": "ev-cbr-deposit-rates-2026-10-21",
+  "status": "blocked",
+  "latency_seconds": 89.45,
+  "cost_rub": 0.917578,
+  "llm_calls": 12,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "ставка по вкладам кредитование ритейл",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "ликвидность маржинальность торговля продуктами",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "динамика доходности рублевых депозитов",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "aaf8023c-fc7f-4b8f-82d0-b46414742517",
+        "166d2af6-6f56-4ac3-81c3-f6c6683a311e",
+        "d99c902c-8a40-40a7-a22b-213c657c5d75"
+      ]
+    },
+    {
+      "query": "максимальные доходности банковских депозитов октябрь 2026",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-deposit-rates-2026-10-21",
+        "version": "c0bd7a5a1c5b0413",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639281806781687368BANK_SECTOR.htm"
+        },
+        "excerpt": "Банк России опубликовал результаты мониторинга максимальных ставок по рублевым вкладам десяти банков, которые привлекают наибольший объем депозитов физических лиц."
+      },
+      {
+        "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+        "kind": "company",
+        "source_id": "B04",
+        "version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_DEP_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «депозиты»"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Данные о структуре депозитов и кредитов компании",
+        "Влияние высоких ставок на маржинальность ритейла",
+        "Оценка ликвидности и стоимости заёмных средств",
+        "Динамика ставок по вкладам в регионе Татарстан",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B04",
+          "profile_version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-deposit-rates-2026-10-21",
+          "event_version": "c0bd7a5a1c5b0413",
+          "facts": 5
+        },
+        {
+          "plan": [
+            "Данные о структуре депозитов и кредитов компании",
+            "Влияние высоких ставок на маржинальность ритейла",
+            "Оценка ликвидности и стоимости заёмных средств",
+            "Динамика ставок по вкладам в регионе Татарстан"
+          ],
+          "initial_queries": [
+            "ставка по вкладам кредитование ритейл",
+            "ликвидность маржинальность торговля продуктами"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "ae924d6d2dbc4182afbed799b8bfa4a8",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 586,
+          "output_tokens": 112,
+          "cost_rub": 0.016689105082
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ставка по вкладам кредитование ритейл",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ликвидность маржинальность торговля продуктами",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "08e57d5480154ea185249a8d777ed3fa",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1613,
+          "output_tokens": 1149,
+          "cost_rub": 0.125157818162
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": [
+            "1d42b3f1-164d-5198-b9d5-91f5aeeb2413",
+            "2111179c-0e0c-51c3-9fb5-dfc4358885fc",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "b02768fc-5974-55df-bb49-cdbef7e27b56",
+            "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "e672ec46-69aa-5238-a6bb-5e942fc795e8",
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "fd783bdb2caa4b53b66128f606c0316b",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 450,
+          "output_tokens": 66,
+          "cost_rub": 0.0049564757502
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ставка по вкладам кредитование ритейл",
+            "ликвидность маржинальность торговля продуктами"
+          ],
+          "new_query": "динамика доходности рублевых депозитов",
+          "reason": "Запрос переформулирован с использованием банковской терминологии «доходность депозитов» вместо «ставки по вкладам» для поиска аналитики по рынку пассивов."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "динамика доходности рублевых депозитов",
+          "as_of": "2026-10-21",
+          "returned": [
+            {
+              "chunk_id": "aaf8023c-fc7f-4b8f-82d0-b46414742517",
+              "page": 3,
+              "historical": false
+            },
+            {
+              "chunk_id": "166d2af6-6f56-4ac3-81c3-f6c6683a311e",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "d99c902c-8a40-40a7-a22b-213c657c5d75",
+              "page": 24,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "8bfd6185-2b5d-5087-bbf2-a2cf6a948575",
+            "ed139b3c-41cc-55a5-9391-c686f51581d4",
+            "0ce19ada-ce34-5062-b214-aefbbedd01f6"
+          ],
+          "new_fragments": 3,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "81a52ce7f0694b488d816c4b9e0b1895",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2095,
+          "output_tokens": 918,
+          "cost_rub": 0.10290916803700001
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "aa2c60c9b7264efea0672dd6dbc698cc",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 765,
+          "output_tokens": 204,
+          "cost_rub": 0.028300282959000004
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "1d42b3f1-164d-5198-b9d5-91f5aeeb2413",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "be491cf55ee54f32971ffe43f5a174d9",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 477,
+          "output_tokens": 58,
+          "cost_rub": 0.0055605920383
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ставка по вкладам кредитование ритейл",
+            "ликвидность маржинальность торговля продуктами",
+            "динамика доходности рублевых депозитов"
+          ],
+          "new_query": "максимальные доходности банковских депозитов октябрь 2026",
+          "reason": "Запрос сфокусирован на конкретных показателях доходности в заданный период, что поможет найти первичные данные мониторинга."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "максимальные доходности банковских депозитов октябрь 2026",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "50f613ca49cb4cd3879547a11827cbfc",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2144,
+          "output_tokens": 837,
+          "cost_rub": 0.1056994105115
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_DEP_MARK",
+          "value": "1"
+        },
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_LOA_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "8bfd6185-2b5d-5087-bbf2-a2cf6a948575",
+        "ed139b3c-41cc-55a5-9391-c686f51581d4",
+        "0ce19ada-ce34-5062-b214-aefbbedd01f6"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "ставка по вкладам кредитование ритейл",
+        "ликвидность маржинальность торговля продуктами",
+        "динамика доходности рублевых депозитов",
+        "максимальные доходности банковских депозитов октябрь 2026"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "1d42b3f1-164d-5198-b9d5-91f5aeeb2413",
+            "2111179c-0e0c-51c3-9fb5-dfc4358885fc",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "b02768fc-5974-55df-bb49-cdbef7e27b56",
+            "b0d48a52-0b3b-55fe-86e3-fd811258759d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "e672ec46-69aa-5238-a6bb-5e942fc795e8",
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ]
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "В 2026 году наблюдается динамика роста рублевых розничных депозитов, достигшая 133% к уровню декабря предыдущего года.",
+              "verdict": "insufficient",
+              "reason": "Утверждение касается динамики объемов рублевых розничных депозитов (количественный показатель), в то время как событие и предоставленные фрагменты касаются максимальных процентных ставок по вкладам (ц"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "1d42b3f1-164d-5198-b9d5-91f5aeeb2413",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "1d42b3f1-164d-5198-b9d5-91f5aeeb2413",
+                "status": "valid"
+              },
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              },
+              {
+                "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 13,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "medium",
+        "level": "medium",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product"
+          ],
+          "direct_event_matches": [
+            "CL_PRODUCT_DEP_MARK",
+            "CL_PRODUCT_LOA_MARK"
+          ],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_DEP_MARK",
+          "CL_PRODUCT_LOA_MARK"
+        ],
+        "synthesized": [],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "50f613ca49cb4cd3879547a11827cbfc",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2144,
+            "output_tokens": 837,
+            "cost_rub": 0.1056994105115
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "block",
+        "decided_by": "code",
+        "content_digest": "6f68889d0a9104689c9a380274c71b640f2ea4a640b01d0a2606f566c0f7bb58",
+        "required": 6,
+        "checked": 6,
+        "supported": 5,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "version": "c0bd7a5a1c5b0413"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Число, период и охват (десять банков) прямо совпадают с источником."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "version": "c0bd7a5a1c5b0413"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Значение 12,55% для срока до 90 дней прямо указано в источнике."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "version": "c0bd7a5a1c5b0413"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Значение 12,88% для срока от 91 до 180 дней прямо указано в источнике."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "version": "c0bd7a5a1c5b0413"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Значение 12,77% для срока от 181 дня до года прямо указано в источнике."
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "version": "c0bd7a5a1c5b0413"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Значение 11,75% для срока свыше года прямо указано в источнике."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+                "version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004"
+              },
+              {
+                "id": "evidence-ev-cbr-deposit-rates-2026-10-21",
+                "version": "c0bd7a5a1c5b0413"
+              }
+            ],
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «депозиты» не доказывает действующие депозитные счета и их доходность, а связь сравнения ставок с оптимизацией ликвидности в источниках отсутствует."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Причинная связь между ставками и доходностью компании, наличие свободных средств и приоритет управления ликвидностью не следуют из источников; наличие банковского продукта не доказывает размещение свободных средств."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующую долговую нагрузку, а причинная связь удорожания обслуживания долга в источниках отсутствует."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Вывод об оптимизации структуры капитала и балансировке между кредитами и собственными средствами не следует из источников; новость содержит только ставки по вкладам, а не стоимость кредитов для компании."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующие кредитные договоры и процентные расходы компании, а условие о привязке ставки к рыночным индикаторам опирается на эту неподтвержденную предпосылку."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Новость содержит только данные о максимальных ставках по вкладам; инфляция, снижение покупательной способности населения и влияние на выручку компании в источниках отсутствуют."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Новость фиксирует уровень ставок (13,06% в обе декады), а не их рост, а наличие депозитного продукта не доказывает наличие временно свободных средств у компании."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает существование текущих кредитных договоров компании, на которые ссылается рекомендация."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Источники не подтверждают ни пересмотр банком условий, ни наличие у компании кредита с плавающей ставкой; наличие банковского продукта «кредиты» не доказывает действующую задолженность и её условия."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Условие «если средства размещены на новых или пересмотренных условиях» подменяет неизвестное (условия размещения депозита компании) и не подтверждено источниками."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Свойство кредита (плавающая ставка, корреляция) отсутствует в источниках; наличие продукта «кредиты» не доказывает действующий кредит и его условия."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Условия размещения депозита компании не следуют из источников; наличие продукта «депозиты» не доказывает условия договора."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Вывод об удорожании ликвидности отсутствует в источниках, а условие о привязке ставки кредитов к рыночным индикаторам подменяет неизвестное о компании фактом; выгода по депозитным остаткам также не подтверждена."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Наличие банковских продуктов «кредиты» и «депозиты» не доказывает действующую задолженность и депозит компании, а причинные связи роста ставок с обслуживанием долга и доходностью средств отсутствуют в источниках."
+          },
+          {
+            "claim_id": "relevance",
+            "section": "relevance_reason",
+            "verdict": "unsupported",
+            "reason": "Банковский продукт «кредиты» не доказывает действующий кредит, а новость о максимальных ставках по вкладам не подтверждает условия актуальности, связанные с кредитом и депозитом компании."
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "impact_level",
+            "action": "medium -> undetermined",
+            "because": "no supported basis"
+          },
+          {
+            "field": "relevance",
+            "action": "cleared",
+            "because": "impact undetermined"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [
+          "action-2"
+        ],
+        "repair_attempts": 1,
+        "stop_reason": "repair_failed",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "7913a8c9ee074200b694dd5607370c31",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2422,
+            "output_tokens": 729,
+            "cost_rub": 0.0838203497274
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "63d714f3e9884c6daaffc8300881e561",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2765,
+            "output_tokens": 1959,
+            "cost_rub": 0.16057505167275
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "d00f78954156450393871ea5c1a78669",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2708,
+            "output_tokens": 1154,
+            "cost_rub": 0.11323463568560002
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "d80f8e2819504068bb8b1e57e599f90d",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1602,
+            "output_tokens": 609,
+            "cost_rub": 0.0627443343384
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "d7095dc821f84b9eaa2cfb0f26a002c4",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2971,
+            "output_tokens": 983,
+            "cost_rub": 0.10793108099345
+          }
+        ],
+        "cost_rub": 0.528305
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "В первую и вторую декаду октября 2026 года максимальная ставка по рублевым вкладам десяти банков составила 13,06%.",
+          "evidence_refs": [
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Средняя максимальная ставка по вкладам со сроком до 90 дней составила 12,55%.",
+          "evidence_refs": [
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Средняя максимальная ставка по вкладам со сроком от 91 до 180 дней составила 12,88%.",
+          "evidence_refs": [
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Средняя максимальная ставка по вкладам со сроком от 181 дня до года составила 12,77%.",
+          "evidence_refs": [
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-5",
+          "text": "Средняя максимальная ставка по вкладам со сроком свыше года составила 11,75%.",
+          "evidence_refs": [
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [
+        {
+          "claim_id": "action-2",
+          "text": "Проверить текущую доходность по депозитным счетам компании и сравнить ее с новыми максимальными ставками на рынке для оптимизации управления ликвидностью.",
+          "evidence_refs": [
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "evidence-ev-cbr-deposit-rates-2026-10-21"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "unknowns": [
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Сумма задолженности, тип ставки и условия кредитов неизвестны, в данных есть только наличие кредитного продукта",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Объем и структура кредитной задолженности компании.",
+        "Тип процентной ставки по текущим кредитам (фиксированная или плавающая).",
+        "Объем свободных денежных средств, доступных для размещения на депозитах.",
+        "Условия досрочного погашения или рефинансирования текущих кредитов.",
+        "Тип ставки по кредиту (фиксированная или плавающая) и привязка к ключевой ставке",
+        "Сумма действующей задолженности по кредитам",
+        "Объем средств на депозитах и текущая ставка по ним",
+        "График платежей и сроки погашения кредитов"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-deposit-rates-2026-10-21",
+        "cc57bf61-477e-50cc-b422-12d3781bdf35"
+      ],
+      "trace_id": "e9e0c30d-2b7b-40b0-a766-4019f2f8e389",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Период не назван, эффект сохраняется при действии высоких ставок",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

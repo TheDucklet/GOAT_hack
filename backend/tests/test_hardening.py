@@ -63,7 +63,7 @@ def test_invalid_ai_evidence_rolls_back_all_outputs(client, monkeypatch):
     def bad_result(**kwargs):
         result = original(**kwargs)
         result["result"]["facts"][0]["evidence_refs"] = ["nonexistent"]
-        return result
+        return fake_ai.allowed(result)
 
     monkeypatch.setattr(fake_ai, "build_insight", bad_result)
     login(client)

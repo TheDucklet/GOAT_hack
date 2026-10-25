@@ -1,0 +1,45 @@
+{
+  "protocol": "ranking-v2",
+  "status": "approved",
+  "decision_record": "decisions/2026-10-25-ranking-v2.md",
+  "approved_by": ["Роман (решение ranking-v2, 25.10.2026 01:45:02 МСК)", "Fedor Piskun (лимит расходов и параметры прогона)"],
+  "note": "Внутренние цели команды, не норматив организаторов. Исходный targets.json и run-1 не меняются.",
+  "ranking": {
+    "ndcg_macro": 0.8,
+    "ndcg_pooled": 0.8,
+    "recall_micro": 0.7,
+    "recall_macro": 0.7,
+    "share_not_worse": 0.8,
+    "min_ndcg_contexts": 7,
+    "min_recall_contexts": 5,
+    "tie_break": "score по убыванию, затем event_id по возрастанию"
+  },
+  "coverage": {
+    "ready_coverage_min": 0.9,
+    "final_quality_refusals_max": {"original_84": 8, "new_42": 4},
+    "lost_pairs_max": 0,
+    "positive_cases_required": "6/6",
+    "regression_case": "B03-finance_director__ev-syn-steel-duty"
+  },
+  "publication_gates": {
+    "critical_unsupported_facts": 0,
+    "false_bank_positions": 0,
+    "leaks": 0,
+    "grounded_claims_rate_min": 0.9,
+    "role_difference_min": 0.5
+  },
+  "positive_cases": [
+    "B01-chief_accountant__ev-cbr-key-rate-2026-10-23",
+    "B02-finance_director__ev-cbr-key-rate-2026-10-23",
+    "B04-finance_director__ev-cbr-key-rate-2026-10-23",
+    "B02-finance_director__ev-syn-housing",
+    "B05-finance_director__ev-syn-it-benefits",
+    "B06-finance_director__ev-cbr-key-rate-2026-10-23"
+  ],
+  "run": {
+    "cost_limit_rub": 150,
+    "workers": 3,
+    "retries_per_pair": 1,
+    "quality_retries": 0
+  }
+}

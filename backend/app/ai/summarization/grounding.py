@@ -54,3 +54,26 @@ def shorten(text: str, limit: int) -> str:
         return flat
     cut = flat[: limit - 3].rsplit(" ", 1)[0].rstrip(" ,;:")
     return cut + "..."
+
+
+DIRECTIONS = {
+    "up": ("рост", "выро", "повыш", "увелич", "ускор", "подорож", "выше"),
+    "down": ("снижен", "сниз", "пониж", "сокращ", "уменьш", "замедл", "подешев", "ниже", "упал"),
+}
+
+
+def directions(text: str) -> set[str]:
+    folded = normalize_text(text)
+    return {name for name, stems in DIRECTIONS.items() if any(stem in folded for stem in stems)}
+
+
+def context_sentence(quote: str, source: str) -> str:
+    folded = normalize_text(quote).strip(" .")
+    for sentence in SENTENCE_END.split(source):
+        if folded and folded in normalize_text(sentence):
+            return sentence
+    return quote
+
+
+def unsupported_direction(claim: str, context: str) -> set[str]:
+    return directions(claim) - directions(context)

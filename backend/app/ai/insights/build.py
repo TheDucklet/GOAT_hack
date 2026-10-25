@@ -91,7 +91,7 @@ def event_facts(event) -> list[dict]:
             facts.append(
                 {"claim_id": f"fact-{len(facts) + 1}", "text": item["text"], "evidence_refs": refs[:2]}
             )
-    if not facts:
+    if not facts and event.facts is None:
         for item in event.evidence:
             if item.kind == "news" and item.excerpt.strip():
                 facts.append(

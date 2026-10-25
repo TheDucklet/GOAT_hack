@@ -1,0 +1,935 @@
+{
+  "pair_id": "B02-finance_director__ev-cbr-key-rate-2026-10-23",
+  "context_id": "B02-finance_director",
+  "event_id": "ev-cbr-key-rate-2026-10-23",
+  "status": "ok",
+  "latency_seconds": 69.33,
+  "cost_rub": 0.76803,
+  "llm_calls": 9,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "ключевая ставка кредитование строительство",
+      "as_of": "2026-10-23",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+        "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+        "621f1430-4ac8-46d1-8601-3fcb93419887",
+        "eef97a4d-e776-491d-b689-e9853bc596cd",
+        "24ebca22-993d-4eef-8479-d1a872ee77bb"
+      ]
+    },
+    {
+      "query": "инфляция стоимость материалов недвижимость",
+      "as_of": "2026-10-23",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-key-rate-2026-10-23",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-key-rate-2026-10-23",
+        "version": "39d4b2cf8609735a",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=23102026_133000key.htm"
+        },
+        "excerpt": "23 октября 2026 года Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых."
+      },
+      {
+        "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+        "kind": "company",
+        "source_id": "B02",
+        "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444",
+        "locator": {
+          "feature_path": "features.MAINOKVED_NAME"
+        },
+        "excerpt": "Основной вид деятельности: Строительство жилых и нежилых зданий"
+      },
+      {
+        "id": "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+        "kind": "company",
+        "source_id": "B02",
+        "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_DEP_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «депозиты»"
+      },
+      {
+        "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "kind": "bank",
+        "source_id": "d2a4babb-08ac-4ff9-b752-74ed4bd31cf2",
+        "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6",
+        "locator": {
+          "page": 2,
+          "document_date": "2026-08-05",
+          "title": "ALFA-consumption"
+        },
+        "excerpt": "инфляции пока делает возможным дальнейшее снижение ключевой ставки - мы ждем еще два снижения по 25 б. п. до конца текущего года и на конец 2026 г. ожидаем ставку на уровне 13,5% (см Рис. 8).\nРис. 7: Динамика базовой недельной инфляции и ее структура, % н/н\nИсточники: Росстат, Альфа-Банк\nРис. 8: Прогноз Альфа-Банка по"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-4",
+      "plan": [
+        "Оценка влияния высокой ключевой ставки на стоимость кредитования в строительстве",
+        "Анализ инфляционных ожиданий и их воздействие на себестоимость строительных материалов",
+        "Изучение динамики спроса на жилую недвижимость в Свердловской области",
+        "Определение рисков кассовых разрывов при текущем уровне процентных ставок",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B02",
+          "profile_version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-key-rate-2026-10-23",
+          "event_version": "39d4b2cf8609735a",
+          "facts": 5
+        },
+        {
+          "plan": [
+            "Оценка влияния высокой ключевой ставки на стоимость кредитования в строительстве",
+            "Анализ инфляционных ожиданий и их воздействие на себестоимость строительных материалов",
+            "Изучение динамики спроса на жилую недвижимость в Свердловской области",
+            "Определение рисков кассовых разрывов при текущем уровне процентных ставок"
+          ],
+          "initial_queries": [
+            "ключевая ставка кредитование строительство",
+            "инфляция стоимость материалов недвижимость"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "12069c4bebab41f5a3d1e71f8a57c025",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 568,
+          "output_tokens": 122,
+          "cost_rub": 0.017442941698
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ключевая ставка кредитование строительство",
+          "as_of": "2026-10-23",
+          "returned": [
+            {
+              "chunk_id": "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "621f1430-4ac8-46d1-8601-3fcb93419887",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "eef97a4d-e776-491d-b689-e9853bc596cd",
+              "page": 3,
+              "historical": false
+            },
+            {
+              "chunk_id": "24ebca22-993d-4eef-8479-d1a872ee77bb",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "96964105-d9d2-5c75-bc36-de9f41646d95",
+            "6dec5e3b-1991-5b9f-8e89-e7675de70c7c",
+            "b9ce705a-376d-5fea-9516-c2f6ce50ab56"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфляция стоимость материалов недвижимость",
+          "as_of": "2026-10-23",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-23"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "7d353b209eaa4c039c2e5fb279eb4d98",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2403,
+          "output_tokens": 634,
+          "cost_rub": 0.084900848877
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "d605593804824ef384ce85138aef612f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 852,
+          "output_tokens": 184,
+          "cost_rub": 0.026258642124000003
+        },
+        {
+          "check": "supported",
+          "iteration": 1,
+          "reasons": [],
+          "evidence_ids": [
+            "0912fa7b-ba57-52d0-acd8-77f93f139555",
+            "6dec5e3b-1991-5b9f-8e89-e7675de70c7c",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ]
+        },
+        {
+          "stop": "supported",
+          "iterations": 1,
+          "extra_searches": 0
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "92855d8cfcde436f9cfe0405f7072b9f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2681,
+          "output_tokens": 410,
+          "cost_rub": 0.070996751293
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_DEP_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+        "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "96964105-d9d2-5c75-bc36-de9f41646d95",
+        "6dec5e3b-1991-5b9f-8e89-e7675de70c7c"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "supported",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 0,
+      "queries": [
+        "ключевая ставка кредитование строительство",
+        "инфляция стоимость материалов недвижимость"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "supported",
+          "reasons": [],
+          "rejected_bank_claims": [],
+          "claims": [
+            "bank-1",
+            "bank-2",
+            "interpretation-1",
+            "interpretation-2",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0912fa7b-ba57-52d0-acd8-77f93f139555",
+            "6dec5e3b-1991-5b9f-8e89-e7675de70c7c",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-2",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "6dec5e3b-1991-5b9f-8e89-e7675de70c7c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "0912fa7b-ba57-52d0-acd8-77f93f139555",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "0912fa7b-ba57-52d0-acd8-77f93f139555",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "0912fa7b-ba57-52d0-acd8-77f93f139555",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 14,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-2",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": true,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_LOA_MARK"
+        ],
+        "synthesized": [
+          "impact_reason"
+        ],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-1"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "92855d8cfcde436f9cfe0405f7072b9f",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2681,
+            "output_tokens": 410,
+            "cost_rub": 0.070996751293
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "95a8ead4d4ec36986c6a5bd5ec047a698fe7923611304f9ee56d920aaebe40e2",
+        "required": 9,
+        "checked": 9,
+        "supported": 9,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Обе части дословно следуют из источника."
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Материал банка (Альфа-Банк) прямо указывает ожидание ставки 13,5% на конец 2026 года."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, условие названо как гипотеза, а высокая ключевая ставка (14,00%) подтверждается новостным источником."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              },
+              {
+                "id": "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+                "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, наличие депозитного продукта подтверждено источником компании, а высокие ставки (ключевая ставка 14,00%) — новостным источником."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              },
+              {
+                "id": "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+                "version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Рекомендация проверить условия депозитных договоров согласуется с подтвержденным наличием у компании депозитного продукта."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "bank-2",
+            "section": "bank_view",
+            "verdict": "unsupported",
+            "reason": "в утверждении банка только 71 % слов опираются на банковский фрагмент"
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "contradicted",
+            "reason": "Источник компании прямо указывает, что банковского продукта «кредиты» у компании нет, поэтому проверка структуры заемного капитала и плавающих ставок противоречит данным."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "contradicted",
+            "reason": "Условие «есть кредиты с плавающей ставкой» противоречит данным компании об отсутствии продукта «кредиты», поэтому условный вывод не является допустимым."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "contradicted",
+            "reason": "Условие о наличии кредитов с плавающей ставкой противоречит признакам компании, где продукт «кредиты» отсутствует."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "contradicted",
+            "reason": "Условие о наличии у компании кредитов с плавающей ставкой противоречит источнику компании, где такой продукт отсутствует."
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "contradicted",
+            "reason": "Условие вывода (наличие кредитов с плавающей ставкой) противоречит источнику компании, где прямо указано, что продукта банка «кредиты» у компании нет."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат связи между привлечением финансированием в строительстве, ростом стоимости заемного капитала и снижением маржинальности проектов."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "contradicted",
+            "reason": "Условие о наличии у компании кредитов с плавающей ставкой противоречит источнику компании, где указано отсутствие продукта «кредиты»."
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "repaired_by_removal",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "696b996afe9f4b69bdc73b0882b60d11",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3065,
+            "output_tokens": 699,
+            "cost_rub": 0.09320090411775
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "f69f990224054d8ba2cbcc251e724206",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3197,
+            "output_tokens": 967,
+            "cost_rub": 0.11091397060315002
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "cc502f8aa6d544b6a23bb92971e1ea66",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3379,
+            "output_tokens": 1373,
+            "cost_rub": 0.13743750253805
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "2b7678e2be724be1b5fc9fcec9e14ac4",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3087,
+            "output_tokens": 700,
+            "cost_rub": 0.09363854815315001
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "974673756e0c4de3af4c501719d37ac2",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3376,
+            "output_tokens": 1301,
+            "cost_rub": 0.1332395748827
+          }
+        ],
+        "cost_rub": 0.568431
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Регулятор объясняет решение тем, что ценовое давление остается повышенным, а инфляционные ожидания высоки.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год, в основном из-за временного сокращения производственных мощностей в отдельных отраслях.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Годовая инфляция на 19 октября достигла 6,8%, по итогам 2026 года ожидается 7,1-7,6%.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-5",
+          "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": [
+        {
+          "claim_id": "bank-1",
+          "text": "Банк ожидает, что на конец 2026 года ключевая ставка будет на уровне 13,5%.",
+          "evidence_refs": [
+            "8f85e29b-5d84-52f4-8659-f65f6092816c"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "ai_interpretation": [],
+      "risks": [
+        {
+          "claim_id": "risk-2",
+          "text": "Если компания использует заемные средства для реализации проектов в строительстве, то стоимость привлечения новых средств может быть высокой.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "opportunities": [
+        {
+          "claim_id": "opportunity-1",
+          "text": "Если компания размещает свободные средства на депозитах, то доходность может быть высокой в условиях высоких ставок.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "da6c1e5f-538b-56e0-b0d4-b382af6145c9"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "actions": [
+        {
+          "claim_id": "action-2",
+          "text": "Проверить условия текущих депозитных договоров компании на предмет возможности реинвестирования.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "da6c1e5f-538b-56e0-b0d4-b382af6145c9"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "unknowns": [
+        "Сила влияния не определена: доказательств недостаточно",
+        "Долг компании в других банках, его сумма и тип ставки неизвестны",
+        "Сумма и структура заемного капитала компании",
+        "Тип процентных ставок по текущим кредитам",
+        "Условия депозитных договоров",
+        "Срок актуальности вывода источниками не установлен",
+        "наличие у компании кредитов с плавающей ставкой",
+        "объем и условия кредитных обязательств"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-key-rate-2026-10-23",
+        "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "f7f3ff8f-038b-53b1-b56a-999910516133",
+        "da6c1e5f-538b-56e0-b0d4-b382af6145c9"
+      ],
+      "trace_id": "09b00141-7b43-4c38-a49f-265bfca4e801",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Эффект сохраняется при текущей ставке",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "historical",
+        "document_dates": [
+          "2026-08-05"
+        ]
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

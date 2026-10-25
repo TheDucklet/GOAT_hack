@@ -1,0 +1,562 @@
+{
+  "pair_id": "B03-finance_director__ev-syn-metro",
+  "context_id": "B03-finance_director",
+  "event_id": "ev-syn-metro",
+  "status": "ok",
+  "latency_seconds": 32.81,
+  "cost_rub": 0.339187,
+  "llm_calls": 9,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "металлопрокат строительство инфраструктура",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "dbe23e54-99bd-4539-ab77-37bcfd82997d",
+        "a16f5bf5-7a43-4a20-9268-be0b2b612ce5"
+      ]
+    },
+    {
+      "query": "спрос на металл транспортные проекты",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "инвестиции в транспортную инфраструктуру Татарстана",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "be640d52-a1bc-4f05-b711-573d442b4bd8"
+      ]
+    },
+    {
+      "query": "расход металлопродукции при строительстве метро",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-metro",
+        "kind": "news",
+        "source_id": "pub-ev-syn-metro",
+        "version": "d8c7038c4f9c90fe",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-metro"
+        },
+        "excerpt": "В Казани открылась новая станция метро на продлённом участке первой линии."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния открытия метро в Казани на спрос на металл в Санкт-Петербурге",
+        "Анализ логистических издержек компании при изменении транспортной инфраструктуры",
+        "Изучение динамики цен на металлопрокат в контексте инфраструктурных проектов",
+        "Определение зависимости выручки компании от строительного сектора региона",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B03",
+          "profile_version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-metro",
+          "event_version": "d8c7038c4f9c90fe",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Оценка влияния открытия метро в Казани на спрос на металл в Санкт-Петербурге",
+            "Анализ логистических издержек компании при изменении транспортной инфраструктуры",
+            "Изучение динамики цен на металлопрокат в контексте инфраструктурных проектов",
+            "Определение зависимости выручки компании от строительного сектора региона"
+          ],
+          "initial_queries": [
+            "металлопрокат строительство инфраструктура",
+            "спрос на металл транспортные проекты"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "93c16ff7126d40f7945aceabb368a389",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 375,
+          "output_tokens": 123,
+          "cost_rub": 0.0161603724555
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "металлопрокат строительство инфраструктура",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "dbe23e54-99bd-4539-ab77-37bcfd82997d",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "a16f5bf5-7a43-4a20-9268-be0b2b612ce5",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "d1e96517-3e8b-5ba9-88ff-a8a9457b0b0a",
+            "0f8ddd89-654c-5d2e-a363-9ecbf126aefe"
+          ],
+          "new_fragments": 2,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "спрос на металл транспортные проекты",
+          "as_of": "2026-09-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-22"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "2392553792204449aa4d4576f45fd8ef",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1822,
+          "output_tokens": 425,
+          "cost_rub": 0.0613486896035
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "a0659031472c4f4dbe6687c513fb9df5",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1822,
+          "output_tokens": 563,
+          "cost_rub": 0.0750747979865
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "4f913e1191cf4fc992b895e27eedb848",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 290,
+          "output_tokens": 49,
+          "cost_rub": 0.0035147632221
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "металлопрокат строительство инфраструктура",
+            "спрос на металл транспортные проекты"
+          ],
+          "new_query": "инвестиции в транспортную инфраструктуру Татарстана",
+          "reason": "Запрос переходит от узкого сегмента металлопроката к более широкой теме капитального строительства и региональных инвестиционных проектов."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "инвестиции в транспортную инфраструктуру Татарстана",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "be640d52-a1bc-4f05-b711-573d442b4bd8",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "c0abf574-c335-5408-9719-5c2ffbeed538"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "151e3381e4c44367b922a38efad6f202",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1932,
+          "output_tokens": 494,
+          "cost_rub": 0.069363438625
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "5291f622e7ef46178f1588dc657a8ccd",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1932,
+          "output_tokens": 421,
+          "cost_rub": 0.0621025262195
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "b3d27eb131a4495ba6badaedbfc3b66b",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 317,
+          "output_tokens": 62,
+          "cost_rub": 0.003881211577100001
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "металлопрокат строительство инфраструктура",
+            "спрос на металл транспортные проекты",
+            "инвестиции в транспортную инфраструктуру Татарстана"
+          ],
+          "new_query": "расход металлопродукции при строительстве метро",
+          "reason": "Запрос переходит от общих инвестиций к конкретному потреблению металлов в инфраструктурных проектах, что напрямую связывает событие с профилем компании."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "расход металлопродукции при строительстве метро",
+          "as_of": "2026-09-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-22"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "3eb841109323403f968656027f3b36b9",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1980,
+          "output_tokens": 215,
+          "cost_rub": 0.0365872507585
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "FTS_COUNTRY_NAME",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "GROUP_ID",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "c0abf574-c335-5408-9719-5c2ffbeed538",
+        "d1e96517-3e8b-5ba9-88ff-a8a9457b0b0a",
+        "0f8ddd89-654c-5d2e-a363-9ecbf126aefe"
+      ],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Открытие новой станции метро в Казани является локальным инфраструктурным событием, которое не оказывает прямого влияния на основную деятельность компании, так как компания зарегистрирована в Санкт-Пе"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Компания не имеет продуктов банка, связанных с инфраструктурным финансированием или лизингом строительной техники, поэтому событие не меняет структуру её банковского обслуживания или доступ к специфич"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Хотя в банковском обзоре упоминается спад в строительной отрасли, открытие одной станции метро в другом регионе не компенсирует общие отраслевые тенденции и не создает спроса на продукцию компании (ме"
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Уточнить у руководителя, планирует ли компания расширять географию поставок или открывать новые склады/офисы в Казани, чтобы оценить потенциальный спрос на металлопрокат в этом регионе."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить наличие контрактов с подрядчиками, участвующими в строительстве метрополитена в других регионах, чтобы оценить возможность участия компании в тендерах на поставку материалов."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "металлопрокат строительство инфраструктура",
+        "спрос на металл транспортные проекты",
+        "инвестиции в транспортную инфраструктуру Татарстана",
+        "расход металлопродукции при строительстве метро"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 1,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "3eb841109323403f968656027f3b36b9",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1980,
+            "output_tokens": 215,
+            "cost_rub": 0.0365872507585
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "ff2c3f54d3c359b7299e53d1dbe6699c0880ed9301e5d1925c9b215746235bfd",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "version": "d8c7038c4f9c90fe"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение полностью совпадает с текстом источника."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "8a96f27cbf2f4c0c9c5e7e7865297429",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1313,
+            "output_tokens": 107,
+            "cost_rub": 0.01115416442855
+          }
+        ],
+        "cost_rub": 0.011154
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "В Казани открылась новая станция метро на продлённом участке первой линии.",
+          "evidence_refs": [
+            "evidence-ev-syn-metro"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Планы компании по географической экспансии в Поволжский регион.",
+        "Участие компании в тендерах на поставку строительных материалов для инфраструктурных проектов в других городах.",
+        "Влияние общей конъюнктуры рынка металлов на выручку компании в Санкт-Петербурге.",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие данных о наличии у компании филиалов, складов или офисов в г. Казань",
+        "Отсутствие информации о поставщиках или клиентах компании, базирующихся в г. Казань",
+        "Неизвестно, участвует ли компания в тендерах или проектах, связанных со строительством инфраструктуры в г. Казань",
+        "Неизвестно влияние открытия станции метро на логистические расходы компании в Санкт-Петербурге"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-metro"
+      ],
+      "trace_id": "41766b94-34fa-4189-9883-74383b7484b8",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

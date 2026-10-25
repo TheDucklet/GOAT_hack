@@ -87,6 +87,8 @@ def relevance_window(
     elif review and today >= review:
         status = "review_required"
     valid_from = min(event_day, starts_on) if starts_on else event_day
+    if valid_until and valid_until < valid_from:
+        return empty
     return {
         "relevance_status": status,
         "valid_from": valid_from,

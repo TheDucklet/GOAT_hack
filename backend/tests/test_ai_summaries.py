@@ -24,6 +24,7 @@ from app.ai.summarization.vocabulary import (
     match_regions,
     products_for_themes,
 )
+from tests.support_gate import install
 
 NEWS_TEXT = (
     "11 сентября 2026 года совет директоров Банка России принял решение сохранить ключевую ставку "
@@ -85,7 +86,7 @@ def llm_settings():
     return LLMSettings(_env_file=None, llm_api_key="sk-test", llm_retry_backoff_seconds=0)
 
 
-def patch_llm(monkeypatch, transport, *modules):
+def patch_llm(monkeypatch, transport, *modules, verifier=None):
     def patched(task, input, max_tokens, **kwargs):
         return call_llm(
             task,
@@ -100,12 +101,13 @@ def patch_llm(monkeypatch, transport, *modules):
 
     for module in modules or (summarize_module, industries_module, focus_module):
         monkeypatch.setattr(module, "call_llm", patched)
+    install(monkeypatch, verifier)
 
 
-def run_summary(monkeypatch, *responses, payload=None):
+def run_summary(monkeypatch, *responses, payload=None, verifier=None, diagnostics=None):
     transport = ScriptedTransport(*responses)
-    patch_llm(monkeypatch, transport)
-    return summarize_event(payload or event()), transport
+    patch_llm(monkeypatch, transport, verifier=verifier)
+    return summarize_event(payload or event(), diagnostics), transport
 
 
 def test_quote_matching_ignores_case_whitespace_quote_marks_and_yo():
@@ -371,3 +373,125 @@ def test_invalid_json_from_the_model_raises_typed_error(monkeypatch):
     with pytest.raises(AIError) as raised:
         summarize_event(event())
     assert raised.value.code == "invalid_json"
+
+
+INSIDER_TEXT = (
+    "Банк России установил, что старший трейдер одной инвестиционной компании неправомерно использовал инсайдерскую "
+    "информацию при сделках с рядом акций на Московской бирже. Имея доступ к клиентским торговым поручениям, он торговал "
+    "со своего брокерского счёта с учётом активности клиентов, а крупные объёмы их сделок сдвигали цены акций. "
+    "Регулятор направил трейдеру предписания о недопущении подобных нарушений."
+)
+RATE_TEXT = (
+    "23 октября 2026 года Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых. "
+    "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых, "
+    "годовая инфляция вернется к 4,0% в 2027 году."
+)
+INSIDER_QUOTE = "а крупные объёмы их сделок сдвигали цены акций"
+RATE_QUOTE = "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых"
+
+
+def only(*facts, summary="Банк России сообщил о решении."):
+    return json_completion(raw_answer(summary=summary, facts=list(facts)))
+
+
+def test_misattributed_actor_is_rejected_by_the_meaning_check_and_the_correct_wording_is_kept(monkeypatch):
+    from tests.support_gate import Verifier
+
+    wrong = fact("Крупные объёмы сделок трейдера сдвигали цены акций.", INSIDER_QUOTE)
+    right = fact("Цены акций сдвигали крупные объёмы сделок клиентов.", INSIDER_QUOTE)
+    diagnostics = {}
+    result, _ = run_summary(
+        monkeypatch,
+        only(wrong, right),
+        payload=event(INSIDER_TEXT),
+        verifier=Verifier({"check-fact-1": "contradicted"}),
+        diagnostics=diagnostics,
+    )
+    assert [item["text"] for item in result["facts"]] == [right["text"]]
+    assert result["facts"][0]["claim_id"] == "fact-1"
+    assert diagnostics["rejected"][0]["stage"] == "fact_check"
+    assert diagnostics["rejected"][0]["text"] == wrong["text"]
+
+
+@pytest.mark.parametrize(
+    "wording",
+    [
+        "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+        "В 2027 году средняя ключевая ставка в базовом сценарии снизится до 12,5-13,5% годовых.",
+        "Ожидается рост средней ставки в 2027 году на уровне 12,5-13,5% годовых.",
+    ],
+)
+def test_direction_that_the_source_does_not_state_is_rejected_without_a_blacklist(monkeypatch, wording):
+    diagnostics = {}
+    result, _ = run_summary(
+        monkeypatch,
+        only(fact(wording, RATE_QUOTE)),
+        only(fact(wording, RATE_QUOTE)),
+        payload=event(RATE_TEXT),
+        diagnostics=diagnostics,
+    )
+    assert result["facts"] == []
+    assert diagnostics["rejected"][0]["stage"] == "direction_guard"
+
+
+@pytest.mark.parametrize(
+    "wording",
+    [
+        "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+        "В 2027 году базовый сценарий закладывает среднюю ключевую ставку 12,5-13,5% годовых.",
+    ],
+)
+def test_correct_new_wordings_of_the_same_fact_are_kept(monkeypatch, wording):
+    result, _ = run_summary(monkeypatch, only(fact(wording, RATE_QUOTE)), payload=event(RATE_TEXT))
+    assert [item["text"] for item in result["facts"]] == [wording]
+
+
+def test_direction_stated_by_the_source_is_a_valid_counterexample(monkeypatch):
+    text = "Совет директоров заявил, что ставка снизится до 12,5% годовых к концу года."
+    quote = "ставка снизится до 12,5% годовых к концу года"
+    wording = "Совет директоров заявил, что ставка снизится до 12,5% годовых."
+    result, _ = run_summary(monkeypatch, only(fact(wording, quote)), payload=event(text))
+    assert [item["text"] for item in result["facts"]] == [wording]
+
+
+def test_unsupported_summary_sentence_is_removed_from_the_summary(monkeypatch):
+    from tests.support_gate import Verifier
+
+    good = fact(
+        "Банк России сохранил ключевую ставку на уровне 14% годовых.",
+        "принял решение сохранить ключевую ставку",
+    )
+    result, _ = run_summary(
+        monkeypatch,
+        only(good, summary="Банк России сохранил ставку. Это приведёт к росту цен на жильё."),
+        verifier=Verifier({"check-summary-2": "unsupported"}),
+    )
+    assert result["summary"] == "Банк России сохранил ставку."
+
+
+def test_when_every_fact_fails_the_event_has_no_facts_and_keeps_only_a_checked_summary(monkeypatch):
+    from tests.support_gate import Verifier
+
+    claim = fact(
+        "Банк России сохранил ключевую ставку на уровне 14% годовых.",
+        "принял решение сохранить ключевую ставку",
+    )
+    result, _ = run_summary(
+        monkeypatch,
+        only(claim),
+        only(claim),
+        verifier=Verifier({"check-fact-1": "unsupported"}),
+    )
+    assert result["facts"] == [] and result["summary"] == "Банк России сообщил о решении."
+
+
+def test_meaning_check_failure_is_an_error_and_not_an_unchecked_fact(monkeypatch):
+    from app.ai.providers import LLMError
+    from tests.support_gate import Verifier
+
+    with pytest.raises(LLMError):
+        run_summary(
+            monkeypatch,
+            only(fact("Банк России сохранил ставку.", "принял решение сохранить ключевую ставку")),
+            verifier=Verifier(error=LLMError("provider_unavailable", "r")),
+        )

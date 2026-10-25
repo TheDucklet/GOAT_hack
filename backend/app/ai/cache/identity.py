@@ -17,6 +17,7 @@ def producer_identity(settings=None):
         "personalization/focus.py",
         "summarization/prompts.py",
         "chat/prompts.py",
+        "gate/prompts.py",
     )
     return {
         "generation": os.environ.get("AI_GENERATION_VERSION", "1"),

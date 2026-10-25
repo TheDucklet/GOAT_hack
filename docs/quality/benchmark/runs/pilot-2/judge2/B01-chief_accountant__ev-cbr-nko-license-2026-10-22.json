@@ -1,0 +1,130 @@
+{
+  "judge_version": "judge-2",
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Банк России приказом от 22.10.2026 № ОД-1864 отозвал лицензию на осуществление банковских операций у ООО НКО «Тайдон».",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из текста новости.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Банк России приказом от 22.10.2026 № ОД-1864 отозвал лицензию на осуществление банковских операций у ООО НКО «Тайдон».",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "ООО НКО «Тайдон» не смогла исполнить обязанность по уплате обязательных платежей более 14 дней.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из текста новости.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "ООО НКО «Тайдон» не смогла исполнить обязанность по уплате обязательных платежей более 14 дней.",
+          "kind": "event_fact",
+          "actor_in_claim": "ООО НКО «Тайдон»",
+          "actor_in_source": "организация (ООО НКО «Тайдон»)",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Активы ООО НКО «Тайдон» были крайне низкого качества и не обеспечивали денежный поток, необходимый для продолжения деятельности.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из текста новости.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Активы ООО НКО «Тайдон» были крайне низкого качества и не обеспечивали денежный поток, необходимый для продолжения деятельности.",
+          "kind": "company_property",
+          "actor_in_claim": "ООО НКО «Тайдон»",
+          "actor_in_source": "организация (ООО НКО «Тайдон»)",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Приказом № ОД-1865 назначена временная администрация, полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из текста новости.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Приказом № ОД-1865 назначена временная администрация, полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-1",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть средства на расчётных счетах в ООО НКО «Тайдон», то доступ к этим денежным потокам может быть ограничен.",
+      "verdict": "supported",
+      "reason": "Вывод явно условный, условие названо как неизвестная предпосылка и не противоречит источникам.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если у компании есть средства на расчётных счетах в ООО НКО «Тайдон», то доступ к этим денежным потокам может быть ограничен.",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не названо",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "impact",
+      "section": "impact_reason",
+      "statement_type": "hypothesis",
+      "text": "Сила влияния не определена по рубрике: доказательств недостаточно. Механизм ниже – гипотеза, а не оценка силы.",
+      "verdict": "unsupported",
+      "reason": "Утверждения о недостаточности доказательств и о том, что механизм является гипотезой, отсутствуют в источниках.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Сила влияния не определена по рубрике: доказательств недостаточно.",
+          "kind": "conditional_inference",
+          "actor_in_claim": "не названо",
+          "actor_in_source": "не названо",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Механизм ниже – гипотеза, а не оценка силы.",
+          "kind": "conditional_inference",
+          "actor_in_claim": "не названо",
+          "actor_in_source": "не названо",
+          "status": "not_in_sources"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "03f253488040418aacad3e09eff942c0",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 2670,
+      "output_tokens": 718,
+      "cost_rub": 0.061067927343852
+    }
+  ]
+}

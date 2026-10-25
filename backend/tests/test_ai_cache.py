@@ -15,6 +15,7 @@ from app.ai.cache.calls import (
 from app.ai.ocr.engine import _cache_file, _load_cached
 from app.ai.providers import LLMSettings, MemoryUsageSink, call_llm
 from app.ai.providers.testing import ScriptedTransport, json_completion
+from tests.support_gate import install
 from tests.test_ai_summaries import event, focus_answer, raw_answer
 from tests.test_ai_summaries import focus_module as _focus_module  # noqa: F401
 from tests.test_ai_summaries import summarize_module as _summarize_module  # noqa: F401
@@ -48,7 +49,7 @@ def agent(monkeypatch):
         counter["runs"] += 1
         return envelope()
 
-    monkeypatch.setattr(calls_module, "build_impact_insight", fake_run_agent)
+    monkeypatch.setattr(calls_module, "build_published_insight", fake_run_agent)
     return counter
 
 
@@ -231,6 +232,7 @@ def patch_llm(monkeypatch, transport, budget=None):
 
     for module in (_summarize_module, _focus_module):
         monkeypatch.setattr(module, "call_llm", patched)
+    install(monkeypatch)
 
 
 def test_repeated_focus_request_does_not_call_the_model(monkeypatch):

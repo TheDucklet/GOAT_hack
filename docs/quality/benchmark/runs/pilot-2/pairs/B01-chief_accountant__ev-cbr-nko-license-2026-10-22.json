@@ -1,0 +1,874 @@
+{
+  "pair_id": "B01-chief_accountant__ev-cbr-nko-license-2026-10-22",
+  "context_id": "B01-chief_accountant",
+  "event_id": "ev-cbr-nko-license-2026-10-22",
+  "status": "ok",
+  "latency_seconds": 80.94,
+  "cost_rub": 0.705032,
+  "llm_calls": 11,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "ликвидность расчётно-кассовое обслуживание",
+      "as_of": "2026-10-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "строительный сектор банковские риски",
+      "as_of": "2026-10-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "621f1430-4ac8-46d1-8601-3fcb93419887"
+      ]
+    },
+    {
+      "query": "риски неплатежеспособности небанковских кредитных организаций",
+      "as_of": "2026-10-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "анализ устойчивости небанковских кредитных организаций",
+      "as_of": "2026-10-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-nko-license-2026-10-22",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-nko-license-2026-10-22",
+        "version": "b3851287ecd170ae",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639282394585722382BANK_SECTOR.htm"
+        },
+        "excerpt": "Банк России приказом от 22.10.2026 № ОД-1864 отозвал лицензию на банковские операции у ООО НКО «Тайдон» (г."
+      },
+      {
+        "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+        "kind": "company",
+        "source_id": "B01",
+        "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_RKO_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «расчётно-кассовое обслуживание»"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-4",
+      "plan": [
+        "Оценка прямых финансовых потерь компании из-за отзыва лицензии у контрагента",
+        "Анализ влияния на ликвидность и расчётно-кассовое обслуживание строительной компании",
+        "Изучение рисков для строительного сектора при нестабильности финансового рынка",
+        "Проверка наличия альтернативных банковских продуктов для минимизации рисков",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-nko-license-2026-10-22",
+          "event_version": "b3851287ecd170ae",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Оценка прямых финансовых потерь компании из-за отзыва лицензии у контрагента",
+            "Анализ влияния на ликвидность и расчётно-кассовое обслуживание строительной компании",
+            "Изучение рисков для строительного сектора при нестабильности финансового рынка",
+            "Проверка наличия альтернативных банковских продуктов для минимизации рисков"
+          ],
+          "initial_queries": [
+            "ликвидность расчётно-кассовое обслуживание",
+            "строительный сектор банковские риски"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "3d0ab591c8cc4d59b7c758ad5dd85961",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 540,
+          "output_tokens": 134,
+          "cost_rub": 0.018280537938
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ликвидность расчётно-кассовое обслуживание",
+          "as_of": "2026-10-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-22"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительный сектор банковские риски",
+          "as_of": "2026-10-22",
+          "returned": [
+            {
+              "chunk_id": "621f1430-4ac8-46d1-8601-3fcb93419887",
+              "page": 23,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "fad20d72-5d09-59bc-87e5-5407060ee23c"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "defc7cc709ad43b0badea7962eccc657",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2012,
+          "output_tokens": 386,
+          "cost_rub": 0.059458863087
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "86355003beab4a45bf765577d924b85a",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2012,
+          "output_tokens": 536,
+          "cost_rub": 0.074378546112
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": [
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "evidence-ev-cbr-nko-license-2026-10-22"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "eb37d7976abd4cf8a439b8671328198a",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 429,
+          "output_tokens": 68,
+          "cost_rub": 0.0086869200041
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ликвидность расчётно-кассовое обслуживание",
+            "строительный сектор банковские риски"
+          ],
+          "new_query": "риски неплатежеспособности небанковских кредитных организаций",
+          "reason": "Запрос расширяет область поиска от строительного сектора к системным рискам НКО и проблемам исполнения обязательств, что может содержать аналитические выводы банка."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "риски неплатежеспособности небанковских кредитных организаций",
+          "as_of": "2026-10-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-22"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "17b4870226ca49929394fbfd56bba9f0",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 461,
+          "output_tokens": 67,
+          "cost_rub": 0.0052108956081
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ликвидность расчётно-кассовое обслуживание",
+            "строительный сектор банковские риски",
+            "риски неплатежеспособности небанковских кредитных организаций"
+          ],
+          "new_query": "анализ устойчивости небанковских кредитных организаций",
+          "reason": "Запрос переходит от частных рисков неплатежеспособности к более широкой теме финансовой устойчивости сектора НКО, что позволит найти экспертные оценки качества активов."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "анализ устойчивости небанковских кредитных организаций",
+          "as_of": "2026-10-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-22"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "1e95215f41f5400c95219cf3fffd3f68",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2332,
+          "output_tokens": 363,
+          "cost_rub": 0.0605215633165
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_RKO_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "fad20d72-5d09-59bc-87e5-5407060ee23c"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "ликвидность расчётно-кассовое обслуживание",
+        "строительный сектор банковские риски",
+        "риски неплатежеспособности небанковских кредитных организаций",
+        "анализ устойчивости небанковских кредитных организаций"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "evidence-ev-cbr-nko-license-2026-10-22"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "status": "valid"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 11,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-2",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product"
+          ],
+          "direct_event_matches": [
+            "CL_PRODUCT_RKO_MARK"
+          ],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_RKO_MARK"
+        ],
+        "synthesized": [
+          "impact_reason"
+        ],
+        "horizon_kind": "unknown",
+        "assumptions": [
+          "assumption-1"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "1e95215f41f5400c95219cf3fffd3f68",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2332,
+            "output_tokens": 363,
+            "cost_rub": 0.0605215633165
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "57fec6f54b6181a1d216cfc14ce1663e7b43de0a7269db9d0e43629d6641faca",
+        "required": 7,
+        "checked": 7,
+        "supported": 7,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "version": "b3851287ecd170ae"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "version": "b3851287ecd170ae"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "version": "b3851287ecd170ae"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "version": "b3851287ecd170ae"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "version": "b3851287ecd170ae"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, условие названо и не подменяется фактом, вывод не противоречит источникам (отзыв лицензии и назначение временной администрации)."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "version": "b3851287ecd170ae"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный, условие названо и не подменяется фактом, вывод не противоречит источникам."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-nko-license-2026-10-22",
+                "version": "b3851287ecd170ae"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Часть является методологической оговоркой (гипотеза без оценки силы), не приписывает фактов и не противоречит источникам."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Связь «рост процентных расходов снижает рентабельность» не следует из источников; источник подтверждает лишь наличие продукта «кредиты» и стадию «Оптимизация», но не плавающую ставку и не причинно-следственную связь."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "В источниках нет ни «усиления контроля за ликвидностью в банковском секторе», ни связи с необходимостью пересмотра управления денежными потоками; отзыв лицензии у одной НКО такого вывода не подтверждает."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Причинная связь «рост стоимости обслуживания долга снижает финансовую устойчивость» не следует из источников (новость об отзыве лицензии и наличие продукта «кредиты» её не содержат)."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Вывод об усложнении управления денежными потоками компании из-за отзыва лицензий не следует из источников: новость касается НКО «Тайдон», а не влияния отзыва лицензий на денежные потоки клиентов."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Стадия «Оптимизация» не подтверждает оптимизацию именно структуры затрат, а компенсация роста стоимости заемных средств снижением операционных расходов в источниках отсутствует."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующую задолженность и не даёт информации о типе процентной ставки."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие продукта «расчётно-кассовое обслуживание» не доказывает действующие расчётные счета и наличие средств."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Связь «отзыв лицензии влияет через продукт РКО» не следует из источников: наличие банковского продукта не доказывает счета или экспозицию компании в данной НКО."
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "repaired_by_removal",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "6908f94be43b4f5583baa2685a5adb1c",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2600,
+            "output_tokens": 1081,
+            "cost_rub": 0.1071652039315
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "d35f21037bad42a290af50f03769cd92",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2221,
+            "output_tokens": 1613,
+            "cost_rub": 0.13125290130095
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "25257776c084469e999d39f37876d358",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1972,
+            "output_tokens": 584,
+            "cost_rub": 0.0676966221074
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "7b7f7f3f60644827aba42124b7f2f219",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2581,
+            "output_tokens": 933,
+            "cost_rub": 0.09831442916295
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "ab1d9f17229b46fea906f065287090ae",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1714,
+            "output_tokens": 772,
+            "cost_rub": 0.0740654945173
+          }
+        ],
+        "cost_rub": 0.478495
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Банк России приказом от 22.10.2026 № ОД-1864 отозвал лицензию на осуществление банковских операций у ООО НКО «Тайдон».",
+          "evidence_refs": [
+            "evidence-ev-cbr-nko-license-2026-10-22"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "ООО НКО «Тайдон» не смогла исполнить обязанность по уплате обязательных платежей более 14 дней.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nko-license-2026-10-22"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Активы ООО НКО «Тайдон» были крайне низкого качества и не обеспечивали денежный поток, необходимый для продолжения деятельности.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nko-license-2026-10-22"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Приказом № ОД-1865 назначена временная администрация, полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nko-license-2026-10-22"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: доказательств недостаточно",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Тип процентной ставки по кредитам компании",
+        "Сумма задолженности по кредитам",
+        "Структура расчетных счетов компании",
+        "Наличие средств в других банках",
+        "Срок актуальности вывода источниками не установлен",
+        "Открыты ли у компании расчётные счета именно в ООО НКО «Тайдон»",
+        "Какова сумма средств на этих счетах"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-nko-license-2026-10-22",
+        "834bca09-badf-5e15-826a-9fb803b4f974"
+      ],
+      "trace_id": "f07b9714-1991-4ece-8156-5a51377b1bbd",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [
+        {
+          "claim_id": "mechanism-1",
+          "text": "Если у компании есть средства на расчётных счетах в ООО НКО «Тайдон», то доступ к этим денежным потокам может быть ограничен.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nko-license-2026-10-22",
+            "834bca09-badf-5e15-826a-9fb803b4f974"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "impact_level": "undetermined",
+      "impact_reason": {
+        "claim_id": "impact",
+        "text": "Сила влияния не определена по рубрике: доказательств недостаточно. Механизм ниже – гипотеза, а не оценка силы.",
+        "evidence_refs": [
+          "evidence-ev-cbr-nko-license-2026-10-22",
+          "834bca09-badf-5e15-826a-9fb803b4f974"
+        ],
+        "statement_type": "hypothesis",
+        "quantitative_scenario": null
+      },
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [
+        {
+          "claim_id": "assumption-1",
+          "text": "Если у компании есть средства на расчётных счетах в ООО НКО «Тайдон», то доступ к этим денежным потокам может быть ограничен.",
+          "evidence_refs": [
+            "evidence-ev-cbr-nko-license-2026-10-22",
+            "834bca09-badf-5e15-826a-9fb803b4f974"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

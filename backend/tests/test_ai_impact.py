@@ -8,6 +8,7 @@ from app.ai.agent import steps as steps_module
 from app.ai.cache import ResultCache
 from app.ai.cache import calls as calls_module
 from app.ai.cache.calls import cached_build_insight
+from app.ai.gate import verify as gate_verify_module
 from app.ai.impact import build_impact_insight
 from app.ai.impact import generate as impact_module
 from app.ai.impact.assemble import bank_context, relevance_window
@@ -256,6 +257,7 @@ def test_unknown_strength_is_undetermined_not_low(monkeypatch):
     result = make(monkeypatch, router, context("u-client"))["result"]
     assert result["impact_level"] == "undetermined"
     assert result["relevance_status"] == "undetermined" and result["relevance_reason"] is None
+    assert "по рубрике" not in ((result["impact_reason"] or {}).get("text") or "")
     assert result["next_actions"][0]["action"] == "ask_question"
 
 
@@ -474,7 +476,7 @@ def test_cache_reuses_the_same_card_and_counts_one_model_call(monkeypatch):
             **k,
         ),
     )
-    for module in (build_module, steps_module):
+    for module in (build_module, steps_module, gate_verify_module):
         monkeypatch.setattr(
             module,
             "call_llm",
@@ -509,7 +511,7 @@ def test_changed_impact_prompt_or_schema_version_gives_a_new_cache_identity(monk
     ctx = context("u-client")
     seen = []
     monkeypatch.setattr(
-        calls_module, "build_impact_insight", lambda *a: seen.append(1) or {"result": {}, "trace": {}}
+        calls_module, "build_published_insight", lambda *a: seen.append(1) or {"result": {}, "trace": {}}
     )
 
     class CorpusTools(Tools):
@@ -667,3 +669,9 @@ def test_committed_examples_are_valid_v2_envelopes_with_application_policy():
         assert envelope.result.next_actions[0].action == "ask_question"
     unknown = next(c for c in cases if c["name"] == "unconfirmed_profile_accountant")["envelope"]["result"]
     assert unknown["impact_level"] == "undetermined" and unknown["mechanism"] == []
+
+
+def test_relevance_window_with_an_end_before_the_event_is_undetermined():
+    event_day, today = date(2026, 10, 23), date(2026, 10, 25)
+    window = relevance_window("dated", None, date(2026, 9, 1), event_day, today, True)
+    assert window["relevance_status"] == "undetermined" and window["valid_until"] is None

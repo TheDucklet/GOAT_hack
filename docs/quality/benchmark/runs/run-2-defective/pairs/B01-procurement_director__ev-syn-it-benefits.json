@@ -1,0 +1,618 @@
+{
+  "pair_id": "B01-procurement_director__ev-syn-it-benefits",
+  "context_id": "B01-procurement_director",
+  "event_id": "ev-syn-it-benefits",
+  "status": "ok",
+  "latency_seconds": 28.75,
+  "cost_rub": 0.376346,
+  "llm_calls": 8,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "страховые взносы IT-компаний налоговая нагрузка",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "расходы на персонал строительные компании рентабельность",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "9d298a44-4d2d-4a6e-ba9c-6cabb1c1c1b6"
+      ]
+    },
+    {
+      "query": "льготы ИТ-сектора влияние на экономику",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "178f4ca9-7b26-48b8-8b6f-6af66ba8d068",
+        "d31392ec-8e9d-4f9b-a018-a726e6ad088c",
+        "217abbf5-12b6-440c-8412-e661011b38e2",
+        "a417f958-504c-4608-b97f-35ef9eaabccb",
+        "16541d2f-7953-4702-a8f7-a671b869cca5"
+      ]
+    },
+    {
+      "query": "влияние налоговых льгот ИТ на строительный сектор",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-it-benefits",
+        "kind": "news",
+        "source_id": "pub-ev-syn-it-benefits",
+        "version": "4fe0bc62b1ac77ec",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-it-benefits"
+        },
+        "excerpt": "Правительство России продлило на 2027 год пониженную ставку страховых взносов для аккредитованных IT-компаний."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Определить наличие у компании IT-аккредитации или смежных направлений",
+        "Оценить долю расходов на персонал в структуре затрат",
+        "Проверить применение пониженных страховых взносов в отчётности",
+        "Анализ влияния налоговой экономии на рентабельность проектов",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-it-benefits",
+          "event_version": "4fe0bc62b1ac77ec",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Определить наличие у компании IT-аккредитации или смежных направлений",
+            "Оценить долю расходов на персонал в структуре затрат",
+            "Проверить применение пониженных страховых взносов в отчётности",
+            "Анализ влияния налоговой экономии на рентабельность проектов"
+          ],
+          "initial_queries": [
+            "страховые взносы IT-компаний налоговая нагрузка",
+            "расходы на персонал строительные компании рентабельность"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "47c42c240c4a481fa1fd09ab03fc879c",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 400,
+          "output_tokens": 120,
+          "cost_rub": 0.026174882500000003
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "страховые взносы IT-компаний налоговая нагрузка",
+          "as_of": "2026-10-15",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-15"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "расходы на персонал строительные компании рентабельность",
+          "as_of": "2026-10-15",
+          "returned": [
+            {
+              "chunk_id": "9d298a44-4d2d-4a6e-ba9c-6cabb1c1c1b6",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "3a1e5244-e02c-53b5-bd0d-2db78ca46615"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "77f11b7d9cec4177a097db4ef8ac5d37",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1635,
+          "output_tokens": 1105,
+          "cost_rub": 0.1270267047725
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": [
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "2404125b-80f2-5f90-bbb1-40bd45b5229f",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "3a1e5244-e02c-53b5-bd0d-2db78ca46615",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "955430e5-694a-5764-98ce-ad94c9224be4",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-syn-it-benefits"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "cdde58c1efec4ccca78273d9931f27dc",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 318,
+          "output_tokens": 61,
+          "cost_rub": 0.0041052685713
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "страховые взносы IT-компаний налоговая нагрузка",
+            "расходы на персонал строительные компании рентабельность"
+          ],
+          "new_query": "льготы ИТ-сектора влияние на экономику",
+          "reason": "Запрос переходит от конкретных ставок к макроэкономическим последствиям налоговых преференций, что может содержать экспертную оценку банка."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "льготы ИТ-сектора влияние на экономику",
+          "as_of": "2026-10-15",
+          "returned": [
+            {
+              "chunk_id": "178f4ca9-7b26-48b8-8b6f-6af66ba8d068",
+              "page": 10,
+              "historical": false
+            },
+            {
+              "chunk_id": "d31392ec-8e9d-4f9b-a018-a726e6ad088c",
+              "page": 9,
+              "historical": false
+            },
+            {
+              "chunk_id": "217abbf5-12b6-440c-8412-e661011b38e2",
+              "page": 4,
+              "historical": false
+            },
+            {
+              "chunk_id": "a417f958-504c-4608-b97f-35ef9eaabccb",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "16541d2f-7953-4702-a8f7-a671b869cca5",
+              "page": 3,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "0204c5e5-e568-5b11-b30f-5534205b7e74",
+            "1788da5a-fc66-5046-b237-fe1e84918d94",
+            "aa913d9f-cbd9-5ab5-a742-83be457628ca",
+            "0bbb1ba5-6174-5488-810b-8b09204c73e8",
+            "bede9eae-fd6f-5320-95a1-35bca578f535"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "2d79c7a55c2b49a2bccd849ebc386f90",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2017,
+          "output_tokens": 403,
+          "cost_rub": 0.0612021102615
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "287ef9aca3594a1cbb11070bda0a80fa",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2017,
+          "output_tokens": 738,
+          "cost_rub": 0.0889946005
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "9bc3fe3f8d6a40308b4bbb1d002dd9e0",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 359,
+          "output_tokens": 62,
+          "cost_rub": 0.0074828754091
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "страховые взносы IT-компаний налоговая нагрузка",
+            "расходы на персонал строительные компании рентабельность",
+            "льготы ИТ-сектора влияние на экономику"
+          ],
+          "new_query": "влияние налоговых льгот ИТ на строительный сектор",
+          "reason": "Запрос переносит фокус с общего ИТ-сектора на косвенное воздействие льгот на смежную отрасль строительства для поиска аналитики по связи этих тем."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние налоговых льгот ИТ на строительный сектор",
+          "as_of": "2026-10-15",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-15"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "8220ee64fe1b4dce9a79179d45a36889",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1954,
+          "output_tokens": 164,
+          "cost_rub": 0.031242339752
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "0204c5e5-e568-5b11-b30f-5534205b7e74",
+        "3a1e5244-e02c-53b5-bd0d-2db78ca46615",
+        "1788da5a-fc66-5046-b237-fe1e84918d94",
+        "aa913d9f-cbd9-5ab5-a742-83be457628ca"
+      ],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Событие напрямую не влияет на компанию, так как её основной вид деятельности — строительство жилых и нежилых зданий, а не разработка программного обеспечения, что является условием для получения льгот"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Косвенное влияние возможно через макроэкономический канал: продление льгот для IT-сектора поддерживает спрос в этой отрасли, что может стимулировать общую экономическую активность и инфляционное давле"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Отсутствие прямого налогового преимущества для строительного сектора означает, что компания не получает дополнительной ликвидности или снижения прямых расходов на персонал, связанных с IT-льготами, чт"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Рост издержек на персонал: поскольку компания не попадает под льготу по страховым взносам для IT, она продолжает платить полные тарифы, а общий рост зарплат в экономике увеличивает нагрузку на фонд оп"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Отсутствие специфической поддержки: компания не получает выгоды от продления льгот, что может сделать её конкурентоспособность по сравнению с IT-сектором ниже в контексте налоговой нагрузки, хотя это "
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Отсутствие влияния позволяет сохранить фокус на управлении логистическими издержками и цепочками поставок (user_focus), так как налоговые изменения в смежных отраслях не требуют корректировки финансов"
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Возможность использования существующих банковских продуктов (кредиты, лизинг, РКО)- для оптимизации структуры затрат, не отвлекаясь на мониторинг изменений в налоговом законодательстве для IT-сектора."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Уточнить у руководителя, планируется ли внедрение собственных IT-решений или аутсорсинг разработки, чтобы оценить, есть ли часть бизнеса, подпадающая под аккредитацию IT-компаний."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить текущую динамику фонда оплаты труда и сравнить её с ростом зарплат в экономике, чтобы оценить влияние на маржинальность проектов в строительстве."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Оценить, не требует ли текущая стадия оптимизации бизнеса пересмотра структуры заимствований или лизинговых обязательств в связи с общим ростом стоимости труда."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "страховые взносы IT-компаний налоговая нагрузка",
+        "расходы на персонал строительные компании рентабельность",
+        "льготы ИТ-сектора влияние на экономику",
+        "влияние налоговых льгот ИТ на строительный сектор"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "2404125b-80f2-5f90-bbb1-40bd45b5229f",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "3a1e5244-e02c-53b5-bd0d-2db78ca46615",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "955430e5-694a-5764-98ce-ad94c9224be4",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-syn-it-benefits"
+          ]
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-it-benefits",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 1,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "8220ee64fe1b4dce9a79179d45a36889",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1954,
+            "output_tokens": 164,
+            "cost_rub": 0.031242339752
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "15a268794a2212821fd80f2cc8f5c6a4fd8fa7fc9db4206275bd79ebf759eee8",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-it-benefits",
+                "version": "4fe0bc62b1ac77ec"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение полностью соответствует источнику."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "e996c6983aa2459d867abf4900ad9260",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1370,
+            "output_tokens": 112,
+            "cost_rub": 0.030116819804500004
+          }
+        ],
+        "cost_rub": 0.030117
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Правительство России продлило на 2027 год пониженную ставку страховых взносов для аккредитованных IT-компаний.",
+          "evidence_refs": [
+            "evidence-ev-syn-it-benefits"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Доля расходов на персонал в общей структуре издержек компании.",
+        "Наличие у компании собственных разработок или IT-подразделений, которые могут быть аккредитованы.",
+        "Текущая ставка по кредитам и лизингу для оценки влияния на финансовый результат.",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие аккредитации IT-компании у данного застройщика",
+        "Наличие у компании IT-подразделения, которое могло бы претендовать на льготы",
+        "Доля IT-активности в общей структуре затрат компании"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-it-benefits"
+      ],
+      "trace_id": "5a105e32-ff47-4536-9129-72275829b656",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

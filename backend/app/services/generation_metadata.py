@@ -11,11 +11,13 @@ def generation_versions() -> dict[str, str]:
     if settings.ai_module == "app.ai.bridge":
         from app.ai.agent.prompts import AGENT_PROMPT_VERSION
         from app.ai.cache.identity import producer_identity
+        from app.ai.gate.prompts import GATE_PROMPT_VERSION
         from app.ai.impact.prompts import IMPACT_PROMPT_VERSION
         from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION
         from app.ai.personalization.focus import FOCUS_PROMPT_VERSION
         from app.ai.providers.settings import get_llm_settings
         from app.ai.validation import VALIDATION_VERSION
+        from app.publication_policy import PUBLICATION_POLICY_VERSION
 
         runtime = get_llm_settings()
         prompts = dict(
@@ -25,6 +27,8 @@ def generation_versions() -> dict[str, str]:
             insight=INSIGHT_PROMPT_VERSION,
             focus=FOCUS_PROMPT_VERSION,
             validation=VALIDATION_VERSION,
+            gate=GATE_PROMPT_VERSION,
+            publication=PUBLICATION_POLICY_VERSION,
         )
         models = dict(
             tasks=runtime.llm_task_models,
