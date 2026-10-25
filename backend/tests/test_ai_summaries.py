@@ -495,3 +495,21 @@ def test_meaning_check_failure_is_an_error_and_not_an_unchecked_fact(monkeypatch
             only(fact("Банк России сохранил ставку.", "принял решение сохранить ключевую ставку")),
             verifier=Verifier(error=LLMError("provider_unavailable", "r")),
         )
+
+
+def test_summary_without_verified_facts_still_requires_a_semantic_check(monkeypatch):
+    from tests.support_gate import Verifier
+
+    verifier = Verifier({"check-summary-1": "unsupported"})
+    answer = raw_answer(summary="Регулятор гарантировал всем компаниям безусловное списание долгов.", facts=[])
+    result, _ = run_summary(monkeypatch, json_completion(answer), json_completion(answer), verifier=verifier)
+    assert result["facts"] == [] and result["summary"] == event()["title"]
+    assert verifier.payloads and any(
+        item["id"] == "check-summary-1" for payload in verifier.payloads for item in payload["claims"]
+    )
+
+
+def test_checked_summary_without_facts_is_kept_when_the_source_supports_it(monkeypatch):
+    answer = raw_answer(summary="Следующее заседание запланировано на 23 октября 2026 года.", facts=[])
+    result, _ = run_summary(monkeypatch, json_completion(answer), json_completion(answer))
+    assert result["facts"] == [] and "23 октября" in result["summary"]

@@ -248,3 +248,23 @@ def test_publication_report_must_bind_every_claim_to_the_exact_current_evidence(
     assert run_one()
     status = client.get(f"/jobs/{job['id']}").json()
     assert status["status"] == "failed" and status["error"]["code"] == "invalid_publication_report"
+
+
+def test_requeue_summaries_is_a_dry_run_by_default_and_keeps_stored_data(client):
+    from app.models import Event, Job
+    from app.services.resummarize import requeue_summaries
+
+    event_id = event_fixture()
+    with session_factory()() as db, db.begin():
+        event = db.get(Event, event_id)
+        event.processing_status, event.summary = "done", "Сохранённая сводка"
+    with session_factory()() as db, db.begin():
+        assert requeue_summaries(db, "summary-3", False) == 1
+        assert db.scalar(select(func.count()).select_from(Job).where(Job.kind == "summarize")) == 0
+    with session_factory()() as db, db.begin():
+        assert requeue_summaries(db, "summary-3", True) == 1
+        assert requeue_summaries(db, "summary-3", True) == 1
+    with session_factory()() as db:
+        jobs = list(db.scalars(select(Job).where(Job.kind == "summarize")))
+        assert [job.dedup_key for job in jobs] == [f"summarize:{event_id}:summary-3"]
+        assert db.get(Event, event_id).summary == "Сохранённая сводка"

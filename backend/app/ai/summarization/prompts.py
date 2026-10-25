@@ -1,6 +1,6 @@
 from app.ai.summarization.vocabulary import PRODUCT_DESCRIPTIONS, THEMES
 
-SUMMARY_PROMPT_VERSION = "summary-2"
+SUMMARY_PROMPT_VERSION = "summary-3"
 FACT_CHECK_PROMPT_VERSION = "factcheck-2"
 
 THEME_LIST = "; ".join(THEMES)
