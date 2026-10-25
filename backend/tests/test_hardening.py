@@ -71,7 +71,8 @@ def test_invalid_ai_evidence_rolls_back_all_outputs(client, monkeypatch):
     job = client.post("/companies/demo_company_a/insights", json={"event_id": event_id}).json()
     assert run_one()
     status = client.get(f"/jobs/{job['id']}").json()
-    assert status["status"] == "failed" and status["error"]["code"] == "invalid_evidence"
+    assert status["status"] == "failed"
+    assert status["error"]["code"] in {"invalid_evidence", "invalid_publication_report"}
     with session_factory()() as db:
         assert db.scalar(select(func.count()).select_from(Insight)) == 0
 

@@ -4,7 +4,7 @@ import uuid
 
 from pydantic import Field
 
-from app.ai.chat.guard import REFUSAL_TEXT, split_question
+from app.ai.chat.guard import split_question
 from app.ai.chat.missing import missing_parameters
 from app.ai.chat.prompts import ANSWER_SYSTEM_PROMPT, CHAT_PROMPT_VERSION, ROUTER_SYSTEM_PROMPT
 from app.ai.insights.build import (
@@ -25,6 +25,7 @@ from app.ai.summarization.grounding import normalize_text, shorten, supported_se
 from app.ai.summarization.summarize import Lenient, StrList
 from app.ai.validation import build_catalog, validate_answer
 from app.integrations.ai import AIError
+from app.publication_policy import NO_SOURCES_TEXT, REFUSAL_TEXT
 
 FATAL_CODES = frozenset({"budget_exhausted", "model_not_allowed", "ai_unavailable"})
 HISTORY_TURNS = 6
@@ -36,10 +37,6 @@ MAX_TOKENS = 1500
 RETRY_TEMPERATURE = 0.3
 SEARCH_INTENTS = frozenset({"bank_position", "importance"})
 INTENTS = frozenset({"importance", "missing_data", "bank_position", "details", "other"})
-NO_SOURCES_TEXT = (
-    "По имеющимся источникам на этот вопрос ответить нельзя: нет фактов события, признаков компании "
-    "или материалов банка, которые его подтверждают."
-)
 CONFLICT_MENTION = re.compile(r"расходя|расхожд|различ|противореч|по-разному|не совпада", re.IGNORECASE)
 CONFLICT_SENTENCE = "Источники события расходятся в данных, поэтому итоговая цифра не установлена."
 NO_SOURCES_UNKNOWN = "Нет источников, подтверждающих ответ на этот вопрос"

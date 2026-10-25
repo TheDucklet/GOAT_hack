@@ -33,6 +33,7 @@ def allowed(envelope, kind="insight"):
     ]
     report = {
         "policy_version": PUBLICATION_POLICY_VERSION,
+        "verifier_prompt_version": "test-gate",
         "decision": "allow",
         "decided_by": "code",
         "content_digest": content_digest(result),
@@ -82,7 +83,7 @@ def build_insight(company_context, user_focus, event, tools):
                 "evidence_refs": [ref],
                 "trace_id": str(uuid4()),
             },
-            "evidence": [],
+            "evidence": [event["evidence"][0]],
             "trace": {"plan": ["read_event", "check_sources"]},
         }
     )
@@ -99,7 +100,7 @@ def answer_chat(company_context, user_focus, event, history, tools):
                 "trace_id": str(uuid4()),
                 "usage": {},
             },
-            "evidence": [],
+            "evidence": [event["evidence"][0]],
             "trace": {"steps": []},
         },
         "chat",

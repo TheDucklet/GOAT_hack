@@ -100,14 +100,15 @@ def test_chat_answer_without_a_valid_allowing_report_is_never_stored(client, mon
 
 
 def test_chat_service_message_is_stored_without_analysis_and_without_evidence(client, monkeypatch):
-    from app.publication_policy import PUBLICATION_POLICY_VERSION, content_digest
+    from app.publication_policy import PUBLICATION_POLICY_VERSION, SERVICE_ANSWER, content_digest
 
     enable_ai(monkeypatch)
     original = fake_ai.answer_chat
 
     def service(*args, **kwargs):
         envelope = copy.deepcopy(original(*args, **kwargs))
-        envelope["result"] = {**envelope["result"], "answer": "Служебное сообщение.", "evidence_refs": []}
+        envelope["result"] = {**envelope["result"], "answer": SERVICE_ANSWER, "evidence_refs": []}
+        envelope["evidence"] = []
         envelope["trace"]["publication"] = {
             "policy_version": PUBLICATION_POLICY_VERSION,
             "decision": "service_message",
@@ -122,7 +123,7 @@ def test_chat_service_message_is_stored_without_analysis_and_without_evidence(cl
     assert status["status"] == "done"
     with session_factory()() as db:
         message = db.scalar(select(Message).where(Message.chat_id == chat["id"], Message.role == "assistant"))
-        assert message.text == "Служебное сообщение." and message.result["evidence_refs"] == []
+        assert message.text == SERVICE_ANSWER and message.result["evidence_refs"] == []
         assert db.get(Chat, chat["id"]) is not None
 
 
@@ -172,3 +173,78 @@ def test_cached_card_is_not_reused_after_the_policy_version_changes(monkeypatch)
     monkeypatch.setattr(publication_policy, "PUBLICATION_POLICY_VERSION", "publication-next")
     assert generation_versions() != before
     get_settings.cache_clear()
+
+
+def test_service_message_with_free_analytical_text_is_rejected_by_api_and_worker(client, monkeypatch):
+    from app.publication_policy import PUBLICATION_POLICY_VERSION, content_digest
+
+    enable_ai(monkeypatch)
+    original = fake_ai.answer_chat
+
+    def forged(*args, **kwargs):
+        envelope = copy.deepcopy(original(*args, **kwargs))
+        envelope["result"] = {
+            **envelope["result"],
+            "answer": "У компании есть действующий кредит и обязательство немедленно его погасить.",
+            "evidence_refs": [],
+        }
+        envelope["evidence"] = []
+        envelope["trace"]["publication"] = {
+            "policy_version": PUBLICATION_POLICY_VERSION,
+            "decision": "service_message",
+            "decided_by": "code",
+            "content_digest": content_digest(envelope["result"]),
+        }
+        return envelope
+
+    monkeypatch.setattr(fake_ai, "answer_chat", forged)
+    login(client)
+    chat, status = ask(client, event_fixture())
+    assert status["status"] == "failed" and status["error"]["code"] == "invalid_publication_report"
+    with session_factory()() as db:
+        assert db.scalar(select(func.count()).select_from(Message).where(Message.chat_id == chat["id"])) == 1
+
+
+def clear_bindings(envelope):
+    for entry in envelope["trace"]["publication"]["claims"]:
+        entry["evidence"] = []
+    return envelope
+
+
+def stale_versions(envelope):
+    for entry in envelope["trace"]["publication"]["claims"]:
+        for ref in entry["evidence"]:
+            ref["version"] = "stale"
+    return envelope
+
+
+def extra_binding(envelope):
+    entry = envelope["trace"]["publication"]["claims"][0]
+    entry["evidence"] = [*entry["evidence"], {"id": "foreign", "version": "x"}]
+    return envelope
+
+
+def no_verifier_version(envelope):
+    envelope["trace"]["publication"].pop("verifier_prompt_version", None)
+    return envelope
+
+
+def wrong_statement_type(envelope):
+    envelope["trace"]["publication"]["claims"][0]["statement_type"] = "scenario"
+    return envelope
+
+
+@pytest.mark.parametrize(
+    "breaker",
+    [clear_bindings, stale_versions, extra_binding, no_verifier_version, wrong_statement_type],
+)
+def test_publication_report_must_bind_every_claim_to_the_exact_current_evidence(client, monkeypatch, breaker):
+    enable_ai(monkeypatch)
+    original = fake_ai.build_insight
+    monkeypatch.setattr(fake_ai, "build_insight", lambda **kwargs: breaker(original(**kwargs)))
+    login(client)
+    event_id = event_fixture()
+    job = client.post("/companies/demo_company_a/insights", json={"event_id": event_id}).json()
+    assert run_one()
+    status = client.get(f"/jobs/{job['id']}").json()
+    assert status["status"] == "failed" and status["error"]["code"] == "invalid_publication_report"

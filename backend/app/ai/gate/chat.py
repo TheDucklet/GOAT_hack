@@ -5,12 +5,12 @@ from app.ai.gate.prompts import GATE_PROMPT_VERSION
 from app.ai.gate.verify import verify_checked
 from app.publication_policy import (
     PUBLICATION_POLICY_VERSION,
+    SERVICE_ANSWER,
     SERVICE_ANSWER_KIND,
+    SERVICE_ANSWERS,
     chat_claims,
     content_digest,
 )
-
-SERVICE_ANSWER = "Не удалось подтвердить ответ источниками. Уточните вопрос или добавьте данные о компании."
 
 
 def chat_report(
@@ -63,7 +63,9 @@ def service_envelope(envelope: dict, usage: list[dict], stop: str) -> dict:
 def enforce_chat(envelope: dict, news_texts: dict[str, str]) -> dict:
     envelope = copy.deepcopy(envelope)
     if not envelope["result"].get("evidence_refs"):
-        return with_report(envelope, chat_report(envelope, {}, [], SERVICE_ANSWER_KIND, "no_evidence"))
+        if envelope["result"].get("answer") in SERVICE_ANSWERS:
+            return with_report(envelope, chat_report(envelope, {}, [], SERVICE_ANSWER_KIND, "no_evidence"))
+        return service_envelope(envelope, [], "unverified_answer_without_evidence")
     sources = source_map(envelope, news_texts)
     claims = chat_claims(envelope["result"])
     verdicts, usage = verify_checked(claims, sources)

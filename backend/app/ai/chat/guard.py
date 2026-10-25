@@ -18,10 +18,6 @@ BYPASS_PATTERN = re.compile(
 )
 OTHER_COMPANY_ID = re.compile(r"\bU_\d+\b|\bgroup_\d+\w*\b")
 
-REFUSAL_TEXT = (
-    "Я работаю только в рамках выбранной вами компании и выбранного события. "
-    "Запросы на доступ к данным других компаний, изменение прав, ключей или данных и на выполнение платежей я не выполняю."
-)
 
 
 def mentions_other_company(text: str, company_id: str) -> bool:
