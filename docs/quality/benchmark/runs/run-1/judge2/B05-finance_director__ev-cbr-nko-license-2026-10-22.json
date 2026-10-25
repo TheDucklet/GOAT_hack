@@ -1,0 +1,308 @@
+{
+  "judge_version": "judge-2",
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Банк России приказом от 22.10.2026 № ОД-1864 отозвал лицензию на осуществление банковских операций у ООО НКО «Тайдон».",
+      "verdict": "supported",
+      "reason": "Все части утверждения прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Банк России приказом от 22.10.2026 № ОД-1864 отозвал лицензию на осуществление банковских операций у ООО НКО «Тайдон».",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+      "verdict": "supported",
+      "reason": "Все части утверждения прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Основанием для отзыва лицензии послужило неисполнение организацией обязанности по уплате обязательных платежей более 14 дней.",
+          "kind": "event_fact",
+          "actor_in_claim": "ООО НКО «Тайдон»",
+          "actor_in_source": "организация",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+      "verdict": "supported",
+      "reason": "Все части утверждения прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Приказом № ОД-1865 в ООО НКО «Тайдон» назначена временная администрация.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+      "verdict": "supported",
+      "reason": "Все части утверждения прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Полномочия исполнительных органов ООО НКО «Тайдон» приостановлены.",
+          "kind": "event_fact",
+          "actor_in_claim": "ООО НКО «Тайдон»",
+          "actor_in_source": "ООО НКО «Тайдон»",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-1",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Отзыв лицензии у НКО «Тайдон» не оказывает прямого влияния на операционную деятельность компании, так как компания зарегистрирована в Москве, а инцидент произошел в Кемеровской области. Разница в юрисдикциях и масштабах региональных проблем снижает вероятность системного шока для московского бизнеса.",
+      "verdict": "unsupported",
+      "reason": "Утверждение о том, что отзыв лицензии не влияет на компанию, и вывод о снижении вероятности системного шока не следуют из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Отзыв лицензии у НКО «Тайдон» не оказывает прямого влияния на операционную деятельность компании.",
+          "kind": "causal_link",
+          "actor_in_claim": "НКО «Тайдон»",
+          "actor_in_source": "НКО «Тайдон»",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Компания зарегистрирована в Москве.",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "Инцидент произошел в Кемеровской области.",
+          "kind": "event_fact",
+          "actor_in_claim": "НКО «Тайдон»",
+          "actor_in_source": "НКО «Тайдон»",
+          "status": "in_sources"
+        },
+        {
+          "text": "Разница в юрисдикциях и масштабах региональных проблем снижает вероятность системного шока для московского бизнеса.",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Компания использует расчетно-кассовое обслуживание и депозиты в Альфа-Банке, а не в НКО «Тайдон». Следовательно, прямая угроза потери средств или нарушения платежного цикла из-за отзыва лицензии у конкурента отсутствует, так как активы компании находятся в другом финансовом институте.",
+      "verdict": "unsupported",
+      "reason": "Утверждения о том, что компания использует Альфа-Банк, не использует НКО «Тайдон» и не имеет угрозы, не следуют из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Компания использует расчетно-кассовое обслуживание и депозиты в Альфа-Банке.",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Компания не использует расчетно-кассовое обслуживание и депозиты в НКО «Тайдон».",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Прямая угроза потери средств или нарушения платежного цикла из-за отзыва лицензии у конкурента отсутствует.",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Активы компании находятся в другом финансовом институте.",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-1",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если компания использует счета в НКО «Тайдон» для РКО (при условии, что «Тайдон» был её основным или единственным банком), то доступ к операционной ликвидности может быть временно ограничен.",
+      "verdict": "supported",
+      "reason": "Все части условного вывода сформулированы как гипотеза с явными условиями применимости и не противоречат источникам.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если компания использует счета в НКО «Тайдон» для РКО",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "при условии, что «Тайдон» был её основным или единственным банком",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "доступ к операционной ликвидности может быть временно ограничен",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-2",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если компания размещала средства на депозитах в НКО «Тайдон», то может возникнуть риск задержки возврата средств или их частичной потери.",
+      "verdict": "supported",
+      "reason": "Вывод явно условный, условие названо как неизвестная предпосылка и не противоречит источникам.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если компания размещала средства на депозитах в НКО «Тайдон»",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "может возникнуть риск задержки возврата средств или их частичной потери",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "summary",
+      "section": "personalized_summary",
+      "statement_type": "hypothesis",
+      "text": "Отзыв лицензии у НКО «Тайдон» не оказывает прямого влияния на компанию, так как она зарегистрирована в Москве, а не в Кемерово, и не является клиентом данного НКО. Влияние возможно только через косвенные каналы, если компания использует услуги «Тайдона» для расчетов или хранения средств.",
+      "verdict": "unsupported",
+      "reason": "Утверждения об отсутствии прямого влияния и о том, что компания не является клиентом НКО, не следуют из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Отзыв лицензии у НКО «Тайдон» не оказывает прямого влияния на компанию",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "компания зарегистрирована в Москве, а не в Кемерово",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "компания не является клиентом данного НКО",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Влияние возможно только через косвенные каналы, если компания использует услуги «Тайдона» для расчетов или хранения средств",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "impact",
+      "section": "impact_reason",
+      "statement_type": "hypothesis",
+      "text": "Прямая экспозиция отсутствует: компания зарегистрирована в Москве, а НКО «Тайдон» действовала в Кемеровской области. Отсутствие прямых данных о том, что компания является клиентом именно «Тайдона», делает влияние косвенным и маловероятным.",
+      "verdict": "unsupported",
+      "reason": "Отрицание прямой экспозиции и вывод о косвенном маловероятном влиянии не подтверждаются источниками.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Прямая экспозиция отсутствует",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "компания зарегистрирована в Москве",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "НКО «Тайдон» действовала в Кемеровской области",
+          "kind": "event_fact",
+          "actor_in_claim": "НКО «Тайдон»",
+          "actor_in_source": "НКО «Тайдон»",
+          "status": "in_sources"
+        },
+        {
+          "text": "Отсутствие прямых данных о том, что компания является клиентом именно «Тайдона», делает влияние косвенным и маловероятным",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "193cf7ffae984c62a8e0cccc9f6b5186",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 2787,
+      "output_tokens": 1152,
+      "cost_rub": 0.09307928514370202
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "b78ac5495bf24016858e55332457917b",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 2429,
+      "output_tokens": 1037,
+      "cost_rub": 0.094117192524498
+    }
+  ]
+}

@@ -1,0 +1,482 @@
+{
+  "judge_version": "judge-2",
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Совет директоров Банка России 23 октября 2026 года решил сохранить ключевую ставку на уровне 14,00% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение дословно совпадает с источником.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Совет директоров Банка России 23 октября 2026 года решил сохранить ключевую ставку на уровне 14,00% годовых.",
+          "kind": "event_fact",
+          "actor_in_claim": "Совет директоров Банка России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+      "verdict": "supported",
+      "reason": "Источник прямо указывает, что регулятор объясняет решение повышенным ценовым давлением и высокими инфляционными ожиданиями.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Регулятор объясняет решение сохранением повышенного ценового давления и высокими инфляционными ожиданиями.",
+          "kind": "causal_link",
+          "actor_in_claim": "Регулятор",
+          "actor_in_source": "Регулятор",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%, а по итогам года ожидается на уровне 7,1-7,6%.",
+      "verdict": "supported",
+      "reason": "Обе части прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Годовая инфляция на 19 октября 2026 года достигла 6,8%.",
+          "kind": "event_fact",
+          "actor_in_claim": "годовая инфляция",
+          "actor_in_source": "годовая инфляция",
+          "status": "in_sources"
+        },
+        {
+          "text": "По итогам года ожидается на уровне 7,1-7,6%.",
+          "kind": "forecast",
+          "actor_in_claim": "годовая инфляция",
+          "actor_in_source": "годовая инфляция",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+      "verdict": "supported",
+      "reason": "Источник указывает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5%, что ниже текущих 14%, то есть снижение.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Базовый сценарий предполагает снижение средней ключевой ставки в 2027 году до диапазона 12,5-13,5% годовых.",
+          "kind": "forecast",
+          "actor_in_claim": "Базовый сценарий",
+          "actor_in_source": "Базовый сценарий",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "bank-2",
+      "section": "bank_view",
+      "statement_type": "fact",
+      "text": "Альфа-Банк прогнозировал снижение ключевой ставки до 13,5% на конец 2026 года и 12% на 2027 год, однако фактическое решение регулятора о сохранении ставки на уровне 14,00% указывает на более жесткие условия, чем ожидалось в прогнозе.",
+      "verdict": "unsupported",
+      "reason": "Вывод о том, что фактическое решение указывает на более жесткие условия, чем ожидалось в прогнозе, отсутствует в источниках.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Альфа-Банк прогнозировал снижение ключевой ставки до 13,5% на конец 2026 года.",
+          "kind": "bank_position",
+          "actor_in_claim": "Альфа-Банк",
+          "actor_in_source": "Альфа-Банк",
+          "status": "in_sources"
+        },
+        {
+          "text": "Альфа-Банк прогнозировал 12% на 2027 год.",
+          "kind": "bank_position",
+          "actor_in_claim": "Альфа-Банк",
+          "actor_in_source": "Альфа-Банк",
+          "status": "in_sources"
+        },
+        {
+          "text": "Фактическое решение регулятора о сохранении ставки на уровне 14,00% указывает на более жесткие условия, чем ожидалось в прогнозе.",
+          "kind": "causal_link",
+          "actor_in_claim": "регулятор",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-1",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Компания имеет кредиты и лизинг, что делает её уязвимой к процентному риску. Поскольку на рынке ограничены возможности хеджирования, сохранение высокой ставки 14% означает, что стоимость обслуживания существующих и новых заимствований останется высокой, увеличивая финансовые расходы компании в период оптимизации.",
+      "verdict": "unsupported",
+      "reason": "Наличие у компании кредитов и лизинга, её уязвимость к процентному риску и рост финансовых расходов не подтверждаются источниками.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Компания имеет кредиты и лизинг.",
+          "kind": "company_property",
+          "actor_in_claim": "Компания",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Это делает её уязвимой к процентному риску.",
+          "kind": "causal_link",
+          "actor_in_claim": "Компания",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "На рынке ограничены возможности хеджирования.",
+          "kind": "company_property",
+          "actor_in_claim": "рынок",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Сохранение высокой ставки 14% означает, что стоимость обслуживания существующих и новых заимствований останется высокой.",
+          "kind": "causal_link",
+          "actor_in_claim": "",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Это увеличивает финансовые расходы компании в период оптимизации.",
+          "kind": "causal_link",
+          "actor_in_claim": "Компания",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Высокая инфляция (6,8%) и её ожидаемый рост (7,1-7,6%) приводят к удорожанию строительных материалов и услуг, что критично для компании в сфере строительства. При сохранении ставки 14% стоимость заемного финансирования для покрытия кассовых разрывов или финансирования текущих проектов остается высокой, сжимая маржинальность.",
+      "verdict": "unsupported",
+      "reason": "Связь инфляции с удорожанием строительных материалов и услуг, а также влияние на маржинальность компании отсутствуют в источниках.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Высокая инфляция (6,8%) и её ожидаемый рост (7,1-7,6%)",
+          "kind": "event_fact",
+          "actor_in_claim": "инфляция",
+          "actor_in_source": "инфляция",
+          "status": "in_sources"
+        },
+        {
+          "text": "приводят к удорожанию строительных материалов и услуг",
+          "kind": "causal_link",
+          "actor_in_claim": "инфляция",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "что критично для компании в сфере строительства",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "При сохранении ставки 14%",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        },
+        {
+          "text": "стоимость заемного финансирования для покрытия кассовых разрывов или финансирования текущих проектов остается высокой",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "сжимая маржинальность",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-3",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Компания участвует в зарплатном проекте и имеет депозиты. Высокая ключевая ставка может способствовать росту ставок по депозитам, что позволяет компании эффективнее управлять свободными денежными потоками, однако это может конкурировать с потребностью в ликвидности для операционной деятельности и обслуживания долгов.",
+      "verdict": "unsupported",
+      "reason": "Связь высокой ключевой ставки с ростом ставок по депозитам и влияние на управление денежными потоками отсутствуют в источниках.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Компания участвует в зарплатном проекте",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "и имеет депозиты",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "Высокая ключевая ставка может способствовать росту ставок по депозитам",
+          "kind": "causal_link",
+          "actor_in_claim": "ключевая ставка",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "что позволяет компании эффективнее управлять свободными денежными потоками",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "однако это может конкурировать с потребностью в ликвидности для операционной деятельности и обслуживания долгов",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-1",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если Банк России сохраняет ключевую ставку на уровне 14%, то при условии, что у компании есть действующие кредиты с плавающей ставкой, привязанной к ключевой ставке, стоимость обслуживания долга останется высокой, что увеличит финансовые расходы.",
+      "verdict": "unsupported",
+      "reason": "Связь сохранения ставки с высокой стоимостью обслуживания долга и ростом финансовых расходов не следует из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если Банк России сохраняет ключевую ставку на уровне 14%",
+          "kind": "conditional_inference",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "то при условии, что у компании есть действующие кредиты с плавающей ставкой, привязанной к ключевой ставке",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "стоимость обслуживания долга останется высокой",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "что увеличит финансовые расходы",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-2",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если регулятор не снижает ставку в 2026 году, то при условии наличия у компании лизинговых обязательств, стоимость финансирования лизинга может оставаться высокой, что ограничивает возможности для обновления оборудования или расширения мощностей.",
+      "verdict": "unsupported",
+      "reason": "Связь сохранения ставки с высокой стоимостью лизинга и ограничением возможностей компании отсутствует в источниках.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если регулятор не снижает ставку в 2026 году",
+          "kind": "conditional_inference",
+          "actor_in_claim": "регулятор",
+          "actor_in_source": "Банк России",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "то при условии наличия у компании лизинговых обязательств",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "стоимость финансирования лизинга может оставаться высокой",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "что ограничивает возможности для обновления оборудования или расширения мощностей",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-3",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если инфляционное давление сохраняется, то при условии, что компания находится на стадии оптимизации, высокие процентные ставки могут затруднить выполнение плана по снижению издержек и поддержанию ликвидности.",
+      "verdict": "unsupported",
+      "reason": "Связь высоких ставок с затруднением выполнения плана по снижению издержек и поддержанию ликвидности не следует из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если инфляционное давление сохраняется",
+          "kind": "conditional_inference",
+          "actor_in_claim": "инфляция",
+          "actor_in_source": "инфляция",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "то при условии, что компания находится на стадии оптимизации",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "высокие процентные ставки могут затруднить выполнение плана по снижению издержек и поддержанию ликвидности",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "summary",
+      "section": "personalized_summary",
+      "statement_type": "hypothesis",
+      "text": "Сохранение ключевой ставки на высоком уровне 14% при наличии у компании кредитов и лизинга увеличивает стоимость обслуживания долга и лизинговых обязательств. Это создает давление на денежный поток компании, что критично на стадии оптимизации бизнеса.",
+      "verdict": "unsupported",
+      "reason": "Связь сохранения ставки с увеличением стоимости обслуживания долга и давлением на денежный поток не подтверждена источниками.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Сохранение ключевой ставки на высоком уровне 14%",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        },
+        {
+          "text": "при наличии у компании кредитов и лизинга",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "увеличивает стоимость обслуживания долга и лизинговых обязательств",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Это создает давление на денежный поток компании",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не указано",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "что критично на стадии оптимизации бизнеса",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "impact",
+      "section": "impact_reason",
+      "statement_type": "hypothesis",
+      "text": "Влияние подтверждено наличием кредитов и лизинга, но его сила ограничена неизвестностью условий ставок (плавающая или фиксированная) и сумм задолженностей. Прямая экспозиция к ставке не может быть количественно оценена без данных о структуре долга.",
+      "verdict": "unsupported",
+      "reason": "Источники лишь фиксируют наличие банковских продуктов «кредиты» и «лизинг», но не подтверждают действующие кредиты/лизинг, влияние на компанию, неизвестность условий ставок или сумм задолженностей и невозможность количественной оценки экспо",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Влияние подтверждено наличием кредитов и лизинга",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "сила влияния ограничена неизвестностью условий ставок (плавающая или фиксированная)",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "сила влияния ограничена неизвестностью сумм задолженностей",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Прямая экспозиция к ставке не может быть количественно оценена без данных о структуре долга",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "584111489f44402e86468560f0c538fc",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 9583,
+      "output_tokens": 1033,
+      "cost_rub": 0.217429157972598
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "1af94df4e42f4cc2b27b1b213d6683ae",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 3882,
+      "output_tokens": 2231,
+      "cost_rub": 0.2212290598947
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "bafec3c34e3e4a31b94a938d1f6288cf",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 1372,
+      "output_tokens": 343,
+      "cost_rub": 0.0474037592028
+    }
+  ]
+}

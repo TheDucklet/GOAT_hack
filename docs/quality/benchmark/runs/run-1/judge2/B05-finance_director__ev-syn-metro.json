@@ -1,0 +1,172 @@
+{
+  "judge_version": "judge-2",
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "В Казани открылась новая станция метро на продлённом участке первой линии.",
+      "verdict": "supported",
+      "reason": "Утверждение полностью совпадает с текстом источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "В Казани открылась новая станция метро на продлённом участке первой линии.",
+          "kind": "event_fact",
+          "actor_in_claim": "город Казань",
+          "actor_in_source": "город Казань",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+      "verdict": "supported",
+      "reason": "Число пассажиров и период прямо указаны в источнике.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Новая станция рассчитана на 20 тысяч пассажиров в сутки.",
+          "kind": "quantity",
+          "actor_in_claim": "новая станция",
+          "actor_in_source": "станция",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+      "verdict": "supported",
+      "reason": "Планы властей прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+          "kind": "forecast",
+          "actor_in_claim": "городские власти",
+          "actor_in_source": "городские власти",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+      "verdict": "supported",
+      "reason": "Срок и способ выбора подрядчика прямо указаны в источнике.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Подрядчик на продолжение строительства будет выбран по конкурсу до конца года.",
+          "kind": "forecast",
+          "actor_in_claim": "подрядчик",
+          "actor_in_source": "подрядчик",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-1",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Компания работает в сфере разработки ПО и зарегистрирована в Москве, поэтому прямое влияние открытия метро в Казани на её операционную деятельность отсутствует. Однако общий тренд на снижение инвестиций в строительную отрасль может косвенно влиять на макроэкономический фон, что требует внимания к управлению ликвидностью и стоимостью заемного капитала (user_focus).",
+      "verdict": "unsupported",
+      "reason": "Утверждение об отсутствии прямого влияния и вывод о необходимости управления ликвидностью не следуют из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Компания работает в сфере разработки ПО",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "Компания зарегистрирована в Москве",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "Прямое влияние открытия метро в Казани на операционную деятельность компании отсутствует",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "нет",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Общий тренд на снижение инвестиций в строительную отрасль может косвенно влиять на макроэкономический фон",
+          "kind": "causal_link",
+          "actor_in_claim": "строительная отрасль",
+          "actor_in_source": "строительная отрасль",
+          "status": "in_sources"
+        },
+        {
+          "text": "Это требует внимания к управлению ликвидностью и стоимостью заемного капитала",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "нет",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Компания находится на стадии роста и имеет численность сотрудников 101-250 человек. В условиях общего спада в инфраструктурных инвестициях компания может сосредоточиться на внутренней оптимизации и сохранении денежного потока, используя имеющиеся депозиты и расчетно-кассовое обслуживание для поддержания операционной устойчивости.",
+      "verdict": "unsupported",
+      "reason": "Утверждения о сосредоточении на оптимизации и использовании депозитов для устойчивости не следуют из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Компания находится на стадии роста",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "Компания имеет численность сотрудников 101-250 человек",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "В условиях общего спада в инфраструктурных инвестициях компания может сосредоточиться на внутренней оптимизации и сохранении денежного потока",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "нет",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "Компания использует имеющиеся депозиты и расчетно-кассовое обслуживание для поддержания операционной устойчивости",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "нет",
+          "status": "not_in_sources"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "1ae4212e8923429da9e521d72e52348a",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 6740,
+      "output_tokens": 1068,
+      "cost_rub": 0.170733691090248
+    }
+  ]
+}

@@ -1,0 +1,847 @@
+{
+  "pair_id": "B01-procurement_director__ev-cbr-insider-2026-10-21",
+  "context_id": "B01-procurement_director",
+  "event_id": "ev-cbr-insider-2026-10-21",
+  "status": "ok",
+  "latency_seconds": 52.94,
+  "cost_rub": 0.514758,
+  "llm_calls": 10,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "волатильность акций строительство инсайдерская информация",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "кредитование застройщиков санкции регуляторный контроль",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "47c31bec-4628-4d7c-8410-c475959a5075"
+      ]
+    },
+    {
+      "query": "нарушение закона 224-ФЗ трейдинг инсайд",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "злоупотребления трейдеров при совершении сделок",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-insider-2026-10-21",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-insider-2026-10-21",
+        "version": "2b7da901b50f9986",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639281939787093652PNP.htm"
+        },
+        "excerpt": "Банк России установил, что старший трейдер одной инвестиционной компании неправомерно использовал инсайдерскую информацию при сделках с рядом акций на Московской бирже в период с 16.01.2023 по 29.03.2024."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния инсайдерских сделок на волатильность акций строительных компаний",
+        "Анализ рисков для клиентов брокерских счетов при нарушениях регулятора",
+        "Изучение реакции рынка труда в секторе строительства на регуляторные меры",
+        "Оценка влияния санкций на доступность финансирования для застройщиков",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-insider-2026-10-21",
+          "event_version": "2b7da901b50f9986",
+          "facts": 5
+        },
+        {
+          "plan": [
+            "Оценка влияния инсайдерских сделок на волатильность акций строительных компаний",
+            "Анализ рисков для клиентов брокерских счетов при нарушениях регулятора",
+            "Изучение реакции рынка труда в секторе строительства на регуляторные меры",
+            "Оценка влияния санкций на доступность финансирования для застройщиков"
+          ],
+          "initial_queries": [
+            "волатильность акций строительство инсайдерская информация",
+            "кредитование застройщиков санкции регуляторный контроль"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "490fc1c414fb426f838930f4327bf9a8",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 520,
+          "output_tokens": 125,
+          "cost_rub": 0.017877444747500002
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "волатильность акций строительство инсайдерская информация",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "кредитование застройщиков санкции регуляторный контроль",
+          "as_of": "2026-10-21",
+          "returned": [
+            {
+              "chunk_id": "47c31bec-4628-4d7c-8410-c475959a5075",
+              "page": 10,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "a3b8ccee-abe8-57a4-93a3-b2e9721a95e1"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "e0751ebb1c1a4835960d30ec149ea221",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1662,
+          "output_tokens": 1106,
+          "cost_rub": 0.121618974048
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "5fc68c95a0ba47aeafdcae91909cd021",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 659,
+          "output_tokens": 44,
+          "cost_rub": 0.011276139381
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-cbr-insider-2026-10-21"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "b4a596c56def4d7ebdf1774a6ffa26bd",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 440,
+          "output_tokens": 72,
+          "cost_rub": 0.004805708426999999
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "волатильность акций строительство инсайдерская информация",
+            "кредитование застройщиков санкции регуляторный контроль"
+          ],
+          "new_query": "нарушение закона 224-ФЗ трейдинг инсайд",
+          "reason": "Запрос сфокусирован на конкретной нормативной базе и профессиональной терминологии, чтобы найти юридические детали инцидента, которые не попали в общие темы."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "нарушение закона 224-ФЗ трейдинг инсайд",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "6ee64b189424487d8371772510f84e87",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 473,
+          "output_tokens": 68,
+          "cost_rub": 0.006418081189
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "волатильность акций строительство инсайдерская информация",
+            "кредитование застройщиков санкции регуляторный контроль",
+            "нарушение закона 224-ФЗ трейдинг инсайд"
+          ],
+          "new_query": "злоупотребления трейдеров при совершении сделок",
+          "reason": "Запрос переходит от узкоспециализированных юридических терминов к описанию самой сути противоправного поведения, что поможет найти материалы о дисциплинарных нарушениях персонала."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "злоупотребления трейдеров при совершении сделок",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "7dbd1af556134a1091839d1eef98cb90",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2054,
+          "output_tokens": 192,
+          "cost_rub": 0.040602477734
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "a3b8ccee-abe8-57a4-93a3-b2e9721a95e1"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "волатильность акций строительство инсайдерская информация",
+        "кредитование застройщиков санкции регуляторный контроль",
+        "нарушение закона 224-ФЗ трейдинг инсайд",
+        "злоупотребления трейдеров при совершении сделок"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "В июне рост корпоративного кредитования продолжился, при этом в мае темп роста был значительно выше среднего темпа 2025 года.",
+              "verdict": "insufficient",
+              "reason": "не относится к событию"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-cbr-insider-2026-10-21"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 13,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "7dbd1af556134a1091839d1eef98cb90",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2054,
+            "output_tokens": 192,
+            "cost_rub": 0.040602477734
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "6ef3463e4bf37ddc13ad8d4a35f47b66c4ec63e5ed3e13c4ff18d386b889014e",
+        "required": 5,
+        "checked": 5,
+        "supported": 5,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из текста источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из текста источника."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из текста источника."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из текста источника."
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из текста источника."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Утверждение об ужесточении контроля, зоне повышенного внимания и усилении комплаенс-проверок отсутствует в источниках, а условные выводы не имеют названных условий применимости."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Связь между нарушением трейдера и волатильностью рынка, а также последствия для финансирования компании не следуют из источников; условная часть опирается на неподтверждённую предпосылку о волатильности и росте требований."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Источники не подтверждают создание общего фона повышенного внимания, необходимость прозрачности для компании и требование регулярной отчётности по продуктам."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат ни ужесточения контроля, ни усиления комплаенс-требований банков, ни роста административной нагрузки."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Риск пересмотра банками условий обслуживания не следует из источников; сектор компании не описан как чувствительный к рыночным манипуляциям."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Источники не подтверждают связь прозрачности с преимуществом при рефинансировании и восприятие компании банком как надёжного клиента."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковских продуктов не доказывает действующие кредитные договоры и лизинговые соглашения, а сама рекомендация и её предмет отсутствуют в источниках."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Источники подтверждают только наличие банковских продуктов «кредиты» и «лизинг», но не содержат сведений о планах крупных сделок, привлечении финансирования или необходимости усиленной проверки."
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "b76226ee5b1b43e492520817ae373926",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2585,
+            "output_tokens": 916,
+            "cost_rub": 0.06733153484629
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "10054ee78e9044d5b0ffbfc21c7a52a5",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2863,
+            "output_tokens": 1402,
+            "cost_rub": 0.13019334205735
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "2214e52618414ff899a9cc6df303e1fe",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1328,
+            "output_tokens": 260,
+            "cost_rub": 0.0379137938036
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "bf096baaa4a04712a3624fedcd02c0f5",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2581,
+            "output_tokens": 558,
+            "cost_rub": 0.07672015110045
+          }
+        ],
+        "cost_rub": 0.312159
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Банк России установил, что старший трейдер инвестиционной компании неправомерно использовал инсайдерскую информацию при сделках с рядом акций на Московской бирже.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Трейдер имел доступ к клиентским торговым поручениям и торговал со своего брокерского счёта с учётом активности клиентов.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Крупные объёмы сделок клиентов сдвигали цены акций.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Регулятор квалифицировал действия трейдера как нарушение запрета, установленного законом № 224-ФЗ.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-5",
+          "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Сумма и условия текущих кредитов",
+        "Условия лизинговых соглашений",
+        "Детали комплаенс-политики банка в отношении клиентов строительного сектора",
+        "Планы компании по привлечению нового финансирования в ближайший период",
+        "Срок актуальности вывода источниками не установлен",
+        "Связана ли компания с инвестиционной сферой или фондовым рынком",
+        "Имеет ли компания торговые счета на Московской бирже",
+        "Является ли компания клиентом инвестиционной компании, где работал трейдер"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-insider-2026-10-21"
+      ],
+      "trace_id": "9ac820ec-876b-4f33-9e10-68ee4d812142",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

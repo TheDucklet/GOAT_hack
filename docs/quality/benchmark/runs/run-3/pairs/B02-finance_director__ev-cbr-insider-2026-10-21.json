@@ -1,0 +1,640 @@
+{
+  "pair_id": "B02-finance_director__ev-cbr-insider-2026-10-21",
+  "context_id": "B02-finance_director",
+  "event_id": "ev-cbr-insider-2026-10-21",
+  "status": "ok",
+  "latency_seconds": 29.81,
+  "cost_rub": 0.278209,
+  "llm_calls": 7,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "инсайдерская торговля строительные акции",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "кредитование малый бизнес санкции",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "нарушение закона о противодействии инсайду",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "злоупотребления трейдеров и комплаенс риски",
+      "as_of": "2026-10-21",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-insider-2026-10-21",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-insider-2026-10-21",
+        "version": "2b7da901b50f9986",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639281939787093652PNP.htm"
+        },
+        "excerpt": "Банк России установил, что старший трейдер одной инвестиционной компании неправомерно использовал инсайдерскую информацию при сделках с рядом акций на Московской бирже в период с 16.01.2023 по 29.03.2024."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния инсайдерских сделок на волатильность акций строительных компаний",
+        "Анализ доступности кредитных ресурсов для малого бизнеса в регионе",
+        "Изучение рисков санкционных ограничений для строительного сектора",
+        "Оценка состояния рынка труда в Свердловской области",
+        "Анализ влияния регуляторных мер на стоимость обслуживания счетов",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B02",
+          "profile_version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-insider-2026-10-21",
+          "event_version": "2b7da901b50f9986",
+          "facts": 5
+        },
+        {
+          "plan": [
+            "Оценка влияния инсайдерских сделок на волатильность акций строительных компаний",
+            "Анализ доступности кредитных ресурсов для малого бизнеса в регионе",
+            "Изучение рисков санкционных ограничений для строительного сектора",
+            "Оценка состояния рынка труда в Свердловской области",
+            "Анализ влияния регуляторных мер на стоимость обслуживания счетов"
+          ],
+          "initial_queries": [
+            "инсайдерская торговля строительные акции",
+            "кредитование малый бизнес санкции"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "d9164fdaf1694e9eb88e8e21b817b021",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 517,
+          "output_tokens": 128,
+          "cost_rub": 0.018144428549000002
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инсайдерская торговля строительные акции",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "кредитование малый бизнес санкции",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "76b84769182f4ce5a20279d03420ee0d",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1544,
+          "output_tokens": 781,
+          "cost_rub": 0.089758907069
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "12de5c61b5174073b381e88a606f53a2",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1544,
+          "output_tokens": 705,
+          "cost_rub": 0.07706932403299999
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "38be849af25b4c45a25fc85681288b68",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 445,
+          "output_tokens": 71,
+          "cost_rub": 0.006889229074
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "инсайдерская торговля строительные акции",
+            "кредитование малый бизнес санкции"
+          ],
+          "new_query": "нарушение закона о противодействии инсайду",
+          "reason": "Запрос заменен с узкой привязки к строительству на более широкую юридическую формулировку, чтобы охватить общие регламенты комплаенса и дисциплинарные меры регулятора."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "нарушение закона о противодействии инсайду",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "ecdc11f24b794ecdb1ed7648e6b08608",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 473,
+          "output_tokens": 69,
+          "cost_rub": 0.004968254447325
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "инсайдерская торговля строительные акции",
+            "кредитование малый бизнес санкции",
+            "нарушение закона о противодействии инсайду"
+          ],
+          "new_query": "злоупотребления трейдеров и комплаенс риски",
+          "reason": "Запрос переходит от узкой темы инсайда к более широкой категории операционных рисков и контроля внутреннего комплаенса, что может охватить описанные нарушения."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "злоупотребления трейдеров и комплаенс риски",
+          "as_of": "2026-10-21",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-21"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "efcdc5fe2e4545b78af9a8bc39a5f443",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2060,
+          "output_tokens": 198,
+          "cost_rub": 0.041262084773
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Компания осуществляет строительство, что требует значительных оборотных средств и управления денежными потоками для оплаты подрядчиков и материалов. Нарушение рыночных правил может привести к повышенн"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Компания имеет депозитные продукты и расчетно-кассовое обслуживание, что делает её чувствительной к общей стабильности финансовой системы. Инсайдерские скандалы подрывают доверие к биржевым инструмент"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "В условиях роста бизнеса компания активно использует банковские гарантии для участия в тендерах. Любые системные риски на бирже, связанные с манипуляциями, могут заставить контрагентов или регуляторов"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Рост волатильности цен на строительные материалы и оборудование из-за искажения рыночных сигналов, что может привести к перерасходу бюджета по текущим проектам."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Ужесточение требований к контрагентам или регуляторов к надежности участников рынка, что может осложнить получение или продление банковских гарантий."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Возможность пересмотра стратегии управления ликвидностью в сторону более консервативных инструментов хранения средств для защиты от рыночных шоков."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Усиление внутреннего контроля за финансовыми операциями и выбором контрагентов может стать конкурентным преимуществом в глазах заказчиков, требующих финансовой устойчивости."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить, не затронули ли инсайдерские схемы компании, с которыми у вас есть текущие договоры или тендерные заявки, и оценить риски отмены сделок."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Оценить текущую структуру депозитов на предмет необходимости диверсификации сроков или сумм в связи с повышенной неопределенностью на рынке."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Уточнить у руководителя, есть ли планы по привлечению нового финансирования или расширению портфеля гарантий в ближайшие кварталы, чтобы адаптировать условия обслуживания."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "инсайдерская торговля строительные акции",
+        "кредитование малый бизнес санкции",
+        "нарушение закона о противодействии инсайду",
+        "злоупотребления трейдеров и комплаенс риски"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 5,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "efcdc5fe2e4545b78af9a8bc39a5f443",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2060,
+            "output_tokens": 198,
+            "cost_rub": 0.041262084773
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "767e842dc2fe5a06b5d8d98ccdeea90a676268b04349942de0108371768263bc",
+        "required": 5,
+        "checked": 5,
+        "supported": 5,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Обе части прямо следуют из источника."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-5",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-insider-2026-10-21",
+                "version": "2b7da901b50f9986"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "143e2d08efd744c6ab0089533d0ae635",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2223,
+            "output_tokens": 552,
+            "cost_rub": 0.040116986013390005
+          }
+        ],
+        "cost_rub": 0.040117
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Банк России установил, что старший трейдер инвестиционной компании неправомерно использовал инсайдерскую информацию при сделках с рядом акций на Московской бирже.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Трейдер имел доступ к клиентским торговым поручениям и торговал со своего брокерского счёта с учётом активности клиентов.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Крупные объёмы сделок клиентов сдвигали цены акций.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Регулятор квалифицировал действия трейдера как нарушение запрета, установленного законом № 224-ФЗ.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-5",
+          "text": "Банк России направил трейдеру предписания о недопущении подобных нарушений.",
+          "evidence_refs": [
+            "evidence-ev-cbr-insider-2026-10-21"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Сумма и условия текущих депозитов и банковских гарантий.",
+        "Наличие прямых связей компании с инвестиционными компаниями или трейдерами, вовлеченными в скандал.",
+        "Планы компании по привлечению заемного капитала в ближайшее время.",
+        "Срок актуальности вывода источниками не установлен",
+        "Связана ли компания с инвестиционной компанией, чей сотрудник нарушил закон, через поставку, кредитование или владение",
+        "Имеет ли компания собственные инвестиционные операции или счета на Московской бирже, требующие хеджирования или управления ликвидностью",
+        "Влияет ли инцидент на общую ликвидность рынка или стоимость заемного капитала для строительного сектора в регионе"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-insider-2026-10-21"
+      ],
+      "trace_id": "dce78c3b-abaf-4981-9ac3-ae0688528313",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

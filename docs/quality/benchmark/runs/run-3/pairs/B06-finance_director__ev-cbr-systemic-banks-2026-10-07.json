@@ -1,0 +1,894 @@
+{
+  "pair_id": "B06-finance_director__ev-cbr-systemic-banks-2026-10-07",
+  "context_id": "B06-finance_director",
+  "event_id": "ev-cbr-systemic-banks-2026-10-07",
+  "status": "ok",
+  "latency_seconds": 83.23,
+  "cost_rub": 0.847053,
+  "llm_calls": 12,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "системно значимые банки кредитование",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "f6a793b7-5656-4b65-9025-022e13d32ec1"
+      ]
+    },
+    {
+      "query": "РКО условия для малого бизнеса",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "список крупнейших банков по активам",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "методика определения системно значимых банков",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "b9389f93-1b92-4ec6-9ce6-9c250f7ce06e",
+        "5d3700fb-d953-46ea-9d77-2340aa283c5c"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-systemic-banks-2026-10-07",
+        "version": "d8cd3a0c9756b7d0",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639269694907022516BANK_SECTOR.htm"
+        },
+        "excerpt": "Банк России утвердил перечень системно значимых кредитных организаций по методике, установленной Указанием от 13.04.2021 № 5778-У."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Определить системную значимость банка-партнера",
+        "Оценить влияние на условия РКО",
+        "Проверить доступность кредитных линий",
+        "Анализ ликвидности для стартапа",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B06",
+          "profile_version": "ab4245f5891a79fed1f7564894cebad63f252fdaca1e69cc09e81e63c5286f38"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-systemic-banks-2026-10-07",
+          "event_version": "d8cd3a0c9756b7d0",
+          "facts": 3
+        },
+        {
+          "plan": [
+            "Определить системную значимость банка-партнера",
+            "Оценить влияние на условия РКО",
+            "Проверить доступность кредитных линий",
+            "Анализ ликвидности для стартапа"
+          ],
+          "initial_queries": [
+            "системно значимые банки кредитование",
+            "РКО условия для малого бизнеса"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "37bc93b732db479daff45bb1e67b21bd",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 481,
+          "output_tokens": 96,
+          "cost_rub": 0.015087202273
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "системно значимые банки кредитование",
+          "as_of": "2026-10-07",
+          "returned": [
+            {
+              "chunk_id": "f6a793b7-5656-4b65-9025-022e13d32ec1",
+              "page": 18,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "РКО условия для малого бизнеса",
+          "as_of": "2026-10-07",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-07"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "79c8326701c04527a936362f8d7f0a6f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1445,
+          "output_tokens": 1079,
+          "cost_rub": 0.12245133531150001
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "25f3cd00c5d348ec8da12e007ba8e2bd",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 622,
+          "output_tokens": 138,
+          "cost_rub": 0.020238419149000004
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2",
+            "evidence-ev-cbr-systemic-banks-2026-10-07",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "757f9422e385434cbe3ec5ec370deb81",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 363,
+          "output_tokens": 56,
+          "cost_rub": 0.003884614311825
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "системно значимые банки кредитование",
+            "РКО условия для малого бизнеса"
+          ],
+          "new_query": "список крупнейших банков по активам",
+          "reason": "Запрос заменен с узкоспециализированной терминологии на более широкое описание объектов перечня для поиска через показатели масштаба бизнеса."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "список крупнейших банков по активам",
+          "as_of": "2026-10-07",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-07"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "5809a4934f554efbbbec970e98050190",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 439,
+          "output_tokens": 47,
+          "cost_rub": 0.0030130430743400003
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "системно значимые банки кредитование",
+            "РКО условия для малого бизнеса",
+            "список крупнейших банков по активам"
+          ],
+          "new_query": "методика определения системно значимых банков",
+          "reason": "Запрос переходит от поиска списка к поиску нормативной базы и критериев отбора, что поможет найти первоисточник методики."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "методика определения системно значимых банков",
+          "as_of": "2026-10-07",
+          "returned": [
+            {
+              "chunk_id": "b9389f93-1b92-4ec6-9ce6-9c250f7ce06e",
+              "page": 1,
+              "historical": true
+            },
+            {
+              "chunk_id": "5d3700fb-d953-46ea-9d77-2340aa283c5c",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "2a8fc577-16ed-507d-acb4-c43538251645"
+          ],
+          "new_fragments": 2,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "9b1b2e102abd4bd4850585213b862bf1",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1560,
+          "output_tokens": 973,
+          "cost_rub": 0.11311213723550001
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "38b0bdd9ff9d470e8dafdd277cbab92c",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 615,
+          "output_tokens": 144,
+          "cost_rub": 0.021515753415
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "5d653ab6-95f9-5e4d-9d29-174fcdc4cfd1",
+            "965863bc-fc59-558d-abfb-ac42bb8011a1",
+            "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2",
+            "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+            "evidence-ev-cbr-systemic-banks-2026-10-07",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "e0003f4f457c4384af0b7367ceeee127",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1795,
+          "output_tokens": 809,
+          "cost_rub": 0.103495485405
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "FACTORING_MARK"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_RKO_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2",
+        "2a8fc577-16ed-507d-acb4-c43538251645"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "системно значимые банки кредитование",
+        "РКО условия для малого бизнеса",
+        "список крупнейших банков по активам",
+        "методика определения системно значимых банков"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "В 2026 году системно значимые банки выступали крупнейшими нетто-продавцами облигаций федерального займа (ОФЗ) на вторичном рынке.",
+              "verdict": "insufficient",
+              "reason": "Фрагменты банка не относятся к событию (утверждению перечня системно значимых организаций) и не подтверждают позицию банка по этому событию. Утверждение касается поведения банков на рынке ОФЗ, что явл"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2",
+            "evidence-ev-cbr-systemic-banks-2026-10-07",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "В 2026 году системно значимые банки выступали крупнейшими нетто-продавцами ОФЗ на вторичном рынке.",
+              "verdict": "insufficient",
+              "reason": "Утверждение относится к поведению системно значимых банков на рынке ОФЗ (нетто-продавцы), в то время как событие касается утверждения перечня системно значимых кредитных организаций Банком России. Фра"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "5d653ab6-95f9-5e4d-9d29-174fcdc4cfd1",
+            "965863bc-fc59-558d-abfb-ac42bb8011a1",
+            "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2",
+            "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+            "evidence-ev-cbr-systemic-banks-2026-10-07",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              },
+              {
+                "id": "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              },
+              {
+                "id": "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              },
+              {
+                "id": "965863bc-fc59-558d-abfb-ac42bb8011a1",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "5d653ab6-95f9-5e4d-9d29-174fcdc4cfd1",
+                "status": "valid"
+              },
+              {
+                "id": "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 10,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product"
+          ],
+          "direct_event_matches": [
+            "CL_PRODUCT_RKO_MARK"
+          ],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [
+          "low_contradicts_direct_link"
+        ],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_RKO_MARK"
+        ],
+        "synthesized": [],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "e0003f4f457c4384af0b7367ceeee127",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1795,
+            "output_tokens": 809,
+            "cost_rub": 0.103495485405
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "d95221ed0d5566f27c234d8dd2c323eef888991b314b6d9b9a51f9fa09ef253b",
+        "required": 3,
+        "checked": 3,
+        "supported": 3,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "version": "d8cd3a0c9756b7d0"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части прямо следуют из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "version": "d8cd3a0c9756b7d0"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Число 12 банков прямо указано в источнике."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "version": "d8cd3a0c9756b7d0"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Доля около 80% совокупных активов прямо указана в источнике."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Принадлежность банка компании к перечню СЗКО не установлена источниками, а выводы о стабильности, особом надзоре и надежности в источниках отсутствуют."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Источники не устанавливают, что банк компании входит в СЗКО, а выводы о ликвидности, снижении рисков и управлении денежными потоками добавлены от себя."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Ни влияние перечня на условия РКО, ни гарантии выполнения требований, ни приоритеты компании не следуют из источников."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Связь между статусом СЗКО банка и увеличением времени обработки платежей, запросами документов и затруднением планирования денежных потоков отсутствует в источниках."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Надежность инфраструктуры СЗКО, более широкий спектр продуктов, оптимизация налоговой нагрузки и управление стоимостью заемного капитала не следуют из источников."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Влияние статуса СЗКО на доступность и стоимость кредитных продуктов и овердрафта не следует из источников."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Связь между надежностью банка СЗКО и бесперебойностью расчетов с контрагентами в других регионах отсутствует в источниках."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Механизм, при котором изменения регуляторных требований к СЗКО приводят к изменению тарифов или условий обслуживания, в источниках отсутствует."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Вывод о высокой вероятности взаимодействия компании с СЗКО и влияние изменений политики банка на ликвидность компании не следуют из источников."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта РКО не доказывает, что компания обслуживается именно в одном из 12 системно значимых банков"
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источник лишь сообщает об утверждении перечня, связь с изменением условий РКО в источниках отсутствует"
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Причинная связь между перечнем и условиями обслуживания, а также отсутствие данных о банке-партнере не следуют из источников"
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Выводы о снижении масштаба воздействия, отсутствии данных о банке-партнере и характере регуляторных изменений не следуют из источников"
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "ae5f604f4f884943b16305de0576e547",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2526,
+            "output_tokens": 1493,
+            "cost_rub": 0.12961173616820001
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "ffd4af100d1e4e24879ec2d8282d1ec6",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2471,
+            "output_tokens": 1880,
+            "cost_rub": 0.15094688289395003
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "2b56a6ff4be14b4593167c07ed1ca65d",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2014,
+            "output_tokens": 1212,
+            "cost_rub": 0.1045854075123
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "652f05895f1444f6a278360b3b499164",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2195,
+            "output_tokens": 368,
+            "cost_rub": 0.05911073714975
+          }
+        ],
+        "cost_rub": 0.444255
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Банк России утвердил перечень системно значимых кредитных организаций по методике, установленной Указанием от 13.04.2021 № 5778-У.",
+          "evidence_refs": [
+            "evidence-ev-cbr-systemic-banks-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "В перечень системно значимых кредитных организаций вошли 12 банков.",
+          "evidence_refs": [
+            "evidence-ev-cbr-systemic-banks-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Активы банков, включенных в перечень системно значимых, составляют около 80% совокупных активов российского банковского сектора.",
+          "evidence_refs": [
+            "evidence-ev-cbr-systemic-banks-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: связь события с компанией прямая, а малая сила не доказана данными",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Материал банка «ALFA_Russian_Steels_1К21PreviewUpdate_15Apr2021» от 2021-04-15: документ старше года, позиция не показана как текущая",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Сумма оборотов по счетам компании",
+        "Наличие и условия кредитных линий",
+        "Планы по привлечению внешнего финансирования",
+        "Структура платежей и сезонность денежных потоков",
+        "Срок актуальности вывода источниками не установлен",
+        "Конкретный банк, в котором компания обслуживается по РКО",
+        "Текущие тарифы на РКО"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-systemic-banks-2026-10-07"
+      ],
+      "trace_id": "56af0cd2-97f0-48ae-9237-e8eb656b5bb4",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Долгосрочное влияние на условия обслуживания",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

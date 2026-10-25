@@ -1,0 +1,1053 @@
+{
+  "pair_id": "B05-finance_director__ev-syn-inflation-weekly",
+  "context_id": "B05-finance_director",
+  "event_id": "ev-syn-inflation-weekly",
+  "status": "blocked",
+  "latency_seconds": 118.58,
+  "cost_rub": 1.056452,
+  "llm_calls": 11,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "инфляция кредитование IT-сектор",
+      "as_of": "2026-09-25",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "ставка заимствования бизнес рост",
+      "as_of": "2026-09-25",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "a78e4211-1580-4c12-8687-00137153e0f2",
+        "b59411ee-44b0-48a1-b20a-a7ff0d3f6d99",
+        "a65a8971-8f8b-4caf-8877-6ef809003938"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-inflation-weekly",
+        "kind": "news",
+        "source_id": "pub-ev-syn-inflation-weekly",
+        "version": "0127b1e31819b644",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-inflation-weekly"
+        },
+        "excerpt": "Росстат сообщил, что за неделю с 15 по 21 сентября 2026 года потребительские цены выросли на 0,04% после роста на 0,07% неделей ранее."
+      },
+      {
+        "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+        "kind": "company",
+        "source_id": "B05",
+        "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312",
+        "locator": {
+          "feature_path": "features.ECO_MARK_LABEL"
+        },
+        "excerpt": "Стадия развития бизнеса: Рост"
+      },
+      {
+        "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+        "kind": "bank",
+        "source_id": "a5cbeafb-4e0c-4e4c-8faf-520b31072c26",
+        "version": "6c3a4882ee784b608880693d8ba2b62d0ba2236e34b404179adaab909c6dd046",
+        "locator": {
+          "page": 12,
+          "document_date": "2026-07-22",
+          "title": "FI_Strategy_3Q26_22072026"
+        },
+        "excerpt": "конфликта на Ближнем Востоке, усилившее риски роста глобальной инфляции. На наш взгляд, реализовавшаяся угроза в отношении складов маркетплейсов также несет инфляционные риски (рост страховых премий, затрат на логистику и т.п.)\n\n□ Временной лаг трансмиссии ДКП ограничивает пространство для снижения ключевой ставки."
+      },
+      {
+        "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+        "kind": "company",
+        "source_id": "B05",
+        "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_DEP_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «депозиты»"
+      },
+      {
+        "id": "7eaf1f93-3a67-5894-a643-2a5b68c95cb9",
+        "kind": "company",
+        "source_id": "B05",
+        "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_LOA_MARK"
+        },
+        "excerpt": "Банковский продукт: нет, продукта банка «кредиты» у компании нет"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния инфляции на операционные расходы IT-компании",
+        "Анализ стоимости заимствований для бизнеса в стадии роста",
+        "Изучение динамики спроса на услуги разработки ПО",
+        "Оценка рисков кредитования в условиях замедления инфляции",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B05",
+          "profile_version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-inflation-weekly",
+          "event_version": "0127b1e31819b644",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Оценка влияния инфляции на операционные расходы IT-компании",
+            "Анализ стоимости заимствований для бизнеса в стадии роста",
+            "Изучение динамики спроса на услуги разработки ПО",
+            "Оценка рисков кредитования в условиях замедления инфляции"
+          ],
+          "initial_queries": [
+            "инфляция кредитование IT-сектор",
+            "ставка заимствования бизнес рост"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "7c88d2abbb7146789c3374172057d77d",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 451,
+          "output_tokens": 112,
+          "cost_rub": 0.016448296163
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфляция кредитование IT-сектор",
+          "as_of": "2026-09-25",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-25"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ставка заимствования бизнес рост",
+          "as_of": "2026-09-25",
+          "returned": [
+            {
+              "chunk_id": "a78e4211-1580-4c12-8687-00137153e0f2",
+              "page": 12,
+              "historical": false
+            },
+            {
+              "chunk_id": "b59411ee-44b0-48a1-b20a-a7ff0d3f6d99",
+              "page": 3,
+              "historical": false
+            },
+            {
+              "chunk_id": "a65a8971-8f8b-4caf-8877-6ef809003938",
+              "page": 11,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+            "552b0dd9-5d3f-55cf-a1e6-e50aa14c8247",
+            "ed8d9703-f00a-535b-9501-b8017e1359f6"
+          ],
+          "new_fragments": 3,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "2c0d84a51be5436ea332bcf742170cfc",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1861,
+          "output_tokens": 1383,
+          "cost_rub": 0.164284032523
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "5e7ff43c4a0a42f3934c4abbcc20f79f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 897,
+          "output_tokens": 293,
+          "cost_rub": 0.038393317651
+        },
+        {
+          "check": "supported",
+          "iteration": 1,
+          "reasons": [],
+          "evidence_ids": [
+            "0559c85a-8488-509b-bdea-dda7bcee2793",
+            "4e6a8f90-8a31-5763-ba9c-3b0bcba35b66",
+            "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+            "7eaf1f93-3a67-5894-a643-2a5b68c95cb9",
+            "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+            "b4bdca51-996e-5fb6-8ea2-48b1f0ec5236",
+            "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+            "ed8d9703-f00a-535b-9501-b8017e1359f6",
+            "evidence-ev-syn-inflation-weekly",
+            "f83ddae0-0f3f-59c5-acb0-87c8e3bc81f4"
+          ]
+        },
+        {
+          "stop": "supported",
+          "iterations": 1,
+          "extra_searches": 0
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "9d07780e94894f8d8d661e5c6782595b",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2176,
+          "output_tokens": 739,
+          "cost_rub": 0.09445991596600002
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "FTS_COUNTRY_NAME",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+        "552b0dd9-5d3f-55cf-a1e6-e50aa14c8247",
+        "ed8d9703-f00a-535b-9501-b8017e1359f6"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "supported",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 0,
+      "queries": [
+        "инфляция кредитование IT-сектор",
+        "ставка заимствования бизнес рост"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "supported",
+          "reasons": [],
+          "rejected_bank_claims": [],
+          "claims": [
+            "bank-1",
+            "bank-2",
+            "bank-3",
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "risk-3",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2",
+            "action-3"
+          ],
+          "evidence_ids": [
+            "0559c85a-8488-509b-bdea-dda7bcee2793",
+            "4e6a8f90-8a31-5763-ba9c-3b0bcba35b66",
+            "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+            "7eaf1f93-3a67-5894-a643-2a5b68c95cb9",
+            "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+            "b4bdca51-996e-5fb6-8ea2-48b1f0ec5236",
+            "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+            "ed8d9703-f00a-535b-9501-b8017e1359f6",
+            "evidence-ev-syn-inflation-weekly",
+            "f83ddae0-0f3f-59c5-acb0-87c8e3bc81f4"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-2",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-3",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "ed8d9703-f00a-535b-9501-b8017e1359f6",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              },
+              {
+                "id": "4e6a8f90-8a31-5763-ba9c-3b0bcba35b66",
+                "status": "valid"
+              },
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "0559c85a-8488-509b-bdea-dda7bcee2793",
+                "status": "valid"
+              },
+              {
+                "id": "ed8d9703-f00a-535b-9501-b8017e1359f6",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "status": "valid"
+              },
+              {
+                "id": "b4bdca51-996e-5fb6-8ea2-48b1f0ec5236",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              },
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "status": "valid"
+              },
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "ed8d9703-f00a-535b-9501-b8017e1359f6",
+                "status": "valid"
+              },
+              {
+                "id": "0559c85a-8488-509b-bdea-dda7bcee2793",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-3",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              },
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              },
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "f83ddae0-0f3f-59c5-acb0-87c8e3bc81f4",
+                "status": "valid"
+              },
+              {
+                "id": "b4bdca51-996e-5fb6-8ea2-48b1f0ec5236",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "status": "valid"
+              },
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              },
+              {
+                "id": "7eaf1f93-3a67-5894-a643-2a5b68c95cb9",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 18,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "low",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": true,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_DEP_MARK",
+          "CL_PRODUCT_ZPP_MARK"
+        ],
+        "synthesized": [],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "9d07780e94894f8d8d661e5c6782595b",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2176,
+            "output_tokens": 739,
+            "cost_rub": 0.09445991596600002
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "block",
+        "decided_by": "code",
+        "content_digest": "c37adb8898a5614f5faacab1fcecbf5868b84dc266d3a2537d413d22829d6b60",
+        "required": 7,
+        "checked": 7,
+        "supported": 6,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Числа, период и направление изменения прямо совпадают с источником."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Значения и даты прямо указаны в источнике."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Причинная связь прямо сформулирована в источнике."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "bank-2",
+            "section": "bank_view",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+                "version": "6c3a4882ee784b608880693d8ba2b62d0ba2236e34b404179adaab909c6dd046"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Позиция банка прямо выражена в материале банка («На наш взгляд... несет инфляционные риски (рост страховых премий, затрат на логистику...)»)."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+              },
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Рекомендация опирается на подтвержденное наличие продукта «депозиты» и данные об инфляции из источников; действие-гипотеза не противоречит источникам."
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+              },
+              {
+                "id": "7eaf1f93-3a67-5894-a643-2a5b68c95cb9",
+                "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+              }
+            ],
+            "verdict": "unsupported",
+            "reason": "Стадия роста входит в отклонённые предпосылки, а наличие заявок на кредитование или планов по привлечению заемных средств не следует из источников: отсутствие банковского продукта «кредиты» не доказывает ни заявок, ни планов."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "unsupported",
+            "reason": "в утверждении банка только 58 % слов опираются на банковский фрагмент"
+          },
+          {
+            "claim_id": "bank-3",
+            "section": "bank_view",
+            "verdict": "unsupported",
+            "reason": "в утверждении банка только 71 % слов опираются на банковский фрагмент"
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Выводы о высоких операционных расходах, высокой стоимости заемного капитала и замедлении роста не следуют из источников."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Чувствительность отрасли, осторожность IT-клиентов и связь сокращения IT-бюджетов со спросом и выручкой компании отсутствуют в источниках."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Выводы о реальной доходности депозитов, необходимости оптимизации денежных потоков и привлекательности альтернативных инструментов не следуют из источников."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источник говорит лишь об ограниченном пространстве для снижения ставки; тезисы о жесткой ДКП, высокой стоимости заемного капитала и затруднении финансирования проектов роста в источниках отсутствуют."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Связь между снижением индикатора бизнес-климата и сокращением спроса на услуги разработки ПО в источниках отсутствует."
+          },
+          {
+            "claim_id": "risk-3",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Части о росте затрат и о причинной связи «инфляция снижает реальную доходность депозитов» не следуют из источников"
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Вывод об оптимизации структуры капитала через пересмотр приоритетов не следует из источников; банковский материал описывает инфляционные риски и ДКП, а не возможности компании"
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Наличие продуктов не подтверждает вывод об эффективности управления потоками; «высокая волатильность цен» в источниках отсутствует"
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "«Жесткая ДКП» прямо не утверждается в источнике, а рекомендация по корректировке бюджета не следует из приведенных материалов"
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Связь «снижение инфляции → возможность смягчения ДКП → изменение ставок по вкладам» — утверждение о том, как работает институт/рынок, которого нет в источниках; источник содержит только данные Росстата и дату заседания ЦБ."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Связь между инфляционными ожиданиями и налоговой нагрузкой/волатильностью операционных расходов отсутствует в источниках; данные Росстата о недельной инфляции этого не подтверждают."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Прогноз о снижении ключевой ставки не следует из источников: в новости нет ни решения, ни сигнала о снижении ставки, только дата заседания."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источник подтверждает лишь наличие продукта «депозиты», но не факт активных остатков на депозитных счетах и их чувствительность к ставкам."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Причинная связь «замедление инфляции → снижение стоимости заемного капитала и повышение доходности депозитов» отсутствует в источниках."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Канал влияния через ставки по депозитам и оценка ограниченного масштаба для IT-бизнеса не следуют из источников; подтверждено только отсутствие кредитного продукта."
+          },
+          {
+            "claim_id": "relevance",
+            "section": "relevance_reason",
+            "verdict": "unsupported",
+            "reason": "Источник сообщает только данные по инфляции и дату заседания ЦБ 23 октября 2026 года, но не содержит суждений о сроке актуальности вывода, условиях его пересмотра или краткосрочном характере динамики данных."
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "impact_level",
+            "action": "low -> undetermined",
+            "because": "no supported basis"
+          },
+          {
+            "field": "relevance",
+            "action": "cleared",
+            "because": "impact undetermined"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [
+          "action-3"
+        ],
+        "repair_attempts": 1,
+        "stop_reason": "repair_failed",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "8f04dc244ebb43ad99f34dd51dbefbf9",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2357,
+            "output_tokens": 739,
+            "cost_rub": 0.08327329468315
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "debecba73efe4160aeaeb5d95c0b3f2e",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2957,
+            "output_tokens": 2056,
+            "cost_rub": 0.16947765270865
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "a31b415f4cac41be935252ccb9804691",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2357,
+            "output_tokens": 1984,
+            "cost_rub": 0.15496629785065
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "d1fb92528723474db6bb4589e5b1582f",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2410,
+            "output_tokens": 1646,
+            "cost_rub": 0.1364182526135
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "bbd1f7089cab4498a371096c9ba519f7",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1406,
+            "output_tokens": 331,
+            "cost_rub": 0.0433497934012
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "8b613017ce8b49628d9fb725f3cb9f0f",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3109,
+            "output_tokens": 778,
+            "cost_rub": 0.09851021728405
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "2348675dd8554b4fbe093a9663c3f029",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2032,
+            "output_tokens": 378,
+            "cost_rub": 0.0568706907054
+          }
+        ],
+        "cost_rub": 0.742866
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "За неделю с 15 по 21 сентября 2026 года потребительские цены выросли на 0,04% после роста на 0,07% неделей ранее.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Годовая инфляция на 21 сентября составила 6,2% против 6,3% на 14 сентября.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Замедление инфляции связано с сезонным снижением цен на плодоовощную продукцию.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Цены на услуги продолжили расти.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": [
+        {
+          "claim_id": "bank-2",
+          "text": "Банк указывает, что реализовавшаяся угроза в отношении складов маркетплейсов несет инфляционные риски, такие как рост страховых премий и затрат на логистику.",
+          "evidence_refs": [
+            "5b10dc2e-afb0-5ad1-a73e-cc667d516a55"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [
+        {
+          "claim_id": "action-1",
+          "text": "Проверить текущую структуру депозитов и оценить их доходность в условиях текущей инфляции; рассмотреть возможность диверсификации инструментов управления ликвидностью.",
+          "evidence_refs": [
+            "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "action-3",
+          "text": "Уточнить у руководителя, есть ли у компании незакрытые заявки на кредитование или планы по привлечению заемных средств для реализации проектов роста.",
+          "evidence_refs": [
+            "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+            "7eaf1f93-3a67-5894-a643-2a5b68c95cb9"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "unknowns": [
+        "Сумма текущей задолженности компании и условия по существующим кредитным договорам.",
+        "Структура клиентской базы компании и чувствительность спроса на её услуги к экономической конъюнктуре.",
+        "Планы компании по привлечению внешнего финансирования в ближайшем будущем.",
+        "Объем депозитных остатков компании",
+        "Текущая ставка по депозитному продукту",
+        "Чувствительность операционных расходов компании к инфляции",
+        "Ожидаемые действия ЦБ РФ по ключевой ставке",
+        "Сила влияния не определена: механизм или его обоснование не подтверждены источниками при проверке"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-inflation-weekly",
+        "5b10dc2e-afb0-5ad1-a73e-cc667d516a55",
+        "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+        "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+        "7eaf1f93-3a67-5894-a643-2a5b68c95cb9"
+      ],
+      "trace_id": "4028d111-42d6-4121-9df2-e2430372ea53",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Долгосрочный эффект от изменения монетарной политики",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "current",
+        "document_dates": [
+          "2026-07-22"
+        ]
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

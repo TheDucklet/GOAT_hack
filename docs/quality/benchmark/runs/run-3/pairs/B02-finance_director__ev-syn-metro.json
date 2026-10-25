@@ -1,0 +1,655 @@
+{
+  "pair_id": "B02-finance_director__ev-syn-metro",
+  "context_id": "B02-finance_director",
+  "event_id": "ev-syn-metro",
+  "status": "ok",
+  "latency_seconds": 25.45,
+  "cost_rub": 0.292619,
+  "llm_calls": 7,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "строительство инфраструктура кредитование",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "be640d52-a1bc-4f05-b711-573d442b4bd8",
+        "fbc34243-bc58-44e8-957b-d46467f9ce61",
+        "0c775b35-64a7-45e4-9d39-9a5c0af3672f"
+      ]
+    },
+    {
+      "query": "недвижимость регионы спрос",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "edb56ff3-8668-4728-96f5-9931aff9da64"
+      ]
+    },
+    {
+      "query": "инвестиции в транспортную инфраструктуру Татарстана",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "be640d52-a1bc-4f05-b711-573d442b4bd8"
+      ]
+    },
+    {
+      "query": "кредитование инфраструктурных проектов Татарстана",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-metro",
+        "kind": "news",
+        "source_id": "pub-ev-syn-metro",
+        "version": "d8c7038c4f9c90fe",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-metro"
+        },
+        "excerpt": "В Казани открылась новая станция метро на продлённом участке первой линии."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния инфраструктурных проектов на строительный сектор",
+        "Анализ спроса на недвижимость в регионах присутствия банка",
+        "Изучение кредитных рисков в сегменте малого строительства",
+        "Мониторинг госзакупок в сфере транспорта и жилья",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B02",
+          "profile_version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-metro",
+          "event_version": "d8c7038c4f9c90fe",
+          "facts": 4
+        },
+        {
+          "plan": [
+            "Оценка влияния инфраструктурных проектов на строительный сектор",
+            "Анализ спроса на недвижимость в регионах присутствия банка",
+            "Изучение кредитных рисков в сегменте малого строительства",
+            "Мониторинг госзакупок в сфере транспорта и жилья"
+          ],
+          "initial_queries": [
+            "строительство инфраструктура кредитование",
+            "недвижимость регионы спрос"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "2b3fe1aa3eba4c74bb9c3bc92bf48d4f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 412,
+          "output_tokens": 106,
+          "cost_rub": 0.015411770816
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительство инфраструктура кредитование",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "be640d52-a1bc-4f05-b711-573d442b4bd8",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "fbc34243-bc58-44e8-957b-d46467f9ce61",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "0c775b35-64a7-45e4-9d39-9a5c0af3672f",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "0c630464-6b2a-5559-b304-da931a75c51f",
+            "04f32581-cfb0-5338-9b0a-ed898b6c1e05",
+            "5e9d122c-6dae-5239-8557-ae491457516f"
+          ],
+          "new_fragments": 3,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "недвижимость регионы спрос",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "edb56ff3-8668-4728-96f5-9931aff9da64",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "66d55b98-1277-5b88-8d7b-2f3bc09cc614"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "41fcf75d88514616aa8989e649c6356f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2002,
+          "output_tokens": 750,
+          "cost_rub": 0.095559261031
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "af3bdc9c637f4acba18f0fea5e536cba",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2002,
+          "output_tokens": 763,
+          "cost_rub": 0.0968523002265
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "dffc3004c0604c7bac768c51ffc78db6",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 330,
+          "output_tokens": 60,
+          "cost_rub": 0.00533967603
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство инфраструктура кредитование",
+            "недвижимость регионы спрос"
+          ],
+          "new_query": "инвестиции в транспортную инфраструктуру Татарстана",
+          "reason": "Запрос переходит от общего спроса на недвижимость к конкретной отрасли и региону, что поможет найти аналитику по финансированию крупных инфраструктурных проектов."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "инвестиции в транспортную инфраструктуру Татарстана",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "be640d52-a1bc-4f05-b711-573d442b4bd8",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "c0abf574-c335-5408-9719-5c2ffbeed538"
+          ],
+          "new_fragments": 0,
+          "empty_reason": null
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "088cea965b58472bae5c7dfc8f165c7e",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 357,
+          "output_tokens": 53,
+          "cost_rub": 0.005402495748
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство инфраструктура кредитование",
+            "недвижимость регионы спрос",
+            "инвестиции в транспортную инфраструктуру Татарстана"
+          ],
+          "new_query": "кредитование инфраструктурных проектов Татарстана",
+          "reason": "Запрос переходит от общего спроса на недвижимость к конкретным финансовым инструментам поддержки масштабного строительства в данном регионе."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "кредитование инфраструктурных проектов Татарстана",
+          "as_of": "2026-09-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-22"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "f2861f03003b42f4bf0140ee7b07642b",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1982,
+          "output_tokens": 284,
+          "cost_rub": 0.04198451153
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "66d55b98-1277-5b88-8d7b-2f3bc09cc614",
+        "0c630464-6b2a-5559-b304-da931a75c51f",
+        "04f32581-cfb0-5338-9b0a-ed898b6c1e05",
+        "5e9d122c-6dae-5239-8557-ae491457516f"
+      ],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Открытие новой станции метро в Казани и планы по продлению линии создают спрос на строительные услуги и проектирование в регионе. Поскольку компания специализируется на строительстве жилых и нежилых з"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Участие в инфраструктурных проектах требует обеспечения обязательств, что напрямую связано с использованием банковских гарантий. Наличие у компании продукта «банковские гарантии» позволяет ей участвов"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Строительная отрасль в целом демонстрирует спад инвестиций, однако локальные инфраструктурные проекты, такие как метрополитен, могут быть исключением, финансируемым за счет бюджета. Компания на стадии"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Географическая экспансия в Казань может увеличить операционные издержки и логистические риски для компании, зарегистрированной в Екатеринбурге, особенно в условиях общего спада в строительной отрасли."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Участие в государственных или крупных частных тендерах на строительство требует надежного обеспечения, и зависимость от продукта «банковские гарантии» означает, что любые изменения в условиях их предо"
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Возможность выхода на новый региональный рынок (Казань, для компании, находящейся в стадии роста, что может компенсировать общее снижение активности в строительной отрасли."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Использование имеющихся банковских гарантий для участия в конкурсах на строительство и проектирование, связанных с развитием транспортной инфраструктуры, что может привести к росту выручки."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Уточнить у руководителя, планирует ли компания участвовать в тендерах на строительство или проектирование в Казани, связанных с развитием метрополитена."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить текущие лимиты и условия по продукту «банковские гарантии» на случай увеличения спроса на обеспечение контрактов в новых регионах."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Оценить влияние общего спада в строительной отрасли на маржинаность потенциальных проектов в Казани, учитывая специфику деятельности компании."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "строительство инфраструктура кредитование",
+        "недвижимость регионы спрос",
+        "инвестиции в транспортную инфраструктуру Татарстана",
+        "кредитование инфраструктурных проектов Татарстана"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 4,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "f2861f03003b42f4bf0140ee7b07642b",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1982,
+            "output_tokens": 284,
+            "cost_rub": 0.04198451153
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "3e728740995a598ec794b4cf11ed7b724455394378b1a0154a9a94549744a831",
+        "required": 4,
+        "checked": 4,
+        "supported": 4,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "version": "d8c7038c4f9c90fe"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "version": "d8c7038c4f9c90fe"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Число и период прямо указаны в источнике."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "version": "d8c7038c4f9c90fe"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Планы властей прямо указаны в источнике."
+          },
+          {
+            "claim_id": "fact-4",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "version": "d8c7038c4f9c90fe"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условие выбора подрядчика и срок прямо указаны в источнике."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "55f6229d92fa4e9ebffe9feddb5c7f94",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1657,
+            "output_tokens": 367,
+            "cost_rub": 0.03206894254135
+          }
+        ],
+        "cost_rub": 0.032069
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "В Казани открылась новая станция метро на продлённом участке первой линии.",
+          "evidence_refs": [
+            "evidence-ev-syn-metro"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "Станция рассчитана на 20 тысяч пассажиров в сутки.",
+          "evidence_refs": [
+            "evidence-ev-syn-metro"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Городские власти планируют продолжить строительство в сторону северных районов.",
+          "evidence_refs": [
+            "evidence-ev-syn-metro"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-4",
+          "text": "Подрядчик будет выбран по конкурсу до конца года.",
+          "evidence_refs": [
+            "evidence-ev-syn-metro"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Готовность компании к географической экспансии в Татарстан и наличие необходимых ресурсов (кадровых, технических) для работы в Казани.",
+        "Конкретные объемы и сроки реализации инфраструктурных проектов в Казани, которые могут быть доступны для подрядчиков.",
+        "Текущая загрузка производственных мощностей компании и возможность одновременного выполнения проектов в Екатеринбурге и Казани.",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие у компании банковского продукта «кредиты» исключает прямое влияние на долговую нагрузку, но не позволяет оценить влияние на операционную деятельность или будущие потребности в финансировании.",
+        "Географическое несоответствие: компания зарегистрирована в Екатеринбурге, а событие произошло в Казани, что делает прямое влияние маловероятным без данных о филиальной сети или проектах в другом регионе.",
+        "Неизвестна выручка компании (REVENUE_COMPANY), поэтому невозможно оценить масштаб потенциального участия в строительных проектах или влияние на денежные потоки.",
+        "Неизвестны детали участия компании в тендерах или контрактах, связанных со строительством метро, поэтому связь между открытием станции и деятельностью компании не подтверждена."
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-metro"
+      ],
+      "trace_id": "d70dd8e1-34bc-40ae-a876-f052ed8e8cbb",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

@@ -1,0 +1,911 @@
+{
+  "pair_id": "B05-finance_director__ev-cbr-lombard-2026-10-05",
+  "context_id": "B05-finance_director",
+  "event_id": "ev-cbr-lombard-2026-10-05",
+  "status": "ok",
+  "latency_seconds": 84.53,
+  "cost_rub": 0.731974,
+  "llm_calls": 10,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "ломбардный список облигации ликвидность",
+      "as_of": "2026-10-05",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "ключевая ставка кредитование IT-сектор",
+      "as_of": "2026-10-05",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+        "621f1430-4ac8-46d1-8601-3fcb93419887",
+        "9ca85272-f410-420e-95c7-279fdb242eb7",
+        "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+        "eef97a4d-e776-491d-b689-e9853bc596cd"
+      ]
+    },
+    {
+      "query": "расширение перечня залогового обеспечения ЦБ",
+      "as_of": "2026-10-05",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "новые инструменты залогового обеспечения ЦБ",
+      "as_of": "2026-10-05",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-lombard-2026-10-05",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-lombard-2026-10-05",
+        "version": "7d61aa3d132c2a42",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639267886931956080DSD.htm"
+        },
+        "excerpt": "29 сентября 2026 года Совет директоров Банка России решил включить в Ломбардный список биржевые облигации и ипотечные облигации 19 эмитентов, в том числе ДОМ.РФ Ипотечного агента, АЛРОСА, РЖД, Газпром нефть и Роснефть."
+      },
+      {
+        "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "kind": "bank",
+        "source_id": "d2a4babb-08ac-4ff9-b752-74ed4bd31cf2",
+        "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6",
+        "locator": {
+          "page": 2,
+          "document_date": "2026-08-05",
+          "title": "ALFA-consumption"
+        },
+        "excerpt": "инфляции пока делает возможным дальнейшее снижение ключевой ставки - мы ждем еще два снижения по 25 б. п. до конца текущего года и на конец 2026 г. ожидаем ставку на уровне 13,5% (см Рис. 8).\nРис. 7: Динамика базовой недельной инфляции и ее структура, % н/н\nИсточники: Росстат, Альфа-Банк\nРис. 8: Прогноз Альфа-Банка по"
+      },
+      {
+        "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+        "kind": "company",
+        "source_id": "B05",
+        "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_DEP_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «депозиты»"
+      },
+      {
+        "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+        "kind": "company",
+        "source_id": "B05",
+        "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312",
+        "locator": {
+          "feature_path": "features.ECO_MARK_LABEL"
+        },
+        "excerpt": "Стадия развития бизнеса: Рост"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "анализ влияния ломбардного списка на ликвидность облигаций",
+        "оценка стоимости заимствований для IT-сектора",
+        "прогноз изменения ключевой ставки и кредитных рисков",
+        "влияние госэмитентов на фондовый рынок",
+        "доступность финансирования для компаний роста",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B05",
+          "profile_version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-lombard-2026-10-05",
+          "event_version": "7d61aa3d132c2a42",
+          "facts": 3
+        },
+        {
+          "plan": [
+            "анализ влияния ломбардного списка на ликвидность облигаций",
+            "оценка стоимости заимствований для IT-сектора",
+            "прогноз изменения ключевой ставки и кредитных рисков",
+            "влияние госэмитентов на фондовый рынок",
+            "доступность финансирования для компаний роста"
+          ],
+          "initial_queries": [
+            "ломбардный список облигации ликвидность",
+            "ключевая ставка кредитование IT-сектор"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "0592421763ae4483aa07d0d7fc22c03f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 496,
+          "output_tokens": 122,
+          "cost_rub": 0.016689105082
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ломбардный список облигации ликвидность",
+          "as_of": "2026-10-05",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-05"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ключевая ставка кредитование IT-сектор",
+          "as_of": "2026-10-05",
+          "returned": [
+            {
+              "chunk_id": "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "621f1430-4ac8-46d1-8601-3fcb93419887",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "9ca85272-f410-420e-95c7-279fdb242eb7",
+              "page": 6,
+              "historical": false
+            },
+            {
+              "chunk_id": "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "eef97a4d-e776-491d-b689-e9853bc596cd",
+              "page": 3,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "96964105-d9d2-5c75-bc36-de9f41646d95",
+            "46c08ffb-b400-5304-ab19-103d085bc028",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "6dec5e3b-1991-5b9f-8e89-e7675de70c7c"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "512dc520d19048718e45496dcb34bbc6",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2086,
+          "output_tokens": 875,
+          "cost_rub": 0.098763066649
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "bf3b76dae0aa45ea993e702be95705a6",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 646,
+          "output_tokens": 129,
+          "cost_rub": 0.0195945170395
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "0559c85a-8488-509b-bdea-dda7bcee2793",
+            "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+            "evidence-ev-cbr-lombard-2026-10-05"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "8e14c3caf47c41e5bf1820259b3098e4",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 405,
+          "output_tokens": 58,
+          "cost_rub": 0.0044256491331
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ломбардный список облигации ликвидность",
+            "ключевая ставка кредитование IT-сектор"
+          ],
+          "new_query": "расширение перечня залогового обеспечения ЦБ",
+          "reason": "Запрос использует терминологию залогового обеспечения вместо «ломбардного списка» для поиска более широкого контекста регуляторных изменений."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "расширение перечня залогового обеспечения ЦБ",
+          "as_of": "2026-10-05",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-05"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "d97c08cc16ff45eb8f3f25f90f4b9f8a",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 432,
+          "output_tokens": 63,
+          "cost_rub": 0.006501840813000001
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ломбардный список облигации ликвидность",
+            "ключевая ставка кредитование IT-сектор",
+            "расширение перечня залогового обеспечения ЦБ"
+          ],
+          "new_query": "новые инструменты залогового обеспечения ЦБ",
+          "reason": "Запрос использует более широкую терминологию вместо узкого понятия «ломбардный список», что позволит охватить документы о расширении перечня доступных активов."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "новые инструменты залогового обеспечения ЦБ",
+          "as_of": "2026-10-05",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-05"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "26852b59ef694b0a861a3c9bc9522ebb",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2062,
+          "output_tokens": 756,
+          "cost_rub": 0.092826603298
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "FTS_COUNTRY_NAME",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_DEP_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+        "96964105-d9d2-5c75-bc36-de9f41646d95",
+        "46c08ffb-b400-5304-ab19-103d085bc028",
+        "8f85e29b-5d84-52f4-8659-f65f6092816c"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "ломбардный список облигации ликвидность",
+        "ключевая ставка кредитование IT-сектор",
+        "расширение перечня залогового обеспечения ЦБ",
+        "новые инструменты залогового обеспечения ЦБ"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Банк ожидает дальнейшего снижения ключевой ставки и на конец 2026 года прогнозирует её уровень на отметке 13,5%.",
+              "verdict": "insufficient",
+              "reason": "Утверждение относится к прогнозу ключевой ставки, в то время как событие касается включения ценных бумаг в Ломбардный список. Фрагменты подтверждают прогноз Альфа-Банка, но не имеют отношения к предме"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0559c85a-8488-509b-bdea-dda7bcee2793",
+            "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+            "evidence-ev-cbr-lombard-2026-10-05"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "status": "valid"
+              },
+              {
+                "id": "0559c85a-8488-509b-bdea-dda7bcee2793",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "status": "valid"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              },
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "status": "valid"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              },
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              },
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "status": "valid"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              },
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "status": "valid"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "status": "valid"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 10,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "low",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "industry",
+            "product"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_LOA_MARK",
+          "MAINOKVED_NAME"
+        ],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "26852b59ef694b0a861a3c9bc9522ebb",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2062,
+            "output_tokens": 756,
+            "cost_rub": 0.092826603298
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "3818cb955ab6ac9ea44483718be593be50e9043465aac4a2804cc03b104783c3",
+        "required": 5,
+        "checked": 5,
+        "supported": 5,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "version": "7d61aa3d132c2a42"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из текста новости."
+          },
+          {
+            "claim_id": "fact-2",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "version": "7d61aa3d132c2a42"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Перечень эмитентов прямо назван в источнике («в том числе...»)."
+          },
+          {
+            "claim_id": "fact-3",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-lombard-2026-10-05",
+                "version": "7d61aa3d132c2a42"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Условие действия решения прямо указано в источнике."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+                "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Наличие продукта «депозиты» подтверждено признаками компании, прогноз снижения ставки — материалом банка, рекомендация логично следует из этих предпосылок."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+                "version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Стадия роста подтверждена признаками компании, макропрогноз — материалом банка; рекомендация по уточнению планов является допустимым действием на основе этих предпосылок."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Влияние включения в Ломбардный список на ликвидность и стоимость заимствований, а также отрицание прямой экспозиции компании не следуют из источников."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Связь события с поддержкой ликвидности, снижением процентного риска и изменением доходности по вкладам не следует из источников; «может» без явного условия не делает вывод допустимым."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Характер решения как части политики обеспечения ликвидности, корреляция с прогнозом и отсутствие текущих кредитов у компании не следуют из источников."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «депозиты» не доказывает действующие депозиты и свободные средства, а причинная связь «снижение ставки → снижение доходности → поиск альтернатив» в источниках отсутствует."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Улучшение ликвидности на рынке долговых инструментов и вытекающие возможности рефинансирования не следуют из источников (новость лишь фиксирует включение облигаций в Ломбардный список)."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Источник подтверждает только факт включения бумаг в Ломбардный список; утверждение о механизме (повышение ликвидности, снижение стоимости привлечения) в источниках отсутствует."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Отсутствие залоговых обязательств не подтверждено источниками, а отрицание влияния Ломбардного списка на компанию не следует из источников."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источники сообщают только о включении облигаций РЖД в Ломбардный список; связь с ликвидностью и стоимостью заемного капитала IT-сектора в источниках отсутствует."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Отсутствие банковского продукта «кредиты» не доказывает отсутствие текущей задолженности; отрицание свойства без источника."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Связь включения в Ломбардный список со снижением стоимости заемного капитала и отрицание кредитной/залоговой экспозиции компании в источниках отсутствуют."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Отсутствие кредитной задолженности и косвенный эффект на рыночные ставки не следуют из источников; наличие банковского продукта не доказывает отсутствие задолженности."
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "impact_level",
+            "action": "low -> undetermined",
+            "because": "no supported basis"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "09e27d113629432787bda29a22a4ea0a",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2878,
+            "output_tokens": 1824,
+            "cost_rub": 0.1547532343071
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "8b9801fa79aa4e5d8560e3a14d14c3b8",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2787,
+            "output_tokens": 1923,
+            "cost_rub": 0.15888206027265
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "80ffb93c75c343dfabc3d556b20ddac7",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1946,
+            "output_tokens": 841,
+            "cost_rub": 0.0820467396892
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "c16b17ec77e84dd586fa0e57610c5e13",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2770,
+            "output_tokens": 862,
+            "cost_rub": 0.0974909673595
+          }
+        ],
+        "cost_rub": 0.493173
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Совет директоров Банка России решил включить в Ломбардный список биржевые облигации и ипотечные облигации 19 эмитентов.",
+          "evidence_refs": [
+            "evidence-ev-cbr-lombard-2026-10-05"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-2",
+          "text": "В Ломбардный список включены ценные бумаги ДОМ.РФ Ипотечного агента, АЛРОСА, РЖД, Газпром нефти и Роснефти.",
+          "evidence_refs": [
+            "evidence-ev-cbr-lombard-2026-10-05"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "fact-3",
+          "text": "Решение о включении ценных бумаг в Ломбардный список действует с первого рабочего дня после опубликования на официальном сайте Банка России.",
+          "evidence_refs": [
+            "evidence-ev-cbr-lombard-2026-10-05"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [
+        {
+          "claim_id": "action-1",
+          "text": "Проверить текущие условия по депозитам компании и оценить возможность перераспределения части средств в другие инструменты с учетом ожидаемого снижения ставок.",
+          "evidence_refs": [
+            "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "action-2",
+          "text": "Уточнить планы компании по привлечению заемного финансирования в связи со стадией роста бизнеса и изменением макроэкономической конъюнктуры.",
+          "evidence_refs": [
+            "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "unknowns": [
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Долг компании в других банках, его сумма и тип ставки неизвестны",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Объем свободных денежных средств компании, размещенных на депозитах.",
+        "Планы компании по привлечению заемных средств в ближайший период.",
+        "Текущая структура активов и пассивов компании.",
+        "Срок актуальности вывода источниками не установлен",
+        "Объем средств на депозитах и условия ставки по ним",
+        "Планы компании по привлечению заемного финансирования в будущем",
+        "Степень зависимости компании от поставщиков или партнеров из железнодорожного сектора",
+        "Сила влияния не определена: механизм или его обоснование не подтверждены источниками при проверке"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-lombard-2026-10-05",
+        "8d208fa7-27bd-5f8a-9ed8-f73668ebdc38",
+        "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "ddf6ec0c-5453-5ed5-9275-2f44d3934ab7"
+      ],
+      "trace_id": "32c29236-3892-4359-85e6-f62b0ab08967",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}
