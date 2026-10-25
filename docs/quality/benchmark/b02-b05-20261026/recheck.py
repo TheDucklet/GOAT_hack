@@ -16,7 +16,7 @@ from run_review import HERE, LIMIT, ROOT, RunBudgetConfig, digest, git, read, wr
 
 sys.path.insert(0, str(ROOT / "backend"))
 SOURCE = ROOT / "artifacts/f16-b02-b05-20261026"
-OUTPUT = ROOT / "artifacts/f16-b02-b05-recheck-20261026"
+OUTPUT = ROOT / "artifacts/f16-b02-b05-recheck2-20261026"
 CAP = 3.41
 
 
@@ -32,7 +32,7 @@ def prepare():
         "aggregate_limit_rub": LIMIT,
         "replay_limit_rub": CAP,
         "budget_day": prior["budget"]["day"],
-        "files": {str(p.relative_to(SOURCE)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},
+        "files": {p.relative_to(SOURCE).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths},
         "runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
     }
     write(HERE / "recheck-inputs.json", value)
