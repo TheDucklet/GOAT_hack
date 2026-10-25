@@ -2,6 +2,8 @@ import json
 
 from pydantic import Field
 
+from app.ai.gate.prompts import GATE_SYSTEM_PROMPT
+from app.ai.gate.verify import verify_claims
 from app.ai.providers import LLMError, LLMInput, call_llm
 from app.ai.summarization.summarize import Lenient
 
@@ -120,3 +122,65 @@ def judge_card(envelope: dict, publications: dict[str, str] | None = None) -> di
                 }
             )
     return {"claims": judged, "usage": usage}
+
+
+JUDGE2_PROMPT_VERSION = "judge-2"
+JUDGE2_SYSTEM_PROMPT = GATE_SYSTEM_PROMPT.replace(
+    "Ты независимый проверяющий аналитической карточки перед публикацией.",
+    "Ты независимый оценщик качества аналитических карточек в бенчмарке, ты ничего не публикуешь.",
+)
+
+
+def typed_sources(envelope: dict, publications: dict[str, str], context: dict[str, str]) -> dict[str, dict]:
+    result = {}
+    for item in envelope["evidence"]:
+        text = publications.get(item["source_id"]) if item["kind"] == "news" else None
+        if item["kind"] == "bank":
+            text = context.get(item["id"]) or item["excerpt"]
+        result[item["id"]] = {
+            "kind": item["kind"],
+            "text": text or item["excerpt"],
+            "locator": item.get("locator") or {},
+        }
+    return result
+
+
+def judge_card_v2(envelope: dict, publications: dict[str, str], context: dict[str, str]) -> dict:
+    claims = essential_claims(envelope, publications)
+    sources = typed_sources(envelope, publications, context)
+    verdicts, usage = verify_claims(
+        [
+            {
+                "claim_id": claim["claim_id"],
+                "section": claim["section"],
+                "statement_type": claim["statement_type"],
+                "text": claim["text"],
+                "evidence_refs": claim["evidence_refs"],
+            }
+            for claim in claims
+        ],
+        sources,
+        task=JUDGE_TASK,
+        system=JUDGE2_SYSTEM_PROMPT,
+    )
+    judged = []
+    for claim in claims:
+        item = verdicts[claim["claim_id"]]
+        verdict = (
+            item["verdict"]
+            if item["verdict"] in {"supported", "unsupported", "contradicted"}
+            else "not_judged"
+        )
+        judged.append(
+            {
+                "claim_id": claim["claim_id"],
+                "section": claim["section"],
+                "statement_type": claim["statement_type"],
+                "text": claim["text"],
+                "verdict": verdict,
+                "reason": item["reason"],
+                "grounded": verdict == "supported",
+                "parts": item.get("parts", []),
+            }
+        )
+    return {"judge_version": JUDGE2_PROMPT_VERSION, "claims": judged, "usage": usage}

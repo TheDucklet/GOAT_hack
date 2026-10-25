@@ -418,3 +418,47 @@ def test_new_event_set_is_fixed_deterministic_and_disjoint_from_the_first_run():
         )
     )
     assert len(sheet) == 42 and all(not row["label"] for row in sheet)
+
+
+def test_pair_run_retries_only_transient_errors_and_never_regenerates_a_blocked_card(monkeypatch):
+    from app.ai.benchmark import runner
+    from app.ai.benchmark.data import BenchmarkContext
+    from app.ai.providers import LLMError
+
+    calls = {"count": 0}
+    envelope = {
+        "trace": {
+            "steps": [{"llm": "x", "cost_rub": 0.1}],
+            "publication": {"decision": "block", "usage": [], "cost_rub": 0.02},
+        },
+        "result": {},
+    }
+
+    def flaky(*args, **kwargs):
+        calls["count"] += 1
+        if calls["count"] == 1:
+            raise LLMError("provider_unavailable", "r")
+        return envelope
+
+    monkeypatch.setattr(runner, "build_published_insight", flaky)
+    context = BenchmarkContext("B-r", "B", "r", "g", {})
+    record = runner.run_pair(context, {"id": "e"}, {}, lambda *a: {"items": []}, retries=1)
+    assert (
+        record["status"] == "blocked"
+        and calls["count"] == 2
+        and record["failed_attempts"][0]["error"] == "provider_unavailable"
+    )
+    assert record["cost_rub"] == pytest.approx(0.12)
+    calls["count"] = 0
+    monkeypatch.setattr(
+        runner, "build_published_insight", lambda *a, **k: (_ for _ in ()).throw(LLMError("timeout", "r"))
+    )
+    lost = runner.run_pair(context, {"id": "e"}, {}, lambda *a: {"items": []}, retries=1)
+    assert lost["status"] == "error" and len(lost["failed_attempts"]) == 2
+    monkeypatch.setattr(
+        runner,
+        "build_published_insight",
+        lambda *a, **k: (_ for _ in ()).throw(LLMError("budget_exhausted", "r")),
+    )
+    with pytest.raises(LLMError):
+        runner.run_pair(context, {"id": "e"}, {}, lambda *a: {"items": []}, retries=1)

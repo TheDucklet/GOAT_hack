@@ -2,9 +2,10 @@ import csv
 import re
 from pathlib import Path
 
+from app.ai.benchmark.judge import JUDGE2_PROMPT_VERSION, JUDGE2_SYSTEM_PROMPT, JUDGE_TASK
 from app.ai.benchmark.runner import write
 from app.ai.gate.prompts import GATE_PROMPT_VERSION
-from app.ai.gate.verify import verify_checked
+from app.ai.gate.verify import verify_checked, verify_claims
 
 
 def read_rows(path: Path) -> list[dict]:
@@ -42,7 +43,7 @@ def kappa(pairs: list[tuple[bool, bool]]) -> float | None:
     return None if expected == 1 else round((observed - expected) / (1 - expected), 4)
 
 
-def check_verifier(sheet: Path, labels: Path, output: Path) -> dict:
+def check_verifier(sheet: Path, labels: Path, output: Path, variant: str = "gate") -> dict:
     rows = read_rows(sheet)
     human = {row["row_id"]: row for row in read_rows(labels)}
     claims = [
@@ -58,7 +59,10 @@ def check_verifier(sheet: Path, labels: Path, output: Path) -> dict:
     sources = {}
     for row in rows:
         sources.update(split_sources(row["row_id"], row["sources"]))
-    verdicts, usage = verify_checked(claims, sources)
+    if variant == "judge2":
+        verdicts, usage = verify_claims(claims, sources, task=JUDGE_TASK, system=JUDGE2_SYSTEM_PROMPT)
+    else:
+        verdicts, usage = verify_checked(claims, sources)
     details = []
     for row in rows:
         given = verdicts[row["row_id"]]
@@ -86,7 +90,8 @@ def check_verifier(sheet: Path, labels: Path, output: Path) -> dict:
         entry["rows"] += 1
         entry["agree"] += int((item["human"] == "supported") == (item["verifier"] == "supported"))
     report = {
-        "verifier_prompt_version": GATE_PROMPT_VERSION,
+        "variant": variant,
+        "verifier_prompt_version": JUDGE2_PROMPT_VERSION if variant == "judge2" else GATE_PROMPT_VERSION,
         "sheet": sheet.name,
         "labels": labels.name,
         "rows": len(details),
