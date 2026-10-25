@@ -2,7 +2,7 @@ import json
 
 from pydantic import Field
 
-from app.ai.gate.prompts import GATE_SYSTEM_PROMPT
+from app.ai.gate.prompts import GATE_SYSTEM_PROMPT, PART_KINDS
 from app.ai.lenient import Lenient
 from app.ai.providers import LLMError, LLMInput, call_llm
 
@@ -11,6 +11,9 @@ BATCH = 6
 MAX_TOKENS = 3800
 VERDICTS = frozenset({"supported", "unsupported", "contradicted"})
 PASSING_PARTS = frozenset({"in_sources", "acceptable_condition"})
+PART_STATUSES = PASSING_PARTS | {"not_in_sources", "contradicted"}
+KNOWN_KINDS = frozenset(item.strip() for item in PART_KINDS.split(","))
+MIN_PART_CHARS = 3
 SEVERITY = {"supported": 0, "unsupported": 1, "contradicted": 2}
 UNVERIFIED = "unverified"
 
@@ -42,6 +45,13 @@ def source_label(item: dict) -> dict:
         label["date"] = locator.get("document_date")
         label["page"] = locator.get("page")
     return label
+
+
+def meaningful(parts: list[RawPart]) -> bool:
+    return bool(parts) and all(
+        len(part.text.strip()) >= MIN_PART_CHARS and part.kind in KNOWN_KINDS and part.status in PART_STATUSES
+        for part in parts
+    )
 
 
 def decided(item: RawVerdict) -> dict:
@@ -122,12 +132,12 @@ def judge_batch(
                 "verdict": UNVERIFIED,
                 "reason": "проверяющий не вернул вердикт по этому утверждению",
             }
-        elif item.verdict in VERDICTS and item.parts:
+        elif item.verdict in VERDICTS and meaningful(item.parts):
             verdicts[claim["claim_id"]] = decided(item)
         elif item.verdict in VERDICTS:
             verdicts[claim["claim_id"]] = {
                 "verdict": UNVERIFIED,
-                "reason": "проверяющий не разобрал утверждение на части",
+                "reason": "проверяющий не разобрал утверждение на содержательные части",
             }
         else:
             verdicts[claim["claim_id"]] = {

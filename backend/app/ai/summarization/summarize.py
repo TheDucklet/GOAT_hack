@@ -227,7 +227,7 @@ def summarize_event(event: dict, diagnostics: dict | None = None) -> dict:
         raw = RawSummary.model_validate(result.data)
         facts = verified_facts(raw.facts, sources, rejected)
         summary = summary_text(raw, facts, sources, payload.title)
-        if facts:
+        if facts or summary != payload.title:
             facts, checked = checked_facts_and_summary(facts, summary, sources, rejected, usage)
             summary = checked or (facts[0]["text"] if facts else payload.title)
         if facts:

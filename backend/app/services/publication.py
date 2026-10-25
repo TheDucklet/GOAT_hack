@@ -1,22 +1,12 @@
 from app.integrations.ai import AIError
-from app.publication_policy import (
-    PUBLICATION_POLICY_VERSION,
-    SERVICE_ANSWER_KIND,
-    content_digest,
-    report_problems,
-)
+from app.publication_policy import SERVICE_ANSWER_KIND, report_problems, service_problems
 
 
 def require_publication(envelope, result: dict, kind: str) -> str:
     report = envelope.trace.get("publication") if isinstance(envelope.trace, dict) else None
     evidence = [item.model_dump(mode="json") for item in envelope.evidence]
     if kind == "chat" and isinstance(report, dict) and report.get("decision") == SERVICE_ANSWER_KIND:
-        if (
-            report.get("policy_version") != PUBLICATION_POLICY_VERSION
-            or report.get("decided_by") != "code"
-            or report.get("content_digest") != content_digest(result)
-            or result.get("evidence_refs")
-        ):
+        if service_problems(report, result, evidence):
             raise AIError("invalid_publication_report", "Служебное сообщение не прошло проверку формата")
         return SERVICE_ANSWER_KIND
     if isinstance(report, dict) and report.get("decision") == "block":

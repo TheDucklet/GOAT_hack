@@ -15,7 +15,8 @@ def order_v2(scores: dict[str, float]) -> list[str]:
 
 def context_result(shown: list[str], labels: dict[str, int], k: int = K) -> dict:
     top = shown[:k]
-    gains = [labels[item] for item in top if item in labels]
+    gains = [labels.get(item, 0) for item in top]
+    unlabeled = sum(1 for item in top if item not in labels)
     ideal = sorted(labels.values(), reverse=True)
     idcg = dcg(ideal, k)
     value = dcg(gains, k)
@@ -24,6 +25,7 @@ def context_result(shown: list[str], labels: dict[str, int], k: int = K) -> dict
     return {
         "top": top,
         "returned": len(top),
+        "unlabeled_in_top": unlabeled,
         "dcg": round(value, 6),
         "idcg": round(idcg, 6),
         "ndcg": round(value / idcg, 4) if idcg else None,
@@ -45,6 +47,7 @@ def aggregate_v2(rows: list[dict]) -> dict:
     precision_hits = sum(item["hits"] for item in rows)
     return {
         "contexts": len(rows),
+        "unlabeled_in_top": sum(item["unlabeled_in_top"] for item in rows),
         "ndcg_defined": len(defined),
         "ndcg_na": len(rows) - len(defined),
         "ndcg_macro": round(sum(item["ndcg"] for item in defined) / len(defined), 4) if defined else None,
@@ -84,7 +87,7 @@ def compare(candidate: dict[str, dict], baseline: dict[str, dict]) -> dict:
     }
 
 
-def gates(candidate: dict, comparison: dict, targets: dict) -> dict:
+def gates(candidate: dict, comparison: dict, targets: dict, complete: bool = True) -> dict:
     checks = {
         "ndcg_macro": (candidate["ndcg_macro"], ">=", targets["ndcg_macro"]),
         "ndcg_pooled": (candidate["ndcg_pooled"], ">=", targets["ndcg_pooled"]),
@@ -103,5 +106,9 @@ def gates(candidate: dict, comparison: dict, targets: dict) -> dict:
         "passed": candidate["ndcg_defined"] >= targets["min_ndcg_contexts"]
         and candidate["recall_defined"] >= targets["min_recall_contexts"],
     }
-    result["passed"] = all(item["passed"] for item in result.values())
+    result["labels_complete"] = {"value": complete, "threshold": True, "passed": complete}
+    result["status"] = "COMPLETE" if complete else "INCOMPLETE"
+    result["passed"] = complete and all(
+        item["passed"] for key, item in result.items() if isinstance(item, dict)
+    )
     return result

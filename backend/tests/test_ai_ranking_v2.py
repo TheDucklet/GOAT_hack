@@ -83,3 +83,22 @@ def test_gate_is_incomplete_when_too_few_contexts_are_defined():
     rows["a"] = context_result(["a1"], labels(a1=2))
     comparison = compare(rows, rows)
     assert not gates(aggregate_v2(list(rows.values())), comparison, TARGETS)["sufficient"]["passed"]
+
+
+def test_ndcg_does_not_promote_items_over_unlabeled_positions():
+    result = context_result(["unresolved", "relevant"], {"relevant": 2})
+    assert result["unlabeled_in_top"] == 1
+    assert result["ndcg"] == pytest.approx(3 / math.log2(3) / 3, abs=1e-4)
+    assert result["ndcg"] < 0.64
+
+
+def test_gate_is_incomplete_while_labels_are_unresolved():
+    good = {key: context_result([key + "1"], labels(**{key + "1": 2})) for key in "abcdefg"}
+    comparison = compare(
+        good, {key: context_result(["x"], labels(**{key + "1": 2, "x": 0})) for key in "abcdefg"}
+    )
+    summary = aggregate_v2(list(good.values()))
+    assert gates(summary, comparison, TARGETS)["passed"]
+    incomplete = gates(summary, comparison, TARGETS, complete=False)
+    assert incomplete["status"] == "INCOMPLETE" and incomplete["passed"] is False
+    assert incomplete["ndcg_macro"]["passed"]

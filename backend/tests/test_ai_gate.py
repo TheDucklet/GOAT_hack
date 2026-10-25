@@ -9,7 +9,7 @@ from app.ai.gate import verify as gate_verify
 from app.ai.gate.apply import enforce_publication
 from app.ai.gate.chat import SERVICE_ANSWER, enforce_chat
 from app.ai.providers import LLMError
-from app.publication_policy import content_digest, report_problems
+from app.publication_policy import REFUSAL_TEXT, content_digest, report_problems, service_problems
 from tests.support_gate import Verifier
 
 FIXTURES = json.loads(
@@ -219,9 +219,23 @@ def test_chat_without_any_supported_sentence_becomes_a_service_message(monkeypat
 
 def test_chat_refusal_without_evidence_is_a_service_message_without_a_model_call(monkeypatch):
     verifier = Verifier()
-    envelope = {**copy.deepcopy(CHAT), "result": {**CHAT["result"], "evidence_refs": []}}
+    envelope = {
+        **copy.deepcopy(CHAT),
+        "result": {**CHAT["result"], "answer": REFUSAL_TEXT, "evidence_refs": []},
+    }
     result = run_chat(monkeypatch, verifier, envelope)
     assert result["trace"]["publication"]["decision"] == "service_message" and not verifier.payloads
+    assert result["result"]["answer"] == REFUSAL_TEXT
+
+
+def test_free_text_without_evidence_is_replaced_by_the_fixed_service_answer(monkeypatch):
+    verifier = Verifier()
+    text = "У компании есть действующий кредит и обязательство немедленно его погасить."
+    envelope = {**copy.deepcopy(CHAT), "result": {**CHAT["result"], "answer": text, "evidence_refs": []}}
+    result = run_chat(monkeypatch, verifier, envelope)
+    assert result["result"]["answer"] == SERVICE_ANSWER and text not in str(result["result"])
+    assert result["trace"]["publication"]["decision"] == "service_message" and not verifier.payloads
+    assert service_problems(result["trace"]["publication"], result["result"], result["evidence"]) == []
 
 
 def test_apply_module_does_not_trust_model_text_for_the_decision():
@@ -312,3 +326,36 @@ def test_a_rejected_hypothesis_is_not_passed_on_as_a_rejected_premise(monkeypatc
     verifier = Verifier({ids["mechanism"][0]: "unsupported"})
     run(monkeypatch, verifier)
     assert verifier.payloads[1]["rejected_premises"] == []
+
+
+@pytest.mark.parametrize(
+    "part",
+    [
+        {"status": "in_sources"},
+        {"text": "", "kind": "event_fact", "status": "in_sources"},
+        {"text": "Ставка сохранена", "kind": "magic", "status": "in_sources"},
+        {"text": "Ставка сохранена", "kind": "event_fact", "status": "fine"},
+    ],
+)
+def test_claim_with_an_empty_or_invalid_breakdown_is_unverified(monkeypatch, part):
+    claims = [
+        {
+            "claim_id": "c1",
+            "section": "facts",
+            "statement_type": "fact",
+            "text": "Ставка сохранена",
+            "evidence_refs": ["e"],
+        }
+    ]
+    sources = {"e": {"kind": "news", "text": "Ставка сохранена.", "locator": {}}}
+
+    def call(task, request, max_tokens, **options):
+        from types import SimpleNamespace
+
+        usage = SimpleNamespace(input_tokens=1, output_tokens=1, cost_rub=0.0)
+        row = {"id": "c1", "verdict": "supported", "reason": "", "parts": [part]}
+        return SimpleNamespace(data={"verdicts": [row]}, request_id="r", model_id="m", usage=usage)
+
+    monkeypatch.setattr(gate_verify, "call_llm", call)
+    verdicts, _ = gate_verify.verify_claims(claims, sources)
+    assert verdicts["c1"]["verdict"] == gate_verify.UNVERIFIED

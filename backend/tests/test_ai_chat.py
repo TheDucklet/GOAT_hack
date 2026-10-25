@@ -4,12 +4,13 @@ import pytest
 
 from app.ai.chat import answer as answer_module
 from app.ai.chat.answer import answer_chat, keyword_intent
-from app.ai.chat.guard import REFUSAL_TEXT, mentions_other_company, split_question
+from app.ai.chat.guard import mentions_other_company, split_question
 from app.ai.chat.missing import missing_parameters
 from app.ai.insights.build import prepare_insight
 from app.ai.providers import LLMSettings, MemoryUsageSink, call_llm
 from app.ai.providers.testing import completion, http_error, json_completion
 from app.integrations.ai import AIError
+from app.publication_policy import REFUSAL_TEXT
 from app.schemas import AIEnvelope, ChatResult
 from tests.test_ai_insights import FOCUS, company, event, hit
 

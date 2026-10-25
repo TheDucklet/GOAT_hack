@@ -100,8 +100,12 @@ def positive_cases(pairs: dict, required: list[str], regression: str | None) -> 
 def judge_v2(run_dir: Path, pairs: dict) -> dict:
     directory = run_dir / "judge2"
     claims = []
+    judges = set()
     for path in sorted(directory.glob("*.json")) if directory.exists() else []:
-        for claim in read(path)["claims"]:
+        saved = read(path)
+        identity = saved.get("identity") or {}
+        judges.add((saved.get("judge_version", "legacy"), identity.get("prompt_sha256", "unrecorded")))
+        for claim in saved["claims"]:
             claims.append({**claim, "pair_id": path.stem})
     expected = 0
     for item in pairs.values():
@@ -120,7 +124,11 @@ def judge_v2(run_dir: Path, pairs: dict) -> dict:
         if item["section"] in CRITICAL_SECTIONS and item["verdict"] in {"unsupported", "contradicted"}
     ]
     return {
-        "judge_version": JUDGE2_PROMPT_VERSION,
+        "judge_version": next(iter(judges))[0]
+        if len(judges) == 1
+        else ("mixed" if judges else JUDGE2_PROMPT_VERSION),
+        "judges": [{"version": version, "prompt_sha256": sha} for version, sha in sorted(judges)],
+        "mixed_judges": len(judges) > 1,
         "overall": grounded_rate(claims),
         "by_section": by_section,
         "expected_claims": expected,
@@ -142,6 +150,7 @@ def ranking_block(
     labels: dict[str, int],
     now: datetime,
     targets: dict,
+    complete: bool = True,
 ) -> dict:
     rows: dict[str, dict] = {BASELINE: {}, INSIGHT: {}}
     for context in contexts:
@@ -164,7 +173,7 @@ def ranking_block(
         "per_context": rows,
         "summary": summary,
         "comparison": comparison,
-        "gates": gates(summary[INSIGHT], comparison, targets["ranking"]),
+        "gates": gates(summary[INSIGHT], comparison, targets["ranking"], complete),
     }
 
 
@@ -204,7 +213,7 @@ def build_metrics_v2(
             "labelers": agreement_report(label_sets) if label_sets else None,
         },
         "ranking": (
-            ranking_block(contexts, events, pairs, focus, labels, now, targets)
+            ranking_block(contexts, events, pairs, focus, labels, now, targets, not unresolved)
             if labels
             else "N/A: метки значимости не получены"
         ),

@@ -10,6 +10,18 @@ import re
 
 PUBLICATION_POLICY_VERSION = "publication-1"
 SERVICE_ANSWER_KIND = "service_message"
+SERVICE_ANSWER = "Не удалось подтвердить ответ источниками. Уточните вопрос или добавьте данные о компании."
+NO_SOURCES_TEXT = (
+    "По имеющимся источникам на этот вопрос ответить нельзя: нет фактов события, признаков компании "
+    "или материалов банка, которые его подтверждают."
+)
+REFUSAL_TEXT = (
+    "Я работаю только в рамках выбранной вами компании и выбранного события. "
+    "Запросы на доступ к данным других компаний, изменение прав, ключей или данных и на выполнение платежей я не выполняю."
+)
+SERVICE_ANSWERS = frozenset(
+    {SERVICE_ANSWER, NO_SOURCES_TEXT, REFUSAL_TEXT, f"{NO_SOURCES_TEXT} {REFUSAL_TEXT}"}
+)
 INSIGHT_SECTIONS = (
     "facts",
     "bank_view",
@@ -86,12 +98,46 @@ def report_problems(report: dict | None, result: dict, evidence: list[dict], kin
     counts = (report.get("required"), report.get("checked"), report.get("supported"))
     if not (counts[0] == counts[1] == counts[2] == len(expected)):
         problems.append("покрытие проверки неполное")
+    if not isinstance(report.get("verifier_prompt_version"), str) or not report["verifier_prompt_version"]:
+        problems.append("в отчёте не указана версия проверяющего")
     known = {item["id"]: item for item in evidence}
-    for entry in entries:
-        for ref in entry.get("evidence", []):
-            if ref.get("id") not in known or known[ref["id"]].get("version") != ref.get("version"):
+    by_key = {(item.get("claim_id"), item.get("section")): item for item in entries}
+    for claim in required:
+        entry = by_key.get((claim["claim_id"], claim["section"]))
+        if entry is None:
+            continue
+        if entry.get("statement_type") != claim.get("statement_type", "fact"):
+            problems.append("тип утверждения в отчёте не совпадает с результатом")
+        refs = list(dict.fromkeys(claim.get("evidence_refs") or []))
+        listed = entry.get("evidence")
+        if not refs or not isinstance(listed, list):
+            problems.append("у утверждения нет оснований в отчёте")
+            continue
+        pairs = [(item.get("id"), item.get("version")) for item in listed if isinstance(item, dict)]
+        if len(pairs) != len(listed) or sorted(item[0] or "" for item in pairs) != sorted(refs):
+            problems.append("основания утверждения в отчёте не совпадают с результатом")
+            continue
+        for ref_id, version in pairs:
+            if ref_id not in known or not version or known[ref_id].get("version") != version:
                 problems.append("версия основания в отчёте не совпадает с основанием результата")
                 break
     if kind == "insight" and not result.get("facts"):
         problems.append("в результате нет проверенных фактов")
     return list(dict.fromkeys(problems))
+
+
+def service_problems(report: dict | None, result: dict, evidence: list[dict]) -> list[str]:
+    if not isinstance(report, dict):
+        return ["отчёт проверки отсутствует"]
+    problems = []
+    if report.get("policy_version") != PUBLICATION_POLICY_VERSION:
+        problems.append("версия политики проверки не совпадает с текущей")
+    if report.get("decided_by") != "code":
+        problems.append("допуск вычислен не кодом")
+    if report.get("content_digest") != content_digest(result):
+        problems.append("отчёт относится к другому содержимому результата")
+    if result.get("answer") not in SERVICE_ANSWERS:
+        problems.append("служебный ответ не из числа утверждённых шаблонов")
+    if result.get("evidence_refs") or evidence or report.get("claims"):
+        problems.append("служебный ответ не должен содержать основания и утверждения")
+    return problems

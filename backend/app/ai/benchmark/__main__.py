@@ -8,7 +8,7 @@ from pathlib import Path
 from app.ai.benchmark.calibration import SEED, build_sheets
 from app.ai.benchmark.data import DEFAULT_DIRECTORY, load_contexts, load_events, load_positions
 from app.ai.benchmark.demo import DEFAULT_PAIR, build_demo
-from app.ai.benchmark.judge import judge_card, judge_card_v2
+from app.ai.benchmark.judge import judge_card, judge_card_v2, judge_identity
 from app.ai.benchmark.labels import read_labels, sheet_rows, write_sheet
 from app.ai.benchmark.report import build_metrics, load_pairs
 from app.ai.benchmark.report_v2 import build_metrics_v2
@@ -136,9 +136,9 @@ def judge_two(args) -> int:
 
     def work(key):
         path = run_dir / "judge2" / f"{key}.json"
-        if path.exists():
-            return key
         envelope = pairs[key]["envelope"]
+        if path.exists() and read(path).get("identity") == judge_identity(envelope):
+            return key
         write(path, judge_card_v2(envelope, publications, context_of(envelope)))
         return key
 
