@@ -2,8 +2,7 @@ import { isInsightV2 } from '../../../shared/api/insight-contract';
 import type { Claim, Insight, InsightResultV2 } from '../../../shared/api/types';
 import { ClaimView, EvidenceReferences } from './ClaimView';
 
-const impact = { high: 'Высокое', medium: 'Среднее', low: 'Низкое', undetermined: 'Недостаточно данных' };
-const relevance = { active: 'Актуален', review_required: 'Требует перепроверки', expired: 'Срок актуальности истёк', undetermined: 'Актуальность не определена' };
+import { impactLabels as impact, relevanceLabels as relevance } from './labels';
 const bankStatus = {
   current: 'Банковский материал с подтверждённой датой', historical: 'Исторический банковский материал — не текущая позиция банка',
   missing: 'Позиция банка отсутствует', undated: 'Дата банковского материала неизвестна',

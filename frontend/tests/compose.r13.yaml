@@ -1,0 +1,23 @@
+# R13 HTTP/DB/worker acceptance, synthetic AI only. No external model calls.
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: goat_r13
+      POSTGRES_PASSWORD: r13-local-only
+  api:
+    environment: &r13-environment
+      DATABASE_URL: postgresql+psycopg://goat:r13-local-only@postgres:5432/goat_r13
+      AI_MODULE: tests.fake_r13_ai
+      AI_GENERATION_VERSION: r13-synthetic
+      AI_LLM_API_KEY: ""
+      NEWS_COLLECTION_ENABLED: "false"
+      FEED_PREPARE_TOP_K: "2"
+      FEED_CANDIDATE_LIMIT: "3"
+      CORS_ORIGINS: '["http://127.0.0.1:8094","http://localhost:8094"]'
+    volumes:
+      - ./frontend/tests:/srv/r13:ro
+  worker:
+    environment: *r13-environment
+  web:
+    ports: !override
+      - "127.0.0.1:8094:80"

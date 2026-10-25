@@ -3,8 +3,8 @@ import type { HttpClient } from '../../shared/api/http';
 import type { Chat, ChatState, Feed, FeedSnapshot, Insight, Job, Message } from '../../shared/api/types';
 export function createAnalyticsApi(client: HttpClient) {
   return {
-    feed(companyId: string, limit = 20, offset = 0, signal?: AbortSignal) {
-      return client.request<Feed | FeedSnapshot>(`/companies/${encodeURIComponent(companyId)}/feed?${new URLSearchParams({ limit: String(limit), offset: String(offset) })}`, { signal });
+    feed(companyId: string, limit = 20, offset = 0, signal?: AbortSignal, snapshotId?: string) {
+      return client.request<Feed | FeedSnapshot>(`/companies/${encodeURIComponent(companyId)}/feed?${new URLSearchParams({ contract_version: 'v2', limit: String(limit), offset: String(offset), ...(snapshotId ? { snapshot_id: snapshotId } : {}) })}`, { signal });
     },
     buildInsight(companyId: string, eventId: string, signal?: AbortSignal) { return client.request<Insight | Job>(`/companies/${encodeURIComponent(companyId)}/insights`, { method: 'POST', body: { event_id: eventId }, signal }); },
     insight(id: string, signal?: AbortSignal) { return client.request<Insight>(`/insights/${encodeURIComponent(id)}`, { signal }); },

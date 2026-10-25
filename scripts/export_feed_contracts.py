@@ -62,6 +62,19 @@ def artifacts():
             generation_status="ready",
             insight_id="synthetic-insight",
             personalized_summary=result["personalized_summary"],
+            **{
+                key: result[key]
+                for key in (
+                    "mechanism",
+                    "impact_reason",
+                    "time_horizon",
+                    "relevance_reason",
+                    "valid_from",
+                    "valid_until",
+                    "review_after",
+                    "unknowns",
+                )
+            },
             impact_level=result["impact_level"],
             relevance_status=result["relevance_status"],
             versions=versions,
@@ -77,6 +90,14 @@ def artifacts():
         impact_level="undetermined",
         relevance_status="undetermined",
         error={"code": "budget_exhausted"},
+        mechanism=[],
+        impact_reason=None,
+        time_horizon=None,
+        relevance_reason=None,
+        valid_from=None,
+        valid_until=None,
+        review_after=None,
+        unknowns=[],
     )
     examples = [
         dict(

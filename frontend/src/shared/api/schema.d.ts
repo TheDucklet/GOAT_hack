@@ -1071,6 +1071,19 @@ export interface components {
             /** Insight Id */
             insight_id?: string | null;
             personalized_summary?: components["schemas"]["StatementV2"] | null;
+            /** Mechanism */
+            mechanism?: components["schemas"]["StatementV2"][];
+            impact_reason?: components["schemas"]["StatementV2"] | null;
+            time_horizon?: components["schemas"]["TimeHorizon"] | null;
+            relevance_reason?: components["schemas"]["StatementV2"] | null;
+            /** Valid From */
+            valid_from?: string | null;
+            /** Valid Until */
+            valid_until?: string | null;
+            /** Review After */
+            review_after?: string | null;
+            /** Unknowns */
+            unknowns?: string[];
             /**
              * Impact Level
              * @default undetermined

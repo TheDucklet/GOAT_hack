@@ -92,6 +92,92 @@
           ],
           "default": null
         },
+        "mechanism": {
+          "items": {
+            "$ref": "#/$defs/StatementV2"
+          },
+          "title": "Mechanism",
+          "type": "array"
+        },
+        "impact_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatementV2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "time_horizon": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TimeHorizon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "relevance_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StatementV2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid From"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        },
+        "review_after": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Review After"
+        },
+        "unknowns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unknowns",
+          "type": "array"
+        },
         "impact_level": {
           "default": "undetermined",
           "enum": [
@@ -320,6 +406,48 @@
         "statement_type"
       ],
       "title": "StatementV2",
+      "type": "object"
+    },
+    "TimeHorizon": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Label",
+          "type": "string"
+        },
+        "starts_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Starts On"
+        },
+        "ends_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ends On"
+        }
+      },
+      "required": [
+        "label",
+        "starts_on",
+        "ends_on"
+      ],
+      "title": "TimeHorizon",
       "type": "object"
     }
   },

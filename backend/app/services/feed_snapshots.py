@@ -278,13 +278,26 @@ def read_snapshot(db, user, snapshot, limit, offset):
             )
         elif row.get("insight_id"):
             insight = insights.get(row["insight_id"])
-            if not insight or insight.user_id != user.id or insight.company_id != snapshot.company_id:
+            if (
+                not insight
+                or insight.user_id != user.id
+                or insight.company_id != snapshot.company_id
+                or insight.event_id != event.id
+            ):
                 raise AppError(403, "forbidden", "Карточка снимка недоступна")
             result = runtime_result(insight.result, local_day(now))
             item.update(
                 personalized_summary=result.get("personalized_summary"),
                 impact_level=result.get("impact_level", "undetermined"),
                 relevance_status=result.get("relevance_status", "undetermined"),
+                mechanism=result.get("mechanism", []),
+                impact_reason=result.get("impact_reason"),
+                time_horizon=result.get("time_horizon"),
+                relevance_reason=result.get("relevance_reason"),
+                valid_from=result.get("valid_from"),
+                valid_until=result.get("valid_until"),
+                review_after=result.get("review_after"),
+                unknowns=result.get("unknowns", []),
             )
         output.append(item)
     # Offsets address frozen slots, not a re-packed filtered list. Hiding cannot duplicate next-page rows.
