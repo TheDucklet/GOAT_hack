@@ -257,6 +257,7 @@ def test_unknown_strength_is_undetermined_not_low(monkeypatch):
     result = make(monkeypatch, router, context("u-client"))["result"]
     assert result["impact_level"] == "undetermined"
     assert result["relevance_status"] == "undetermined" and result["relevance_reason"] is None
+    assert "по рубрике" not in ((result["impact_reason"] or {}).get("text") or "")
     assert result["next_actions"][0]["action"] == "ask_question"
 
 

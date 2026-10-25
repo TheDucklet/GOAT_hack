@@ -156,11 +156,6 @@ def rubric_reason(level, rubric) -> str:
     return "; ".join(parts) + ". Оценка качественная, это не вероятность и не сумма."
 
 
-def undetermined_reason(rubric) -> str:
-    reasons = "; ".join(CAP_REASONS[item] for item in rubric.caps) or "доказательств недостаточно"
-    return f"Сила влияния не определена по рубрике: {reasons}. Механизм ниже – гипотеза, а не оценка силы."
-
-
 def impact_payload(
     outcome: AgentOutcome, aliases: dict[str, str], bank: list[dict], missing: list[str]
 ) -> str:
@@ -319,15 +314,6 @@ def finalize(outcome: AgentOutcome, now: datetime | None = None) -> dict:
         assumptions = []
     elif not determined:
         relevance_reason = None
-        if impact_reason is None:
-            impact_reason = {
-                "claim_id": "impact",
-                "text": undetermined_reason(rubric),
-                "evidence_refs": list(
-                    dict.fromkeys(ref for item in mechanism for ref in item["evidence_refs"])
-                ),
-            }
-            synthesized.append("impact_reason")
     window = relevance_window(
         kind, starts_on, ends_on, event_day, today, determined and relevance_reason is not None
     )
