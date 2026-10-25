@@ -1,0 +1,518 @@
+{
+  "pair_id": "B01-procurement_director__ev-syn-metro",
+  "context_id": "B01-procurement_director",
+  "event_id": "ev-syn-metro",
+  "status": "ok",
+  "latency_seconds": 23.67,
+  "cost_rub": 0.248331,
+  "llm_calls": 7,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "строительство метро недвижимость спрос",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "edb56ff3-8668-4728-96f5-9931aff9da64"
+      ]
+    },
+    {
+      "query": "региональная экспансия застройщиков",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "влияние транспортной инфраструктуры на рынок жилья",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "развитие транспортных узлов и девелопмент",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-metro",
+        "kind": "news",
+        "source_id": "pub-ev-syn-metro",
+        "version": "d8c7038c4f9c90fe",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-metro"
+        },
+        "excerpt": "В Казани открылась новая станция метро на продлённом участке первой линии."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Данные о проектах компании в Казани",
+        "Влияние инфраструктуры на спрос в недвижимости",
+        "Динамика выручки по регионам",
+        "Риски оптимизации затрат",
+        "Конъюнктура рынка стройматериалов",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-metro",
+          "event_version": "d8c7038c4f9c90fe",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Данные о проектах компании в Казани",
+            "Влияние инфраструктуры на спрос в недвижимости",
+            "Динамика выручки по регионам",
+            "Риски оптимизации затрат",
+            "Конъюнктура рынка стройматериалов"
+          ],
+          "initial_queries": [
+            "строительство метро недвижимость спрос",
+            "региональная экспансия застройщиков"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "c53519a513f245a9ade24bb5bad02596",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 371,
+          "output_tokens": 108,
+          "cost_rub": 0.014626524341000001
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительство метро недвижимость спрос",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "edb56ff3-8668-4728-96f5-9931aff9da64",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "192242b8-a8fa-579d-ac71-d4e98ef6a867"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "региональная экспансия застройщиков",
+          "as_of": "2026-09-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-22"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "e3ef2333a1ad4ad7a5222cdca3401498",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1627,
+          "output_tokens": 488,
+          "cost_rub": 0.065573315639
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "4a832abcff5e4d8abd393b214312e7d6",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1627,
+          "output_tokens": 801,
+          "cost_rub": 0.0911775857005
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "d65c8d7267f84c1cba85184d7a4d86e9",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 288,
+          "output_tokens": 60,
+          "cost_rub": 0.0036184157568
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство метро недвижимость спрос",
+            "региональная экспансия застройщиков"
+          ],
+          "new_query": "влияние транспортной инфраструктуры на рынок жилья",
+          "reason": "Запрос переходит от абстрактной экспансии к конкретной причинно-следственной связи между развитием метро и динамикой цен на недвижимость."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние транспортной инфраструктуры на рынок жилья",
+          "as_of": "2026-09-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-22"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "ddaa389a904c4209b6e92343fa9ef305",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 316,
+          "output_tokens": 63,
+          "cost_rub": 0.0045586175362
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство метро недвижимость спрос",
+            "региональная экспансия застройщиков",
+            "влияние транспортной инфраструктуры на рынок жилья"
+          ],
+          "new_query": "развитие транспортных узлов и девелопмент",
+          "reason": "Запрос заменяет узкое понятие «метро» на более широкое «транспортные узлы», что позволит найти аналитику по связи инфраструктуры с инвестиционной привлекательностью недвижимости."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "развитие транспортных узлов и девелопмент",
+          "as_of": "2026-09-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-22"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "75e3227398f64ee281ee1a48d36707a7",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1926,
+          "output_tokens": 191,
+          "cost_rub": 0.040162739708
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "192242b8-a8fa-579d-ac71-d4e98ef6a867"
+      ],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Открытие новой станции метро в Казани может косвенно влиять на компанию, так как инфраструктурные проекты часто стимулируют строительную активность и приток инвестиций в регион. Однако компания зареги"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Компания занимается строительством жилых и нежилых зданий и имеет кредиты и лизинг. Открытие метро в другом регионе (Казань) не создает прямого спроса на услуги компании в Москве. Тем не менее, если с"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "У компании есть расчетно-кассовое обслуживание и зарплатный проект. Инфраструктурные события сами по себе не меняют условия банковского обслуживания, но если открытие метро приведет к росту экономичес"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Отсутствие информации о наличии у компании строительных контрактов в Казани или регионах, связанных с инфраструктурными проектами, делает невозможным оценку прямого влияния события на выручку."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Компания находится на стадии оптимизации, что может означать сокращение расходов или пересмотр стратегии. Инфраструктурные события в других регионах могут отвлекать внимание от локальных рынков, если "
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Если компания планирует расширение в регионы с активной инфраструктурной политикой, открытие метро в Казани может быть индикатором благоприятного инвестиционного климата в таких городах, что стоит учи"
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Развитие инфраструктуры в крупных городах часто ведет к росту стоимости недвижимости и коммерческих площадей, что может создать спрос на строительные услуги в смежных сегментах, если компания готова а"
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Уточнить у руководителя, есть ли у компании текущие или планируемые строительные проекты в Казани или других городах с активной инфраструктурной политикой."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить, не планируется ли компаниям расширение географии присутствия в регионы, где реализуются крупные инфраструктурные проекты, такие как метрополитен."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Оценить, не влияет ли открытие метро в Казани на логистические цепочки компании, если у нее есть поставщики или клиенты в этом регионе."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "строительство метро недвижимость спрос",
+        "региональная экспансия застройщиков",
+        "влияние транспортной инфраструктуры на рынок жилья",
+        "развитие транспортных узлов и девелопмент"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 1,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "75e3227398f64ee281ee1a48d36707a7",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1926,
+            "output_tokens": 191,
+            "cost_rub": 0.040162739708
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "fb50f25617ed141ac0fb2b178389db8f563a2aedcafb5ad79c299ed5a6d33a3f",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "version": "d8c7038c4f9c90fe"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение прямо следует из источника."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "5e9c673aa74a4f688867bff33c7e2cda",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1313,
+            "output_tokens": 103,
+            "cost_rub": 0.028613858051350003
+          }
+        ],
+        "cost_rub": 0.028614
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "В Казани открылась новая станция метро на продлённом участке первой линии.",
+          "evidence_refs": [
+            "evidence-ev-syn-metro"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Наличие у компании строительных контрактов в Казани или других регионах с активной инфраструктурной политикой.",
+        "Планы компании по расширению географии присутствия.",
+        "Влияние открытия метро на логистические цепочки компании, если таковые существуют в Казани.",
+        "Сумма и условия кредитов и лизинга, чтобы оценить финансовую устойчивость компании в случае изменения рыночных условий.",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие данных о наличии у компании филиалов, объектов или подрядных обязательств в г. Казань",
+        "Отсутствие информации о том, является ли компания участником тендеров или поставщиком услуг для метрополитена",
+        "Неизвестно, влияет ли открытие станции на логистические цепочки или стоимость аренды/подряда для компании в Москве"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-metro"
+      ],
+      "trace_id": "68f05a46-5021-4211-904c-aa70012f8297",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

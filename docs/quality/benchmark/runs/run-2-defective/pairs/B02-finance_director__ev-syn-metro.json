@@ -1,0 +1,816 @@
+{
+  "pair_id": "B02-finance_director__ev-syn-metro",
+  "context_id": "B02-finance_director",
+  "event_id": "ev-syn-metro",
+  "status": "ok",
+  "latency_seconds": 57.36,
+  "cost_rub": 0.49964,
+  "llm_calls": 9,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "строительство недвижимость Екатеринбург",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "3147e81f-d92c-4a5f-9332-bc72f929dbba",
+        "edb56ff3-8668-4728-96f5-9931aff9da64"
+      ]
+    },
+    {
+      "query": "инфраструктура спрос застройщики",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "be640d52-a1bc-4f05-b711-573d442b4bd8",
+        "5d3700fb-d953-46ea-9d77-2340aa283c5c"
+      ]
+    },
+    {
+      "query": "развитие транспортной сети Казани",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "инвестиции в транспортную инфраструктуру Казани",
+      "as_of": "2026-09-22",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "be640d52-a1bc-4f05-b711-573d442b4bd8"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-metro",
+        "kind": "news",
+        "source_id": "pub-ev-syn-metro",
+        "version": "d8c7038c4f9c90fe",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-metro"
+        },
+        "excerpt": "В Казани открылась новая станция метро на продлённом участке первой линии."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Определить географическое совпадение события и деятельности компании",
+        "Оценить влияние инфраструктурных проектов на спрос в регионе регистрации",
+        "Проверить наличие связей компании с застройщиками Казани",
+        "Анализ рисков расширения в неродной регион",
+        "Оценка влияния на оборотные средства через РКО",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B02",
+          "profile_version": "5e3780762bf3c54f78d3632bf86ccd5147e0b901ab6d350dbe37b7eec9e2e444"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-metro",
+          "event_version": "d8c7038c4f9c90fe",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Определить географическое совпадение события и деятельности компании",
+            "Оценить влияние инфраструктурных проектов на спрос в регионе регистрации",
+            "Проверить наличие связей компании с застройщиками Казани",
+            "Анализ рисков расширения в неродной регион",
+            "Оценка влияния на оборотные средства через РКО"
+          ],
+          "initial_queries": [
+            "строительство недвижимость Екатеринбург",
+            "инфраструктура спрос застройщики"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "741cf9c1572149a7ad8f5f2f45144352",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 368,
+          "output_tokens": 120,
+          "cost_rub": 0.015788689124000003
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительство недвижимость Екатеринбург",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "3147e81f-d92c-4a5f-9332-bc72f929dbba",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "edb56ff3-8668-4728-96f5-9931aff9da64",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "bb7d6842-329e-545d-926a-e18df514ccf5",
+            "192242b8-a8fa-579d-ac71-d4e98ef6a867"
+          ],
+          "new_fragments": 2,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфраструктура спрос застройщики",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "be640d52-a1bc-4f05-b711-573d442b4bd8",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "5d3700fb-d953-46ea-9d77-2340aa283c5c",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "0c630464-6b2a-5559-b304-da931a75c51f",
+            "bf4b1245-5ca9-57cc-b485-9e8dc10e10c1"
+          ],
+          "new_fragments": 2,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "95fca50e0ce44a26bba5534a56256270",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1933,
+          "output_tokens": 1248,
+          "cost_rub": 0.144370181917
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "5ce29c9e275549ce8c756d2ba19e194a",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 732,
+          "output_tokens": 164,
+          "cost_rub": 0.02397619237
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "0912fa7b-ba57-52d0-acd8-77f93f139555",
+            "0c630464-6b2a-5559-b304-da931a75c51f",
+            "1f6d6010-e6f9-58a3-ac29-ab48ec141297",
+            "20931d21-11f4-55a6-bc11-65c3ab3bc920",
+            "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+            "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+            "83dfae20-9ae6-5050-abb3-74931deb4a3b",
+            "90216e2e-f04e-5e55-abe7-7947b4be920a",
+            "a4821774-6b8c-5d60-901f-e6295af0b529",
+            "a8ef024c-9469-5d9b-bc50-68bed586d23f",
+            "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+            "evidence-ev-syn-metro",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "c648d4c7970f463c908cf5cd1d1fb625",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 274,
+          "output_tokens": 54,
+          "cost_rub": 0.00320851709685
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство недвижимость Екатеринбург",
+            "инфраструктура спрос застройщики"
+          ],
+          "new_query": "развитие транспортной сети Казани",
+          "reason": "Запрос переходит от общих терминов к конкретному региону и инфраструктурному аспекту, что поможет найти данные о влиянии метрополитена на рынок."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "развитие транспортной сети Казани",
+          "as_of": "2026-09-22",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-22"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "3b987e675ecf45fd9006cfbb17a6963d",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 350,
+          "output_tokens": 47,
+          "cost_rub": 0.0026216762312
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство недвижимость Екатеринбург",
+            "инфраструктура спрос застройщики",
+            "развитие транспортной сети Казани"
+          ],
+          "new_query": "инвестиции в транспортную инфраструктуру Казани",
+          "reason": "Запрос расширяет тему до инвестиционной составляющей развития города, что может охватить аналитику по строительству метро."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "инвестиции в транспортную инфраструктуру Казани",
+          "as_of": "2026-09-22",
+          "returned": [
+            {
+              "chunk_id": "be640d52-a1bc-4f05-b711-573d442b4bd8",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "c0abf574-c335-5408-9719-5c2ffbeed538"
+          ],
+          "new_fragments": 0,
+          "empty_reason": null
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "28cbc694d0cb4d6da3c064d5f7005cce",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1918,
+          "output_tokens": 231,
+          "cost_rub": 0.037529546528500005
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "bb7d6842-329e-545d-926a-e18df514ccf5",
+        "192242b8-a8fa-579d-ac71-d4e98ef6a867",
+        "0c630464-6b2a-5559-b304-da931a75c51f",
+        "bf4b1245-5ca9-57cc-b485-9e8dc10e10c1"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "строительство недвижимость Екатеринбург",
+        "инфраструктура спрос застройщики",
+        "развитие транспортной сети Казани",
+        "инвестиции в транспортную инфраструктуру Казани"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Альфа-Банк отслеживает динамику строительного сектора в контексте других отраслей экономики.",
+              "verdict": "insufficient",
+              "reason": "Фрагменты содержат только список отраслей и указание источников данных (Росстат, Альфа-Банк), а также копирайт. В них отсутствует информация о том, что Альфа-Банк именно 'отслеживает динамику' или ана"
+            },
+            {
+              "claim_id": "bank-2",
+              "text": "Банк ожидает, что в ближайшие месяцы показатели финансов компаний, связанных с негативным развитием событий в сфере складов и транспортной инфраструктуры, останутся на низких уровнях.",
+              "verdict": "insufficient",
+              "reason": "не относится к событию"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2",
+            "action-3"
+          ],
+          "evidence_ids": [
+            "0912fa7b-ba57-52d0-acd8-77f93f139555",
+            "0c630464-6b2a-5559-b304-da931a75c51f",
+            "1f6d6010-e6f9-58a3-ac29-ab48ec141297",
+            "20931d21-11f4-55a6-bc11-65c3ab3bc920",
+            "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+            "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+            "83dfae20-9ae6-5050-abb3-74931deb4a3b",
+            "90216e2e-f04e-5e55-abe7-7947b4be920a",
+            "a4821774-6b8c-5d60-901f-e6295af0b529",
+            "a8ef024c-9469-5d9b-bc50-68bed586d23f",
+            "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+            "evidence-ev-syn-metro",
+            "f7f3ff8f-038b-53b1-b56a-999910516133"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              },
+              {
+                "id": "f7f3ff8f-038b-53b1-b56a-999910516133",
+                "status": "valid"
+              },
+              {
+                "id": "a4821774-6b8c-5d60-901f-e6295af0b529",
+                "status": "valid"
+              },
+              {
+                "id": "90216e2e-f04e-5e55-abe7-7947b4be920a",
+                "status": "valid"
+              },
+              {
+                "id": "83dfae20-9ae6-5050-abb3-74931deb4a3b",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              },
+              {
+                "id": "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "0c630464-6b2a-5559-b304-da931a75c51f",
+                "status": "valid"
+              },
+              {
+                "id": "1f6d6010-e6f9-58a3-ac29-ab48ec141297",
+                "status": "valid"
+              },
+              {
+                "id": "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "0912fa7b-ba57-52d0-acd8-77f93f139555",
+                "status": "valid"
+              },
+              {
+                "id": "a8ef024c-9469-5d9b-bc50-68bed586d23f",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "20931d21-11f4-55a6-bc11-65c3ab3bc920",
+                "status": "valid"
+              },
+              {
+                "id": "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+                "status": "valid"
+              },
+              {
+                "id": "90216e2e-f04e-5e55-abe7-7947b4be920a",
+                "status": "valid"
+              },
+              {
+                "id": "83dfae20-9ae6-5050-abb3-74931deb4a3b",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              },
+              {
+                "id": "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "1f6d6010-e6f9-58a3-ac29-ab48ec141297",
+                "status": "valid"
+              },
+              {
+                "id": "da6c1e5f-538b-56e0-b0d4-b382af6145c9",
+                "status": "valid"
+              },
+              {
+                "id": "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "status": "valid"
+              },
+              {
+                "id": "90216e2e-f04e-5e55-abe7-7947b4be920a",
+                "status": "valid"
+              },
+              {
+                "id": "83dfae20-9ae6-5050-abb3-74931deb4a3b",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "44efe101-2eb8-551b-93ce-ec3bc422ba94",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "0912fa7b-ba57-52d0-acd8-77f93f139555",
+                "status": "valid"
+              },
+              {
+                "id": "a8ef024c-9469-5d9b-bc50-68bed586d23f",
+                "status": "valid"
+              },
+              {
+                "id": "4cadae1b-49be-5d40-a83d-b74de5ecd29c",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 11,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "28cbc694d0cb4d6da3c064d5f7005cce",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1918,
+            "output_tokens": 231,
+            "cost_rub": 0.037529546528500005
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "acac7175c3477d39764e16aa42a99f80b9178192122fcb23033608ab2ed02f31",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-metro",
+                "version": "d8c7038c4f9c90fe"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из источника."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Причинная связь «открытие станции стимулирует развитие инфраструктуры и смежных проектов» отсутствует в источниках."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Утверждение о том, что инфраструктурные проекты часто требуют обеспечения обязательств, не следует из источников."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Риски задержек платежей, снижения маржинальности и влияние на управление ликвидностью не следуют из источников."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Связь между отсутствием кредитов/лизинга и ограничением возможностей масштабирования не следует из источников; «может» без явного условия не делает вывод допустимым."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Вывод об ограниченной способности управлять проектами в двух регионах не следует из источников; «может означать» без явного условия не делает вывод допустимым."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Источники подтверждают лишь наличие продукта «банковские гарантии» и открытие станции метро, но не то, что гарантии являются ключевым инструментом тендеров и что они востребованы в связи с развитием инфраструктуры Казани"
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Наличие банковских продуктов «депозиты» и «РКО» не доказывает их использование компанией, а выводы об управлении ликвидностью и финансовой устойчивости в источниках отсутствуют"
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Планы компании по расширению географии строительства на Татарстан не следуют ни из новости о метро в Казани, ни из признаков компании (регистрация в Свердловской области)"
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие продукта «банковские гарантии» не подтверждает существование неиспользованных лимитов и их достаточность для тендеров"
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Источники указывают лишь на отсутствие продуктов «кредиты» и «лизинг» и стадию роста, но не содержат планов компании по привлечению кредитных средств или лизинга"
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "ebb4fa36fad0436dacaa434de6e2eeb6",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2383,
+            "output_tokens": 2015,
+            "cost_rub": 0.13951055323205
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "1ef71eae504241ebacc69d7b79c5079e",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1937,
+            "output_tokens": 1046,
+            "cost_rub": 0.09369613289465
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "fd484fef065046dbb56671ea5d14d6ca",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1714,
+            "output_tokens": 162,
+            "cost_rub": 0.0389388022023
+          }
+        ],
+        "cost_rub": 0.272145
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "В Казани открылась новая станция метро на продлённом участке первой линии.",
+          "evidence_refs": [
+            "evidence-ev-syn-metro"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Готовится ли компания к выходу на рынок строительных услуг в Казани или других регионах, отличных от Свердловской области.",
+        "Объем доступных лимитов по банковским гарантиям и их срок действия.",
+        "Текущая загрузка производственных мощностей и штата для оценки возможности выполнения новых заказов.",
+        "Условия существующих депозитных соглашений и возможность их досрочного расторжения при необходимости финансирования проектов.",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие прямых контрактов или субподрядных соглашений с застройщиками или подрядчиками, связанными с проектом метро в Казани",
+        "Участие компании в тендерах на строительство или проектирование объектов инфраструктуры в Казани",
+        "География реализации текущих строительных проектов компании (ограничивается ли она Свердловской областью или расширяется на Татарстан)"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-metro"
+      ],
+      "trace_id": "c83d3348-e81c-4de7-a530-1919ef45b45b",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

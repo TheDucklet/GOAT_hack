@@ -1,0 +1,816 @@
+{
+  "pair_id": "B01-procurement_director__ev-cbr-systemic-banks-2026-10-07",
+  "context_id": "B01-procurement_director",
+  "event_id": "ev-cbr-systemic-banks-2026-10-07",
+  "status": "blocked",
+  "latency_seconds": 48.94,
+  "cost_rub": 0.533221,
+  "llm_calls": 9,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "системно значимые банки тарифы РКО",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "f6a793b7-5656-4b65-9025-022e13d32ec1"
+      ]
+    },
+    {
+      "query": "строительный сектор кредитование условия",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "ff02d8e6-9501-4e51-aa32-515f19135ce8"
+      ]
+    },
+    {
+      "query": "критерии отнесения банков к системно значимым",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "регламент определения системно значимых кредитных организаций",
+      "as_of": "2026-10-07",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-systemic-banks-2026-10-07",
+        "version": "d8cd3a0c9756b7d0",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=639269694907022516BANK_SECTOR.htm"
+        },
+        "excerpt": "Банк России утвердил перечень системно значимых кредитных организаций по методике, установленной Указанием от 13.04.2021 № 5778-У."
+      },
+      {
+        "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+        "kind": "bank",
+        "source_id": "a5cbeafb-4e0c-4e4c-8faf-520b31072c26",
+        "version": "6c3a4882ee784b608880693d8ba2b62d0ba2236e34b404179adaab909c6dd046",
+        "locator": {
+          "page": 23,
+          "document_date": "2026-07-22",
+          "title": "FI_Strategy_3Q26_22072026"
+        },
+        "excerpt": "ставки, это подвергает весь корпоративный сектор также и процентному риску, который вырастет при росте ключевой ставки\n\n□ Не расширение спредов, а поляризация спроса. Наблюдаемый в настоящее время рост дефицита банковской ликвидности уже привел к росту ставок денежного рынка выше ключевой ставки. Подход банков к"
+      },
+      {
+        "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+        "kind": "company",
+        "source_id": "B01",
+        "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_LOA_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «кредиты»"
+      },
+      {
+        "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+        "kind": "company",
+        "source_id": "B01",
+        "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_LEA_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «лизинг»"
+      },
+      {
+        "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+        "kind": "company",
+        "source_id": "B01",
+        "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c",
+        "locator": {
+          "feature_path": "features.ECO_MARK_LABEL"
+        },
+        "excerpt": "Стадия развития бизнеса: Оптимизация"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Определить влияние статуса системно значимой организации на условия РКО",
+        "Оценить риски изменения тарифов для строительных компаний",
+        "Проверить стабильность обслуживания клиентов малого бизнеса",
+        "Анализ ликвидности и кредитных лимитов для сектора строительства",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-systemic-banks-2026-10-07",
+          "event_version": "d8cd3a0c9756b7d0",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Определить влияние статуса системно значимой организации на условия РКО",
+            "Оценить риски изменения тарифов для строительных компаний",
+            "Проверить стабильность обслуживания клиентов малого бизнеса",
+            "Анализ ликвидности и кредитных лимитов для сектора строительства"
+          ],
+          "initial_queries": [
+            "системно значимые банки тарифы РКО",
+            "строительный сектор кредитование условия"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "b11355b95a614cc784eafbd6dec630d7",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 433,
+          "output_tokens": 114,
+          "cost_rub": 0.015872448748
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "системно значимые банки тарифы РКО",
+          "as_of": "2026-10-07",
+          "returned": [
+            {
+              "chunk_id": "f6a793b7-5656-4b65-9025-022e13d32ec1",
+              "page": 18,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительный сектор кредитование условия",
+          "as_of": "2026-10-07",
+          "returned": [
+            {
+              "chunk_id": "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+              "page": 23,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "59408d4cc73546ce8c8376725c7e14a5",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1703,
+          "output_tokens": 979,
+          "cost_rub": 0.1152061278355
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "e0aaf69b0faf412d819bc3fdc0985764",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 722,
+          "output_tokens": 314,
+          "cost_rub": 0.038791175865
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "evidence-ev-cbr-systemic-banks-2026-10-07"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "c6480b1668454b548331aebc8a14c430",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 318,
+          "output_tokens": 61,
+          "cost_rub": 0.005245446453
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "системно значимые банки тарифы РКО",
+            "строительный сектор кредитование условия"
+          ],
+          "new_query": "критерии отнесения банков к системно значимым",
+          "reason": "Запрос сфокусирован на методологии и правилах отбора, что позволит найти нормативные обоснования, упомянутые в фактах."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "критерии отнесения банков к системно значимым",
+          "as_of": "2026-10-07",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-07"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "2ded6313e7274698a8bd4a2e5c202a5f",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 347,
+          "output_tokens": 64,
+          "cost_rub": 0.004391098288200001
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "системно значимые банки тарифы РКО",
+            "строительный сектор кредитование условия",
+            "критерии отнесения банков к системно значимым"
+          ],
+          "new_query": "регламент определения системно значимых кредитных организаций",
+          "reason": "Запрос заменен с поиска критериев на поиск нормативного регламента, что позволит найти текст Указания № 5778-У и подтвердить методику."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "регламент определения системно значимых кредитных организаций",
+          "as_of": "2026-10-07",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-07"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "a0fff6fab0264a9ba3e5f4f6f42998d8",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1914,
+          "output_tokens": 224,
+          "cost_rub": 0.042319550026000005
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [
+        {
+          "factor": "product",
+          "feature": "CL_PRODUCT_RKO_MARK",
+          "value": "1"
+        }
+      ],
+      "bank_fragments_offered": [
+        "abdbf8c4-976d-5f0a-9e3d-23e25e8f7fd2",
+        "76f7c1ef-0a39-5256-b4f8-daeb3728ed76"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "системно значимые банки тарифы РКО",
+        "строительный сектор кредитование условия",
+        "критерии отнесения банков к системно значимым",
+        "регламент определения системно значимых кредитных организаций"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Системно значимые банки (СЗКО) в 2026 году выступали крупнейшими нетто-продавцами облигаций федерального займа (ОФЗ) на вторичном рынке.",
+              "verdict": "insufficient",
+              "reason": "Утверждение приписывает позицию или факт банку (СЗКО), но фрагменты представляют собой аналитический обзор рынка (вероятно, отчета аналитиков или новостей), а не официальную позицию или заявление само"
+            },
+            {
+              "claim_id": "bank-2",
+              "text": "Рост дефицита банковской ликвидности привел к росту ставок денежного рынка выше ключевой ставки, что подвергает корпоративный сектор процентному риску, который может вырасти при повышении ключевой ставки.",
+              "verdict": "insufficient",
+              "reason": "Утверждение связывает рост дефицита ликвидности с процентным риском для корпоративного сектора и позиционирует это как позицию банка. Фрагменты содержат аналитические комментарии о рыночной ситуации ("
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "834bca09-badf-5e15-826a-9fb803b4f974",
+            "evidence-ev-cbr-systemic-banks-2026-10-07"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "status": "valid"
+              },
+              {
+                "id": "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              },
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              },
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "status": "valid"
+              },
+              {
+                "id": "834bca09-badf-5e15-826a-9fb803b4f974",
+                "status": "valid"
+              },
+              {
+                "id": "0a80a7f7-89d4-573d-8fbe-09edc34ce72c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "status": "valid"
+              },
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "status": "valid"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "status": "valid"
+              },
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 9,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "a0fff6fab0264a9ba3e5f4f6f42998d8",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1914,
+            "output_tokens": 224,
+            "cost_rub": 0.042319550026000005
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "block",
+        "decided_by": "code",
+        "content_digest": "8becbfd7e05955d4911c4438dca0368c467f778ec93601c00fb3cda5d04bd8bd",
+        "required": 3,
+        "checked": 3,
+        "supported": 2,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-systemic-banks-2026-10-07",
+                "version": "d8cd3a0c9756b7d0"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение дословно следует из источника."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "80de953c-0644-575b-8651-1d96ec1a69bc",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              },
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "version": "6c3a4882ee784b608880693d8ba2b62d0ba2236e34b404179adaab909c6dd046"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Наличие кредитного продукта подтверждено признаками компании, а действие сформулировано как проверка (гипотеза), а не как факт о плавающей ставке."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              },
+              {
+                "id": "302a94c6-36b3-59ba-bb60-cb1b45933316",
+                "version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+              },
+              {
+                "id": "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+                "version": "6c3a4882ee784b608880693d8ba2b62d0ba2236e34b404179adaab909c6dd046"
+              }
+            ],
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «лизинг» не доказывает действующие лизинговые обязательства, а связь роста стоимости фондирования с обязательствами и планами оптимизации опирается на отклонённую предпосылку и в источниках отсутствует."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Наличие кредитного продукта не доказывает действующую задолженность, а связь роста ставок с удорожанием обслуживания существующего долга и рефинансированием в источниках отсутствует."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Фрагмент источника обрывается на «Подход банков к», поэтому ужесточение условий финансирования и затруднение проектов компании не подтверждены."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Источники не устанавливают зависимость компании от стабильности банковского сектора и не связывают банки компании с перечнем СЗКО."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источник фиксирует процентный риск корпоративного сектора, но не подтверждает увеличение стоимости обслуживания кредитов именно компании; наличие кредитного продукта не доказывает действующую задолженность."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Связь дефицита ликвидности с затруднениями или удорожанием лизинговых программ в источниках отсутствует; фрагмент источника обрывается."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Причинная связь между стабильностью работы с контрагентами и надежностью расчетов по РКО и зарплатам отсутствует в источниках; перечень системно значимых банков и наличие продуктов её не подтверждают."
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [
+          "action-2"
+        ],
+        "repair_attempts": 1,
+        "stop_reason": "repair_failed",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "3c1c02ebf45c4198830ec2355985cdf1",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2490,
+            "output_tokens": 1707,
+            "cost_rub": 0.141312955641
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "5cb17d4cd62540b4a85f6a9b0af8f08e",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1849,
+            "output_tokens": 1097,
+            "cost_rub": 0.09511271753555
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "a27fd8b3e1b44623b7c7a5bf3f3aefc4",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2003,
+            "output_tokens": 701,
+            "cost_rub": 0.07496957495885001
+          }
+        ],
+        "cost_rub": 0.311395
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Банк России утвердил перечень системно значимых кредитных организаций по методике, установленной Указанием от 13.04.2021 № 5778-У.",
+          "evidence_refs": [
+            "evidence-ev-cbr-systemic-banks-2026-10-07"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [
+        {
+          "claim_id": "action-1",
+          "text": "Проверить текущие условия по кредитному продукту на предмет наличия плавающей ставки и чувствительности к изменению ключевой ставки.",
+          "evidence_refs": [
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        },
+        {
+          "claim_id": "action-2",
+          "text": "Оценить влияние роста стоимости фондирования на текущие лизинговые обязательства и планы оптимизации бизнеса.",
+          "evidence_refs": [
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "76f7c1ef-0a39-5256-b4f8-daeb3728ed76"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Тип процентной ставки по текущим кредитам (фиксированная или плавающая).",
+        "Сумма и условия действующих кредитных договоров.",
+        "Сумма и условия действующих лизинговых договоров.",
+        "Детальная структура затрат на логистику и топливо для оценки влияния макроэкономических факторов на операционную деятельность.",
+        "Срок актуальности вывода источниками не установлен",
+        "Сумма задолженности по продукту «кредиты» и условия кредитного договора",
+        "Сумма задолженности по продукту «лизинг» и условия договора лизинга",
+        "Объем оборотов по продукту «расчётно-кассовое обслуживание»"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-systemic-banks-2026-10-07",
+        "80de953c-0644-575b-8651-1d96ec1a69bc",
+        "76f7c1ef-0a39-5256-b4f8-daeb3728ed76",
+        "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+        "302a94c6-36b3-59ba-bb60-cb1b45933316"
+      ],
+      "trace_id": "bee067f3-26ec-4f1c-984b-cae1c4e04246",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

@@ -1,0 +1,846 @@
+{
+  "pair_id": "B06-finance_director__ev-syn-housing",
+  "context_id": "B06-finance_director",
+  "event_id": "ev-syn-housing",
+  "status": "ok",
+  "latency_seconds": 59.53,
+  "cost_rub": 0.613208,
+  "llm_calls": 9,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "строительство логистика Новосибирск",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "кредитование транспортные компании",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "be640d52-a1bc-4f05-b711-573d442b4bd8",
+        "47c31bec-4628-4d7c-8410-c475959a5075",
+        "0749542d-eff7-4d68-9b27-130dc628ed04",
+        "f1cd04eb-f71d-4072-bee3-8c1e3f4ea500",
+        "178f4ca9-7b26-48b8-8b6f-6af66ba8d068"
+      ]
+    },
+    {
+      "query": "динамика ввода жилой недвижимости",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "объемы жилищного строительства Минстрой",
+      "as_of": "2026-09-24",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-housing",
+        "kind": "news",
+        "source_id": "pub-ev-syn-housing",
+        "version": "a560039ec66868d8",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-housing"
+        },
+        "excerpt": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв."
+      },
+      {
+        "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+        "kind": "bank",
+        "source_id": "e9075243-e38d-4bbd-8475-0f4af4f5841e",
+        "version": "3c64c1e43f3b46a795f9581967f2dbc8efb0994cb77ab82e95da180830e9ff8c",
+        "locator": {
+          "page": 1,
+          "document_date": "2026-09-07",
+          "title": "ALFA-7M26"
+        },
+        "excerpt": "месяцы негативное развитие событий (складов и транспортной инфраструктуры), мы ожидаем, что в ближайшие месяцы показатели финансов компаний останутся на низких уровнях. По всей видимости, именно этот фактор вызывает ускоренный рост корпоративного кредитования – напомним, что в июле корпоративный кредитный портфель"
+      },
+      {
+        "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+        "kind": "company",
+        "source_id": "B06",
+        "version": "ab4245f5891a79fed1f7564894cebad63f252fdaca1e69cc09e81e63c5286f38",
+        "locator": {
+          "feature_path": "features.CL_PRODUCT_RKO_MARK"
+        },
+        "excerpt": "Банковский продукт: да, у компании есть продукт банка «расчётно-кассовое обслуживание»"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Данные о темпах ввода жилья в Новосибирской области",
+        "Статистика спроса на грузовые перевозки в регионе",
+        "Влияние строительного бума на логистические расходы",
+        "Динамика ставок по РКО для новых клиентов",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B06",
+          "profile_version": "ab4245f5891a79fed1f7564894cebad63f252fdaca1e69cc09e81e63c5286f38"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-housing",
+          "event_version": "a560039ec66868d8",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Данные о темпах ввода жилья в Новосибирской области",
+            "Статистика спроса на грузовые перевозки в регионе",
+            "Влияние строительного бума на логистические расходы",
+            "Динамика ставок по РКО для новых клиентов"
+          ],
+          "initial_queries": [
+            "строительство логистика Новосибирск",
+            "кредитование транспортные компании"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "b0076340beed41f594bdd4ed7daaa688",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 398,
+          "output_tokens": 106,
+          "cost_rub": 0.014710283965
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "строительство логистика Новосибирск",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "кредитование транспортные компании",
+          "as_of": "2026-09-24",
+          "returned": [
+            {
+              "chunk_id": "be640d52-a1bc-4f05-b711-573d442b4bd8",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "47c31bec-4628-4d7c-8410-c475959a5075",
+              "page": 10,
+              "historical": false
+            },
+            {
+              "chunk_id": "0749542d-eff7-4d68-9b27-130dc628ed04",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "f1cd04eb-f71d-4072-bee3-8c1e3f4ea500",
+              "page": 3,
+              "historical": false
+            },
+            {
+              "chunk_id": "178f4ca9-7b26-48b8-8b6f-6af66ba8d068",
+              "page": 10,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "c0abf574-c335-5408-9719-5c2ffbeed538",
+            "f62d3d76-6e94-5727-ad1d-0c8773ac0ac9",
+            "380f4451-dba3-5121-841c-c198f48ce04a",
+            "bdbee8ad-ede1-5560-a925-7f0328d68dec",
+            "0204c5e5-e568-5b11-b30f-5534205b7e74"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "619bf83894a04fef9e9fc40e277704fa",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1722,
+          "output_tokens": 1321,
+          "cost_rub": 0.1494219342395
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "85a674c2988f4b15bf37161daaf20ce4",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 533,
+          "output_tokens": 236,
+          "cost_rub": 0.029054119575000006
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "5d653ab6-95f9-5e4d-9d29-174fcdc4cfd1",
+            "965863bc-fc59-558d-abfb-ac42bb8011a1",
+            "c0abf574-c335-5408-9719-5c2ffbeed538",
+            "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+            "evidence-ev-syn-housing",
+            "f66cc865-a2ad-5925-89fc-3d6260271f20",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "2f2579698035475e95bc7ee102f125cf",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 299,
+          "output_tokens": 57,
+          "cost_rub": 0.003623650733300001
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство логистика Новосибирск",
+            "кредитование транспортные компании"
+          ],
+          "new_query": "динамика ввода жилой недвижимости",
+          "reason": "Запрос переключен с логистики на показатели строительной отрасли, чтобы найти статистику по объемам ввода жилья, упомянутую в фактах."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "динамика ввода жилой недвижимости",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "14031a9ec5c94d0ca51e34ae9d6ca6c2",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 323,
+          "output_tokens": 65,
+          "cost_rub": 0.00367893208514
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "строительство логистика Новосибирск",
+            "кредитование транспортные компании",
+            "динамика ввода жилой недвижимости"
+          ],
+          "new_query": "объемы жилищного строительства Минстрой",
+          "reason": "Запрос использует более специфическую формулировку через ведомство и заменяет термин «ввод жилья» на «жилищное строительство» для расширения охвата документов."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "объемы жилищного строительства Минстрой",
+          "as_of": "2026-09-24",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-24"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "fc3d87cfb28949f5953fdc3dc6c4f5a0",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1767,
+          "output_tokens": 234,
+          "cost_rub": 0.036246977286
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "FACTORING_MARK"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "c0abf574-c335-5408-9719-5c2ffbeed538",
+        "f62d3d76-6e94-5727-ad1d-0c8773ac0ac9",
+        "380f4451-dba3-5121-841c-c198f48ce04a",
+        "bdbee8ad-ede1-5560-a925-7f0328d68dec"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "строительство логистика Новосибирск",
+        "кредитование транспортные компании",
+        "динамика ввода жилой недвижимости",
+        "объемы жилищного строительства Минстрой"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Банк ожидает, что в ближайшие месяцы показатели финансов компаний, связанных со складами и транспортной инфраструктурой, останутся на низких уровнях, что может вызывать ускоренный рост корпоративного кредитования.",
+              "verdict": "insufficient",
+              "reason": "Утверждение содержит две смысловые части: 1) показатели финансов компаний останутся на низких уровнях; 2) это может вызывать ускоренный рост корпоративного кредитования. Фрагмент подтверждает первую ч"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "risk-3",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2",
+            "action-3"
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "5d653ab6-95f9-5e4d-9d29-174fcdc4cfd1",
+            "965863bc-fc59-558d-abfb-ac42bb8011a1",
+            "c0abf574-c335-5408-9719-5c2ffbeed538",
+            "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+            "evidence-ev-syn-housing",
+            "f66cc865-a2ad-5925-89fc-3d6260271f20",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "status": "valid"
+              },
+              {
+                "id": "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+                "status": "valid"
+              },
+              {
+                "id": "f66cc865-a2ad-5925-89fc-3d6260271f20",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              },
+              {
+                "id": "965863bc-fc59-558d-abfb-ac42bb8011a1",
+                "status": "valid"
+              },
+              {
+                "id": "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+                "status": "valid"
+              },
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "status": "valid"
+              },
+              {
+                "id": "5d653ab6-95f9-5e4d-9d29-174fcdc4cfd1",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              },
+              {
+                "id": "965863bc-fc59-558d-abfb-ac42bb8011a1",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-3",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "status": "valid"
+              },
+              {
+                "id": "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "insufficient",
+            "reasons": [
+              {
+                "code": "presupposed_product",
+                "detail": "утверждение предполагает существующий продукт или долг (CL_PRODUCT_LOA_MARK), в профиле это не подтверждено"
+              }
+            ],
+            "evidence": [
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 11,
+          "insufficient": 1,
+          "contradiction": 0,
+          "removed": 1,
+          "publishable": false
+        },
+        "removed_claims": [
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "insufficient"
+          }
+        ]
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "fc3d87cfb28949f5953fdc3dc6c4f5a0",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1767,
+            "output_tokens": 234,
+            "cost_rub": 0.036246977286
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "48926dd9e558030827081b7670ccdc695d443af98d36ea4a56ba828a39849ded",
+        "required": 2,
+        "checked": 2,
+        "supported": 2,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-housing",
+                "version": "a560039ec66868d8"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Число, период, источник данных и показатель прямо совпадают с новостным источником."
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "c0abf574-c335-5408-9719-5c2ffbeed538",
+                "version": "3c64c1e43f3b46a795f9581967f2dbc8efb0994cb77ab82e95da180830e9ff8c"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "version": "ab4245f5891a79fed1f7564894cebad63f252fdaca1e69cc09e81e63c5286f38"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Вывод явно условный (условие — подтверждение банком доступности финансирования — названо как неизвестная предпосылка, а не факт), а прогноз низких показателей прямо следует из материала банка."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "contradicted",
+            "reason": "Источники сообщают о снижении ввода жилья (на 3% и 5%), а не о росте строительной активности, а причинные связи с логистикой и маржинальностью компании в источниках отсутствуют."
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Уязвимость к макроколебаниям и трудности с заемным капиталом и денежными потоками не следуют из источников; условие вывода подменяет неизвестное."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Связь локального спроса с региональной инфраструктурой и критичность заемных средств для компании не следуют из источников."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Влияние низких показателей сектора на операционную эффективность данной компании не следует из источников."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Отсутствие продукта факторинга подтверждено, но причинные следствия для управления дебиторской задолженностью и кассовых разрывов в источниках отсутствуют."
+          },
+          {
+            "claim_id": "risk-3",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источник связывает ускоренный рост корпоративного кредитования с низкими финансовыми показателями компаний, а не с повышением стоимости заемного капитала или ужесточением условий кредитования; значимость для компании в источниках отсутствуе"
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "contradicted",
+            "reason": "Источники сообщают о снижении ввода жилья (на 3% и 5% меньше года ранее) и ожидании дальнейшего замедления, что противоречит утверждению о его росте."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "contradicted",
+            "reason": "Утверждение опирается на рост ввода жилья, тогда как источники фиксируют его снижение и ожидание дальнейшего замедления."
+          },
+          {
+            "claim_id": "action-3",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "для улучшения управления оборотным капиталом и снижения кассовых разрывов"
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "18b17bd3ce2e4788a14d88f23d8c2536",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2825,
+            "output_tokens": 2022,
+            "cost_rub": 0.16523941573425
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "1e7c8a41f7eb4afabda60ef985161c5c",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2247,
+            "output_tokens": 1644,
+            "cost_rub": 0.13348718927115
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "475a62307b934f33893fe0d9c83ce874",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2047,
+            "output_tokens": 736,
+            "cost_rub": 0.07774515949915001
+          }
+        ],
+        "cost_rub": 0.376472
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв.",
+          "evidence_refs": [
+            "evidence-ev-syn-housing"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [
+        {
+          "claim_id": "opportunity-2",
+          "text": "Компания может рассмотреть использование банковских продуктов, таких как кредитование, для финансирования роста, если банк подтвердит доступность финансирования для компаний транспортной инфраструктуры, несмотря на прогнозируемые низкие финансовые показатели в секторе.",
+          "evidence_refs": [
+            "c0abf574-c335-5408-9719-5c2ffbeed538",
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Наличие кредитного продукта банка в профиле не подтверждено, долг компании, его сумма и тип ставки неизвестны",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Сумма и условия текущей долговой нагрузки компании",
+        "Типы ставок по существующим кредитам",
+        "Детали контрактов с клиентами в сфере логистики и строительства",
+        "Планы компании по расширению парка или услуг в связи с ростом строительной активности",
+        "Утверждение не прошло проверку оснований и убрано из карточки (presupposed_product): «Проверить текущую структуру долговой нагрузки и стоимость заемного капитала компании...»",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие данных о наличии у компании кредитных продуктов банка (CL_PRODUCT_LOA_MARK, CL_PRODUCT_LEA_MARK и др.)"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-housing",
+        "c0abf574-c335-5408-9719-5c2ffbeed538",
+        "004bf419-a2e5-5f3c-ab38-0b76731de99a"
+      ],
+      "trace_id": "914ec6ee-20ce-47ab-9c49-73d5c182ac4e",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

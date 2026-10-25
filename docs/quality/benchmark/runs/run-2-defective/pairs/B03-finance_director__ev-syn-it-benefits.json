@@ -1,0 +1,568 @@
+{
+  "pair_id": "B03-finance_director__ev-syn-it-benefits",
+  "context_id": "B03-finance_director",
+  "event_id": "ev-syn-it-benefits",
+  "status": "ok",
+  "latency_seconds": 28.36,
+  "cost_rub": 0.302352,
+  "llm_calls": 8,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "налоговые льготы IT-аккредитация",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "страховые взносы оптовая торговля",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "льготы по страховым взносам ИТ",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "налоговые преференции для технологического сектора",
+      "as_of": "2026-10-15",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-it-benefits",
+        "kind": "news",
+        "source_id": "pub-ev-syn-it-benefits",
+        "version": "4fe0bc62b1ac77ec",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-it-benefits"
+        },
+        "excerpt": "Правительство России продлило на 2027 год пониженную ставку страховых взносов для аккредитованных IT-компаний."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Определить наличие у компании IT-аккредитации",
+        "Оценить долю IT-направлений в выручке",
+        "Проверить структуру расходов на персонал",
+        "Анализ налоговой нагрузки без льгот",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B03",
+          "profile_version": "c3d075397c1325ffdf2d6d1a10f860c5118d1029da8f6f45bdcbc77db2779fa3"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-it-benefits",
+          "event_version": "4fe0bc62b1ac77ec",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Определить наличие у компании IT-аккредитации",
+            "Оценить долю IT-направлений в выручке",
+            "Проверить структуру расходов на персонал",
+            "Анализ налоговой нагрузки без льгот"
+          ],
+          "initial_queries": [
+            "налоговые льготы IT-аккредитация",
+            "страховые взносы оптовая торговля"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "23c71bedabfa48c48da89ca9c27230fb",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 404,
+          "output_tokens": 104,
+          "cost_rub": 0.014574174576
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "налоговые льготы IT-аккредитация",
+          "as_of": "2026-10-15",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-15"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "страховые взносы оптовая торговля",
+          "as_of": "2026-10-15",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-15"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "685a2b91b2b74cfab7a74475e4689923",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1553,
+          "output_tokens": 558,
+          "cost_rub": 0.071761057862
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "752c8f8f30fc45a68c32c75f67cfe142",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1553,
+          "output_tokens": 610,
+          "cost_rub": 0.076933214644
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": [
+            "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+            "15c4802d-6547-55a1-a95b-607d36049b4b",
+            "a2d3c48f-3aa0-51c1-a974-131d126287b4",
+            "e54ee3e1-ad14-55d3-ac75-1d3cd138068d",
+            "evidence-ev-syn-it-benefits"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "7b5779e43d0140c6814bd4f67967db94",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 327,
+          "output_tokens": 67,
+          "cost_rub": 0.0038893257906750006
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "налоговые льготы IT-аккредитация",
+            "страховые взносы оптовая торговля"
+          ],
+          "new_query": "льготы по страховым взносам ИТ",
+          "reason": "Запрос переформулирован с использованием более широкого термина «льготы» вместо узкого «налоговые льготы» для расширения охвата поисковой выдачи."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "льготы по страховым взносам ИТ",
+          "as_of": "2026-10-15",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-15"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "47cb0ebf1165498a86f86221af33c38d",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 355,
+          "output_tokens": 68,
+          "cost_rub": 0.0076797105255
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "налоговые льготы IT-аккредитация",
+            "страховые взносы оптовая торговля",
+            "льготы по страховым взносам ИТ"
+          ],
+          "new_query": "налоговые преференции для технологического сектора",
+          "reason": "Использование более широкой терминологии «технологический сектор» и «преференции» вместо узкого «IT-аккредитация» поможет найти аналитику по господдержке цифровой экономики."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "налоговые преференции для технологического сектора",
+          "as_of": "2026-10-15",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-15"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "1d687324e9034fdca5a6c1ae3062cd69",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2008,
+          "output_tokens": 162,
+          "cost_rub": 0.030760721914
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "FTS_COUNTRY_NAME",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "GROUP_ID",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Событие касается пониженных страховых взносов для аккредитованных IT-компаний, тогда как компания осуществляет оптовую торговлю металлами и рудами. Поскольку отрасль компании не совпадает с целевой от"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Компания находится на стадии стабильности и имеет численность персонала 101-250 человек. Продление льгот для IT-сектора может косвенно влиять на конкуренцию за квалифицированные кадры в регионе Санкт-"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Компания использует банковский продукт «зарплатный проект». Изменение налоговой нагрузки в смежном секторе (IT) не меняет условия обслуживания зарплатного проекта для компании, так как ставка взносов "
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "налоговые льготы IT-аккредитация",
+        "страховые взносы оптовая торговля",
+        "льготы по страховым взносам ИТ",
+        "налоговые преференции для технологического сектора"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [
+            "risk-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+            "15c4802d-6547-55a1-a95b-607d36049b4b",
+            "a2d3c48f-3aa0-51c1-a974-131d126287b4",
+            "e54ee3e1-ad14-55d3-ac75-1d3cd138068d",
+            "evidence-ev-syn-it-benefits"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-it-benefits",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "15c4802d-6547-55a1-a95b-607d36049b4b",
+                "status": "valid"
+              },
+              {
+                "id": "e54ee3e1-ad14-55d3-ac75-1d3cd138068d",
+                "status": "valid"
+              },
+              {
+                "id": "a2d3c48f-3aa0-51c1-a974-131d126287b4",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-syn-it-benefits",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "01732a78-e407-59c0-8cbe-ae6f75a6a62b",
+                "status": "valid"
+              },
+              {
+                "id": "evidence-ev-syn-it-benefits",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "a2d3c48f-3aa0-51c1-a974-131d126287b4",
+                "status": "valid"
+              },
+              {
+                "id": "15c4802d-6547-55a1-a95b-607d36049b4b",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 4,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "1d687324e9034fdca5a6c1ae3062cd69",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2008,
+            "output_tokens": 162,
+            "cost_rub": 0.030760721914
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "579387bbd00ad8c91f3aa7cd53d30c451625d9497e883f873100e0548f32aa99",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-it-benefits",
+                "version": "4fe0bc62b1ac77ec"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение полностью соответствует источнику."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Источники не содержат ни усиления конкуренции за специалистов, ни связи льготы с ростом зарплатных затрат компании."
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие IT-подразделений у компании не следует из источников, а по основному виду деятельности (торговля металлами) это предположение не подтверждено."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Данные о динамике оттока кадров, уровне зарплат IT-специалистов в Санкт-Петербурге и влиянии на ФОТ компании в источниках отсутствуют."
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "24820ca925314b46820ee79eb162b868",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1971,
+            "output_tokens": 829,
+            "cost_rub": 0.06409757576365001
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "dd048dd8234e43e0a93ee5f7362c644e",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1517,
+            "output_tokens": 112,
+            "cost_rub": 0.032656306904650004
+          }
+        ],
+        "cost_rub": 0.096754
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Правительство России продлило на 2027 год пониженную ставку страховых взносов для аккредитованных IT-компаний.",
+          "evidence_refs": [
+            "evidence-ev-syn-it-benefits"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Доля расходов компании на IT-специалистов в общем фонде оплаты труда.",
+        "Наличие в компании дочерних структур или обособленных подразделений, занимающихся разработкой ПО.",
+        "Текущая ситуация на рынке труда Санкт-Петербурга в части конкуренции за технические кадры.",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие аккредитации IT-компании у данного клиента",
+        "Доля расходов на персонал в структуре затрат компании",
+        "Наличие у компании параллельной деятельности в сфере IT, подпадающей под льготы"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-it-benefits"
+      ],
+      "trace_id": "4407148d-e9ff-46a2-b14f-6b50a9679163",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

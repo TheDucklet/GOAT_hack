@@ -1,0 +1,509 @@
+{
+  "pair_id": "B04-finance_director__ev-syn-steel-duty",
+  "context_id": "B04-finance_director",
+  "event_id": "ev-syn-steel-duty",
+  "status": "ok",
+  "latency_seconds": 22.77,
+  "cost_rub": 0.324269,
+  "llm_calls": 7,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "экспортные пошлины продовольствие логистика",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "инфляция розничные цены Татарстан",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "влияние пошлин на металлопрокат",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "изменение стоимости стального проката",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-steel-duty",
+        "kind": "news",
+        "source_id": "pub-ev-syn-steel-duty",
+        "version": "b5820cb4b00ec8d9",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-steel-duty"
+        },
+        "excerpt": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка доли импортируемых продуктов питания в ассортименте компании",
+        "Анализ зависимости поставщиков от цен на чёрные металлы",
+        "Изучение влияния пошлин на логистические издержки в Татарстане",
+        "Прогноз изменения розничных цен на продовольствие в регионе",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B04",
+          "profile_version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-steel-duty",
+          "event_version": "b5820cb4b00ec8d9",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Оценка доли импортируемых продуктов питания в ассортименте компании",
+            "Анализ зависимости поставщиков от цен на чёрные металлы",
+            "Изучение влияния пошлин на логистические издержки в Татарстане",
+            "Прогноз изменения розничных цен на продовольствие в регионе"
+          ],
+          "initial_queries": [
+            "экспортные пошлины продовольствие логистика",
+            "инфляция розничные цены Татарстан"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "2ce3f9958c6d4f96a4eedb8541c7c74f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 416,
+          "output_tokens": 126,
+          "cost_rub": 0.016877564236
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "экспортные пошлины продовольствие логистика",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфляция розничные цены Татарстан",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "46a3e5e844a44442b390b13e9c6eae1b",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1623,
+          "output_tokens": 829,
+          "cost_rub": 0.0939207133865
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "a9113c7bf58040268540bbcaab335bab",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1623,
+          "output_tokens": 764,
+          "cost_rub": 0.087455517409
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "39fec2e4213b4e348478d301ae4d98c3",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 331,
+          "output_tokens": 66,
+          "cost_rub": 0.003894037269525
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины продовольствие логистика",
+            "инфляция розничные цены Татарстан"
+          ],
+          "new_query": "влияние пошлин на металлопрокат",
+          "reason": "Запрос переориентирован с пищевой отрасли на непосредственно предмет события — черную металлургию, чтобы найти связь между экспортными сборами и экономическими показателями."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние пошлин на металлопрокат",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "2c3ce00217a44e9ea19503094772c4ce",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 359,
+          "output_tokens": 56,
+          "cost_rub": 0.0046245782401
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины продовольствие логистика",
+            "инфляция розничные цены Татарстан",
+            "влияние пошлин на металлопрокат"
+          ],
+          "new_query": "изменение стоимости стального проката",
+          "reason": "Запрос сфокусирован на ценообразовании конкретного сырья, что позволит найти данные о влиянии пошлин на себестоимость товаров в цепочке поставок."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "изменение стоимости стального проката",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 1,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "54cce99a93be462a9b2146a89f73cb50",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2139,
+          "output_tokens": 197,
+          "cost_rub": 0.08177033293
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Введение экспортной пошлины на прокат из чёрных металлов может косвенно влиять на компанию через цепочки поставок и стоимость сырья. Компания зарегистрирована в Республике Татарстан, где развиты промы"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Событие относится к сфере оптовой торговли металлами, в то время как основной вид деятельности компании — розничная торговля пищевыми продуктами. Прямое влияние на выручку от основной деятельности мал"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Наличие у компании кредитов и депозитов означает, что она подвержена процентному риску. Если введение пошлин приведет к ужесточению денежно-кредитной политики или росту инфляции, стоимость обслуживани"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Рост себестоимости товаров или сырья, если компания использует металлопрокат в своей деятельности или цепочке поставок, что снизит маржинальность."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Снижение покупательной способности клиентов из-за инфляционных ожиданий, вызванных ростом цен на промышленные товары, что может замедлить оборачиваемость товаров в рознице."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Увеличение стоимости обслуживания кредитов при возможном росте ключевой ставки или инфляции как реакции на рост цен на сырье."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Возможность переложить возросшие издержки на потребителей, если спрос на основные категории товаров останется неэластичным."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Оптимизация налоговой нагрузки за счет использования доступных банковских продуктов и инструментов управления ликвидностью в условиях изменения рыночной конъюнктуры."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить, закупает ли компания металлопрокат или товары, содержащие металл, для оценки прямого влияния пошлины на себестоимость."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Оценить текущую структуру кредитного портфеля и возможность рефинансирования или хеджирования процентных рисков."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Анализ влияния изменения покупательной способности населения в регионе Татарстан на выручку розничных точек."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 2,
+      "queries": [
+        "экспортные пошлины продовольствие логистика",
+        "инфляция розничные цены Татарстан",
+        "влияние пошлин на металлопрокат",
+        "изменение стоимости стального проката"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 1,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "54cce99a93be462a9b2146a89f73cb50",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2139,
+            "output_tokens": 197,
+            "cost_rub": 0.08177033293
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "23505a956687f1125f2d221a0b603b13d1acf9741b651b454bf13fdfb6c2d2da",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из источника: дата, размер пошлины и товар совпадают."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "7fea8175b1a7459a8d5b0477b7c3cb4b",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1368,
+            "output_tokens": 210,
+            "cost_rub": 0.0357255736266
+          }
+        ],
+        "cost_rub": 0.035726
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Доля закупок металлопроката или товаров с металлическими компонентами в общем объеме затрат компании.",
+        "Условия текущих кредитных договоров (тип ставки, срок, график платежей).",
+        "Эластичность спроса на основные категории товаров компании в регионе Татарстан.",
+        "Прямые связи компании с экспортерами черных металлов или их дистрибьюторами.",
+        "Срок актуальности вывода источниками не установлен",
+        "доля закупок и продаж затронутых товаров в обороте компании",
+        "условия действующих контрактов: фиксация цен и переходные периоды",
+        "страны и объёмы внешнеторговых операций, в данных об этом сведений нет",
+        "годовая выручка компании"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-steel-duty"
+      ],
+      "trace_id": "4f3a5e4a-f9a6-4f2b-a291-1e4c792815bc",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

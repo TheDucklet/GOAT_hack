@@ -1,0 +1,594 @@
+{
+  "pair_id": "B05-finance_director__ev-syn-steel-duty",
+  "context_id": "B05-finance_director",
+  "event_id": "ev-syn-steel-duty",
+  "status": "ok",
+  "latency_seconds": 38.72,
+  "cost_rub": 0.454939,
+  "llm_calls": 9,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "экспортные пошлины чёрные металлы макроэкономика",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "IT сектор стоимость оборудования импортные риски",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "влияние металлургических пошлин на IT",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "динамика цен на металлопрокат 2026",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "a27bfec6-3972-45e7-bc53-38a56b0cefde",
+        "6eac3fb9-7367-410c-8a77-e5df6600c7a1",
+        "1586a5a4-eb92-48ed-967a-af120b74851b",
+        "a417f958-504c-4608-b97f-35ef9eaabccb",
+        "f290a9ed-0896-43a4-ab69-b3f72dad794c"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-steel-duty",
+        "kind": "news",
+        "source_id": "pub-ev-syn-steel-duty",
+        "version": "b5820cb4b00ec8d9",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-steel-duty"
+        },
+        "excerpt": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка доли экспорта чёрных металлов в структуре ВВП России",
+        "Анализ влияния пошлин на себестоимость IT-оборудования и серверов",
+        "Изучение зависимости российского IT-сектора от импортных комплектующих",
+        "Оценка макроэкономических рисков для технологического сектора Москвы",
+        "Анализ курсовых колебаний рубля на фоне торговых ограничений",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B05",
+          "profile_version": "3ca3575f857eade57f5c529c4c4af3f3dd9ed3ce25c2cbafe82c8740c2811312"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-steel-duty",
+          "event_version": "b5820cb4b00ec8d9",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Оценка доли экспорта чёрных металлов в структуре ВВП России",
+            "Анализ влияния пошлин на себестоимость IT-оборудования и серверов",
+            "Изучение зависимости российского IT-сектора от импортных комплектующих",
+            "Оценка макроэкономических рисков для технологического сектора Москвы",
+            "Анализ курсовых колебаний рубля на фоне торговых ограничений"
+          ],
+          "initial_queries": [
+            "экспортные пошлины чёрные металлы макроэкономика",
+            "IT сектор стоимость оборудования импортные риски"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "4d41bd0108254ee08559ab6b854e266a",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 386,
+          "output_tokens": 145,
+          "cost_rub": 0.019222833707999997
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "экспортные пошлины чёрные металлы макроэкономика",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "IT сектор стоимость оборудования импортные риски",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "0eb400fd9c7f4caca2910829c64e9e1a",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1632,
+          "output_tokens": 753,
+          "cost_rub": 0.0864556368975
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "272b4be2bf1749868af76f464608102d",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1632,
+          "output_tokens": 449,
+          "cost_rub": 0.056218412633500005
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "73fd66f4462d443cae2e29fe847b3f3c",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 372,
+          "output_tokens": 52,
+          "cost_rub": 0.00283358807992
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины чёрные металлы макроэкономика",
+            "IT сектор стоимость оборудования импортные риски"
+          ],
+          "new_query": "влияние металлургических пошлин на IT",
+          "reason": "запрос переносит фокус с макроэкономики на прямую связь между стоимостью сырья и затратами в технологическом секторе"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние металлургических пошлин на IT",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "15917dc3b7234782a7f5ac8ba3a7bd98",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 401,
+          "output_tokens": 51,
+          "cost_rub": 0.0029380782108600003
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины чёрные металлы макроэкономика",
+            "IT сектор стоимость оборудования импортные риски",
+            "влияние металлургических пошлин на IT"
+          ],
+          "new_query": "динамика цен на металлопрокат 2026",
+          "reason": "Использование временного интервала и конкретного товара поможет найти прогнозы изменения стоимости сырья, влияющей на издержки компаний."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "динамика цен на металлопрокат 2026",
+          "as_of": "2026-09-20",
+          "returned": [
+            {
+              "chunk_id": "a27bfec6-3972-45e7-bc53-38a56b0cefde",
+              "page": 19,
+              "historical": false
+            },
+            {
+              "chunk_id": "6eac3fb9-7367-410c-8a77-e5df6600c7a1",
+              "page": 4,
+              "historical": false
+            },
+            {
+              "chunk_id": "1586a5a4-eb92-48ed-967a-af120b74851b",
+              "page": 1,
+              "historical": true
+            },
+            {
+              "chunk_id": "a417f958-504c-4608-b97f-35ef9eaabccb",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "f290a9ed-0896-43a4-ab69-b3f72dad794c",
+              "page": 3,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "ffa2ad50-997c-56c2-9b8c-939aa06eee99",
+            "a66bb038-8cfb-51c2-a648-3d08ca0dfacc",
+            "5c096cf6-83c0-5f56-acb4-a3adb0ea89dc",
+            "396cab36-246b-59d9-bee8-f8d974045256"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "7689ae7dc6eb4e3383fa055952cb7c37",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2294,
+          "output_tokens": 826,
+          "cost_rub": 0.10064765818900001
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "352b7842133d41b49c974fe2444d843d",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2294,
+          "output_tokens": 648,
+          "cost_rub": 0.082942967666
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "2f994ed808dd4cd78009b52df1decff8",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2122,
+          "output_tokens": 230,
+          "cost_rub": 0.08564421554000001
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "FTS_COUNTRY_NAME",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "ffa2ad50-997c-56c2-9b8c-939aa06eee99",
+        "a66bb038-8cfb-51c2-a648-3d08ca0dfacc",
+        "5c096cf6-83c0-5f56-acb4-a3adb0ea89dc",
+        "396cab36-246b-59d9-bee8-f8d974045256"
+      ],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Введение экспортной пошлины на прокат из чёрных металлов может косвенно повлиять на компанию через цепочки поставок, если её клиенты или партнёры в сфере оптовой торговли металлами (темы события) стол"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Поскольку компания не занимается торговлей металлами, прямое влияние пошлины на её выручку отсутствует, однако макроэкономическая неопределённость, связанная с торговыми барьерами, может усложнить пла"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Отсутствие у компании банковских продуктов, связанных с кредитованием или гарантиями, снижает её уязвимость к изменениям кредитных условий, вызванным возможным ростом процентных ставок или изменением "
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Косвенное влияние на операционную деятельность через контрагентов в смежных отраслях (оптовая торговля металлами), что может привести к задержкам платежей или снижению объёмов заказов."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Усложнение прогнозирования денежных потоков и ликвидности из-за общей макроэкономической турбулентности, связанной с введением новых пошлин."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Возможность пересмотра условий по депозитам в рамках оптимизации свободных средств, если макроэкономическая ситуация приведёт к росту ставок."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Отсутствие долговой нагрузки (подтверждается отсутствием кредитов позволяет компании сохранять финансовую гибкость и не зависеть от изменения стоимости заемного капитала в краткосрочной перспективе."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Проверить наличие среди ключевых клиентов или поставщиков компании предприятий оптовой торговли чёрными металлами или производителей проката, чтобы оценить степень косвенного воздействия."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Уточнить у руководителя, есть ли планы по привлечению заемного финансирования в ближайший год, чтобы оценить потенциальный риск роста стоимости обслуживания долга при изменении процентной среды."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "экспортные пошлины чёрные металлы макроэкономика",
+        "IT сектор стоимость оборудования импортные риски",
+        "влияние металлургических пошлин на IT",
+        "динамика цен на металлопрокат 2026"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 1,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "undetermined",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [],
+        "synthesized": [],
+        "horizon_kind": "unknown",
+        "assumptions": [],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "2f994ed808dd4cd78009b52df1decff8",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2122,
+            "output_tokens": 230,
+            "cost_rub": 0.08564421554000001
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "dbe131cd709071d1cb4c468f40bc0540448fbd8f9f43fcf18b13caf8bcc5ef1d",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из источника: дата, размер пошлины и товар совпадают."
+          }
+        ],
+        "removed": [],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 0,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "945127de263448e883a290dadf2d5899",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1368,
+            "output_tokens": 210,
+            "cost_rub": 0.0180355410378
+          }
+        ],
+        "cost_rub": 0.018036
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: в источниках нет подтверждённого механизма влияния",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Материал банка «ALFA_Russian_Steels_1К21PreviewUpdate_15Apr2021» от 2021-04-15: документ старше года, позиция не показана как текущая",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Структура клиентской базы компании: есть ли среди них компании, зависящие от рынка чёрных металлов.",
+        "Текущие условия по депозитам и РКО: возможность реинвестирования средств под более высокий процент.",
+        "Планы компании по привлечению внешнего финансирования в среднесрочной перспективе.",
+        "Срок актуальности вывода источниками не установлен",
+        "Отсутствие данных о наличии у компании деятельности, связанной с чёрными металлами, несмотря на код ОКВЭД 62.01 (разработка ПО), что делает невозможным оценку прямого влияния.",
+        "Неизвестно, является ли запись ФТС с Казахстаном следствием импорта/экспорта металлов или иной деятельности, так как направление торговли не установлено.",
+        "Неизвестна доля выручки компании, которая может быть косвенно затронута через цепочки поставок IT-услуг для металлургической отрасли."
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-steel-duty"
+      ],
+      "trace_id": "b0041c5e-8ff1-4797-bf7d-0230e064286b",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Срок не назван",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

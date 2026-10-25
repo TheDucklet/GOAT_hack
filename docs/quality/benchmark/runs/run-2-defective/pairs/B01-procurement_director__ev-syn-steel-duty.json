@@ -1,0 +1,709 @@
+{
+  "pair_id": "B01-procurement_director__ev-syn-steel-duty",
+  "context_id": "B01-procurement_director",
+  "event_id": "ev-syn-steel-duty",
+  "status": "ok",
+  "latency_seconds": 57.39,
+  "cost_rub": 0.729416,
+  "llm_calls": 11,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "экспортные пошлины чёрные металлы строительство",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "стоимость строительных материалов инфляция",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    },
+    {
+      "query": "изменение цен на металлопрокат",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "9c2fda9a-32de-4fdf-86c4-243ac40fd582",
+        "dbe23e54-99bd-4539-ab77-37bcfd82997d",
+        "1586a5a4-eb92-48ed-967a-af120b74851b",
+        "4ac3c008-c87d-4095-a0f4-4b583cd87d1b",
+        "0716792f-06e2-4de3-91f4-536b7022cbbf"
+      ]
+    },
+    {
+      "query": "влияние экспортных тарифов на себестоимость строительства",
+      "as_of": "2026-09-20",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-steel-duty",
+        "kind": "news",
+        "source_id": "pub-ev-syn-steel-duty",
+        "version": "b5820cb4b00ec8d9",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-steel-duty"
+        },
+        "excerpt": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов."
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка доли чёрного проката в структуре затрат компании",
+        "Анализ влияния пошлины на маржинальность строительных проектов",
+        "Прогноз изменения стоимости материалов и кассовых разрывов",
+        "Оценка потребности в оборотном финансировании для покрытия роста цен",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B01",
+          "profile_version": "042671d90f5e567688d8255cb064e19377508e3bbb18f8fba314286b050cdf6c"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-steel-duty",
+          "event_version": "b5820cb4b00ec8d9",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Оценка доли чёрного проката в структуре затрат компании",
+            "Анализ влияния пошлины на маржинальность строительных проектов",
+            "Прогноз изменения стоимости материалов и кассовых разрывов",
+            "Оценка потребности в оборотном финансировании для покрытия роста цен"
+          ],
+          "initial_queries": [
+            "экспортные пошлины чёрные металлы строительство",
+            "стоимость строительных материалов инфляция"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "0dfab6b22d4f4bf098ec6f54b9343774",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 398,
+          "output_tokens": 114,
+          "cost_rub": 0.016102787714
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "экспортные пошлины чёрные металлы строительство",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "стоимость строительных материалов инфляция",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "aa165a9f1f63461ab9ca3c90faa8b16f",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1610,
+          "output_tokens": 680,
+          "cost_rub": 0.08449252071
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "e67c4ca629134967a149efcba24419d9",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1610,
+          "output_tokens": 982,
+          "cost_rub": 0.114530815867
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "evidence_ids": [
+            "2404125b-80f2-5f90-bbb1-40bd45b5229f",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-syn-steel-duty"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "0f7fca87fd8a4992b93e274b29b59b04",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 308,
+          "output_tokens": 57,
+          "cost_rub": 0.006901793017600001
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины чёрные металлы строительство",
+            "стоимость строительных материалов инфляция"
+          ],
+          "new_query": "изменение цен на металлопрокат",
+          "reason": "Запрос сфокусирован на динамике стоимости конкретного сырья, что позволит найти аналитику о влиянии налоговых мер на рыночные цены."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "изменение цен на металлопрокат",
+          "as_of": "2026-09-20",
+          "returned": [
+            {
+              "chunk_id": "9c2fda9a-32de-4fdf-86c4-243ac40fd582",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "dbe23e54-99bd-4539-ab77-37bcfd82997d",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "1586a5a4-eb92-48ed-967a-af120b74851b",
+              "page": 1,
+              "historical": true
+            },
+            {
+              "chunk_id": "4ac3c008-c87d-4095-a0f4-4b583cd87d1b",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "0716792f-06e2-4de3-91f4-536b7022cbbf",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "61d9a9e0-5f1f-5e0a-9c9c-039fd957f741",
+            "d1e96517-3e8b-5ba9-88ff-a8a9457b0b0a",
+            "827d78ca-afe0-502f-9c61-d67332c22f22",
+            "a1236af9-48bb-57fa-929c-fd97f2da8137"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "797320280c9a4f668cbca978617ee0a5",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2130,
+          "output_tokens": 716,
+          "cost_rub": 0.087989485012
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 2,
+          "request_id": "32828a77aa134cf8b89094a76773f7b5",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2130,
+          "output_tokens": 753,
+          "cost_rub": 0.0861415383075
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "evidence_ids": []
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "fc1e00b6f38c4d4c884a73e068c352d1",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 346,
+          "output_tokens": 56,
+          "cost_rub": 0.005381555842
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "экспортные пошлины чёрные металлы строительство",
+            "стоимость строительных материалов инфляция",
+            "изменение цен на металлопрокат"
+          ],
+          "new_query": "влияние экспортных тарифов на себестоимость строительства",
+          "reason": "Запрос переходит от цен на металл к анализу влияния налоговой нагрузки на конечные затраты строительной отрасли."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние экспортных тарифов на себестоимость строительства",
+          "as_of": "2026-09-20",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-09-20"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "8a703777113d4864acb77de8caba51a3",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2126,
+          "output_tokens": 866,
+          "cost_rub": 0.10723325862600001
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "61d9a9e0-5f1f-5e0a-9c9c-039fd957f741",
+        "d1e96517-3e8b-5ba9-88ff-a8a9457b0b0a",
+        "827d78ca-afe0-502f-9c61-d67332c22f22",
+        "a1236af9-48bb-57fa-929c-fd97f2da8137"
+      ],
+      "dropped_claims": [
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Введение экспортной пошлины на прокат из чёрных металлов может привести к росту цен на этот строительный материал внутри России. Поскольку компания занимается строительством зданий, это увеличит её пр"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Компания имеет кредиты и лизинг, что указывает на высокую финансовую нагрузку и зависимость от денежных потоков. Рост стоимости строительных материалов (следствие может замедлить реализацию проектов и"
+        },
+        {
+          "section": "ai_interpretation",
+          "reason": "no_valid_evidence",
+          "text": "Несмотря на отсутствие прямого участия в торговле металлами, компания зависит от поставщиков строительных материалов. Пошлина может вызвать цепную реакцию роста цен у подрядчиков и поставщиков, что тр"
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Рост себестоимости строительства из-за удорожания металлопроката, что снизит рентабельность текущих проектов."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Увеличение потребности в оборотном капитале для покрытия возросших затрат на материалы, что может создать давление на ликвидность при наличии кредитов и лизинга."
+        },
+        {
+          "section": "risks",
+          "reason": "no_valid_evidence",
+          "text": "Риск срыва сроков или бюджета строительных контрактов из-за нестабильности цен на поставках, что требует усиленного мониторинга цепочек поставок."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Возможность пересмотра условий с подрядчиками и поставщиками, закладывая новые ценовые реалии в будущие контракты."
+        },
+        {
+          "section": "opportunities",
+          "reason": "no_valid_evidence",
+          "text": "Возможность оптимизации затрат на материалы через поиск альтернативных поставщиков или пересмотр спецификаций, если это допустимо технически, для снижения зависимости от подорожавшего проката."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Запросить у руководителя информацию о доле металлопроката в структуре текущих затрат по активным строительным проектам и наличии долгосрочных контрактов с фиксированными ценами."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Провести анализ влияния роста цен на материалы на кассовый разрыв и способность компании обслуживать текущие обязательства по кредитам и лизингу в ближайшие 3-6 месяцев."
+        },
+        {
+          "section": "actions",
+          "reason": "no_valid_evidence",
+          "text": "Оценить необходимость корректировки ценовой политики для новых проектов с учетом новых условий на рынке строительных материалов."
+        }
+      ],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "экспортные пошлины чёрные металлы строительство",
+        "стоимость строительных материалов инфляция",
+        "изменение цен на металлопрокат",
+        "влияние экспортных тарифов на себестоимость строительства"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_bank_evidence",
+              "detail": "материалы банка по запросам не найдены"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "2404125b-80f2-5f90-bbb1-40bd45b5229f",
+            "302a94c6-36b3-59ba-bb60-cb1b45933316",
+            "4fa782eb-2f23-52f8-b4f7-c41f1daa5394",
+            "80de953c-0644-575b-8651-1d96ec1a69bc",
+            "d0279ed9-27c1-5fbe-bd74-1cae203ea4f4",
+            "evidence-ev-syn-steel-duty"
+          ]
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "no_interpretation",
+              "detail": "нет объяснения, подтверждённого признаками компании"
+            },
+            {
+              "code": "fragments_not_relevant",
+              "detail": "найденные фрагменты не дали утверждений о позиции банка"
+            }
+          ],
+          "rejected_bank_claims": [],
+          "claims": [],
+          "evidence_ids": []
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 1,
+          "insufficient": 0,
+          "contradiction": 0,
+          "removed": 0,
+          "publishable": true
+        },
+        "removed_claims": []
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "low",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "industry"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [
+          {
+            "claim_id": "mechanism-3",
+            "verdict": "insufficient",
+            "reasons": [
+              "missing_premise"
+            ]
+          }
+        ],
+        "cited_features": [
+          "MAINOKVED_NAME"
+        ],
+        "synthesized": [],
+        "horizon_kind": "dated",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2",
+          "assumption-3"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "8a703777113d4864acb77de8caba51a3",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 2126,
+            "output_tokens": 866,
+            "cost_rub": 0.10723325862600001
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "b13cc943afd27ae27f69543bffab1626f484073522280772bb532f90f44181d2",
+        "required": 1,
+        "checked": 1,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-steel-duty",
+                "version": "b5820cb4b00ec8d9"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части утверждения прямо следуют из источника."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Рост цен на внутреннем рынке как следствие пошлины отсутствует в источниках; условие «если правительство вводит пошлину» — известный факт, а не неизвестная предпосылка, и вывод о росте цен источниками не подтверждён."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Помимо неизвестной предпосылки о закупках проката, вывод опирается на рост цен на прокат, которого нет в источниках; сама посылка о росте цен подменяется фактом."
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Закупки проката не следуют из вида деятельности компании; в признаках компании такого свойства нет."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Ни рост цен на прокат из-за пошлины, ни передача его в стоимость работ компании не следуют из источников."
+          },
+          {
+            "claim_id": "assumption-3",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Отсутствие долгосрочных контрактов с фиксированными ценами не подтверждается источниками; отрицание свойства без источника."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Косвенное влияние через цепочку поставок и отсутствие торговли металлами у компании не следуют из источников (отрицание свойства без источника)."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Косвенный характер влияния, роль потребителя материалов и зависимость от доли металлоёмких конструкций не следуют из источников."
+          },
+          {
+            "claim_id": "relevance",
+            "section": "relevance_reason",
+            "verdict": "unsupported",
+            "reason": "Условие актуальности опирается на реакцию компании на рост цен и изменение контрактов/политики, чего нет в источниках."
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "impact_level",
+            "action": "low -> undetermined",
+            "because": "no supported basis"
+          },
+          {
+            "field": "relevance",
+            "action": "cleared",
+            "because": "impact undetermined"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "b058da621ed8417786ce50f2a6327256",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2141,
+            "output_tokens": 1110,
+            "cost_rub": 0.10090574253045
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "76795a55f5314c2c8cdee00548ac88e9",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1772,
+            "output_tokens": 862,
+            "cost_rub": 0.0802500957544
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "09250bb820c046ce9d95f642a589d5da",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 1679,
+            "output_tokens": 182,
+            "cost_rub": 0.03948585724655
+          }
+        ],
+        "cost_rub": 0.220642
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Правительство России с 1 октября 2026 года вводит экспортную пошлину в размере 7% на прокат из чёрных металлов.",
+          "evidence_refs": [
+            "evidence-ev-syn-steel-duty"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Материал банка «ALFA_Russian_Steels_1К21PreviewUpdate_15Apr2021» от 2021-04-15: документ старше года, позиция не показана как текущая",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Какова доля затрат на металлопрокат в общей себестоимости строительных проектов компании?",
+        "Есть ли у компании долгосрочные контракты с поставщиками, фиксирующие цены на материалы, или закупки осуществляются по текущим рыночным ценам?",
+        "Каков объем текущей задолженности по кредитам и лизингу и каковы сроки их погашения?",
+        "Какие именно виды проката используются в строительстве компании и насколько они критичны для завершения текущих объектов?",
+        "Доля закупок и продаж затронутых товаров в обороте компании",
+        "Условия действующих контрактов: фиксация цен и переходные периоды",
+        "Страны и объёмы внешнеторговых операций, в данных об этом сведений нет",
+        "Годовая выручка компании"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-steel-duty"
+      ],
+      "trace_id": "7061de74-d296-4823-8101-7fd106de82f1",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "С 1 октября 2026 года",
+        "starts_on": "2026-10-01",
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

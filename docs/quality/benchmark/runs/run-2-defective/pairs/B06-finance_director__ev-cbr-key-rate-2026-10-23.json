@@ -1,0 +1,918 @@
+{
+  "pair_id": "B06-finance_director__ev-cbr-key-rate-2026-10-23",
+  "context_id": "B06-finance_director",
+  "event_id": "ev-cbr-key-rate-2026-10-23",
+  "status": "blocked",
+  "latency_seconds": 57.48,
+  "cost_rub": 0.745803,
+  "llm_calls": 11,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "ключевая ставка грузоперевозки кредитование",
+      "as_of": "2026-10-23",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+        "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+        "621f1430-4ac8-46d1-8601-3fcb93419887",
+        "eef97a4d-e776-491d-b689-e9853bc596cd",
+        "24ebca22-993d-4eef-8479-d1a872ee77bb"
+      ]
+    },
+    {
+      "query": "инфляция логистика операционные расходы",
+      "as_of": "2026-10-23",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "f290a9ed-0896-43a4-ab69-b3f72dad794c"
+      ]
+    },
+    {
+      "query": "влияние денежно-кредитной политики на транспорт",
+      "as_of": "2026-10-23",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "2ad0ac95-2a41-44c7-98ba-739f3aa7a652",
+        "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+        "2cfbd4b1-fd90-466b-8875-7161f63505b4",
+        "178bafbf-fcfc-41d9-ac6b-69543ff1774a",
+        "fbc34243-bc58-44e8-957b-d46467f9ce61"
+      ]
+    },
+    {
+      "query": "стоимость заемного капитала транспортная отрасль",
+      "as_of": "2026-10-23",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": []
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-cbr-key-rate-2026-10-23",
+        "kind": "news",
+        "source_id": "pub-ev-cbr-key-rate-2026-10-23",
+        "version": "39d4b2cf8609735a",
+        "locator": {
+          "url": "https://www.cbr.ru/press/PR/?file=23102026_133000key.htm"
+        },
+        "excerpt": "23 октября 2026 года Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых."
+      },
+      {
+        "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "kind": "bank",
+        "source_id": "d2a4babb-08ac-4ff9-b752-74ed4bd31cf2",
+        "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6",
+        "locator": {
+          "page": 2,
+          "document_date": "2026-08-05",
+          "title": "ALFA-consumption"
+        },
+        "excerpt": "инфляции пока делает возможным дальнейшее снижение ключевой ставки - мы ждем еще два снижения по 25 б. п. до конца текущего года и на конец 2026 г. ожидаем ставку на уровне 13,5% (см Рис. 8).\nРис. 7: Динамика базовой недельной инфляции и ее структура, % н/н\nИсточники: Росстат, Альфа-Банк\nРис. 8: Прогноз Альфа-Банка по"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния высокой ключевой ставки на стоимость кредитования грузовых перевозчиков",
+        "Анализ динамики инфляции и её воздействия на операционные расходы логистических компаний",
+        "Изучение состояния денежного обращения и ликвидности в секторе автомобильных грузоперевозок",
+        "Определение рисков для молодых транспортных предприятий при стабильно высоких ставках",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B06",
+          "profile_version": "ab4245f5891a79fed1f7564894cebad63f252fdaca1e69cc09e81e63c5286f38"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-cbr-key-rate-2026-10-23",
+          "event_version": "39d4b2cf8609735a",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Оценка влияния высокой ключевой ставки на стоимость кредитования грузовых перевозчиков",
+            "Анализ динамики инфляции и её воздействия на операционные расходы логистических компаний",
+            "Изучение состояния денежного обращения и ликвидности в секторе автомобильных грузоперевозок",
+            "Определение рисков для молодых транспортных предприятий при стабильно высоких ставках"
+          ],
+          "initial_queries": [
+            "ключевая ставка грузоперевозки кредитование",
+            "инфляция логистика операционные расходы"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "5e5bcc12b59e49b1889af075a2d609ae",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 413,
+          "output_tokens": 143,
+          "cost_rub": 0.017798920100000004
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "ключевая ставка грузоперевозки кредитование",
+          "as_of": "2026-10-23",
+          "returned": [
+            {
+              "chunk_id": "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "3c84640e-e665-43ed-94c0-8a90ca4fd22a",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "621f1430-4ac8-46d1-8601-3fcb93419887",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "eef97a4d-e776-491d-b689-e9853bc596cd",
+              "page": 3,
+              "historical": false
+            },
+            {
+              "chunk_id": "24ebca22-993d-4eef-8479-d1a872ee77bb",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "96964105-d9d2-5c75-bc36-de9f41646d95",
+            "6dec5e3b-1991-5b9f-8e89-e7675de70c7c",
+            "b9ce705a-376d-5fea-9516-c2f6ce50ab56"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфляция логистика операционные расходы",
+          "as_of": "2026-10-23",
+          "returned": [
+            {
+              "chunk_id": "f290a9ed-0896-43a4-ab69-b3f72dad794c",
+              "page": 3,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "2adcd1ef-064b-5a74-b5bc-18e153f67f2f"
+          ],
+          "new_fragments": 1,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "62ce5fba32ef411f8fc180d06cfcb9b1",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1705,
+          "output_tokens": 844,
+          "cost_rub": 0.10179935301900002
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "3c4fc00dda064ee2a49fb7d69091acc7",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 571,
+          "output_tokens": 164,
+          "cost_rub": 0.021431993791
+        },
+        {
+          "check": "insufficient",
+          "iteration": 1,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "96964105-d9d2-5c75-bc36-de9f41646d95",
+            "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "bcf712c63b2b4f22bec9e248c3b7b3cb",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 319,
+          "output_tokens": 63,
+          "cost_rub": 0.0041806522329
+        },
+        {
+          "retry": 1,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ключевая ставка грузоперевозки кредитование",
+            "инфляция логистика операционные расходы"
+          ],
+          "new_query": "влияние денежно-кредитной политики на транспорт",
+          "reason": "Запрос переходит от конкретных показателей к более широкому контексту макроэкономического регулирования, что поможет найти косвенные подтверждения через аналитику отрасли."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "влияние денежно-кредитной политики на транспорт",
+          "as_of": "2026-10-23",
+          "returned": [
+            {
+              "chunk_id": "2ad0ac95-2a41-44c7-98ba-739f3aa7a652",
+              "page": 5,
+              "historical": false
+            },
+            {
+              "chunk_id": "ff02d8e6-9501-4e51-aa32-515f19135ce8",
+              "page": 23,
+              "historical": false
+            },
+            {
+              "chunk_id": "2cfbd4b1-fd90-466b-8875-7161f63505b4",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "178bafbf-fcfc-41d9-ac6b-69543ff1774a",
+              "page": 24,
+              "historical": false
+            },
+            {
+              "chunk_id": "fbc34243-bc58-44e8-957b-d46467f9ce61",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "b7dbfe40-a7f0-5b72-bd78-9f72467284dd",
+            "46681140-5a3b-538d-a814-655817126869",
+            "6a290c2c-74c9-58e5-b9bd-d18a3de6f060",
+            "222b8132-d056-5941-8a30-ae5ab68df6ca",
+            "c16dacec-aa6c-5461-ac69-fb0675820a21"
+          ],
+          "new_fragments": 4,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "90b9ffa19ed24afc9a24613f4f9dc3e9",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1726,
+          "output_tokens": 896,
+          "cost_rub": 0.10166324363
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "1f2b970e6cf54b149be0cdc37010f916",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 587,
+          "output_tokens": 155,
+          "cost_rub": 0.020699097081
+        },
+        {
+          "check": "insufficient",
+          "iteration": 2,
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "2fa86b90-b5b4-5b3e-8c2d-41fb378919e7",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        },
+        {
+          "llm": "agent_query",
+          "request_id": "37e02f28f4224ba190d027eaef3fca51",
+          "model": "google/gemma-4-26b-a4b-it",
+          "input_tokens": 348,
+          "output_tokens": 59,
+          "cost_rub": 0.0072075156452
+        },
+        {
+          "retry": 2,
+          "after_check": "insufficient",
+          "previous_queries": [
+            "ключевая ставка грузоперевозки кредитование",
+            "инфляция логистика операционные расходы",
+            "влияние денежно-кредитной политики на транспорт"
+          ],
+          "new_query": "стоимость заемного капитала транспортная отрасль",
+          "reason": "Запрос заменяет термин «ключевая ставка» на более широкое понятие стоимости капитала, что позволит найти данные о финансовых издержках компаний."
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "retry",
+          "query": "стоимость заемного капитала транспортная отрасль",
+          "as_of": "2026-10-23",
+          "returned": [],
+          "evidence_ids": [],
+          "new_fragments": 0,
+          "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-23"
+        },
+        {
+          "stop": "retry_limit_reached",
+          "iterations": 2,
+          "extra_searches": 2
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "e4406035fc034c9187a08f4c0d5de016",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1761,
+          "output_tokens": 783,
+          "cost_rub": 0.09079019743950002
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "FACTORING_MARK"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+        "8f85e29b-5d84-52f4-8659-f65f6092816c",
+        "b7dbfe40-a7f0-5b72-bd78-9f72467284dd",
+        "2adcd1ef-064b-5a74-b5bc-18e153f67f2f"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "retry_limit_reached",
+      "agent_version": "agent-3",
+      "iterations": 2,
+      "extra_searches": 2,
+      "queries": [
+        "ключевая ставка грузоперевозки кредитование",
+        "инфляция логистика операционные расходы",
+        "влияние денежно-кредитной политики на транспорт",
+        "стоимость заемного капитала транспортная отрасль"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Банк ожидает дальнейшего снижения ключевой ставки и на конец 2026 года прогнозирует её уровень на уровне 13,5%.",
+              "verdict": "insufficient",
+              "reason": "Утверждение приписывает позицию (прогноз снижения ставки до 13,5%) банку, являющемуся субъектом события (Банк России). Однако фрагменты материалов содержат прогноз Альфа-Банка. Подпись источника 'Альф"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "2e8c1e45-688f-5198-8dcb-f5aafc39e3e2",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "96964105-d9d2-5c75-bc36-de9f41646d95",
+            "c0dfb365-fd3a-518a-b95e-03360030ce6d",
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        },
+        {
+          "iteration": 2,
+          "status": "insufficient",
+          "reasons": [
+            {
+              "code": "bank_claims_rejected",
+              "detail": "проверка не подтвердила утверждения банка: insufficient"
+            }
+          ],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-1",
+              "text": "Банк ожидает дальнейшего снижения ключевой ставки, прогнозируя еще два снижения по 25 базисных пунктов до конца текущего года и ставку на уровне 13,5% на конец 2026 года.",
+              "verdict": "insufficient",
+              "reason": "Утверждение приписывает позицию банку (ожидание снижения ставки), но фрагменты материалов относятся к Альфа-Банку (источник рисунков и прогноза указан как 'Альфа-Банк'). В условии сказано, что подтвер"
+            }
+          ],
+          "claims": [
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+            "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+            "2fa86b90-b5b4-5b3e-8c2d-41fb378919e7",
+            "8f85e29b-5d84-52f4-8659-f65f6092816c",
+            "evidence-ev-cbr-key-rate-2026-10-23",
+            "fb736302-208b-526f-8d17-031cddf69129"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "insufficient",
+            "reasons": [
+              {
+                "code": "presupposed_product",
+                "detail": "утверждение предполагает существующий продукт или долг (CL_PRODUCT_LOA_MARK), в профиле это не подтверждено"
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "2fa86b90-b5b4-5b3e-8c2d-41fb378919e7",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "fb736302-208b-526f-8d17-031cddf69129",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "14ddc907-e08d-535f-960a-bdbc0d5fe91b",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "insufficient",
+            "reasons": [
+              {
+                "code": "presupposed_product",
+                "detail": "утверждение предполагает существующий продукт или долг (CL_PRODUCT_LOA_MARK), в профиле это не подтверждено"
+              }
+            ],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "004bf419-a2e5-5f3c-ab38-0b76731de99a",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "status": "valid"
+              },
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 7,
+          "insufficient": 2,
+          "contradiction": 0,
+          "removed": 2,
+          "publishable": false
+        },
+        "removed_claims": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "insufficient"
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "insufficient"
+          }
+        ]
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "medium",
+        "level": "undetermined",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product",
+            "stage"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": false,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [
+          "medium_without_direct_link"
+        ],
+        "failure": null,
+        "dropped_statements": [
+          {
+            "claim_id": "assumption-1",
+            "verdict": "insufficient",
+            "reasons": [
+              "profile_contradiction",
+              "invented_company_intent"
+            ]
+          }
+        ],
+        "cited_features": [
+          "CL_PRODUCT_RKO_MARK",
+          "ECO_MARK_LABEL"
+        ],
+        "synthesized": [],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "e4406035fc034c9187a08f4c0d5de016",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1761,
+            "output_tokens": 783,
+            "cost_rub": 0.09079019743950002
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "block",
+        "decided_by": "code",
+        "content_digest": "d501df69842666df3b8bf49eea6238b8cdec674638687bb12df1caff264b7555",
+        "required": 2,
+        "checked": 2,
+        "supported": 1,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-cbr-key-rate-2026-10-23",
+                "version": "39d4b2cf8609735a"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Утверждение полностью совпадает с источником."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "statement_type": "hypothesis",
+            "evidence": [
+              {
+                "id": "8f85e29b-5d84-52f4-8659-f65f6092816c",
+                "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6"
+              }
+            ],
+            "verdict": "unsupported",
+            "reason": "Утверждение опирается на предпосылку из списка rejected_premises (позиция Альфа-Банка о снижении ставки до 13,5%), а связь снижения ставки со стоимостью заемного капитала компании в источниках не подтверждена."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Причинная связь между ключевой ставкой, стоимостью заимствований и маржинальностью компании отсутствует в источниках."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Выводы об улучшении условий рефинансирования и планировании кассовых разрывов компанией не следуют из источников."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Связь ставки с финансовой нагрузкой и отсутствие диверсифицированных источников финансирования не подтверждены источниками."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Невозможность переложить издержки на клиентов и снижение рентабельности не следуют из источников."
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие кредитных линий, возможностей рефинансирования и ожидание снижения ставки для компании не следуют из источников (известен только продукт РКО)."
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Существующие кредитные обязательства компании не подтверждены (известен только продукт РКО), а связь ставки с ликвидностью компании в источниках отсутствует; условие не делает вывод допустимым, так как подменяет неизвестное фактом."
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Ограниченная история финансовой устойчивости не следует из источников, а причинная связь высокой ставки с планированием денежных потоков и выплатами по долгам в источниках отсутствует."
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Причинная связь высокой ставки с дефицитом ликвидности и ростом финансовых расходов компании не следует из источников; наличие долга у компании не подтверждено."
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Причинные связи ставки с затратами на заемный капитал, ликвидностью и денежным потоком компании отсутствуют в источниках; наличие заемного капитала не подтверждено."
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Вывод об уязвимости компании на стадии запуска к макрошокам, связанным со стоимостью денег, не следует из источников."
+          }
+        ],
+        "dependent_changes": [],
+        "unresolved_critical": [],
+        "unresolved": [
+          "opportunity-1"
+        ],
+        "repair_attempts": 1,
+        "stop_reason": "repair_failed",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "f3e76bc61fa74c16af062d5df0ee9884",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3192,
+            "output_tokens": 1571,
+            "cost_rub": 0.1456087773569
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "a57cb19725364f829b8d7495e8547387",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 3426,
+            "output_tokens": 1747,
+            "cost_rub": 0.1597861407142
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "8a43f06c304b46eab766ea0fdcb30fec",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2192,
+            "output_tokens": 642,
+            "cost_rub": 0.0748371300534
+          }
+        ],
+        "cost_rub": 0.380232
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "23 октября 2026 года Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+          "evidence_refs": [
+            "evidence-ev-cbr-key-rate-2026-10-23"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": null,
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [
+        {
+          "claim_id": "opportunity-1",
+          "text": "Возможность планирования снижения стоимости заемного капитала во второй половине 2026 года, если прогноз Альфа-Банка по снижению ставки до 13,5% реализуется.",
+          "evidence_refs": [
+            "8f85e29b-5d84-52f4-8659-f65f6092816c"
+          ],
+          "statement_type": "hypothesis",
+          "quantitative_scenario": null
+        }
+      ],
+      "actions": [],
+      "unknowns": [
+        "Сила влияния не определена: событие не названо прямо в отрасли, продуктах или географии компании",
+        "Нет подтверждающих материалов банка на дату события",
+        "Найдены только исторические материалы банка, текущая позиция банка не подтверждена",
+        "Наличие кредитного продукта банка в профиле не подтверждено, долг компании, его сумма и тип ставки неизвестны",
+        "Позиция банка по событию не подтверждена: после 2 уточняющих поисков подходящих материалов нет",
+        "Общий объем кредитной задолженности компании",
+        "Тип процентной ставки по текущим кредитам (фиксированная или плавающая)",
+        "Срок действия текущих кредитных договоров",
+        "Доступность альтернативных источников финансирования для компании на стадии запуска",
+        "Утверждение не прошло проверку оснований и убрано из карточки (presupposed_product): «Сохранение ставки на высоком уровне (14%) в течение более длительного срока, чем...»",
+        "Утверждение не прошло проверку оснований и убрано из карточки (presupposed_product): «Уточнить структуру текущих кредитных обязательств компании: наличие плавающих ставок...»",
+        "Срок актуальности вывода источниками не установлен"
+      ],
+      "evidence_refs": [
+        "evidence-ev-cbr-key-rate-2026-10-23",
+        "8f85e29b-5d84-52f4-8659-f65f6092816c"
+      ],
+      "trace_id": "b21bca01-e31a-496d-9858-48859d7430a8",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Длительный период при сохранении текущей политики",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "missing",
+        "document_dates": []
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}

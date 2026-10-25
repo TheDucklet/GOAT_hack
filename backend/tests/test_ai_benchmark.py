@@ -462,3 +462,36 @@ def test_pair_run_retries_only_transient_errors_and_never_regenerates_a_blocked_
     )
     with pytest.raises(LLMError):
         runner.run_pair(context, {"id": "e"}, {}, lambda *a: {"items": []}, retries=1)
+
+
+def test_every_verifier_prompt_requires_a_decomposition_into_parts():
+    from app.ai.gate.prompts import GATE_SYSTEM_PROMPT
+    from app.ai.summarization.prompts import FACT_CHECK_SYSTEM_PROMPT
+
+    for prompt in (GATE_SYSTEM_PROMPT, FACT_CHECK_SYSTEM_PROMPT):
+        assert '"parts"' in prompt and "not_in_sources" in prompt and "in_sources" in prompt
+
+
+def test_event_with_no_verified_facts_is_not_backfilled_with_the_first_sentence():
+    from app.ai.insights.build import event_facts
+    from app.ai.schemas import EventPayload
+
+    base = {
+        "id": "e",
+        "title": "t",
+        "published_at": "2026-10-01T10:00:00+03:00",
+        "version": "v",
+        "publications": [{"id": "p", "url": "https://x.example/1", "text": "Первое предложение. Второе."}],
+        "evidence": [
+            {
+                "id": "ev",
+                "kind": "news",
+                "source_id": "p",
+                "version": "v",
+                "locator": {},
+                "excerpt": "Первое предложение.",
+            }
+        ],
+    }
+    assert event_facts(EventPayload.model_validate({**base, "facts": []})) == []
+    assert len(event_facts(EventPayload.model_validate({**base, "facts": None}))) == 1

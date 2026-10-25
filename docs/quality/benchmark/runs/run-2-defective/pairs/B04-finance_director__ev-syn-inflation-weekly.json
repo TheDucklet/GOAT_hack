@@ -1,0 +1,795 @@
+{
+  "pair_id": "B04-finance_director__ev-syn-inflation-weekly",
+  "context_id": "B04-finance_director",
+  "event_id": "ev-syn-inflation-weekly",
+  "status": "ok",
+  "latency_seconds": 64.94,
+  "cost_rub": 0.813563,
+  "llm_calls": 8,
+  "failed_attempts": [],
+  "searches": [
+    {
+      "query": "инфляция розничная торговля маржа",
+      "as_of": "2026-09-25",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "de603582-78d5-4b1e-94bd-a31065ffb165",
+        "deff62cf-1ad0-4c13-b370-85dab169bbd4",
+        "f290a9ed-0896-43a4-ab69-b3f72dad794c",
+        "a65a8971-8f8b-4caf-8877-6ef809003938",
+        "25f7831c-caab-4e5b-812a-00fd87ac9630"
+      ]
+    },
+    {
+      "query": "потребительский спрос продовольствие кредитование",
+      "as_of": "2026-09-25",
+      "limit": 5,
+      "suppressed": false,
+      "chunk_ids": [
+        "4998bdc1-2a26-49ce-9993-5249e1480e6a",
+        "a65a8971-8f8b-4caf-8877-6ef809003938",
+        "0fe99527-9661-4c90-b588-5d8a5f94bf25",
+        "4bebfea7-9ac3-4e78-a5ad-04b3ad7bb140",
+        "2ba1d91b-5b77-424d-895e-dc3c499b5a5f"
+      ]
+    }
+  ],
+  "envelope": {
+    "evidence": [
+      {
+        "id": "evidence-ev-syn-inflation-weekly",
+        "kind": "news",
+        "source_id": "pub-ev-syn-inflation-weekly",
+        "version": "0127b1e31819b644",
+        "locator": {
+          "url": "https://example.org/synthetic/ev-syn-inflation-weekly"
+        },
+        "excerpt": "Росстат сообщил, что за неделю с 15 по 21 сентября 2026 года потребительские цены выросли на 0,04% после роста на 0,07% неделей ранее."
+      },
+      {
+        "id": "e167fe83-4954-5286-9134-d6036c58e144",
+        "kind": "bank",
+        "source_id": "d2a4babb-08ac-4ff9-b752-74ed4bd31cf2",
+        "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6",
+        "locator": {
+          "page": 1,
+          "document_date": "2026-08-05",
+          "title": "ALFA-consumption"
+        },
+        "excerpt": "5 августа 2026 г.\nПотребление на пике\nМы полагаем, что динамика потребления сейчас находится на пике и в следующие месяцы будет происходить постепенное охлаждение темпов роста спроса – в 4К26 мы ориентируемся на рост потребления на нулевых отметках в годовом выражении.\nДинамика конечного потребления в июне осталась"
+      }
+    ],
+    "trace": {
+      "prompt_version": "insight-3",
+      "plan": [
+        "Оценка влияния замедления инфляции на маржинальность розничной торговли",
+        "Анализ динамики потребительского спроса в секторе продуктовых магазинов",
+        "Изучение кредитной нагрузки и ликвидности компаний розничной торговли",
+        "Определение региональных особенностей ценообразования в Татарстане",
+        "check_grounding",
+        "retry_search_if_needed"
+      ],
+      "steps": [
+        {
+          "tool": "get_company_context",
+          "company_id": "B04",
+          "profile_version": "5548820b43c5ea80762fa99f8065ea46fa9f6e7172ebe016b29b3c2ae7a93004"
+        },
+        {
+          "tool": "get_event",
+          "event_id": "ev-syn-inflation-weekly",
+          "event_version": "0127b1e31819b644",
+          "facts": 1
+        },
+        {
+          "plan": [
+            "Оценка влияния замедления инфляции на маржинальность розничной торговли",
+            "Анализ динамики потребительского спроса в секторе продуктовых магазинов",
+            "Изучение кредитной нагрузки и ликвидности компаний розничной торговли",
+            "Определение региональных особенностей ценообразования в Татарстане"
+          ],
+          "initial_queries": [
+            "инфляция розничная торговля маржа",
+            "потребительский спрос продовольствие кредитование"
+          ]
+        },
+        {
+          "llm": "agent_plan",
+          "request_id": "bda76b1d23664ddc909392b61dc50ebb",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 428,
+          "output_tokens": 122,
+          "cost_rub": 0.016615815411
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "инфляция розничная торговля маржа",
+          "as_of": "2026-09-25",
+          "returned": [
+            {
+              "chunk_id": "de603582-78d5-4b1e-94bd-a31065ffb165",
+              "page": 11,
+              "historical": false
+            },
+            {
+              "chunk_id": "deff62cf-1ad0-4c13-b370-85dab169bbd4",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "f290a9ed-0896-43a4-ab69-b3f72dad794c",
+              "page": 3,
+              "historical": false
+            },
+            {
+              "chunk_id": "a65a8971-8f8b-4caf-8877-6ef809003938",
+              "page": 11,
+              "historical": false
+            },
+            {
+              "chunk_id": "25f7831c-caab-4e5b-812a-00fd87ac9630",
+              "page": 2,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "fe4e9baa-58a3-5d05-ab62-348897766aff",
+            "f8690651-9560-5132-81f2-ddcde6b9906d",
+            "6b2450ac-08d8-57ce-931d-39d62cd5cbb0",
+            "46d13b39-9041-5bca-b149-02683cc72423",
+            "e88a6bab-1177-5a49-9e8a-ea06d6a90e33"
+          ],
+          "new_fragments": 5,
+          "empty_reason": null
+        },
+        {
+          "tool": "search_bank_analytics",
+          "purpose": "initial",
+          "query": "потребительский спрос продовольствие кредитование",
+          "as_of": "2026-09-25",
+          "returned": [
+            {
+              "chunk_id": "4998bdc1-2a26-49ce-9993-5249e1480e6a",
+              "page": 1,
+              "historical": false
+            },
+            {
+              "chunk_id": "a65a8971-8f8b-4caf-8877-6ef809003938",
+              "page": 11,
+              "historical": false
+            },
+            {
+              "chunk_id": "0fe99527-9661-4c90-b588-5d8a5f94bf25",
+              "page": 11,
+              "historical": false
+            },
+            {
+              "chunk_id": "4bebfea7-9ac3-4e78-a5ad-04b3ad7bb140",
+              "page": 2,
+              "historical": false
+            },
+            {
+              "chunk_id": "2ba1d91b-5b77-424d-895e-dc3c499b5a5f",
+              "page": 1,
+              "historical": false
+            }
+          ],
+          "evidence_ids": [
+            "e167fe83-4954-5286-9134-d6036c58e144",
+            "e21b48a0-3172-536f-a203-53d4e9a9dffc",
+            "316b4b42-d977-5a8a-95ee-47347493b854",
+            "2019f19f-e19b-5333-a856-f8507d4c33bd",
+            "e3514a55-074f-546b-9c8d-4b9f77baa5e1"
+          ],
+          "new_fragments": 4,
+          "empty_reason": null
+        },
+        {
+          "llm": "build_insight",
+          "attempt": 1,
+          "request_id": "a342d9b3d5e84b9486b021e8efe0b203",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1960,
+          "output_tokens": 1058,
+          "cost_rub": 0.12575460548300002
+        },
+        {
+          "llm": "agent_check",
+          "request_id": "e8531d926a11483ca5456f90c9fabe04",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 713,
+          "output_tokens": 680,
+          "cost_rub": 0.07510097286900001
+        },
+        {
+          "check": "supported",
+          "iteration": 1,
+          "reasons": [],
+          "evidence_ids": [
+            "316b4b42-d977-5a8a-95ee-47347493b854",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "e167fe83-4954-5286-9134-d6036c58e144",
+            "evidence-ev-syn-inflation-weekly"
+          ]
+        },
+        {
+          "stop": "supported",
+          "iterations": 1,
+          "extra_searches": 0
+        },
+        {
+          "llm": "build_impact",
+          "request_id": "12f6b3ae0a19485baf7a086ec798abab",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 1999,
+          "output_tokens": 737,
+          "cost_rub": 0.0887066767925
+        }
+      ],
+      "company_features_offered": [
+        "MAINOKVED_NAME",
+        "MAINOKVED_CODE",
+        "REGION",
+        "CITY",
+        "AMOUNT_WORKERS_FNS_GRADATION",
+        "COMPANY_AGE_YEARS_GRADATION",
+        "ECO_MARK_LABEL",
+        "NEGATIVEMARK",
+        "OKFS_NAME",
+        "CL_PRODUCT_RKO_MARK",
+        "CL_PRODUCT_GAR_MARK",
+        "CL_PRODUCT_LOA_MARK",
+        "CL_PRODUCT_LEA_MARK",
+        "CL_PRODUCT_DEP_MARK",
+        "CL_PRODUCT_ZPP_MARK",
+        "FACTORING_MARK",
+        "FTS_FLAG"
+      ],
+      "matched_with_event": [],
+      "bank_fragments_offered": [
+        "e167fe83-4954-5286-9134-d6036c58e144",
+        "fe4e9baa-58a3-5d05-ab62-348897766aff",
+        "f8690651-9560-5132-81f2-ddcde6b9906d",
+        "316b4b42-d977-5a8a-95ee-47347493b854"
+      ],
+      "dropped_claims": [],
+      "source_conflicts": [],
+      "stop_reason": "supported",
+      "agent_version": "agent-3",
+      "iterations": 1,
+      "extra_searches": 0,
+      "queries": [
+        "инфляция розничная торговля маржа",
+        "потребительский спрос продовольствие кредитование"
+      ],
+      "checks": [
+        {
+          "iteration": 1,
+          "status": "supported",
+          "reasons": [],
+          "rejected_bank_claims": [
+            {
+              "claim_id": "bank-2",
+              "text": "Альфа-Банк отмечает, что потребительский спрос вернулся на траекторию активного роста, чему способствовали сохранение темпов зарплат на уровне двузначных значений и снижение ставок, поддержавшее восстановление потребкредитования.",
+              "verdict": "insufficient",
+              "reason": "Фрагмент подтверждает, что спрос вернулся на траекторию роста и называет причины (зарплаты, ставки, потребкредитование). Однако утверждение содержит деталь 'снижение ставок', которая в данном фрагмент"
+            }
+          ],
+          "claims": [
+            "bank-1",
+            "interpretation-1",
+            "interpretation-2",
+            "interpretation-3",
+            "risk-1",
+            "risk-2",
+            "opportunity-1",
+            "opportunity-2",
+            "action-1",
+            "action-2"
+          ],
+          "evidence_ids": [
+            "316b4b42-d977-5a8a-95ee-47347493b854",
+            "4d1f500f-9424-55cb-94c2-2641297a28c0",
+            "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+            "cc57bf61-477e-50cc-b422-12d3781bdf35",
+            "e167fe83-4954-5286-9134-d6036c58e144",
+            "evidence-ev-syn-inflation-weekly"
+          ]
+        }
+      ],
+      "validation": {
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "e167fe83-4954-5286-9134-d6036c58e144",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "insufficient",
+            "reasons": [
+              {
+                "code": "revenue_unconfirmed",
+                "detail": "выручка не подтверждена: единица и отчётный период не заданы"
+              }
+            ],
+            "evidence": [
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "e167fe83-4954-5286-9134-d6036c58e144",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              },
+              {
+                "id": "316b4b42-d977-5a8a-95ee-47347493b854",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "status": "valid"
+              },
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "316b4b42-d977-5a8a-95ee-47347493b854",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "e167fe83-4954-5286-9134-d6036c58e144",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              },
+              {
+                "id": "316b4b42-d977-5a8a-95ee-47347493b854",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "cc57bf61-477e-50cc-b422-12d3781bdf35",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "4d1f500f-9424-55cb-94c2-2641297a28c0",
+                "status": "valid"
+              }
+            ]
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "supported",
+            "reasons": [],
+            "evidence": [
+              {
+                "id": "87d0e121-c748-52ad-b27c-d0a13826ec4d",
+                "status": "valid"
+              },
+              {
+                "id": "e167fe83-4954-5286-9134-d6036c58e144",
+                "status": "valid"
+              }
+            ]
+          }
+        ],
+        "summary": {
+          "supported": 10,
+          "insufficient": 1,
+          "contradiction": 0,
+          "removed": 1,
+          "publishable": false
+        },
+        "removed_claims": [
+          {
+            "claim_id": "interpretation-1",
+            "section": "ai_interpretation",
+            "verdict": "insufficient"
+          }
+        ]
+      },
+      "schema_version": "v2",
+      "contract_versions": {
+        "contract": "impact-contract-2",
+        "schema": "v2",
+        "semantics": "company-data-2",
+        "context_semantics": "company-data-2",
+        "policy": "notice_v1"
+      },
+      "impact": {
+        "prompt_version": "impact-1",
+        "rubric_version": "impact-rubric-1",
+        "proposed_level": "low",
+        "level": "low",
+        "rubric": {
+          "rubric_version": "impact-rubric-1",
+          "independent_factors": [
+            "product"
+          ],
+          "direct_event_matches": [],
+          "bank_evidence": true,
+          "dated_horizon": false,
+          "quantified_exposure": false
+        },
+        "caps": [],
+        "failure": null,
+        "dropped_statements": [],
+        "cited_features": [
+          "CL_PRODUCT_LOA_MARK"
+        ],
+        "synthesized": [],
+        "horizon_kind": "long_term",
+        "assumptions": [
+          "assumption-1",
+          "assumption-2"
+        ],
+        "usage": [
+          {
+            "llm": "build_impact",
+            "request_id": "12f6b3ae0a19485baf7a086ec798abab",
+            "model": "qwen/qwen3.6-35b-a3b",
+            "input_tokens": 1999,
+            "output_tokens": 737,
+            "cost_rub": 0.0887066767925
+          }
+        ]
+      },
+      "publication": {
+        "policy_version": "publication-1",
+        "verifier_prompt_version": "gate-3",
+        "decision": "allow",
+        "decided_by": "code",
+        "content_digest": "46009da2487f83fca10fd234390433448e93baed079a3ee40729db58603694a8",
+        "required": 2,
+        "checked": 2,
+        "supported": 2,
+        "claims": [
+          {
+            "claim_id": "fact-1",
+            "section": "facts",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "evidence-ev-syn-inflation-weekly",
+                "version": "0127b1e31819b644"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Все части прямо следуют из источника."
+          },
+          {
+            "claim_id": "bank-1",
+            "section": "bank_view",
+            "statement_type": "fact",
+            "evidence": [
+              {
+                "id": "e167fe83-4954-5286-9134-d6036c58e144",
+                "version": "807ee9925cf7d15ecffc72ad7142f9a83d342cd19690e12dd3b90aa2ba8ea1c6"
+              }
+            ],
+            "verdict": "supported",
+            "reason": "Позиция банка и прогноз прямо подтверждены материалом банка (kind bank)."
+          }
+        ],
+        "removed": [
+          {
+            "claim_id": "interpretation-2",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующую задолженность, а связь снижения ставок со смягчением ДКП и снижение стоимости обслуживания существующих кредитов не следуют из источников."
+          },
+          {
+            "claim_id": "interpretation-3",
+            "section": "ai_interpretation",
+            "verdict": "unsupported",
+            "reason": "Вывод о стабилизации цен на продовольствие и снижении волатильности себестоимости не следует из источников: замедление объясняется сезонным снижением цен на плодоовощную продукцию, а «может» без условия не делает вывод допустимым."
+          },
+          {
+            "claim_id": "risk-1",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Связь между прогнозом банка и снижением продаж и выручки компании не следует из источников; «может» без явного условия не делает вывод допустимым."
+          },
+          {
+            "claim_id": "risk-2",
+            "section": "risks",
+            "verdict": "unsupported",
+            "reason": "Существование действующих кредитов компании не подтверждено источниками (наличие банковского продукта «кредиты» не доказывает задолженность), поэтому условный вывод опирается на неподтверждённую предпосылку."
+          },
+          {
+            "claim_id": "opportunity-1",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Стабилизация инфляции отсутствует в источниках, а связь снижения ставок со стоимостью обслуживания кредитов компании не следует из источников"
+          },
+          {
+            "claim_id": "opportunity-2",
+            "section": "opportunities",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «депозиты» не доказывает действующие депозиты и свободные денежные средства, а доходность депозитов в источниках не описана"
+          },
+          {
+            "claim_id": "action-1",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Наличие банковского продукта «кредиты» не доказывает действующие кредиты компании, о которых идёт речь в действии"
+          },
+          {
+            "claim_id": "action-2",
+            "section": "actions",
+            "verdict": "unsupported",
+            "reason": "Источник описывает охлаждение потребления, а не тренд охлаждения спроса в розничной торговле, и не содержит рекомендации проверять оборот компании"
+          },
+          {
+            "claim_id": "mechanism-1",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Связь замедления инфляции со снижением процентных ставок по кредитам и снижением нагрузки по продукту не следует из источников"
+          },
+          {
+            "claim_id": "mechanism-2",
+            "section": "mechanism",
+            "verdict": "unsupported",
+            "reason": "Связь замедления инфляции со стабилизацией стоимости обслуживания долга и улучшением планирования денежных потоков не следует из источников"
+          },
+          {
+            "claim_id": "assumption-1",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источник подтверждает лишь наличие банковского продукта «кредиты», но не действующую задолженность, плавающую ставку и её зависимость от ключевой ставки ЦБ"
+          },
+          {
+            "claim_id": "assumption-2",
+            "section": "assumptions",
+            "verdict": "unsupported",
+            "reason": "Источник сообщает данные Росстата об инфляции и дату заседания ЦБ, но не содержит прогноза о смягчении денежно-кредитной политики"
+          },
+          {
+            "claim_id": "summary",
+            "section": "personalized_summary",
+            "verdict": "unsupported",
+            "reason": "Причинная связь между замедлением инфляции и стоимостью заемного капитала, польза для существующих кредитов и отрицание прямой связи не следуют из источников"
+          },
+          {
+            "claim_id": "impact",
+            "section": "impact_reason",
+            "verdict": "unsupported",
+            "reason": "Оценка косвенного влияния и утверждения об отсутствии подтверждённой экспозиции и неизвестности условий кредитов не следуют из источников"
+          }
+        ],
+        "dependent_changes": [
+          {
+            "field": "impact_level",
+            "action": "low -> undetermined",
+            "because": "no supported basis"
+          },
+          {
+            "field": "relevance",
+            "action": "cleared",
+            "because": "impact undetermined"
+          }
+        ],
+        "unresolved_critical": [],
+        "unresolved": [],
+        "repair_attempts": 1,
+        "stop_reason": "all_supported",
+        "usage": [
+          {
+            "llm": "gate_verify",
+            "request_id": "29c606f8964e4471b4e2875090282c8c",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2614,
+            "output_tokens": 1975,
+            "cost_rub": 0.15888781874680002
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "3bbc89da314b4c53b1ec24de685d7167",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2343,
+            "output_tokens": 2364,
+            "cost_rub": 0.17660664370635
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "6bb225918a1843af870e0167e445f493",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2353,
+            "output_tokens": 1216,
+            "cost_rub": 0.11067211468885
+          },
+          {
+            "llm": "gate_verify",
+            "request_id": "abbeb5ceda134bd29e3d77bbff63abf9",
+            "model": "z-ai/glm-5.3-flash",
+            "input_tokens": 2207,
+            "output_tokens": 401,
+            "cost_rub": 0.06121833868865001
+          }
+        ],
+        "cost_rub": 0.507385
+      }
+    },
+    "result": {
+      "facts": [
+        {
+          "claim_id": "fact-1",
+          "text": "Росстат сообщил, что за неделю с 15 по 21 сентября 2026 года потребительские цены выросли на 0,04% после роста на 0,07% неделей ранее.",
+          "evidence_refs": [
+            "evidence-ev-syn-inflation-weekly"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "bank_view": [
+        {
+          "claim_id": "bank-1",
+          "text": "Альфа-Банк полагает, что динамика потребления находится на пике и в следующие месяцы ожидается постепенное охлаждение темпов роста спроса, ориентируясь на рост потребления на нулевых отметках в годовом выражении в 4К26.",
+          "evidence_refs": [
+            "e167fe83-4954-5286-9134-d6036c58e144"
+          ],
+          "statement_type": "fact",
+          "quantitative_scenario": null
+        }
+      ],
+      "ai_interpretation": [],
+      "risks": [],
+      "opportunities": [],
+      "actions": [],
+      "unknowns": [
+        "Текущая ставка по кредитам компании и тип её изменения (фиксированная/плавающая).",
+        "Динамика выручки компании за последние кварталы.",
+        "Структура затрат компании и зависимость от стоимости закупа продовольствия.",
+        "Утверждение не прошло проверку оснований и убрано из карточки (revenue_unconfirmed): «Компания осуществляет розничную торговлю пищевыми продуктами, что делает её выручку...»",
+        "Тип процентной ставки по кредитам компании (фиксированная или плавающая)",
+        "Сумма и остаток задолженности по кредитам",
+        "Текущая эффективная ставка по кредитам",
+        "Зависимость стоимости заемного капитала компании от ключевой ставки ЦБ",
+        "Сила влияния не определена: механизм или его обоснование не подтверждены источниками при проверке"
+      ],
+      "evidence_refs": [
+        "evidence-ev-syn-inflation-weekly",
+        "e167fe83-4954-5286-9134-d6036c58e144"
+      ],
+      "trace_id": "3f3030fa-d1e3-4269-9da5-1133afb737a7",
+      "schema_version": "v2",
+      "personalized_summary": null,
+      "mechanism": [],
+      "impact_level": "undetermined",
+      "impact_reason": null,
+      "time_horizon": {
+        "label": "Эффект сохраняется в среднесрочной перспективе",
+        "starts_on": null,
+        "ends_on": null
+      },
+      "assumptions": [],
+      "relevance_status": "undetermined",
+      "valid_from": null,
+      "valid_until": null,
+      "review_after": null,
+      "relevance_reason": null,
+      "bank_view_context": {
+        "status": "current",
+        "document_dates": [
+          "2026-08-05"
+        ]
+      },
+      "next_actions": [
+        {
+          "action": "ask_question",
+          "label": "Уточнить недостающие данные",
+          "question": "Каких данных не хватает, чтобы оценить влияние события на мою компанию?"
+        },
+        {
+          "action": "contact_manager_demo",
+          "label": "Связаться с менеджером (демо)",
+          "question": null
+        },
+        {
+          "action": "hide_insight",
+          "label": "Скрыть",
+          "question": null
+        }
+      ],
+      "policy_version": "notice_v1",
+      "disclaimer": "Материал подготовлен с использованием ИИ, носит информационный характер и не является индивидуальной инвестиционной рекомендацией. Выводы ИИ не являются официальной позицией банка."
+    }
+  }
+}
