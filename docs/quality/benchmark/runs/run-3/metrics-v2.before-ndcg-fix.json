@@ -1,0 +1,560 @@
+{
+  "set": "original_84",
+  "run": {
+    "limit_rub": 75.0,
+    "workers": 3,
+    "retries": 1,
+    "as_of": "2026-10-23T18:00:00+03:00",
+    "started_at": "2026-10-25T06:56:09.259967+00:00",
+    "source": {
+      "sha": "cf5c0b07197a64df54e8a8a0170aa7c055393c0c",
+      "tree_clean": false
+    },
+    "as_of_now": "2026-10-23T18:00:00+03:00",
+    "search_backend": "offline_snapshot: docs/ai/fixtures/bank-chunks.json",
+    "contract_versions": {
+      "contract": "impact-contract-2",
+      "schema": "v2",
+      "semantics": "company-data-2",
+      "context_semantics": "company-data-2",
+      "policy": "notice_v1"
+    },
+    "prompt_versions": {
+      "summary": "summary-2",
+      "focus": "focus-1",
+      "insight": "insight-3",
+      "agent": "agent-3",
+      "impact": "impact-1",
+      "validation": "validation-1",
+      "gate": "gate-3",
+      "fact_check": "factcheck-2",
+      "judge": "judge-2",
+      "publication_policy": "publication-1"
+    },
+    "models": {
+      "agent_check": "qwen/qwen3.6-35b-a3b",
+      "agent_plan": "qwen/qwen3.6-35b-a3b",
+      "agent_query": "google/gemma-4-26b-a4b-it",
+      "answer_chat": "qwen/qwen3.6-35b-a3b",
+      "benchmark_judge": "deepseek/deepseek-v4.1-flash",
+      "build_impact": "qwen/qwen3.6-35b-a3b",
+      "build_insight": "qwen/qwen3.6-35b-a3b",
+      "chat_router": "google/gemma-4-26b-a4b-it",
+      "derive_user_focus": "google/gemma-4-26b-a4b-it",
+      "gate_verify": "z-ai/glm-5.3-flash",
+      "ocr_vision": "qwen/qwen3-vl-30b-a3b-instruct",
+      "select_industries": "google/gemma-4-26b-a4b-it",
+      "summarize_event": "qwen/qwen3.6-35b-a3b",
+      "verify_event_facts": "z-ai/glm-5.3-flash"
+    }
+  },
+  "coverage": {
+    "requested": 84,
+    "ready": 47,
+    "ready_coverage": 0.5595,
+    "final_quality_refusals": 37,
+    "lost_pairs": 0,
+    "failed_attempts_before_success_or_loss": 0,
+    "states": {
+      "blocked": 37,
+      "ok": 47
+    },
+    "cost_rub": 69.7194,
+    "latency_median": 82.19,
+    "latency_p90": 107.69
+  },
+  "gate_report": {
+    "block_reasons": {
+      "repair_invalid": 7,
+      "repair_failed": 30
+    },
+    "removed_by_section": {
+      "ai_interpretation": 202,
+      "risks": 131,
+      "opportunities": 106,
+      "actions": 117,
+      "mechanism": 97,
+      "assumptions": 119,
+      "personalized_summary": 59,
+      "impact_reason": 59,
+      "bank_view": 24,
+      "relevance_reason": 12
+    },
+    "repair_attempts": {
+      "0": 5,
+      "1": 79
+    }
+  },
+  "positive_cases": {
+    "required": 6,
+    "passed": 0,
+    "regression_passed": false,
+    "rows": [
+      {
+        "pair_id": "B01-chief_accountant__ev-cbr-key-rate-2026-10-23",
+        "passed": false,
+        "reason": "карточка не опубликована"
+      },
+      {
+        "pair_id": "B02-finance_director__ev-cbr-key-rate-2026-10-23",
+        "passed": false,
+        "reason": "карточка не опубликована"
+      },
+      {
+        "pair_id": "B04-finance_director__ev-cbr-key-rate-2026-10-23",
+        "passed": false,
+        "reason": "карточка не опубликована"
+      },
+      {
+        "pair_id": "B02-finance_director__ev-syn-housing",
+        "passed": false,
+        "impact_level": "undetermined",
+        "mechanism_steps": 0,
+        "evidence_kinds": [],
+        "regression": false
+      },
+      {
+        "pair_id": "B05-finance_director__ev-syn-it-benefits",
+        "passed": false,
+        "impact_level": "undetermined",
+        "mechanism_steps": 0,
+        "evidence_kinds": [],
+        "regression": false
+      },
+      {
+        "pair_id": "B06-finance_director__ev-cbr-key-rate-2026-10-23",
+        "passed": false,
+        "impact_level": "undetermined",
+        "mechanism_steps": 0,
+        "evidence_kinds": [],
+        "regression": false
+      },
+      {
+        "pair_id": "B03-finance_director__ev-syn-steel-duty",
+        "passed": false,
+        "impact_level": "undetermined",
+        "mechanism_steps": 0,
+        "evidence_kinds": [],
+        "regression": true
+      }
+    ]
+  },
+  "labels": {
+    "status": "INCOMPLETE",
+    "agreed": 74,
+    "unresolved": 10,
+    "labelers": {
+      "labelers": [
+        "alexey",
+        "roman"
+      ],
+      "labeled_pairs": {
+        "alexey": 84,
+        "roman": 84
+      },
+      "kappa": {
+        "alexey|roman": 0.7993
+      }
+    }
+  },
+  "ranking": {
+    "per_context": {
+      "baseline": {
+        "B01-chief_accountant": {
+          "top": [
+            "B01-chief_accountant__ev-cbr-key-rate-2026-10-23",
+            "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21",
+            "B01-chief_accountant__ev-cbr-nfs-2026-10-07",
+            "B01-chief_accountant__ev-syn-housing",
+            "B01-chief_accountant__ev-cbr-nko-license-2026-10-22"
+          ],
+          "returned": 5,
+          "dcg": 4.561606,
+          "idcg": 4.948459,
+          "ndcg": 0.9218,
+          "hits": 1,
+          "significant": 1,
+          "recall": 1.0,
+          "precision": 0.2,
+          "precision_ceiling": 0.2
+        },
+        "B01-procurement_director": {
+          "top": [
+            "B01-procurement_director__ev-syn-housing",
+            "B01-procurement_director__ev-cbr-key-rate-2026-10-23",
+            "B01-procurement_director__ev-cbr-nko-license-2026-10-22",
+            "B01-procurement_director__ev-cbr-deposit-rates-2026-10-21",
+            "B01-procurement_director__ev-cbr-lombard-2026-10-05"
+          ],
+          "returned": 5,
+          "dcg": 1.63093,
+          "idcg": 4.561606,
+          "ndcg": 0.3575,
+          "hits": 0,
+          "significant": 1,
+          "recall": 0.0,
+          "precision": 0.0,
+          "precision_ceiling": 0.2
+        },
+        "B02-finance_director": {
+          "top": [
+            "B02-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B02-finance_director__ev-cbr-deposit-rates-2026-10-21",
+            "B02-finance_director__ev-cbr-lombard-2026-10-05",
+            "B02-finance_director__ev-cbr-nfs-2026-10-07",
+            "B02-finance_director__ev-syn-housing"
+          ],
+          "returned": 5,
+          "dcg": 5.222165,
+          "idcg": 6.210319,
+          "ndcg": 0.8409,
+          "hits": 2,
+          "significant": 2,
+          "recall": 1.0,
+          "precision": 0.4,
+          "precision_ceiling": 0.4
+        },
+        "B03-finance_director": {
+          "top": [
+            "B03-finance_director__ev-syn-steel-duty",
+            "B03-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B03-finance_director__ev-cbr-deposit-rates-2026-10-21",
+            "B03-finance_director__ev-cbr-lombard-2026-10-05",
+            "B03-finance_director__ev-cbr-nfs-2026-10-07"
+          ],
+          "returned": 5,
+          "dcg": 5.279642,
+          "idcg": 6.210319,
+          "ndcg": 0.8501,
+          "hits": 2,
+          "significant": 2,
+          "recall": 1.0,
+          "precision": 0.4,
+          "precision_ceiling": 0.4
+        },
+        "B04-finance_director": {
+          "top": [
+            "B04-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B04-finance_director__ev-cbr-deposit-rates-2026-10-21",
+            "B04-finance_director__ev-cbr-lombard-2026-10-05",
+            "B04-finance_director__ev-cbr-nfs-2026-10-07",
+            "B04-finance_director__ev-cbr-nko-license-2026-10-22"
+          ],
+          "returned": 5,
+          "dcg": 4.448459,
+          "idcg": 4.561606,
+          "ndcg": 0.9752,
+          "hits": 1,
+          "significant": 1,
+          "recall": 1.0,
+          "precision": 0.2,
+          "precision_ceiling": 0.2
+        },
+        "B05-finance_director": {
+          "top": [
+            "B05-finance_director__ev-syn-it-benefits",
+            "B05-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B05-finance_director__ev-cbr-deposit-rates-2026-10-21",
+            "B05-finance_director__ev-cbr-lombard-2026-10-05",
+            "B05-finance_director__ev-cbr-nfs-2026-10-07"
+          ],
+          "returned": 5,
+          "dcg": 4.061606,
+          "idcg": 4.948459,
+          "ndcg": 0.8208,
+          "hits": 1,
+          "significant": 1,
+          "recall": 1.0,
+          "precision": 0.2,
+          "precision_ceiling": 0.2
+        },
+        "B06-finance_director": {
+          "top": [
+            "B06-finance_director__ev-cbr-nko-license-2026-10-22",
+            "B06-finance_director__ev-cbr-systemic-banks-2026-10-07",
+            "B06-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B06-finance_director__ev-cbr-deposit-rates-2026-10-21",
+            "B06-finance_director__ev-cbr-lombard-2026-10-05"
+          ],
+          "returned": 5,
+          "dcg": 3.392789,
+          "idcg": 4.948459,
+          "ndcg": 0.6856,
+          "hits": 1,
+          "significant": 1,
+          "recall": 1.0,
+          "precision": 0.2,
+          "precision_ceiling": 0.2
+        }
+      },
+      "insight": {
+        "B01-chief_accountant": {
+          "top": [
+            "B01-chief_accountant__ev-cbr-deposit-rates-2026-10-21",
+            "B01-chief_accountant__ev-cbr-systemic-banks-2026-10-07",
+            "B01-chief_accountant__ev-syn-it-benefits",
+            "B01-chief_accountant__ev-cbr-insider-2026-10-21",
+            "B01-chief_accountant__ev-syn-steel-duty"
+          ],
+          "returned": 5,
+          "dcg": 1.0,
+          "idcg": 4.948459,
+          "ndcg": 0.2021,
+          "hits": 0,
+          "significant": 1,
+          "recall": 0.0,
+          "precision": 0.0,
+          "precision_ceiling": 0.2
+        },
+        "B01-procurement_director": {
+          "top": [
+            "B01-procurement_director__ev-cbr-key-rate-2026-10-23",
+            "B01-procurement_director__ev-cbr-nko-license-2026-10-22",
+            "B01-procurement_director__ev-cbr-lombard-2026-10-05",
+            "B01-procurement_director__ev-cbr-insider-2026-10-21",
+            "B01-procurement_director__ev-syn-metro"
+          ],
+          "returned": 5,
+          "dcg": 1.0,
+          "idcg": 4.561606,
+          "ndcg": 0.2192,
+          "hits": 0,
+          "significant": 1,
+          "recall": 0.0,
+          "precision": 0.0,
+          "precision_ceiling": 0.2
+        },
+        "B02-finance_director": {
+          "top": [
+            "B02-finance_director__ev-cbr-lombard-2026-10-05",
+            "B02-finance_director__ev-syn-housing",
+            "B02-finance_director__ev-syn-steel-duty",
+            "B02-finance_director__ev-cbr-insider-2026-10-21",
+            "B02-finance_director__ev-syn-metro"
+          ],
+          "returned": 5,
+          "dcg": 2.392789,
+          "idcg": 6.210319,
+          "ndcg": 0.3853,
+          "hits": 1,
+          "significant": 2,
+          "recall": 0.5,
+          "precision": 0.2,
+          "precision_ceiling": 0.4
+        },
+        "B03-finance_director": {
+          "top": [
+            "B03-finance_director__ev-syn-steel-duty",
+            "B03-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B03-finance_director__ev-cbr-lombard-2026-10-05",
+            "B03-finance_director__ev-cbr-nfs-2026-10-07",
+            "B03-finance_director__ev-cbr-nko-license-2026-10-22"
+          ],
+          "returned": 5,
+          "dcg": 5.710319,
+          "idcg": 6.210319,
+          "ndcg": 0.9195,
+          "hits": 2,
+          "significant": 2,
+          "recall": 1.0,
+          "precision": 0.4,
+          "precision_ceiling": 0.4
+        },
+        "B04-finance_director": {
+          "top": [
+            "B04-finance_director__ev-cbr-nko-license-2026-10-22",
+            "B04-finance_director__ev-cbr-nfs-2026-10-07",
+            "B04-finance_director__ev-syn-it-benefits",
+            "B04-finance_director__ev-cbr-insider-2026-10-21",
+            "B04-finance_director__ev-syn-steel-duty"
+          ],
+          "returned": 5,
+          "dcg": 1.63093,
+          "idcg": 4.561606,
+          "ndcg": 0.3575,
+          "hits": 0,
+          "significant": 1,
+          "recall": 0.0,
+          "precision": 0.0,
+          "precision_ceiling": 0.2
+        },
+        "B05-finance_director": {
+          "top": [
+            "B05-finance_director__ev-syn-it-benefits",
+            "B05-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B05-finance_director__ev-cbr-deposit-rates-2026-10-21",
+            "B05-finance_director__ev-cbr-lombard-2026-10-05",
+            "B05-finance_director__ev-cbr-systemic-banks-2026-10-07"
+          ],
+          "returned": 5,
+          "dcg": 3.63093,
+          "idcg": 4.948459,
+          "ndcg": 0.7337,
+          "hits": 1,
+          "significant": 1,
+          "recall": 1.0,
+          "precision": 0.2,
+          "precision_ceiling": 0.2
+        },
+        "B06-finance_director": {
+          "top": [
+            "B06-finance_director__ev-cbr-systemic-banks-2026-10-07",
+            "B06-finance_director__ev-cbr-key-rate-2026-10-23",
+            "B06-finance_director__ev-cbr-deposit-rates-2026-10-21",
+            "B06-finance_director__ev-cbr-lombard-2026-10-05",
+            "B06-finance_director__ev-cbr-nfs-2026-10-07"
+          ],
+          "returned": 5,
+          "dcg": 4.061606,
+          "idcg": 4.948459,
+          "ndcg": 0.8208,
+          "hits": 1,
+          "significant": 1,
+          "recall": 1.0,
+          "precision": 0.2,
+          "precision_ceiling": 0.2
+        }
+      }
+    },
+    "summary": {
+      "baseline": {
+        "contexts": 7,
+        "ndcg_defined": 7,
+        "ndcg_na": 0,
+        "ndcg_macro": 0.7788,
+        "ndcg_pooled": 0.7859,
+        "ndcg_pooled_numerator": 28.597197,
+        "ndcg_pooled_denominator": 36.389227,
+        "recall_defined": 7,
+        "recall_na": 0,
+        "recall_micro": 0.8889,
+        "recall_micro_numerator": 8,
+        "recall_micro_denominator": 9,
+        "recall_macro": 0.8571,
+        "precision_micro": 0.2286,
+        "precision_ceiling_micro": 0.2571
+      },
+      "insight": {
+        "contexts": 7,
+        "ndcg_defined": 7,
+        "ndcg_na": 0,
+        "ndcg_macro": 0.5197,
+        "ndcg_pooled": 0.5339,
+        "ndcg_pooled_numerator": 19.426574,
+        "ndcg_pooled_denominator": 36.389227,
+        "recall_defined": 7,
+        "recall_na": 0,
+        "recall_micro": 0.5556,
+        "recall_micro_numerator": 5,
+        "recall_micro_denominator": 9,
+        "recall_macro": 0.5,
+        "precision_micro": 0.1429,
+        "precision_ceiling_micro": 0.2571
+      }
+    },
+    "comparison": {
+      "differences": {
+        "ndcg_macro": -0.2591,
+        "ndcg_pooled": -0.252,
+        "recall_micro": -0.3333,
+        "recall_macro": -0.3571
+      },
+      "contexts_not_worse": 2,
+      "contexts_compared": 7,
+      "share_not_worse": 0.2857
+    },
+    "gates": {
+      "ndcg_macro": {
+        "value": 0.5197,
+        "threshold": 0.8,
+        "passed": false
+      },
+      "ndcg_pooled": {
+        "value": 0.5339,
+        "threshold": 0.8,
+        "passed": false
+      },
+      "recall_micro": {
+        "value": 0.5556,
+        "threshold": 0.7,
+        "passed": false
+      },
+      "recall_macro": {
+        "value": 0.5,
+        "threshold": 0.7,
+        "passed": false
+      },
+      "share_not_worse": {
+        "value": 0.2857,
+        "threshold": 0.8,
+        "passed": false
+      },
+      "diff_ndcg_macro": {
+        "value": -0.2591,
+        "threshold": 0,
+        "passed": false
+      },
+      "diff_ndcg_pooled": {
+        "value": -0.252,
+        "threshold": 0,
+        "passed": false
+      },
+      "diff_recall_micro": {
+        "value": -0.3333,
+        "threshold": 0,
+        "passed": false
+      },
+      "diff_recall_macro": {
+        "value": -0.3571,
+        "threshold": 0,
+        "passed": false
+      },
+      "sufficient": {
+        "ndcg_defined": 7,
+        "recall_defined": 7,
+        "passed": true
+      },
+      "passed": false
+    }
+  },
+  "grounded_claims": {
+    "judge_version": "judge-2",
+    "overall": {
+      "claims": 195,
+      "grounded": 195,
+      "rate": 1.0
+    },
+    "by_section": {
+      "bank_view": {
+        "claims": 13,
+        "grounded": 13,
+        "rate": 1.0
+      },
+      "facts": {
+        "claims": 181,
+        "grounded": 181,
+        "rate": 1.0
+      },
+      "mechanism": {
+        "claims": 1,
+        "grounded": 1,
+        "rate": 1.0
+      }
+    },
+    "expected_claims": 195,
+    "judged_claims": 195,
+    "verification_coverage": 1.0,
+    "not_judged": 0,
+    "critical_occurrences": 0,
+    "critical_unique": 0,
+    "false_bank_positions": 0,
+    "critical_examples": []
+  },
+  "leaks": [],
+  "role_difference": {
+    "events_compared": 0,
+    "different": 0,
+    "rate": null,
+    "threshold": 0.8
+  }
+}

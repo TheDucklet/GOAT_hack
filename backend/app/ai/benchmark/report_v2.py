@@ -150,6 +150,7 @@ def ranking_block(
     labels: dict[str, int],
     now: datetime,
     targets: dict,
+    complete: bool = True,
 ) -> dict:
     rows: dict[str, dict] = {BASELINE: {}, INSIGHT: {}}
     for context in contexts:
@@ -172,7 +173,7 @@ def ranking_block(
         "per_context": rows,
         "summary": summary,
         "comparison": comparison,
-        "gates": gates(summary[INSIGHT], comparison, targets["ranking"]),
+        "gates": gates(summary[INSIGHT], comparison, targets["ranking"], complete),
     }
 
 
@@ -212,7 +213,7 @@ def build_metrics_v2(
             "labelers": agreement_report(label_sets) if label_sets else None,
         },
         "ranking": (
-            ranking_block(contexts, events, pairs, focus, labels, now, targets)
+            ranking_block(contexts, events, pairs, focus, labels, now, targets, not unresolved)
             if labels
             else "N/A: метки значимости не получены"
         ),
