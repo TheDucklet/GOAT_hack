@@ -14,10 +14,12 @@ from app.ai.insights.context import (
     evidence_id,
     flag_state,
     matched_features,
+    mechanism_bases,
 )
 from app.ai.insights.prompts import INSIGHT_PROMPT_VERSION, INSIGHT_SYSTEM_PROMPT
 from app.ai.providers import LLMInput, call_llm
 from app.ai.schemas import BuildInsightInput, EventPayload, InsightEnvelope
+from app.ai.summarization.conditions import condition_context
 from app.ai.summarization.conflicts import source_conflicts
 from app.ai.summarization.grounding import normalize_text, shorten, unsupported_numbers
 from app.ai.summarization.summarize import Lenient, StrList
@@ -198,6 +200,8 @@ def build_prompt(
             "topics": event.topics if isinstance(event.topics, dict) else {},
         },
         "news": [{"id": alias, "facts": texts} for alias, texts in news.items()],
+        "source_conditions": condition_context(event, aliases),
+        "mechanism_bases": mechanism_bases(company, aliases),
         "user_focus": {"topics": focus.get("topics", []), "priorities": focus.get("priorities", [])},
         "company_features": [{"id": by_id[fact.evidence_id], "text": fact.excerpt} for fact in company],
         "matched_with_event": matches,

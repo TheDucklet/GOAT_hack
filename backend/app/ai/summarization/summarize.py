@@ -8,6 +8,7 @@ from app.ai.lenient import Lenient, StrList, to_dict_list
 from app.ai.providers import LLMInput, call_llm
 from app.ai.rag.search import stem
 from app.ai.schemas import EventPayload, GroundedSummaryResult, SummarizeEventInput
+from app.ai.summarization.conditions import condition_sentences
 from app.ai.summarization.grounding import (
     SENTENCE_END,
     context_sentence,
@@ -225,7 +226,13 @@ def summarize_event(event: dict, diagnostics: dict | None = None) -> dict:
             temperature=RETRY_TEMPERATURE if attempt else 0.0,
         )
         raw = RawSummary.model_validate(result.data)
-        facts = verified_facts(raw.facts, sources, rejected)
+        conditions = [
+            RawFact(text=text, quote=text, source=source.label)
+            for source in sources
+            for text in condition_sentences(source.text)
+        ]
+        # Conditions undergo the same checks; preserve them before MAX_FACTS.
+        facts = verified_facts([*conditions, *raw.facts], sources, rejected)
         summary = summary_text(raw, facts, sources, payload.title)
         if facts or summary != payload.title:
             facts, checked = checked_facts_and_summary(facts, summary, sources, rejected, usage)

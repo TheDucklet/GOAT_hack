@@ -108,6 +108,20 @@ def company_facts(context: dict) -> list[CompanyFact]:
     return facts
 
 
+def mechanism_bases(facts: list[CompanyFact], aliases: dict[str, str]) -> list[dict]:
+    """Positive observations for alternative channels, not debt/exposure flags."""
+    by_ref = {ref: alias for alias, ref in aliases.items()}
+    return [
+        {"id": by_ref[fact.evidence_id], "text": fact.excerpt}
+        for fact in facts
+        if fact.evidence_id in by_ref
+        and (
+            fact.feature in {"MAINOKVED_NAME", "MAINOKVED_CODE"}
+            or (fact.feature in FLAG_FEATURES and fact.value in TRUE_VALUES)
+        )
+    ]
+
+
 def matched_features(context: dict, topics: dict | None) -> list[dict]:
     topics = topics or {}
     features = context["features"]
