@@ -390,3 +390,31 @@ def test_calibration_sheets_are_blind_disjoint_and_reproducible(tmp_path):
         )
     )
     assert saved == selection
+
+
+def test_new_event_set_is_fixed_deterministic_and_disjoint_from_the_first_run():
+    import hashlib
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2] / "docs" / "quality" / "benchmark"
+    new = json.loads((root / "events-v2" / "events.json").read_text(encoding="utf-8"))
+    old = json.loads((root / "events.json").read_text(encoding="utf-8"))["events"]
+    events = new["events"]
+    assert len(events) == 6 and sum(item["source"] == "real_public_cbr" for item in events) >= 3
+    assert all(item["published_at"] <= new["as_of"] for item in events)
+    assert all(hashlib.sha256(item["text"].encode("utf-8")).hexdigest() == item["sha256"] for item in events)
+    assert all(
+        item["url"] and item["text_kind"] == "full_text" for item in events if item["source"] != "synthetic"
+    )
+    assert all(not item["used_in_tuning"] for item in events)
+    assert not {item["url"] for item in events if item["url"]} & {
+        item["url"] for item in old if item.get("url")
+    }
+    assert {"macro", "regulatory"} <= {item["category"] for item in events}
+    assert not any("Фото на превью" in item["text"] or "\xa0" in item["text"] for item in events)
+    sheet = list(
+        csv.DictReader(
+            (root / "events-v2" / "labeling" / "sheet-v2.csv").open(encoding="utf-8-sig", newline="")
+        )
+    )
+    assert len(sheet) == 42 and all(not row["label"] for row in sheet)
