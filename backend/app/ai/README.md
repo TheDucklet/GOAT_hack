@@ -1,5 +1,7 @@
 # AI-модуль
 
+Инструкция сдачи и актуальный протокол проверок 26.10.2026: [README проекта](../../../README.md), [R-12](../../../docs/qa/r-12.md). Общий F-16/R-11 этим комплектом не объявлен принятым.
+
 A-14: backend выдаёт CompanyContext v2; [семантика данных](../../../docs/data/data-semantics.md)
 описывает raw/normalized/quality/provenance, unknowns и типы связей. `value` содержит
 только подтверждённые признаки. Выручка с неизвестными годом/валютой и карантинные
@@ -53,17 +55,18 @@ A-14: backend выдаёт CompanyContext v2; [семантика данных](
 | `google/gemma-4-26b-a4b-it` | `derive_user_focus`, `select_industries`, `chat_router`, `agent_query` |
 | `qwen/qwen3.6-35b-a3b` | `summarize_event`, `build_insight`, `build_impact`, `answer_chat`, `agent_plan`, `agent_check` |
 | `qwen/qwen3-vl-30b-a3b-instruct` | `ocr_vision` |
-| `deepseek/deepseek-v4.1-flash` | `benchmark_judge` (только независимая оценка обоснованности в бенчмарке F-16, в рабочий режим не подключена) |
-| `z-ai/glm-5.3-flash`, `moonshotai/kimi-k2.6` | разрешены, но не назначены |
+| `deepseek/deepseek-v4.1-flash` | `benchmark_judge` (автоматическая оценка другой моделью; независимая человеческая калибровка не завершена) |
+| `z-ai/glm-5.3-flash` | `gate_verify`, `verify_event_facts` |
+| `moonshotai/kimi-k2.6` | разрешена, но не назначена |
 
 ## Версии и инвалидирование кеша
 
-Карточка v2 и ключ её кеша зависят от нескольких независимых версий. Смена любой из них даёт новый ключ, поэтому устаревшая карточка не возвращается. Текущие значения записаны в `docs/quality/benchmark/runs/run-1/run.json`.
+Карточка v2 и ключ её кеша зависят от нескольких независимых версий. Смена любой из них даёт новый ключ, поэтому устаревшая карточка не возвращается. Значения ниже — снимок 26.10.2026; источником истины остаются константы рабочего кода и версии в сохранённой трассе. `runs/run-1/run.json` относится к историческому прогону F-16, не к текущим промптам.
 
 | Версия | Где задаётся | Значение сейчас |
 | --- | --- | --- |
 | Контракт, схема, семантика данных, политика notice | `app/insight_versions.py` (`contract_versions`) | `impact-contract-2`, `v2`, `company-data-2`, `notice_v1` |
-| Промпты | константы `*_PROMPT_VERSION` и `VALIDATION_VERSION` | summary-1, focus-1, insight-2, agent-2, impact-1, validation-1, рубрика `impact-rubric-1` |
+| Промпты | константы `*_PROMPT_VERSION` и `VALIDATION_VERSION` | summary-4, factcheck-2, focus-1, insight-5, agent-3, impact-3, chat-2, gate-6, ocr-8, validation-1; рубрика `impact-rubric-1` |
 | Модели задач | `DEFAULT_TASK_MODELS` или `AI_LLM_TASK_MODELS` | см. таблицу моделей |
 | Поколение генерации | `AI_GENERATION_VERSION` | задаётся оператором |
 | Профиль компании | `profile_version` в `CompanyContextV2` | хеш признаков и версии семантики |

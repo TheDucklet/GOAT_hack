@@ -19,17 +19,24 @@ from pathlib import Path
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--project', required=True)
+    parser.add_argument('--env-file', type=Path, help='Same Compose env file used when starting this stack')
     parser.add_argument('--base-url', default='http://127.0.0.1:8080')
     parser.add_argument('--report', type=Path, default=Path('artifacts/r02-compose.json'))
     args = parser.parse_args()
     if not re.fullmatch(r'[a-z0-9][a-z0-9_-]*', args.project):
         parser.error('Use an explicit lowercase Compose project name.')
     root = Path(__file__).resolve().parents[1]
+    compose_options = []
+    if args.env_file:
+        env_file = args.env_file.resolve()
+        if not env_file.is_file():
+            parser.error('Compose env file does not exist')
+        compose_options = ['--env-file', str(env_file)]
     checks = []
 
     def compose(*command):
         result = subprocess.run(
-            ['docker', 'compose', '-p', args.project, *command], cwd=root,
+            ['docker', 'compose', *compose_options, '-p', args.project, *command], cwd=root,
             capture_output=True, text=True, encoding='utf-8',
         )
         if result.returncode:

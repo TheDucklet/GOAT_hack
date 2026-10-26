@@ -122,6 +122,9 @@ def main():
     admin = commands.add_parser("create-admin")
     admin.add_argument("--email", required=True)
     commands.add_parser("seed-demo")
+    showcase = commands.add_parser("seed-showcase")
+    showcase.add_argument("--phase", choices=["baseline", "unseen"], default="baseline")
+    showcase.add_argument("--enqueue", action="store_true", help="Explicitly queue paid AI summarization")
     demo = commands.add_parser("demo-companies")
     demo.add_argument("--limit", type=int, default=10)
     clients = commands.add_parser("import-clients")
@@ -142,6 +145,13 @@ def main():
         elif args.command == "seed-demo":
             secret = get_settings().demo_password
             seed_demo(db, secret.get_secret_value() if secret else "")
+        elif args.command == "seed-showcase":
+            from app.services.showcase import seed_showcase
+
+            secret = get_settings().demo_password
+            print(json.dumps(seed_showcase(
+                db, secret.get_secret_value() if secret else "", phase=args.phase, enqueue_ai=args.enqueue,
+            ), ensure_ascii=False))
         elif args.command == "import-clients":
             report = import_clients(db, args.directory)
         elif args.command == "demo-companies":
