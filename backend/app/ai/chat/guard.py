@@ -19,7 +19,6 @@ BYPASS_PATTERN = re.compile(
 OTHER_COMPANY_ID = re.compile(r"\bU_\d+\b|\bgroup_\d+\w*\b")
 
 
-
 def mentions_other_company(text: str, company_id: str) -> bool:
     return any(found != company_id for found in OTHER_COMPANY_ID.findall(text))
 

@@ -130,7 +130,13 @@ def previous_turns(history: list[dict]) -> list[dict]:
 
 
 def build_prompt(
-    prepared: Prepared, question: str, turns: list[dict], bank: list[dict], aliases: dict, missing: list[str]
+    prepared: Prepared,
+    question: str,
+    turns: list[dict],
+    bank: list[dict],
+    aliases: dict,
+    missing: list[str],
+    intent: str = "other",
 ) -> str:
     by_id = {value: key for key, value in aliases.items()}
     news: dict[str, list[str]] = {}
@@ -138,6 +144,7 @@ def build_prompt(
         news.setdefault(by_id[claim["evidence_refs"][0]], []).append(claim["text"])
     topics = prepared.payload.topics if isinstance(prepared.payload.topics, dict) else {}
     payload = {
+        "response_mode": "business" if intent in {"importance", "missing_data"} else "factual",
         "question": question,
         "history": turns,
         "event": {
@@ -255,7 +262,14 @@ def evidence_for(refs: list[str], bank_ids: dict[str, dict], prepared: Prepared)
     ]
 
 
-def answer_chat(company_context: dict, user_focus: dict, event: dict, history: list[dict], tools) -> dict:
+def answer_chat(
+    company_context: dict,
+    user_focus: dict,
+    event: dict,
+    history: list[dict],
+    tools,
+    publication_feedback: list[dict] | None = None,
+) -> dict:
     request = AnswerChatInput.model_validate(
         {"company_context": company_context, "user_focus": user_focus, "event": event, "history": history}
     )
@@ -306,11 +320,11 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
     }
     missing = missing_parameters(prepared)
     number_source = " ".join(
-        [prepared.payload.title, prepared.payload.summary or "", question]
+        [prepared.payload.title, prepared.payload.summary or "", prepared.payload.published_at or ""]
         + [claim["text"] for claim in prepared.facts]
+        + [publication.text for publication in prepared.payload.publications]
         + [fact.excerpt + " " + fact.value for fact in prepared.company]
         + [item["excerpt"] for item in bank]
-        + [turn["text"] for turn in turns]
     )
     catalog = build_catalog(
         prepared.context,
@@ -319,7 +333,11 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         hits,
         profile_excerpts(prepared.context),
     )
-    prompt = build_prompt(prepared, question, turns, bank, aliases, missing)
+    prompt = build_prompt(prepared, question, turns, bank, aliases, missing, intent)
+    if publication_feedback:
+        inputs = json.loads(prompt)
+        inputs["publication_feedback"] = publication_feedback
+        prompt = json.dumps(inputs, ensure_ascii=False)
     answer, refs, reason, raw = "", [], "not_started", RawAnswer()
     validation: dict = {}
     validation_attempts: list[dict] = []
@@ -342,7 +360,15 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
             validation = checked["record"]
             if checked["verdict"] != "supported":
                 reason = "validation_failed"
-        validation_attempts.append({"attempt": attempt + 1, "reason": reason, "record": validation or None})
+        validation_attempts.append(
+            {
+                "attempt": attempt + 1,
+                "reason": reason,
+                "record": validation or None,
+                "candidate_answer": answer,
+                "candidate_refs": refs,
+            }
+        )
         if reason is None:
             break
         prompt = repair_prompt(prompt, raw, reason, validation)

@@ -142,7 +142,9 @@ PROMPTS: tuple[PromptDoc, ...] = (
         "JSON с полями `question`, `history`, `event`, `news` (метки `N1`...), `user_focus`, "
         "`company_features` (метки `C1`...), `matched_with_event`, `bank_fragments` (метки `B1`...) "
         "и `known_missing_parameters`; `mechanism_bases` содержит только положительные основы анализа, "
-        "`source_conditions` — дословные условия мер. При повторе передаётся `validation_feedback` с причинами отказа.",
+        "`source_conditions` — дословные условия мер, `response_mode` разделяет бизнес-механизм и факты. "
+        "При повторе передаётся `validation_feedback` с причинами предварительного отказа; "
+        "одна исправляющая фаза после semantic gate получает `publication_feedback`.",
         "JSON с полями `answer`, `evidence_ids` (метки), `unknowns`, `mechanism`. Для бизнес-вопросов "
         "mechanism содержит `condition`, `consequence` и `evidence_ids`; код собирает условное предложение "
         "и проверяет его как обычный ответ. Для фактов/позиции банка используется answer при mechanism=null. "

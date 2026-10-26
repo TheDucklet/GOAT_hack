@@ -1,7 +1,5 @@
 from app.ai.cache.calls import cached_build_insight, cached_derive_user_focus, cached_summarize_event
-from app.ai.chat.answer import answer_chat as chat_answer
-from app.ai.gate.chat import enforce_chat
-from app.ai.gate.pipeline import news_texts
+from app.ai.chat.pipeline import build_published_answer
 from app.ai.ocr.ingest import ingest_bank_document
 from app.ai.rag.search import search_bank_analytics
 
@@ -16,8 +14,7 @@ __all__ = [
 
 
 def answer_chat(company_context: dict, user_focus: dict, event: dict, history: list[dict], tools) -> dict:
-    envelope = chat_answer(company_context, user_focus, event, history, tools)
-    return enforce_chat(envelope, news_texts(event))
+    return build_published_answer(company_context, user_focus, event, history, tools)
 
 
 def build_insight(company_context: dict, user_focus: dict, event: dict, tools) -> dict:
