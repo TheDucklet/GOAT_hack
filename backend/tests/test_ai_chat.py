@@ -107,7 +107,7 @@ def test_answer_maps_labels_to_real_evidence_and_returns_chat_result(monkeypatch
     result = envelope["result"]
     assert result["answer"].startswith("Ставка 14% удерживает")
     assert "ev-news-1" in result["evidence_refs"]
-    assert {item["kind"] for item in envelope["evidence"]} == {"bank", "company"}
+    assert {item["kind"] for item in envelope["evidence"]} == {"news", "bank", "company"}
     assert result["usage"]["llm_calls"] == 2 and result["trace_id"]
 
 
@@ -115,6 +115,67 @@ def test_result_is_valid_for_backend_schemas(monkeypatch):
     envelope, _, _ = ask(monkeypatch, "Почему это важно нам?")
     AIEnvelope.model_validate(envelope)
     ChatResult.model_validate(envelope["result"])
+
+
+def test_news_only_answer_reaches_publication_with_its_exact_source(monkeypatch):
+    from app.ai.gate.chat import enforce_chat
+    from app.ai.gate.pipeline import news_texts
+    from app.publication_policy import report_problems
+    from tests.support_gate import install
+
+    payload = event()
+    answer = {"answer": payload["facts"][0]["text"], "evidence_ids": ["N1"], "unknowns": []}
+    envelope, _, _ = ask(
+        monkeypatch,
+        "Какая ставка указана в новости?",
+        payload=payload,
+        search=Search(),
+        router=Router(route={"intent": "details", "search_query": None}, answers=[answer]),
+    )
+    verifier = install(monkeypatch)
+    published = enforce_chat(envelope, news_texts(payload))
+    assert published["result"]["answer"] == answer["answer"]
+    assert published["evidence"] == payload["evidence"]
+    assert verifier.payloads[0]["claims"][0]["sources"] == [
+        {"kind": "news", "text": payload["publications"][0]["text"]}
+    ]
+    assert (
+        report_problems(published["trace"]["publication"], published["result"], published["evidence"], "chat")
+        == []
+    )
+
+
+def test_chat_evidence_keeps_only_the_referenced_news_with_original_metadata():
+    from app.ai.chat.answer import evidence_for
+
+    payload = event()
+    payload["evidence"].append({**payload["evidence"][0], "id": "uncited-news", "version": "other"})
+    ctx = company()
+    prepared = prepare_insight(ctx, FOCUS, payload, Tools(ctx, Search()))
+    assert evidence_for(["ev-news-1"], {}, prepared) == [payload["evidence"][0]]
+    assert evidence_for([], {}, prepared) == []
+
+
+def test_referenced_news_does_not_bypass_a_negative_publication_verdict(monkeypatch):
+    from app.ai.gate.chat import enforce_chat
+    from app.ai.gate.pipeline import news_texts
+    from app.publication_policy import SERVICE_ANSWER
+    from tests.support_gate import Verifier, install
+
+    payload = event()
+    answer = {"answer": payload["facts"][0]["text"], "evidence_ids": ["N1"], "unknowns": []}
+    envelope, _, _ = ask(
+        monkeypatch,
+        "Какая ставка указана в новости?",
+        payload=payload,
+        search=Search(),
+        router=Router(route={"intent": "details", "search_query": None}, answers=[answer]),
+    )
+    verifier = install(monkeypatch, Verifier({"answer-1": "unsupported"}))
+    published = enforce_chat(envelope, news_texts(payload))
+    assert verifier.payloads[0]["claims"][0]["sources"]
+    assert published["result"]["answer"] == SERVICE_ANSWER
+    assert published["result"]["evidence_refs"] == []
 
 
 def test_trace_lists_tools_router_search_and_answer(monkeypatch):
