@@ -14,7 +14,12 @@ from app.publication_policy import (
 
 
 def chat_report(
-    envelope: dict, verdicts: dict[str, dict], usage: list[dict], decision: str, stop: str
+    envelope: dict,
+    verdicts: dict[str, dict],
+    usage: list[dict],
+    decision: str,
+    stop: str,
+    removed: list[dict] | None = None,
 ) -> dict:
     result = envelope["result"]
     versions = {item["id"]: item["version"] for item in envelope["evidence"]}
@@ -43,7 +48,7 @@ def chat_report(
         "checked": len(entries),
         "supported": supported,
         "claims": entries,
-        "removed": [],
+        "removed": removed or [],
         "dependent_changes": [],
         "unresolved_critical": [],
         "unresolved": [item["claim_id"] for item in entries if item["verdict"] != "supported"],
@@ -54,10 +59,23 @@ def chat_report(
     }
 
 
-def service_envelope(envelope: dict, usage: list[dict], stop: str) -> dict:
+def service_envelope(envelope: dict, usage: list[dict], stop: str, removed: list[dict] | None = None) -> dict:
     envelope["result"] = {**envelope["result"], "answer": SERVICE_ANSWER, "evidence_refs": []}
     envelope["evidence"] = []
-    return with_report(envelope, chat_report(envelope, {}, usage, SERVICE_ANSWER_KIND, stop))
+    return with_report(envelope, chat_report(envelope, {}, usage, SERVICE_ANSWER_KIND, stop, removed))
+
+
+def rejected_claims(claims: list[dict], verdicts: dict[str, dict]) -> list[dict]:
+    return [
+        {
+            "claim_id": item["claim_id"],
+            "text": item["text"],
+            "verdict": verdicts[item["claim_id"]]["verdict"],
+            "reason": verdicts[item["claim_id"]]["reason"],
+        }
+        for item in claims
+        if verdicts[item["claim_id"]]["verdict"] != "supported"
+    ]
 
 
 def enforce_chat(envelope: dict, news_texts: dict[str, str]) -> dict:
@@ -69,11 +87,12 @@ def enforce_chat(envelope: dict, news_texts: dict[str, str]) -> dict:
     sources = source_map(envelope, news_texts)
     claims = chat_claims(envelope["result"])
     verdicts, usage = verify_checked(claims, sources)
+    removed = rejected_claims(claims, verdicts)
     kept = [claim for claim in claims if verdicts[claim["claim_id"]]["verdict"] == "supported"]
     if len(kept) == len(claims):
         return with_report(envelope, chat_report(envelope, verdicts, usage, "allow", "all_supported"))
     if not kept:
-        return service_envelope(envelope, usage, "no_supported_sentences")
+        return service_envelope(envelope, usage, "no_supported_sentences", removed)
     envelope["result"] = {**envelope["result"], "answer": " ".join(claim["text"] for claim in kept)}
     again = chat_claims(envelope["result"])
     verdicts, more = verify_checked(
@@ -81,5 +100,7 @@ def enforce_chat(envelope: dict, news_texts: dict[str, str]) -> dict:
     )
     usage = usage + more
     if all(item["verdict"] == "supported" for item in verdicts.values()):
-        return with_report(envelope, chat_report(envelope, verdicts, usage, "allow", "all_supported"))
-    return service_envelope(envelope, usage, "repair_failed")
+        return with_report(
+            envelope, chat_report(envelope, verdicts, usage, "allow", "all_supported", removed)
+        )
+    return service_envelope(envelope, usage, "repair_failed", removed + rejected_claims(again, verdicts))
