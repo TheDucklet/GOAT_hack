@@ -1,0 +1,236 @@
+{
+  "judge_version": "judge-3",
+  "identity": {
+    "judge_version": "judge-3",
+    "prompt_sha256": "8c0a5d2d821b40bc25ece6d57f9f4d41300f84088ab993b9f658ba8a9f77fc60",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "temperature": 0.0,
+    "batch": 6,
+    "max_tokens": 3800,
+    "card_digest": "656e8eba790d7a2efa158da2bc686af1a511f389c7f70fbbf6549043a93440c4"
+  },
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+          "kind": "event_fact",
+          "actor_in_claim": "Совет директоров Банка России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Ценовое давление остается повышенным, а инфляционные ожидания высоки.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Ценовое давление остается повышенным, а инфляционные ожидания высоки.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год из-за временного сокращения производственных мощностей в отдельных отраслях.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год.",
+          "kind": "event_fact",
+          "actor_in_claim": "рост цен",
+          "actor_in_source": "рост цен",
+          "status": "in_sources"
+        },
+        {
+          "text": "Причина — временное сокращение производственных мощностей в отдельных отраслях.",
+          "kind": "causal_link",
+          "actor_in_claim": "временное сокращение производственных мощностей",
+          "actor_in_source": "временное сокращение производственных мощностей",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Годовая инфляция на 19 октября достигла 6,8%, а по итогам 2026 года ожидается на уровне 7,1-7,6%.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Годовая инфляция на 19 октября достигла 6,8%.",
+          "kind": "event_fact",
+          "actor_in_claim": "годовая инфляция",
+          "actor_in_source": "годовая инфляция",
+          "status": "in_sources"
+        },
+        {
+          "text": "По итогам 2026 года ожидается инфляция на уровне 7,1-7,6%.",
+          "kind": "forecast",
+          "actor_in_claim": "инфляция",
+          "actor_in_source": "инфляция",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-5",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+          "kind": "forecast",
+          "actor_in_claim": "базовый сценарий",
+          "actor_in_source": "базовый сценарий",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "bank-1",
+      "section": "bank_view",
+      "statement_type": "fact",
+      "text": "Банк ожидает, что на конец 2026 года ключевая ставка будет на уровне 13,5%.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника банка.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Банк ожидает, что на конец 2026 года ключевая ставка будет на уровне 13,5%.",
+          "kind": "bank_position",
+          "actor_in_claim": "Банк",
+          "actor_in_source": "Альфа-Банк",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если компания планирует привлечение заемных средств для финансирования роста, то стоимость нового кредитования может остаться высокой.",
+      "verdict": "supported",
+      "reason": "Условный вывод опирается на сохранение ключевой ставки 14,00% и стадию роста компании из источников, условие названо неизвестным и не противоречит признакам.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если компания планирует привлечение заемных средств для финансирования роста",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "стоимость нового кредитования может остаться высокой",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не названо",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-2",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если у компании размещены средства на депозитах или планируется заключение нового депозитного договора, то сохранение ключевой ставки на уровне 14,00% годовых может обеспечить высокую доходность по депозитам.",
+      "verdict": "supported",
+      "reason": "Условный вывод опирается на сохранение ключевой ставки 14,00% и наличие продукта «депозиты» из источников, условие названо неизвестным и не противоречит признакам.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если у компании размещены средства на депозитах или планируется заключение нового депозитного договора",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "сохранение ключевой ставки на уровне 14,00% годовых может обеспечить высокую доходность по депозитам",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не названо",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "summary",
+      "section": "personalized_summary",
+      "statement_type": "hypothesis",
+      "text": "Сохранение ключевой ставки на уровне 14,00% годовых может повлиять на стоимость обслуживания заемного капитала и доходность депозитов компании при наличии у нее кредитных обязательств или новых депозитных договоров.",
+      "verdict": "supported",
+      "reason": "Условный вывод опирается на сохранение ключевой ставки 14,00% и наличие продукта «депозиты» из источников, условие названо неизвестным и не противоречит признакам.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Сохранение ключевой ставки на уровне 14,00% годовых может повлиять на стоимость обслуживания заемного капитала",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не названо",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "и доходность депозитов компании",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "при наличии у нее кредитных обязательств или новых депозитных договоров",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "cfb94794eae6491e8d8d4c871b4502ed",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 4470,
+      "output_tokens": 889,
+      "cost_rub": 0.064973554851348
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "becaeaeb27b040efa74f420be84bd501",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 2700,
+      "output_tokens": 581,
+      "cost_rub": 0.041284113554112
+    }
+  ]
+}

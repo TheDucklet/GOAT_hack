@@ -1,0 +1,300 @@
+{
+  "judge_version": "judge-3",
+  "identity": {
+    "judge_version": "judge-3",
+    "prompt_sha256": "8c0a5d2d821b40bc25ece6d57f9f4d41300f84088ab993b9f658ba8a9f77fc60",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "temperature": 0.0,
+    "batch": 6,
+    "max_tokens": 3800,
+    "card_digest": "c6510e793a70128d279ab82e0268f8efcbd6b3b63085a199834cbedca963a64b"
+  },
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+          "kind": "event_fact",
+          "actor_in_claim": "Совет директоров Банка России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Ценовое давление остается повышенным, а инфляционные ожидания высоки.",
+      "verdict": "supported",
+      "reason": "Обе части прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Ценовое давление остается повышенным.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        },
+        {
+          "text": "Инфляционные ожидания высоки.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год из-за временного сокращения производственных мощностей в отдельных отраслях.",
+      "verdict": "supported",
+      "reason": "Источник прямо указывает диапазон и причину.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год.",
+          "kind": "event_fact",
+          "actor_in_claim": "",
+          "actor_in_source": "",
+          "status": "in_sources"
+        },
+        {
+          "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год из-за временного сокращения производственных мощностей в отдельных отраслях.",
+          "kind": "causal_link",
+          "actor_in_claim": "",
+          "actor_in_source": "",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Годовая инфляция на 19 октября достигла 6,8%, а по итогам 2026 года ожидается на уровне 7,1-7,6%.",
+      "verdict": "supported",
+      "reason": "Обе части прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Годовая инфляция на 19 октября достигла 6,8%.",
+          "kind": "event_fact",
+          "actor_in_claim": "",
+          "actor_in_source": "",
+          "status": "in_sources"
+        },
+        {
+          "text": "По итогам 2026 года ожидается инфляция на уровне 7,1-7,6%.",
+          "kind": "forecast",
+          "actor_in_claim": "",
+          "actor_in_source": "",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-5",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+          "kind": "forecast",
+          "actor_in_claim": "",
+          "actor_in_source": "",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-1",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть кредит с плавающей ставкой, то увеличение стоимости обслуживания долга может снизить рентабельность бизнеса.",
+      "verdict": "unsupported",
+      "reason": "Условие о кредите с плавающей ставкой не подтверждено источником: наличие банковского продукта «кредиты» не доказывает действующий кредит с плавающей ставкой.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если у компании есть кредит с плавающей ставкой, то увеличение стоимости обслуживания долга может снизить рентабельность бизнеса.",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если компания работает в сегменте розничной торговли пищевыми продуктами, то рост цен на топливо и товары может привести к снижению покупательной способности клиентов и падению выручки.",
+      "verdict": "unsupported",
+      "reason": "В источниках нет утверждения о том, что рост цен на топливо и товары может привести к снижению покупательной способности клиентов и падению выручки.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если компания работает в сегменте розничной торговли пищевыми продуктами",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "то рост цен на топливо и товары может привести к снижению покупательной способности клиентов и падению выручки",
+          "kind": "conditional_inference",
+          "actor_in_claim": "рост цен на топливо и товары",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-1",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть кредиты с плавающей ставкой, привязанной к ключевой ставке, то высокая стоимость заемного капитала может сохраняться.",
+      "verdict": "unsupported",
+      "reason": "В источниках нет сведений о кредитах с плавающей ставкой, привязанной к ключевой, и о сохранении высокой стоимости заемного капитала.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если у компании есть кредиты с плавающей ставкой, привязанной к ключевой ставке",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "то высокая стоимость заемного капитала может сохраняться",
+          "kind": "conditional_inference",
+          "actor_in_claim": "высокая стоимость заемного капитала",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-2",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть депозиты, то доходность по ним может оставаться высокой при сохранении ключевой ставки.",
+      "verdict": "unsupported",
+      "reason": "В источниках нет утверждения о том, что доходность по депозитам может оставаться высокой при сохранении ключевой ставки.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если у компании есть депозиты",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "то доходность по ним может оставаться высокой при сохранении ключевой ставки",
+          "kind": "conditional_inference",
+          "actor_in_claim": "доходность по депозитам",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "summary",
+      "section": "personalized_summary",
+      "statement_type": "hypothesis",
+      "text": "Сохранение ключевой ставки на уровне 14,00% годовых может поддерживать высокую стоимость заемного капитала для компании, если у нее есть кредиты с плавающей ставкой, привязанной к ключевой ставке.",
+      "verdict": "unsupported",
+      "reason": "В источниках нет сведений о кредитах с плавающей ставкой, привязанной к ключевой, и о поддержании высокой стоимости заемного капитала.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Сохранение ключевой ставки на уровне 14,00% годовых",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        },
+        {
+          "text": "может поддерживать высокую стоимость заемного капитала для компании",
+          "kind": "conditional_inference",
+          "actor_in_claim": "сохранение ключевой ставки",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "если у нее есть кредиты с плавающей ставкой, привязанной к ключевой ставке",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "impact",
+      "section": "impact_reason",
+      "statement_type": "hypothesis",
+      "text": "У компании есть кредиты и депозиты, но неизвестны условия ставок (плавающая или фиксированная) и объемы средств, поэтому сила влияния на финансовые результаты не может быть оценена.",
+      "verdict": "unsupported",
+      "reason": "Наличие у компании кредитов и депозитов не подтверждается источниками: указаны только банковские продукты, а не действующие задолженность или средства.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "У компании есть кредиты и депозиты",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "но неизвестны условия ставок (плавающая или фиксированная) и объемы средств",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "поэтому сила влияния на финансовые результаты не может быть оценена",
+          "kind": "conditional_inference",
+          "actor_in_claim": "сила влияния на финансовые результаты",
+          "actor_in_source": "не назван",
+          "status": "not_in_sources"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "2cdd5860aa824e4fb36f2d7b22f49c6d",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 3581,
+      "output_tokens": 703,
+      "cost_rub": 0.051931992935394
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "fe3d7c3b182741ce8c29c0b7f46ff705",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 4687,
+      "output_tokens": 1231,
+      "cost_rub": 0.088021041450342
+    }
+  ]
+}

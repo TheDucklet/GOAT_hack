@@ -25,8 +25,10 @@ from app.ai.insights.build import (
     event_date,
     profile_excerpts,
 )
+from app.ai.insights.context import mechanism_bases
 from app.ai.providers import LLMError, LLMInput, call_llm
 from app.ai.schemas import InsightEnvelopeV2
+from app.ai.summarization.conditions import condition_context
 from app.ai.summarization.grounding import shorten, unsupported_numbers
 from app.ai.validation import SUPPORTED, build_catalog
 from app.ai.validation.checks import check_claim
@@ -172,6 +174,8 @@ def impact_payload(
             "topics": topics,
         },
         "news": [{"id": alias, "facts": texts} for alias, texts in news.items()],
+        "source_conditions": condition_context(prepared.payload, aliases),
+        "mechanism_bases": mechanism_bases(prepared.company, aliases),
         "user_focus": {
             "topics": prepared.focus.get("topics", []),
             "priorities": prepared.focus.get("priorities", []),
@@ -355,7 +359,9 @@ def finalize(outcome: AgentOutcome, now: datetime | None = None) -> dict:
     )
     refs = list(dict.fromkeys(ref for claim in every for ref in claim["evidence_refs"]))
 
-    unknowns = list(v1_result["unknowns"])
+    # Final applicability gaps precede generic search gaps and survive the cap.
+    unknowns = [shorten(clean_text(text), MAX_UNKNOWN_CHARS) for text in raw.unknowns]
+    unknowns.extend(v1_result["unknowns"])
     if undated:
         unknowns.append(UNDATED_BANK_UNKNOWN)
     if not determined:
@@ -377,8 +383,6 @@ def finalize(outcome: AgentOutcome, now: datetime | None = None) -> dict:
         )
     if window["relevance_status"] == "undetermined":
         unknowns.append("Срок актуальности вывода источниками не установлен")
-    for text in raw.unknowns:
-        unknowns.append(shorten(clean_text(text), MAX_UNKNOWN_CHARS))
     if prepared.context.get("relationships"):
         unknowns.append(RELATIONSHIP_UNKNOWN)
     unknowns = list(dict.fromkeys(item for item in unknowns if item.strip()))[:MAX_UNKNOWNS]

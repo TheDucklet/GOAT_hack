@@ -1,0 +1,307 @@
+{
+  "judge_version": "judge-3",
+  "identity": {
+    "judge_version": "judge-3",
+    "prompt_sha256": "8c0a5d2d821b40bc25ece6d57f9f4d41300f84088ab993b9f658ba8a9f77fc60",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "temperature": 0.0,
+    "batch": 6,
+    "max_tokens": 3800,
+    "card_digest": "fbebda3722c024a8f8c585dcd0b845a861b1220a8e3c53b48dc54e76795fed5b"
+  },
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение полностью соответствует источнику.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+          "kind": "event_fact",
+          "actor_in_claim": "Совет директоров Банка России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Ценовое давление остается повышенным, а инфляционные ожидания высоки.",
+      "verdict": "supported",
+      "reason": "Утверждение полностью соответствует источнику.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Ценовое давление остается повышенным, а инфляционные ожидания высоки.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год из-за временного сокращения производственных мощностей в отдельных отраслях.",
+      "verdict": "supported",
+      "reason": "Утверждение полностью соответствует источнику.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год из-за временного сокращения производственных мощностей в отдельных отраслях.",
+          "kind": "causal_link",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Годовая инфляция на 19 октября достигла 6,8%, а по итогам 2026 года ожидается на уровне 7,1-7,6%.",
+      "verdict": "supported",
+      "reason": "Утверждение полностью соответствует источнику.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Годовая инфляция на 19 октября достигла 6,8%.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        },
+        {
+          "text": "По итогам 2026 года ожидается на уровне 7,1-7,6%.",
+          "kind": "forecast",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-5",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение полностью соответствует источнику.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+          "kind": "forecast",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-1",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть кредиты с плавающей ставкой, то стоимость обслуживания долга может вырасти в связи с сохранением высокой ключевой ставки.",
+      "verdict": "supported",
+      "reason": "Условный вывод допустим: условие названо неизвестным, факты о ставке и продукте есть в источниках, вывод сформулирован с «может» и не добавляет фактов.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если у компании есть кредиты с плавающей ставкой, то стоимость обслуживания долга может вырасти в связи с сохранением высокой ключевой ставки.",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть депозиты, то доходность по ним может оставаться высокой, что поддерживает управление денежными потоками.",
+      "verdict": "unsupported",
+      "reason": "Связь между высокой доходностью депозитов и поддержкой управления денежными потоками не следует из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если у компании есть депозиты",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "доходность по ним может оставаться высокой",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "что поддерживает управление денежными потоками",
+          "kind": "causal_link",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-1",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть кредиты с плавающей ставкой, то сохранение ключевой ставки на уровне 14,00% годовых может поддерживать высокие затраты на обслуживание долга.",
+      "verdict": "supported",
+      "reason": "Все части следуют из источников или являются допустимыми условными выводами.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если у компании есть кредиты с плавающей ставкой",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "сохранение ключевой ставки на уровне 14,00% годовых",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        },
+        {
+          "text": "может поддерживать высокие затраты на обслуживание долга",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-2",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть лизинг с пересматриваемой ставкой, то сохранение ключевой ставки на уровне 14,00% годовых может поддерживать высокие затраты на лизинговые платежи.",
+      "verdict": "supported",
+      "reason": "Все части следуют из источников или являются допустимыми условными выводами.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если у компании есть лизинг с пересматриваемой ставкой",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "сохранение ключевой ставки на уровне 14,00% годовых",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        },
+        {
+          "text": "может поддерживать высокие затраты на лизинговые платежи",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "summary",
+      "section": "personalized_summary",
+      "statement_type": "hypothesis",
+      "text": "Сохранение ключевой ставки на уровне 14,00% годовых может поддерживать высокие затраты на обслуживание кредитов и лизинга, если у компании действуют кредиты с плавающей ставкой или пересматриваемые лизинговые договоры.",
+      "verdict": "supported",
+      "reason": "Все части следуют из источников или являются допустимыми условными выводами.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Сохранение ключевой ставки на уровне 14,00% годовых",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        },
+        {
+          "text": "может поддерживать высокие затраты на обслуживание кредитов и лизинга",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "если у компании действуют кредиты с плавающей ставкой или пересматриваемые лизинговые договоры",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "impact",
+      "section": "impact_reason",
+      "statement_type": "hypothesis",
+      "text": "У компании есть кредиты и лизинг, но неизвестны условия ставок и график платежей, поэтому сила влияния на расходы не может быть оценена.",
+      "verdict": "unsupported",
+      "reason": "Утверждение о неизвестности условий ставок и невозможности оценки влияния не следует из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "У компании есть кредиты и лизинг",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "неизвестны условия ставок и график платежей",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "сила влияния на расходы не может быть оценена",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "e8e08eb1fab042e19eff979952bebb1b",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 3584,
+      "output_tokens": 862,
+      "cost_rub": 0.060803958888816005
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "093361d2a01145e884f5985ac39850f5",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 3202,
+      "output_tokens": 1111,
+      "cost_rub": 0.0779121552495
+    }
+  ]
+}

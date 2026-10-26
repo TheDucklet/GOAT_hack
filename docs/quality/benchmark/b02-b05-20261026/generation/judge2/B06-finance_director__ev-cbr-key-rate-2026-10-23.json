@@ -1,0 +1,268 @@
+{
+  "judge_version": "judge-3",
+  "identity": {
+    "judge_version": "judge-3",
+    "prompt_sha256": "8c0a5d2d821b40bc25ece6d57f9f4d41300f84088ab993b9f658ba8a9f77fc60",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "temperature": 0.0,
+    "batch": 6,
+    "max_tokens": 3800,
+    "card_digest": "4142695c77f6833670e3acf22e403d2f526baef7a8cb339e4f85a75700052c15"
+  },
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Совет директоров Банка России решил сохранить ключевую ставку на уровне 14,00% годовых.",
+          "kind": "event_fact",
+          "actor_in_claim": "Совет директоров Банка России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Ценовое давление остается повышенным, а инфляционные ожидания высоки.",
+      "verdict": "supported",
+      "reason": "Обе части прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Ценовое давление остается повышенным.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        },
+        {
+          "text": "Инфляционные ожидания высоки.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год из-за временного сокращения производственных мощностей в отдельных отраслях.",
+      "verdict": "supported",
+      "reason": "Диапазон и причина прямо указаны в источнике.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Устойчивый рост цен держится в диапазоне 5-6% в пересчете на год.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        },
+        {
+          "text": "Причина — временное сокращение производственных мощностей в отдельных отраслях.",
+          "kind": "causal_link",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Годовая инфляция на 19 октября достигла 6,8%, а по итогам 2026 года ожидается на уровне 7,1-7,6%.",
+      "verdict": "supported",
+      "reason": "Обе части прямо следуют из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Годовая инфляция на 19 октября достигла 6,8%.",
+          "kind": "event_fact",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        },
+        {
+          "text": "По итогам 2026 года ожидается 7,1-7,6%.",
+          "kind": "forecast",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-5",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+      "verdict": "supported",
+      "reason": "Утверждение прямо следует из источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Базовый сценарий предполагает среднюю ключевую ставку в 2027 году на уровне 12,5-13,5% годовых.",
+          "kind": "forecast",
+          "actor_in_claim": "Банк России",
+          "actor_in_source": "Банк России",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-1",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть кредит с плавающей ставкой, то сохранение высокой ключевой ставки может увеличить стоимость обслуживания долга.",
+      "verdict": "supported",
+      "reason": "Вывод явно условный, условие названо неизвестной предпосылкой, а факт сохранения ставки есть в источнике.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если у компании есть кредит с плавающей ставкой, то сохранение высокой ключевой ставки может увеличить стоимость обслуживания долга.",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не названо",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если компания работает в сегменте грузовых перевозок, то инфляционное давление может увеличить операционные расходы на топливо и обслуживание техники.",
+      "verdict": "unsupported",
+      "reason": "Связь между инфляционным давлением и ростом операционных расходов на топливо и обслуживание техники не следует из источников.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если компания работает в сегменте грузовых перевозок",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "in_sources"
+        },
+        {
+          "text": "то инфляционное давление может увеличить операционные расходы на топливо и обслуживание техники",
+          "kind": "conditional_inference",
+          "actor_in_claim": "инфляционное давление",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-1",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если у компании есть кредиты с плавающей ставкой, то сохранение ключевой ставки на уровне 14,00% годовых может поддерживать высокую стоимость обслуживания долга.",
+      "verdict": "unsupported",
+      "reason": "В источниках нет сведений о наличии у компании кредитов с плавающей ставкой, а связь ставки со стоимостью обслуживания долга не подтверждена.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Если у компании есть кредиты с плавающей ставкой",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "то сохранение ключевой ставки на уровне 14,00% годовых может поддерживать высокую стоимость обслуживания долга",
+          "kind": "conditional_inference",
+          "actor_in_claim": "сохранение ключевой ставки",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "summary",
+      "section": "personalized_summary",
+      "statement_type": "hypothesis",
+      "text": "Сохранение ключевой ставки на уровне 14,00% годовых может поддерживать повышенную стоимость заемного капитала для компании, если у нее есть кредиты с плавающей ставкой.",
+      "verdict": "unsupported",
+      "reason": "В источниках нет сведений о наличии у компании кредитов с плавающей ставкой, а влияние сохранения ставки на стоимость заемного капитала не подтверждено.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Сохранение ключевой ставки на уровне 14,00% годовых",
+          "kind": "event_fact",
+          "actor_in_claim": "Совет директоров Банка России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        },
+        {
+          "text": "может поддерживать повышенную стоимость заемного капитала для компании",
+          "kind": "conditional_inference",
+          "actor_in_claim": "сохранение ключевой ставки",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        },
+        {
+          "text": "если у нее есть кредиты с плавающей ставкой",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "not_in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "impact",
+      "section": "impact_reason",
+      "statement_type": "hypothesis",
+      "text": "Факт сохранения ставки подтвержден, но наличие и условия кредитных договоров, определяющих влияние на стоимость капитала, неизвестны.",
+      "verdict": "unsupported",
+      "reason": "В источниках нет сведений о наличии и условиях кредитных договоров компании.",
+      "grounded": false,
+      "parts": [
+        {
+          "text": "Факт сохранения ставки подтвержден",
+          "kind": "event_fact",
+          "actor_in_claim": "Совет директоров Банка России",
+          "actor_in_source": "Совет директоров Банка России",
+          "status": "in_sources"
+        },
+        {
+          "text": "наличие и условия кредитных договоров, определяющих влияние на стоимость капитала, неизвестны",
+          "kind": "company_property",
+          "actor_in_claim": "компания",
+          "actor_in_source": "",
+          "status": "not_in_sources"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "8ef6b6205456458f8d6dcde5ceecb11d",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 3588,
+      "output_tokens": 826,
+      "cost_rub": 0.0648864867222
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "0487cc0526a64cb59083cad502ae86bd",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 3021,
+      "output_tokens": 917,
+      "cost_rub": 0.11555530076805001
+    }
+  ]
+}

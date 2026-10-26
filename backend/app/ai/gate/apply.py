@@ -56,7 +56,9 @@ def refresh_bank_context(result: dict, evidence: list[dict]) -> None:
         result["bank_view_context"] = {"status": status, "document_dates": dates}
 
 
-def drop(result: dict, failed: set[str], evidence: list[dict]) -> tuple[dict, list[dict]]:
+def drop(
+    result: dict, failed: set[str], evidence: list[dict], restore: bool = False
+) -> tuple[dict, list[dict]]:
     result = copy.deepcopy(result)
     changes: list[dict] = []
     unknowns = list(result["unknowns"])
@@ -77,6 +79,32 @@ def drop(result: dict, failed: set[str], evidence: list[dict]) -> tuple[dict, li
     for field in ("personalized_summary", "impact_reason", "relevance_reason"):
         if result.get(field) and result[field]["claim_id"] in failed:
             result[field] = None
+    if restore and result["facts"]:
+        kinds = {item["id"]: item["kind"] for item in evidence}
+        if not result["mechanism"]:
+            # Only claims supported in the first pass survived the pruning.
+            # Copy a grounded alternative; never invent a fallback paragraph.
+            alternative = next(
+                (
+                    claim
+                    for claim in result["ai_interpretation"]
+                    if {"news", "company"}
+                    <= {kinds.get(ref) for ref in claim["evidence_refs"]}
+                ),
+                None,
+            )
+            if alternative:
+                result["mechanism"] = [{**alternative, "claim_id": "mechanism-restored"}]
+                result["impact_level"] = "undetermined"
+                result["impact_reason"] = None
+                changes.append(
+                    {"field": "mechanism", "action": "restored_from_verified_interpretation",
+                     "source_claim_id": alternative["claim_id"]}
+                )
+        if result["mechanism"]:
+            first = result["mechanism"][0]
+            result["personalized_summary"] = {**first, "claim_id": "summary-restored"}
+            changes.append({"field": "personalized_summary", "action": "copied_from_mechanism"})
     broken = (
         not result["mechanism"] or result["personalized_summary"] is None or result["impact_reason"] is None
     )
@@ -194,7 +222,7 @@ def enforce_publication(envelope: dict, news_texts: dict[str, str]) -> dict:
     removed: list[dict] = []
     changes: list[dict] = []
     attempts, stop_reason = 0, "all_supported"
-    if failed:
+    if failed or (not envelope["result"]["mechanism"] and envelope["result"]["ai_interpretation"]):
         attempts = 1
         removed = [
             {
@@ -206,7 +234,7 @@ def enforce_publication(envelope: dict, news_texts: dict[str, str]) -> dict:
             for claim in claims
             if claim["claim_id"] in failed
         ]
-        repaired, changes = drop(envelope["result"], failed, envelope["evidence"])
+        repaired, changes = drop(envelope["result"], failed, envelope["evidence"], restore=True)
         try:
             candidate = rebuilt(envelope, repaired)
         except (ValidationError, ValueError):

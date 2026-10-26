@@ -165,7 +165,8 @@ def verify_claims(
 def verify_checked(
     claims: list[dict], sources: dict[str, dict], rejected_premises: list[str] | None = None
 ) -> tuple[dict[str, dict], list[dict]]:
-    from app.ai.gate.guards import apply_bank_guard
+    from app.ai.gate.guards import apply_bank_guard, apply_condition_guard
 
     verdicts, usage = verify_claims(claims, sources, rejected_premises)
-    return apply_bank_guard(claims, sources, verdicts), usage
+    verdicts = apply_bank_guard(claims, sources, verdicts)
+    return apply_condition_guard(claims, sources, verdicts), usage
