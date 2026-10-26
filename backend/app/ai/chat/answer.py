@@ -204,9 +204,15 @@ def usage_total(steps: list[dict]) -> dict:
 
 
 def evidence_for(refs: list[str], bank_ids: dict[str, dict], prepared: Prepared) -> list[dict]:
-    items = [bank_ids[ref] for ref in refs if ref in bank_ids] + [
-        prepared.company_ids[ref] for ref in refs if ref in prepared.company_ids
-    ]
+    items = (
+        [
+            item.model_dump(mode="json")
+            for item in prepared.payload.evidence
+            if item.kind == "news" and item.id in refs
+        ]
+        + [bank_ids[ref] for ref in refs if ref in bank_ids]
+        + [prepared.company_ids[ref] for ref in refs if ref in prepared.company_ids]
+    )
     return [
         {key: item[key] for key in ("id", "kind", "source_id", "version", "locator", "excerpt")}
         for item in items
