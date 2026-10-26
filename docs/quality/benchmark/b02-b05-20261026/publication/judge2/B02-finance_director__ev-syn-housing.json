@@ -1,0 +1,193 @@
+{
+  "judge_version": "judge-3",
+  "identity": {
+    "judge_version": "judge-3",
+    "prompt_sha256": "8c0a5d2d821b40bc25ece6d57f9f4d41300f84088ab993b9f658ba8a9f77fc60",
+    "model": "deepseek/deepseek-v4.1-flash",
+    "temperature": 0.0,
+    "batch": 6,
+    "max_tokens": 3800,
+    "card_digest": "0dccf0f2f7a3e624a6b5e228fd41e9b8fe6f364cf335dafcf085a6c2f496fb60"
+  },
+  "claims": [
+    {
+      "claim_id": "fact-1",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв. м жилья, что на 3% меньше, чем годом ранее.",
+      "verdict": "supported",
+      "reason": "Обе части прямо следуют из новостного источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "По данным Минстроя, в январе-августе 2026 года в России введено 68,4 млн кв. м жилья",
+          "kind": "event_fact",
+          "actor_in_claim": "Минстрой",
+          "actor_in_source": "Минстрой",
+          "status": "in_sources"
+        },
+        {
+          "text": "что на 3% меньше, чем годом ранее",
+          "kind": "event_fact",
+          "actor_in_claim": "Минстрой",
+          "actor_in_source": "Минстрой",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-2",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Минстрой связывает снижение объемов ввода жилья с высокой стоимостью заимствований у застройщиков.",
+      "verdict": "supported",
+      "reason": "Причинная связь прямо указана в источнике со ссылкой на Минстрой.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Минстрой связывает снижение объемов ввода жилья с высокой стоимостью заимствований у застройщиков",
+          "kind": "causal_link",
+          "actor_in_claim": "Минстрой",
+          "actor_in_source": "Минстрой",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-3",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Отраслевое издание со ссылкой на статистику сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья, что на 5% меньше, чем годом ранее.",
+      "verdict": "supported",
+      "reason": "Обе части прямо следуют из новостного источника.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Отраслевое издание со ссылкой на статистику сообщает, что за восемь месяцев 2026 года введено 66,9 млн кв. м жилья",
+          "kind": "event_fact",
+          "actor_in_claim": "отраслевое издание",
+          "actor_in_source": "отраслевое издание",
+          "status": "in_sources"
+        },
+        {
+          "text": "что на 5% меньше, чем годом ранее",
+          "kind": "event_fact",
+          "actor_in_claim": "отраслевое издание",
+          "actor_in_source": "отраслевое издание",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "fact-4",
+      "section": "facts",
+      "statement_type": "fact",
+      "text": "Эксперты ожидают дальнейшего замедления ввода жилья из-за сокращения запусков новых проектов.",
+      "verdict": "supported",
+      "reason": "Прогноз и его причина прямо указаны в источнике.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Эксперты ожидают дальнейшего замедления ввода жилья",
+          "kind": "forecast",
+          "actor_in_claim": "эксперты",
+          "actor_in_source": "эксперты",
+          "status": "in_sources"
+        },
+        {
+          "text": "из-за сокращения запусков новых проектов",
+          "kind": "causal_link",
+          "actor_in_claim": "эксперты",
+          "actor_in_source": "эксперты",
+          "status": "in_sources"
+        }
+      ]
+    },
+    {
+      "claim_id": "interpretation-2",
+      "section": "ai_interpretation",
+      "statement_type": "hypothesis",
+      "text": "Если компания планирует запуск новых строительных проектов, то сокращение запусков новых проектов в отрасли может снизить спрос на её услуги и замедлить рост выручки.",
+      "verdict": "supported",
+      "reason": "Условный вывод с явным условием, факты о сокращении запусков и виде деятельности компании есть в источниках, вывод сформулирован с «может» и не добавляет новых фактов.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если компания планирует запуск новых строительных проектов, то сокращение запусков новых проектов в отрасли может снизить спрос на её услуги и замедлить рост выручки",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "mechanism-restored",
+      "section": "mechanism",
+      "statement_type": "hypothesis",
+      "text": "Если компания планирует запуск новых строительных проектов, то сокращение запусков новых проектов в отрасли может снизить спрос на её услуги и замедлить рост выручки.",
+      "verdict": "supported",
+      "reason": "Условный вывод с явным условием, факты о сокращении запусков и виде деятельности компании есть в источниках, вывод сформулирован с «может» и не добавляет новых фактов.",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если компания планирует запуск новых строительных проектов, то сокращение запусков новых проектов в отрасли может снизить спрос на её услуги и замедлить рост выручки",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "компания",
+          "status": "acceptable_condition"
+        }
+      ]
+    },
+    {
+      "claim_id": "summary-restored",
+      "section": "personalized_summary",
+      "statement_type": "hypothesis",
+      "text": "Если компания планирует запуск новых строительных проектов, то сокращение запусков новых проектов в отрасли может снизить спрос на её услуги и замедлить рост выручки.",
+      "verdict": "supported",
+      "reason": "Все части условного вывода сформулированы как гипотеза с явным условием, опираются на имеющиеся в источниках факты (сокращение запусков новых проектов, строительный вид деятельности компании) и не добавляют неподтверждённых фактов, чисел ил",
+      "grounded": true,
+      "parts": [
+        {
+          "text": "Если компания планирует запуск новых строительных проектов",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не названо",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "сокращение запусков новых проектов в отрасли может снизить спрос на её услуги",
+          "kind": "conditional_inference",
+          "actor_in_claim": "отрасль / компания",
+          "actor_in_source": "эксперты (ожидают замедления ввода из-за сокращения запусков новых проектов)",
+          "status": "acceptable_condition"
+        },
+        {
+          "text": "и замедлить рост выручки",
+          "kind": "conditional_inference",
+          "actor_in_claim": "компания",
+          "actor_in_source": "не названо",
+          "status": "acceptable_condition"
+        }
+      ]
+    }
+  ],
+  "usage": [
+    {
+      "llm": "benchmark_judge",
+      "request_id": "ea46dfe9335a44ae8b28c03e3bfc6679",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 2845,
+      "output_tokens": 799,
+      "cost_rub": 0.06102024717789
+    },
+    {
+      "llm": "benchmark_judge",
+      "request_id": "cdde40dc19354c129684736d609940e3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "input_tokens": 1681,
+      "output_tokens": 290,
+      "cost_rub": 0.04907947518045
+    }
+  ]
+}
