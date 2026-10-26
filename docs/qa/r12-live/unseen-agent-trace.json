@@ -1,0 +1,654 @@
+{
+  "source_sha": "7fc37a2367305c38fc8c5c2fb271a907b6a739f9",
+  "scope": "Fresh R12 unseen-in-demo event, real model gateway, synthetic company, previously OCRd bank corpus",
+  "insight_id": "8a2aba11-b1cf-4435-ad78-0f56a1c47dff",
+  "trace_id": "bae807f4-db59-4232-a840-b63684a588c9",
+  "trace": {
+    "prompt_version": "insight-5",
+    "plan": [
+      "Оценка прямых финансовых потерь компании из-за отзыва лицензии у контрагента",
+      "Анализ влияния на кредитный портфель и качество обслуживания долга",
+      "Проверка наличия средств на счетах в НКО «Тайдон» и рисков их заморозки",
+      "Оценка репутационных рисков и устойчивости цепочек поставок в металлургии",
+      "check_grounding",
+      "retry_search_if_needed"
+    ],
+    "steps": [
+      {
+        "tool": "get_company_context",
+        "company_id": "showcase_metal",
+        "profile_version": "showcase-2026-10-26-v1"
+      },
+      {
+        "tool": "get_event",
+        "event_id": "380f039d-518c-4d9d-8998-023fc5ca5c40",
+        "event_version": "dc6c78434a7ea16532d63ccab16b8a4d6633a2fe12c0c298d22d8a4b2d67d44c",
+        "facts": 5
+      },
+      {
+        "plan": [
+          "Оценка прямых финансовых потерь компании из-за отзыва лицензии у контрагента",
+          "Анализ влияния на кредитный портфель и качество обслуживания долга",
+          "Проверка наличия средств на счетах в НКО «Тайдон» и рисков их заморозки",
+          "Оценка репутационных рисков и устойчивости цепочек поставок в металлургии"
+        ],
+        "initial_queries": [
+          "отзыв лицензии НКО кредитный портфель",
+          "банковский сектор риски контрагентов"
+        ]
+      },
+      {
+        "llm": "agent_plan",
+        "request_id": "144d2121d6424046a188576f967e3b4c",
+        "model": "qwen/qwen3.6-35b-a3b",
+        "input_tokens": 468,
+        "output_tokens": 136,
+        "cost_rub": 0.01842711728
+      },
+      {
+        "tool": "search_bank_analytics",
+        "purpose": "initial",
+        "query": "отзыв лицензии НКО кредитный портфель",
+        "as_of": "2026-10-22",
+        "returned": [
+          {
+            "chunk_id": "be640d52-a1bc-4f05-b711-573d442b4bd8",
+            "page": 1,
+            "historical": false
+          }
+        ],
+        "evidence_ids": [
+          "953adb72-a926-518f-8e84-e6ec96fbd5f6"
+        ],
+        "new_fragments": 1,
+        "empty_reason": null
+      },
+      {
+        "tool": "search_bank_analytics",
+        "purpose": "initial",
+        "query": "банковский сектор риски контрагентов",
+        "as_of": "2026-10-22",
+        "returned": [
+          {
+            "chunk_id": "621f1430-4ac8-46d1-8601-3fcb93419887",
+            "page": 23,
+            "historical": false
+          }
+        ],
+        "evidence_ids": [
+          "fad20d72-5d09-59bc-87e5-5407060ee23c"
+        ],
+        "new_fragments": 1,
+        "empty_reason": null
+      },
+      {
+        "llm": "build_insight",
+        "attempt": 1,
+        "request_id": "6364e84c18604a0eb6cc8fdf0a6f96ca",
+        "model": "qwen/qwen3.6-35b-a3b",
+        "input_tokens": 2250,
+        "output_tokens": 611,
+        "cost_rub": 0.081131665797
+      },
+      {
+        "llm": "agent_check",
+        "request_id": "1961ce276b404397af02bba40472ff26",
+        "model": "qwen/qwen3.6-35b-a3b",
+        "input_tokens": 842,
+        "output_tokens": 338,
+        "cost_rub": 0.042434719509
+      },
+      {
+        "check": "insufficient",
+        "iteration": 1,
+        "reasons": [
+          {
+            "code": "bank_claims_rejected",
+            "detail": "проверка не подтвердила утверждения банка: insufficient"
+          }
+        ],
+        "evidence_ids": [
+          "10fb4ada-eafa-5384-89f7-a39a3272ae82",
+          "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+          "953adb72-a926-518f-8e84-e6ec96fbd5f6",
+          "fad20d72-5d09-59bc-87e5-5407060ee23c"
+        ]
+      },
+      {
+        "llm": "agent_query",
+        "request_id": "49dae5ec21fc4a909d9e0d16af04b0cf",
+        "model": "google/gemma-4-26b-a4b-it",
+        "input_tokens": 446,
+        "output_tokens": 58,
+        "cost_rub": 0.0053333940582
+      },
+      {
+        "retry": 1,
+        "after_check": "insufficient",
+        "previous_queries": [
+          "отзыв лицензии НКО кредитный портфель",
+          "банковский сектор риски контрагентов"
+        ],
+        "new_query": "неисполнение обязательных платежей неплатежеспособность НКО",
+        "reason": "Запрос сфокусирован на конкретной юридической причине отзыва лицензии, что позволит найти документы о нарушении платежной дисциплины."
+      },
+      {
+        "tool": "search_bank_analytics",
+        "purpose": "retry",
+        "query": "неисполнение обязательных платежей неплатежеспособность НКО",
+        "as_of": "2026-10-22",
+        "returned": [],
+        "evidence_ids": [],
+        "new_fragments": 0,
+        "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-22"
+      },
+      {
+        "llm": "agent_query",
+        "request_id": "50625e09caa24e82bac30451a90d1610",
+        "model": "google/gemma-4-26b-a4b-it",
+        "input_tokens": 531,
+        "output_tokens": 62,
+        "cost_rub": 0.00376311050726
+      },
+      {
+        "retry": 2,
+        "after_check": "insufficient",
+        "previous_queries": [
+          "отзыв лицензии НКО кредитный портфель",
+          "банковский сектор риски контрагентов",
+          "неисполнение обязательных платежей неплатежеспособность НКО"
+        ],
+        "new_query": "причины отзыва лицензии неплатежеспособность НКО",
+        "reason": "Запрос переформулирован с акцентом на причинно-следственную связь между качеством активов и отзывом лицензии для поиска аналитики по дефолтам."
+      },
+      {
+        "tool": "search_bank_analytics",
+        "purpose": "retry",
+        "query": "причины отзыва лицензии неплатежеспособность НКО",
+        "as_of": "2026-10-22",
+        "returned": [],
+        "evidence_ids": [],
+        "new_fragments": 0,
+        "empty_reason": "В проиндексированных документах нет фрагментов по запросу на дату 2026-10-22"
+      },
+      {
+        "stop": "retry_limit_reached",
+        "iterations": 1,
+        "extra_searches": 2
+      },
+      {
+        "llm": "build_impact",
+        "request_id": "b25f92bdbee6439e89a9982194ab2c8c",
+        "model": "qwen/qwen3.6-35b-a3b",
+        "input_tokens": 2480,
+        "output_tokens": 480,
+        "cost_rub": 0.07370846912
+      }
+    ],
+    "company_features_offered": [
+      "MAINOKVED_NAME",
+      "MAINOKVED_CODE",
+      "REGION",
+      "CL_PRODUCT_LOA_MARK",
+      "CL_PRODUCT_DEP_MARK"
+    ],
+    "matched_with_event": [],
+    "bank_fragments_offered": [
+      "fad20d72-5d09-59bc-87e5-5407060ee23c",
+      "953adb72-a926-518f-8e84-e6ec96fbd5f6"
+    ],
+    "dropped_claims": [],
+    "source_conflicts": [],
+    "stop_reason": "retry_limit_reached",
+    "agent_version": "agent-3",
+    "iterations": 1,
+    "extra_searches": 2,
+    "queries": [
+      "отзыв лицензии НКО кредитный портфель",
+      "банковский сектор риски контрагентов",
+      "неисполнение обязательных платежей неплатежеспособность НКО",
+      "причины отзыва лицензии неплатежеспособность НКО"
+    ],
+    "checks": [
+      {
+        "iteration": 1,
+        "status": "insufficient",
+        "reasons": [
+          {
+            "code": "bank_claims_rejected",
+            "detail": "проверка не подтвердила утверждения банка: insufficient"
+          }
+        ],
+        "rejected_bank_claims": [
+          {
+            "claim_id": "bank-1",
+            "text": "Альфа-Банк отмечает, что при развороте денежно-кредитной политики кредитные риски неизбежно вырастут.",
+            "verdict": "insufficient",
+            "reason": "Утверждение приписывает позицию банку (Альфа-Банк), но во фрагменте нет прямого указания на то, что это мнение принадлежит Альфа-Банку. Фрагмент содержит цитату или вывод, но подпись источника или авт"
+          },
+          {
+            "claim_id": "bank-2",
+            "text": "Альфа-Банк указывает, что этот фактор вызывает ускоренный рост корпоративного кредитования.",
+            "verdict": "insufficient",
+            "reason": "Утверждение приписывает позицию банку (Альфа-Банк), но во фрагменте нет прямого указания на то, что это мнение принадлежит Альфа-Банку. Хотя в конце фрагмента есть 'Альфа-Банк, 2026 г.', это может быт"
+          }
+        ],
+        "claims": [
+          "interpretation-1",
+          "interpretation-2",
+          "risk-1",
+          "risk-2",
+          "action-1",
+          "action-2"
+        ],
+        "evidence_ids": [
+          "10fb4ada-eafa-5384-89f7-a39a3272ae82",
+          "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+          "953adb72-a926-518f-8e84-e6ec96fbd5f6",
+          "fad20d72-5d09-59bc-87e5-5407060ee23c"
+        ]
+      }
+    ],
+    "validation": {
+      "claims": [
+        {
+          "claim_id": "fact-1",
+          "section": "facts",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "fact-2",
+          "section": "facts",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "fact-3",
+          "section": "facts",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "fact-4",
+          "section": "facts",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "fact-5",
+          "section": "facts",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "interpretation-1",
+          "section": "ai_interpretation",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "fad20d72-5d09-59bc-87e5-5407060ee23c",
+              "status": "valid"
+            },
+            {
+              "id": "953adb72-a926-518f-8e84-e6ec96fbd5f6",
+              "status": "valid"
+            },
+            {
+              "id": "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "interpretation-2",
+          "section": "ai_interpretation",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "fad20d72-5d09-59bc-87e5-5407060ee23c",
+              "status": "valid"
+            },
+            {
+              "id": "10fb4ada-eafa-5384-89f7-a39a3272ae82",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "risk-1",
+          "section": "risks",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "fad20d72-5d09-59bc-87e5-5407060ee23c",
+              "status": "valid"
+            },
+            {
+              "id": "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "risk-2",
+          "section": "risks",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "fad20d72-5d09-59bc-87e5-5407060ee23c",
+              "status": "valid"
+            },
+            {
+              "id": "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "action-1",
+          "section": "actions",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+              "status": "valid"
+            }
+          ]
+        },
+        {
+          "claim_id": "action-2",
+          "section": "actions",
+          "verdict": "supported",
+          "reasons": [],
+          "evidence": [
+            {
+              "id": "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+              "status": "valid"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "supported": 11,
+        "insufficient": 0,
+        "contradiction": 0,
+        "removed": 0,
+        "publishable": true
+      },
+      "removed_claims": []
+    },
+    "schema_version": "v2",
+    "contract_versions": {
+      "contract": "impact-contract-2",
+      "schema": "v2",
+      "semantics": "company-data-2",
+      "context_semantics": "company-data-2",
+      "policy": "notice_v1"
+    },
+    "impact": {
+      "prompt_version": "impact-3",
+      "rubric_version": "impact-rubric-1",
+      "proposed_level": "undetermined",
+      "level": "undetermined",
+      "rubric": {
+        "rubric_version": "impact-rubric-1",
+        "independent_factors": [
+          "product"
+        ],
+        "direct_event_matches": [],
+        "bank_evidence": false,
+        "dated_horizon": false,
+        "quantified_exposure": false
+      },
+      "caps": [],
+      "failure": null,
+      "dropped_statements": [],
+      "cited_features": [
+        "CL_PRODUCT_LOA_MARK"
+      ],
+      "synthesized": [],
+      "horizon_kind": "unknown",
+      "assumptions": [
+        "assumption-1"
+      ],
+      "usage": [
+        {
+          "llm": "build_impact",
+          "request_id": "b25f92bdbee6439e89a9982194ab2c8c",
+          "model": "qwen/qwen3.6-35b-a3b",
+          "input_tokens": 2480,
+          "output_tokens": 480,
+          "cost_rub": 0.07370846912
+        }
+      ]
+    },
+    "publication": {
+      "policy_version": "publication-1",
+      "verifier_prompt_version": "gate-6",
+      "decision": "allow",
+      "decided_by": "code",
+      "content_digest": "5a9a498ba7550a02898f6ba3158cdffef05d86590562009e254bf46079b7e55d",
+      "required": 7,
+      "checked": 7,
+      "supported": 7,
+      "claims": [
+        {
+          "claim_id": "fact-1",
+          "section": "facts",
+          "statement_type": "fact",
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "version": "b3851287ecd170ae6581a633083b7aef144d9e1bb91a0b778c705ad9054b0c20"
+            }
+          ],
+          "verdict": "supported",
+          "reason": "Утверждение прямо следует из источника."
+        },
+        {
+          "claim_id": "fact-2",
+          "section": "facts",
+          "statement_type": "fact",
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "version": "b3851287ecd170ae6581a633083b7aef144d9e1bb91a0b778c705ad9054b0c20"
+            }
+          ],
+          "verdict": "supported",
+          "reason": "Основание отзыва лицензии прямо названо в источнике."
+        },
+        {
+          "claim_id": "fact-3",
+          "section": "facts",
+          "statement_type": "fact",
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "version": "b3851287ecd170ae6581a633083b7aef144d9e1bb91a0b778c705ad9054b0c20"
+            }
+          ],
+          "verdict": "supported",
+          "reason": "Свойство активов прямо указано в источнике."
+        },
+        {
+          "claim_id": "fact-4",
+          "section": "facts",
+          "statement_type": "fact",
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "version": "b3851287ecd170ae6581a633083b7aef144d9e1bb91a0b778c705ad9054b0c20"
+            }
+          ],
+          "verdict": "supported",
+          "reason": "Назначение временной администрации прямо следует из источника."
+        },
+        {
+          "claim_id": "fact-5",
+          "section": "facts",
+          "statement_type": "fact",
+          "evidence": [
+            {
+              "id": "73d134fd-c41e-4bc7-9ab9-6ea60ee61441",
+              "version": "b3851287ecd170ae6581a633083b7aef144d9e1bb91a0b778c705ad9054b0c20"
+            }
+          ],
+          "verdict": "supported",
+          "reason": "Приостановление полномочий исполнительных органов прямо указано в источнике."
+        },
+        {
+          "claim_id": "risk-1",
+          "section": "risks",
+          "statement_type": "hypothesis",
+          "evidence": [
+            {
+              "id": "fad20d72-5d09-59bc-87e5-5407060ee23c",
+              "version": "6c3a4882ee784b608880693d8ba2b62d0ba2236e34b404179adaab909c6dd046"
+            },
+            {
+              "id": "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+              "version": "showcase-2026-10-26-v1"
+            }
+          ],
+          "verdict": "supported",
+          "reason": "Вывод явно условный: наличие кредита с плавающей ставкой названо неизвестным условием, не противоречит признакам компании (продукт «кредиты» есть), а следствие сформулировано с «может» без добавления фактов и чисел."
+        },
+        {
+          "claim_id": "risk-2",
+          "section": "risks",
+          "statement_type": "hypothesis",
+          "evidence": [
+            {
+              "id": "fad20d72-5d09-59bc-87e5-5407060ee23c",
+              "version": "6c3a4882ee784b608880693d8ba2b62d0ba2236e34b404179adaab909c6dd046"
+            },
+            {
+              "id": "236877ce-1d1e-5b8e-a192-0d2ba1efa578",
+              "version": "showcase-2026-10-26-v1"
+            }
+          ],
+          "verdict": "supported",
+          "reason": "Вывод явно условный: зависимость от внешнего финансирования названа неизвестным условием, а не установленным фактом, следствие с «может» не добавляет новых фактов и не противоречит источникам."
+        }
+      ],
+      "removed": [
+        {
+          "claim_id": "interpretation-1",
+          "section": "ai_interpretation",
+          "verdict": "unsupported",
+          "reason": "Условие предполагает кредит с плавающей ставкой, но в признаках компании указано лишь наличие продукта «кредиты», а источники о росте процентных расходов компании на фоне роста корпоративного кредитования и кредитных рисков не содержат тако"
+        },
+        {
+          "claim_id": "action-1",
+          "section": "actions",
+          "verdict": "unsupported",
+          "reason": "Наличие банковского продукта «кредиты» не доказывает действующие кредитные договоры, на которые ссылается рекомендация."
+        },
+        {
+          "claim_id": "mechanism-1",
+          "section": "mechanism",
+          "verdict": "unsupported",
+          "reason": "Источники не связывают отзыв лицензии у ООО НКО «Тайдон» с процентными расходами компании; привязка роста процентных расходов именно к этому событию добавлена от себя."
+        },
+        {
+          "claim_id": "interpretation-2",
+          "section": "ai_interpretation",
+          "verdict": "unsupported",
+          "reason": "Источник говорит о росте кредитных рисков при развороте ДКП, но не о росте стоимости заимствований для компаний сегмента обработки металлов из-за повышения кредитных рисков в банковском секторе; связь с сегментом компании не следует из исто"
+        },
+        {
+          "claim_id": "action-2",
+          "section": "actions",
+          "verdict": "unsupported",
+          "reason": "Наличие планов по привлечению нового финансирования не подтверждено источниками: в признаках компании указан лишь банковский продукт «кредиты», что не доказывает планы заимствований."
+        }
+      ],
+      "dependent_changes": [],
+      "unresolved_critical": [],
+      "unresolved": [],
+      "repair_attempts": 1,
+      "stop_reason": "repaired_by_removal",
+      "usage": [
+        {
+          "llm": "gate_verify",
+          "request_id": "fcd7d73822f049d0a2ab6d66a3198794",
+          "model": "z-ai/glm-5.3-flash",
+          "input_tokens": 2982,
+          "output_tokens": 744,
+          "cost_rub": 0.09435835742190002
+        },
+        {
+          "llm": "gate_verify",
+          "request_id": "4467ed919eaa4ab690cf0f6c05c213eb",
+          "model": "z-ai/glm-5.3-flash",
+          "input_tokens": 2641,
+          "output_tokens": 1490,
+          "cost_rub": 0.13142565552545
+        },
+        {
+          "llm": "gate_verify",
+          "request_id": "14b574aa33cd44d6b1f73917c5b48fea",
+          "model": "z-ai/glm-5.3-flash",
+          "input_tokens": 2132,
+          "output_tokens": 509,
+          "cost_rub": 0.06614183408690001
+        },
+        {
+          "llm": "gate_verify",
+          "request_id": "730398a25c8847929c85340b3b173b11",
+          "model": "z-ai/glm-5.3-flash",
+          "input_tokens": 2835,
+          "output_tokens": 746,
+          "cost_rub": 0.09193403980475
+        },
+        {
+          "llm": "gate_verify",
+          "request_id": "6f9b7c5f4aa544ab92d85c016f024e6b",
+          "model": "z-ai/glm-5.3-flash",
+          "input_tokens": 2061,
+          "output_tokens": 670,
+          "cost_rub": 0.07418642247445
+        }
+      ],
+      "cost_rub": 0.458046
+    },
+    "job_id": "88ecafb9-2db1-44b8-aa64-089d3dfbaa9f"
+  }
+}
