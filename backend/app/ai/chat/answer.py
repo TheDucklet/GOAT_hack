@@ -23,7 +23,7 @@ from app.ai.providers import LLMError, LLMInput, call_llm
 from app.ai.schemas import AnswerChatInput, ChatEnvelope
 from app.ai.summarization.conditions import condition_context
 from app.ai.summarization.conflicts import source_conflicts
-from app.ai.summarization.grounding import normalize_text, shorten, supported_sentences
+from app.ai.summarization.grounding import normalize_text, shorten, strip_instructions, supported_sentences
 from app.ai.summarization.summarize import Lenient, StrList
 from app.ai.validation import build_catalog, validate_answer
 from app.integrations.ai import AIError
@@ -262,6 +262,16 @@ def evidence_for(refs: list[str], bank_ids: dict[str, dict], prepared: Prepared)
     ]
 
 
+def numeric_support(prepared: Prepared, bank: list[dict]) -> str:
+    return " ".join(
+        [prepared.payload.title, prepared.payload.summary or "", prepared.payload.published_at or ""]
+        + [claim["text"] for claim in prepared.facts]
+        + [strip_instructions(publication.text) for publication in prepared.payload.publications]
+        + [fact.excerpt + " " + fact.value for fact in prepared.company]
+        + [item["excerpt"] for item in bank]
+    )
+
+
 def answer_chat(
     company_context: dict,
     user_focus: dict,
@@ -319,13 +329,7 @@ def answer_chat(
         **{ref: {"kind": "bank"} for ref in bank_ids},
     }
     missing = missing_parameters(prepared)
-    number_source = " ".join(
-        [prepared.payload.title, prepared.payload.summary or "", prepared.payload.published_at or ""]
-        + [claim["text"] for claim in prepared.facts]
-        + [publication.text for publication in prepared.payload.publications]
-        + [fact.excerpt + " " + fact.value for fact in prepared.company]
-        + [item["excerpt"] for item in bank]
-    )
+    number_source = numeric_support(prepared, bank)
     catalog = build_catalog(
         prepared.context,
         prepared.payload,
