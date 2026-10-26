@@ -18,8 +18,10 @@ from app.ai.insights.build import (
     select_bank,
     temporal_unknowns,
 )
+from app.ai.insights.context import mechanism_bases
 from app.ai.providers import LLMError, LLMInput, call_llm
 from app.ai.schemas import AnswerChatInput, ChatEnvelope
+from app.ai.summarization.conditions import condition_context
 from app.ai.summarization.conflicts import source_conflicts
 from app.ai.summarization.grounding import normalize_text, shorten, supported_sentences
 from app.ai.summarization.summarize import Lenient, StrList
@@ -51,6 +53,8 @@ MISSING_KEYWORDS = (
     "для расчет",
 )
 BANK_KEYWORDS = ("банк", "позици", "аналитик")
+MISSING_CONDITION = re.compile(r"^(?:неизвестн\w*|недостат\w*|нет\s+(?:данных|сведений))\b", re.IGNORECASE)
+VAGUE_EFFECT = re.compile(r"\bзначительн\w*\s+или\s+незначительн\w*\b", re.IGNORECASE)
 
 
 class RawRoute(Lenient):
@@ -58,10 +62,17 @@ class RawRoute(Lenient):
     search_query: str | None = None
 
 
+class RawMechanism(Lenient):
+    condition: str = ""
+    consequence: str = ""
+    evidence_ids: StrList = Field(default_factory=list)
+
+
 class RawAnswer(Lenient):
     answer: str = ""
     evidence_ids: StrList = Field(default_factory=list)
     unknowns: StrList = Field(default_factory=list)
+    mechanism: RawMechanism | None = None
 
 
 def usage_step(label: str, result) -> dict:
@@ -143,6 +154,8 @@ def build_prompt(
             {"id": by_id[fact.evidence_id], "text": fact.excerpt} for fact in prepared.company
         ],
         "matched_with_event": prepared.matches,
+        "mechanism_bases": mechanism_bases(prepared.company, aliases),
+        "source_conditions": condition_context(prepared.payload, aliases),
         "bank_fragments": [
             {"id": by_id[item["id"]], "document_date": item["document_date"], "text": item["excerpt"]}
             for item in bank
@@ -152,14 +165,37 @@ def build_prompt(
     return json.dumps(payload, ensure_ascii=False)
 
 
+def repair_prompt(prompt: str, raw: RawAnswer, reason: str, validation: dict) -> str:
+    payload = json.loads(prompt)
+    payload["validation_feedback"] = {
+        "reason": reason,
+        "problems": validation.get("reasons", []),
+        "rejected_answer": raw.answer[:MAX_ANSWER_CHARS],
+        "rejected_mechanism": raw.mechanism.model_dump() if raw.mechanism is not None else None,
+    }
+    return json.dumps(payload, ensure_ascii=False)
+
+
 def clean_answer(
     raw: RawAnswer, candidates: dict[str, dict], aliases: dict[str, str], number_source: str
 ) -> tuple[str, list[str], str | None]:
-    text = LABEL_MENTION.sub("", " ".join(raw.answer.split())).replace("  ", " ").strip()[:MAX_ANSWER_CHARS]
+    answer, evidence_ids = raw.answer, raw.evidence_ids
+    if raw.mechanism is not None:
+        condition = " ".join(raw.mechanism.condition.split()).strip(" .")
+        consequence = " ".join(raw.mechanism.consequence.split()).strip(" .")
+        if not condition or not consequence:
+            return "", [], "incomplete_conditional_mechanism"
+        if MISSING_CONDITION.search(condition):
+            return "", [], "missing_applicability_condition"
+        if VAGUE_EFFECT.search(consequence):
+            return "", [], "non_specific_consequence"
+        if not re.search(r"\b(?:может|могут)\b", consequence, re.IGNORECASE):
+            return "", [], "unqualified_conditional_consequence"
+        answer = f"Если {condition}, то {consequence}."
+        evidence_ids = raw.mechanism.evidence_ids
+    text = LABEL_MENTION.sub("", " ".join(answer.split())).replace("  ", " ").strip()[:MAX_ANSWER_CHARS]
     refs = [
-        ref
-        for ref in dict.fromkeys(aliases.get(item, item) for item in raw.evidence_ids)
-        if ref in candidates
+        ref for ref in dict.fromkeys(aliases.get(item, item) for item in evidence_ids) if ref in candidates
     ]
     supported = supported_sentences(text, number_source) if text else ""
     reason = None
@@ -286,6 +322,7 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
     prompt = build_prompt(prepared, question, turns, bank, aliases, missing)
     answer, refs, reason, raw = "", [], "not_started", RawAnswer()
     validation: dict = {}
+    validation_attempts: list[dict] = []
     for attempt in range(2):
         result = call_llm(
             "answer_chat",
@@ -297,6 +334,7 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         steps.append({**usage_step("answer_chat", result), "attempt": attempt + 1})
         raw = RawAnswer.model_validate(result.data)
         answer, refs, reason = clean_answer(raw, candidates, aliases, number_source)
+        validation = {}
         if reason is None:
             checked = validate_answer(
                 answer, refs, evidence_for(refs, bank_ids, prepared), catalog, number_source
@@ -304,8 +342,10 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
             validation = checked["record"]
             if checked["verdict"] != "supported":
                 reason = "validation_failed"
-                continue
+        validation_attempts.append({"attempt": attempt + 1, "reason": reason, "record": validation or None})
+        if reason is None:
             break
+        prompt = repair_prompt(prompt, raw, reason, validation)
     unknowns: list[str] = []
     conflicts = source_conflicts(prepared.facts)
     if reason is not None:
@@ -347,6 +387,7 @@ def answer_chat(company_context: dict, user_focus: dict, event: dict, history: l
         "stop_reason": "answered" if reason is None else "no_sources",
         "source_conflicts": conflicts,
         "validation": validation or None,
+        "validation_attempts": validation_attempts,
     }
     result_body = {
         "answer": answer,

@@ -141,9 +141,12 @@ PROMPTS: tuple[PromptDoc, ...] = (
         ANSWER_SYSTEM_PROMPT,
         "JSON с полями `question`, `history`, `event`, `news` (метки `N1`...), `user_focus`, "
         "`company_features` (метки `C1`...), `matched_with_event`, `bank_fragments` (метки `B1`...) "
-        "и `known_missing_parameters`.",
-        "JSON с полями `answer`, `evidence_ids` (метки) и `unknowns`. Код удаляет метки из текста, "
-        "предложения с числами без источника и ответ без действительных оснований.",
+        "и `known_missing_parameters`; `mechanism_bases` содержит только положительные основы анализа, "
+        "`source_conditions` — дословные условия мер. При повторе передаётся `validation_feedback` с причинами отказа.",
+        "JSON с полями `answer`, `evidence_ids` (метки), `unknowns`, `mechanism`. Для бизнес-вопросов "
+        "mechanism содержит `condition`, `consequence` и `evidence_ids`; код собирает условное предложение "
+        "и проверяет его как обычный ответ. Для фактов/позиции банка используется answer при mechanism=null. "
+        "Код удаляет метки, предложения с числами без источника и ответ без действительных оснований.",
     ),
     PromptDoc(
         "benchmark_judge.md",
